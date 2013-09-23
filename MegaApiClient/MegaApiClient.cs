@@ -169,6 +169,11 @@ namespace CG.Web.MegaApiClient
                 throw new ArgumentNullException("parent");
             }
 
+            if (parent.Type == NodeType.File)
+            {
+                throw new ArgumentException("Invalid parent node");
+            }
+
             this.EnsureLoggedIn();
 
             byte[] key = Crypto.CreateAesKey();
@@ -185,6 +190,11 @@ namespace CG.Web.MegaApiClient
             if (node == null)
             {
                 throw new ArgumentNullException("node");
+            }
+
+            if (node.Type != NodeType.File)
+            {
+                throw new ArgumentException("Invalid node");
             }
 
             this.EnsureLoggedIn();
@@ -252,6 +262,11 @@ namespace CG.Web.MegaApiClient
             if (parent == null)
             {
                 throw new ArgumentNullException("parent");
+            }
+
+            if (parent.Type == NodeType.File)
+            {
+                throw new ArgumentException("Invalid parent node");
             }
 
             this.EnsureLoggedIn();
