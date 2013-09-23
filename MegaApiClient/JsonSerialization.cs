@@ -278,6 +278,12 @@ namespace CG.Web.MegaApiClient
         [JsonIgnore]
         internal byte[] FileKey { get; private set; }
 
+        [JsonIgnore]
+        internal byte[] Iv { get; private set; }
+
+        [JsonIgnore]
+        internal byte[] MetaMac { get; private set; }
+
         #endregion
 
         #region Deserialization
@@ -296,12 +302,35 @@ namespace CG.Web.MegaApiClient
         {
             byte[] masterKey = (byte[])ctx.Context;
 
-            this.FileKey = this.SerializedKey.Substring(this.SerializedKey.IndexOf(":", StringComparison.InvariantCulture) + 1).FromBase64();
+            byte[] encryptedFileKey = this.SerializedKey.Substring(this.SerializedKey.IndexOf(":", StringComparison.InvariantCulture) + 1).FromBase64();
+            byte[] decryptedFileKey = Crypto.DecryptKey(encryptedFileKey, masterKey);
             this.LastModificationDate = OriginalDateTime.AddSeconds(this.SerializedLastModificationDate).ToLocalTime();
 
             if (this.Type == NodeType.File || this.Type == NodeType.Directory)
             {
-                Attributes attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.FileKey, masterKey);
+                if (this.Type == NodeType.File)
+                {
+                    // Extract Iv and MetaMac
+                    byte[] iv = new byte[8];
+                    byte[] metaMac = new byte[8];
+                    Array.Copy(decryptedFileKey, 16, iv, 0, 8);
+                    Array.Copy(decryptedFileKey, 24, metaMac, 0, 8);
+                    this.Iv = iv;
+                    this.MetaMac = metaMac;
+
+                    // For files, key is 256 bits long. Compute the key to retrieve 128 AES key
+                    byte[] fileKey = new byte[16];
+                    for (int idx = 0; idx < 16; idx++)
+                    {
+                        fileKey[idx] = (byte)(decryptedFileKey[idx] ^ decryptedFileKey[idx + 16]);
+                    }
+
+                    decryptedFileKey = fileKey;
+                }
+
+                this.FileKey = decryptedFileKey;
+
+                Attributes attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.FileKey);
                 this.Name = attributes.Name;
             }
         }

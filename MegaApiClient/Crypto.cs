@@ -91,23 +91,9 @@ namespace CG.Web.MegaApiClient
             return EncryptAes(dataBytes, nodeKey);
         }
 
-        public static Attributes DecryptAttributes(byte[] attributes, byte[] nodeKey, byte[] masterKey)
+        public static Attributes DecryptAttributes(byte[] attributes, byte[] nodeKey)
         {
-            byte[] decryptedFileKey = DecryptKey(nodeKey, masterKey);
-
-            if (nodeKey.Length == 32)
-            {
-                // For files, key is 256 bits long. Compute the key to retrieve 128 AES key
-                byte[] fileKey = new byte[16];
-                for (int idx = 0; idx < 16; idx++)
-                {
-                    fileKey[idx] = (byte)(decryptedFileKey[idx] ^ decryptedFileKey[idx + 16]);
-                }
-
-                decryptedFileKey = fileKey;
-            }
-
-            byte[] decryptedAttributes = DecryptAes(attributes, decryptedFileKey);
+            byte[] decryptedAttributes = DecryptAes(attributes, nodeKey);
 
             // Remove MEGA prefix
             return JsonConvert.DeserializeObject<Attributes>(decryptedAttributes.ToUTF8String().Substring(4));
