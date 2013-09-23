@@ -140,7 +140,7 @@ namespace CG.Web.MegaApiClient
             this.EnsureLoggedIn();
 
             GetNodesRequest request = new GetNodesRequest();
-            GetNodesResponse response = this.Request<GetNodesResponse>(request);
+            GetNodesResponse response = this.Request<GetNodesResponse>(request, this._masterKey);
 
             return response.Nodes;
         }
@@ -277,7 +277,7 @@ namespace CG.Web.MegaApiClient
 
             using (MegaAesCtrStream encryptedStream = new MegaAesCtrStreamCrypter(stream))
             {
-                string completionHandle = this._webClient.SendPostRequestRaw(new Uri(uploadResponse.Url), encryptedStream);
+                string completionHandle = this._webClient.PostRequestRaw(new Uri(uploadResponse.Url), encryptedStream);
 
                 // Compute Meta MAC
                 byte[] metaMac = new byte[8];
@@ -321,7 +321,7 @@ namespace CG.Web.MegaApiClient
             return this.Request<string>(request);
         }
 
-        private TResponse Request<TResponse>(RequestBase request)
+        private TResponse Request<TResponse>(RequestBase request, object context = null)
             where TResponse : class
         {
             string dataRequest = JsonConvert.SerializeObject(new object[] { request });
@@ -330,7 +330,7 @@ namespace CG.Web.MegaApiClient
             int currentAttempt = 0;
             while (true)
             {
-                string dataResult = this._webClient.SendPostRequestJson(uri, dataRequest);
+                string dataResult = this._webClient.PostRequestJson(uri, dataRequest);
 
                 jsonData = JsonConvert.DeserializeObject(dataResult);
                 if (jsonData is long || (jsonData is JArray && ((JArray) jsonData)[0].Type == JTokenType.Integer))
@@ -361,7 +361,7 @@ namespace CG.Web.MegaApiClient
             }
 
             JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.Context = new StreamingContext(StreamingContextStates.All, this._masterKey);
+            settings.Context = new StreamingContext(StreamingContextStates.All, context);
 
             string data = ((JArray) jsonData)[0].ToString();
             return (typeof(TResponse) == typeof(string)) ? data as TResponse : JsonConvert.DeserializeObject<TResponse>(data, settings);

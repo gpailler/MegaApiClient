@@ -5,8 +5,10 @@ namespace CG.Web.MegaApiClient
 {
     public interface IWebClient
     {
-        string SendPostRequestJson(Uri url, string jsonData);
+        string PostRequestJson(Uri url, string jsonData);
 
-        string SendPostRequestRaw(Uri url, Stream dataStream);
+        string PostRequestRaw(Uri url, Stream dataStream);
+
+        Stream GetRequestRaw(Uri url);
     }
 }

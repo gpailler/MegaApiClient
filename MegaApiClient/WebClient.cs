@@ -17,20 +17,30 @@ namespace CG.Web.MegaApiClient
             UserAgent = string.Format("{0} v{1}", assemblyName.Name, assemblyName.Version.ToString(2));
         }
 
-        public string SendPostRequestJson(Uri url, string jsonData)
+        public string PostRequestJson(Uri url, string jsonData)
         {
             using (MemoryStream jsonStream = new MemoryStream(jsonData.ToBytes()))
             {
-                return this.SendPostRequest(url, jsonStream, "application/json");
+                return this.PostRequest(url, jsonStream, "application/json");
             }
         }
         
-        public string SendPostRequestRaw(Uri url, Stream dataStream)
+        public string PostRequestRaw(Uri url, Stream dataStream)
         {
-            return this.SendPostRequest(url, dataStream, "application/octet-stream");
+            return this.PostRequest(url, dataStream, "application/octet-stream");
         }
 
-        private string SendPostRequest(Uri url, Stream dataStream, string contentType)
+        public Stream GetRequestRaw(Uri url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.Timeout = -1;
+            request.UserAgent = UserAgent;
+
+            return request.GetResponse().GetResponseStream();
+        }
+
+        private string PostRequest(Uri url, Stream dataStream, string contentType)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.ContentLength = dataStream.Length;
