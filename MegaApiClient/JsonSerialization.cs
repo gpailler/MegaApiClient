@@ -42,16 +42,16 @@ namespace CG.Web.MegaApiClient
     internal class LoginResponse
     {
         [JsonProperty("csid")]
-        public string SessionId { get; set; }
+        public string SessionId { get; private set; }
 
         [JsonProperty("tsid")]
-        public string TemporarySessionId { get; set; }
+        public string TemporarySessionId { get; private set; }
 
         [JsonProperty("privk")]
-        public string PrivateKey { get; set; }
+        public string PrivateKey { get; private set; }
 
         [JsonProperty("k")]
-        public string MasterKey { get; set; }
+        public string MasterKey { get; private set; }
     }
 
     internal class AnonymousLoginRequest : RequestBase
@@ -87,7 +87,7 @@ namespace CG.Web.MegaApiClient
     internal class GetNodesResponse
     {
         [JsonProperty("f")]
-        public Node[] Nodes { get; set; }
+        public Node[] Nodes { get; private set; }
     }
 
     #endregion
@@ -199,10 +199,11 @@ namespace CG.Web.MegaApiClient
     internal class UploadUrlResponse
     {
         [JsonProperty("p")]
-        public string Url { get; set; }
+        public string Url { get; private set; }
     }
 
     #endregion
+
 
     #region DownloadRequest
 
@@ -223,7 +224,13 @@ namespace CG.Web.MegaApiClient
     internal class DownloadUrlResponse
     {
         [JsonProperty("g")]
-        public string Url { get; set; }
+        public string Url { get; private set; }
+
+        [JsonProperty("s")]
+        public long Size { get; private set; }
+
+        [JsonProperty("at")]
+        private string SerializedAttributes { get; set; }
     }
 
     #endregion
