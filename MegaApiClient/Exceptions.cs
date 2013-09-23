@@ -17,6 +17,14 @@ namespace CG.Web.MegaApiClient
         }
     }
 
+    public class DownloadException : Exception
+    {
+        public DownloadException()
+            : base("Invalid file checksum")
+        {
+        }
+    }
+
     public enum ApiResultCode
     {
         Ok = 0,

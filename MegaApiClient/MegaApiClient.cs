@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Text;
 using System.Threading;
 using System.Web;
 using Newtonsoft.Json;
@@ -202,10 +203,57 @@ namespace CG.Web.MegaApiClient
             GetDownloadLinkRequest request = new GetDownloadLinkRequest(node);
             string response = this.Request<string>(request);
 
-            byte[] decryptedFileKey = Crypto.DecryptKey(node.FileKey, this._masterKey);
-            return new Uri(BaseUri, string.Format("/#!{0}!{1}", response, decryptedFileKey.ToBase64()));
+            return new Uri(BaseUri, string.Format("/#!{0}!{1}", response, node.DecryptedFileKey.ToBase64()));
         }
 
+        public void DownloadFile(Node node, string outputFile)
+        {
+            if (node == null)
+            {
+                throw  new ArgumentNullException("node");
+            }
+
+            if (string.IsNullOrEmpty(outputFile))
+            {
+                throw new ArgumentNullException("outputFile");
+            }
+
+            using (Stream stream = this.Download(node))
+            {
+                using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
+                {
+                    byte[] buffer = new byte[8 * 1024];
+                    int len;
+                    while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        fs.Write(buffer, 0, len);
+                    }
+                }
+            }
+        }
+
+        public Stream Download(Node node)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+
+            if (node.Type != NodeType.File)
+            {
+                throw new ArgumentException("Invalid node");
+            }
+
+            this.EnsureLoggedIn();
+
+            // Retrieve download URL
+            DownloadUrlRequest downloadRequest = new DownloadUrlRequest(node);
+            DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
+
+            Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
+            return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, node.Key, node.Iv, node.MetaMac);
+        }
+        
         public Node Upload(string filename, Node parent)
         {
             if (string.IsNullOrEmpty(filename))
@@ -231,22 +279,6 @@ namespace CG.Web.MegaApiClient
             }
         }
 
-        public void Download(Node node)
-        {
-            if (node == null)
-            {
-                throw new ArgumentNullException("node");
-            }
-
-            this.EnsureLoggedIn();
-
-            // Retrieve download URL
-            DownloadUrlRequest downloadRequest = new DownloadUrlRequest(node);
-            DownloadUrlResponse uploadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
-
-            throw new NotImplementedException();
-        }
-        
         public Node Upload(Stream stream, string name, Node parent)
         {
             if (stream == null)
@@ -275,18 +307,10 @@ namespace CG.Web.MegaApiClient
             UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
             UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
 
-            using (MegaAesCtrStream encryptedStream = new MegaAesCtrStreamCrypter(stream))
+            using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
             {
                 string completionHandle = this._webClient.PostRequestRaw(new Uri(uploadResponse.Url), encryptedStream);
 
-                // Compute Meta MAC
-                byte[] metaMac = new byte[8];
-                for (int i = 0; i < 4; i++)
-                {
-                    metaMac[i] = (byte)(encryptedStream.FileMac[i] ^ encryptedStream.FileMac[i + 4]);
-                    metaMac[i + 4] = (byte)(encryptedStream.FileMac[i + 8] ^ encryptedStream.FileMac[i + 12]);
-                }
-               
                 // Encrypt attributes
                 byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name), encryptedStream.FileKey);
 
@@ -294,20 +318,20 @@ namespace CG.Web.MegaApiClient
                 byte[] fileKey = new byte[32];
                 for (int i = 0; i < 8; i++)
                 {
-                    fileKey[i] = (byte)(encryptedStream.FileKey[i] ^ encryptedStream.Counter[i]);
-                    fileKey[i + 16] = encryptedStream.Counter[i];
+                    fileKey[i] = (byte)(encryptedStream.FileKey[i] ^ encryptedStream.Iv[i]);
+                    fileKey[i + 16] = encryptedStream.Iv[i];
                 }
 
                 for (int i = 8; i < 16; i++)
                 {
-                    fileKey[i] = (byte)(encryptedStream.FileKey[i] ^ metaMac[i - 8]);
-                    fileKey[i + 16] = metaMac[i - 8];
+                    fileKey[i] = (byte)(encryptedStream.FileKey[i] ^ encryptedStream.MetaMac[i - 8]);
+                    fileKey[i + 16] = encryptedStream.MetaMac[i - 8];
                 }
 
                 byte[] encryptedKey = Crypto.EncryptKey(fileKey, this._masterKey);
 
                 CreateNodeRequest createNodeRequest = CreateNodeRequest.CreateFileNodeRequest(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), completionHandle);
-                GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest);
+                GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest, this._masterKey);
                 return createNodeResponse.Nodes[0];
             }
         }

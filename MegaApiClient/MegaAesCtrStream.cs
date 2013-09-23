@@ -8,58 +8,112 @@ namespace CG.Web.MegaApiClient
     internal class MegaAesCtrStreamCrypter : MegaAesCtrStream
     {
         public MegaAesCtrStreamCrypter(Stream stream)
-            : base(stream, Mode.Crypt, Crypto.CreateAesKey(), Crypto.CreateAesKey())
+            : base(stream, stream.Length, Mode.Crypt, Crypto.CreateAesKey(), Crypto.CreateAesKey().CopySubArray(8))
         {
+        }
+
+        public byte[] FileKey
+        {
+            get { return this._fileKey; }
+        }
+
+        public byte[] Iv
+        {
+            get { return this._iv; }
+        }
+
+        public byte[] MetaMac
+        {
+            get
+            {
+                if (this._position != this._streamLength)
+                {
+                    throw new NotSupportedException("Stream must be completely read to access computed FileMac");
+                }
+
+                return this._metaMac;
+            }
         }
     }
 
     internal class MegaAesCtrStreamDecrypter : MegaAesCtrStream
     {
-        public MegaAesCtrStreamDecrypter(Stream stream, byte[] fileKey, byte[] counter)
-            : base(stream, Mode.Crypt, fileKey, counter)
+        private readonly byte[] _expectedMetaMac;
+
+        public MegaAesCtrStreamDecrypter(Stream stream, long streamLength, byte[] fileKey, byte[] iv, byte[] expectedMetaMac)
+            : base(stream, streamLength, Mode.Decrypt, fileKey, iv)
         {
-            throw new NotImplementedException();
+            if (expectedMetaMac == null || expectedMetaMac.Length != 8)
+            {
+                throw new ArgumentException("Invalid expectedMetaMac");
+            }
+
+            this._expectedMetaMac = expectedMetaMac;
+        }
+
+        protected override void OnStreamRead()
+        {
+            if (!this._expectedMetaMac.SequenceEqual(this._metaMac))
+            {
+                throw new DownloadException();
+            }
         }
     }
 
     internal abstract class MegaAesCtrStream : Stream
     {
+        protected readonly byte[] _fileKey;
+        protected readonly byte[] _iv;
+        protected readonly long _streamLength;
+        protected long _position = 0;
+        protected byte[] _metaMac = new byte[8];
+
         private readonly Stream _stream;
         private readonly Mode _mode;
-
         private readonly long[] _chunksPositions;
-        private readonly byte[] _fileKey;
-        private readonly byte[] _counter;
-        private byte[] _fileMac = new byte[16];
-
-        private long _position = 0;
+        private readonly byte[] _counter = new byte[8];
         private long _currentCounter = 0;
         private byte[] _currentChunkMac = new byte[16];
+        private byte[] _fileMac = new byte[16];
 
-        protected MegaAesCtrStream(Stream stream, Mode mode, byte[] fileKey, byte[] counter)
+        protected MegaAesCtrStream(Stream stream, long streamLength, Mode mode, byte[] fileKey, byte[] iv)
         {
+            if (stream == null)
+            {
+                throw new ArgumentNullException("stream");
+            }
+
+            if (fileKey == null || fileKey.Length != 16)
+            {
+                throw new ArgumentException("Invalid fileKey");
+            }
+
+            if (iv == null || iv.Length != 8)
+            {
+                throw new ArgumentException("Invalid Iv");
+            }
+
             this._stream = stream;
+            this._streamLength = streamLength;
             this._mode = mode;
             this._fileKey = fileKey;
-            this._counter = counter;
+            this._iv = iv;
 
-            this._chunksPositions = GetChunksPositions(stream.Length);
+            this._chunksPositions = GetChunksPositions(this._streamLength);
         }
-        
-        public byte[] FileKey { get { return this._fileKey; } }
 
-        public byte[] Counter { get { return this._counter; } }
-
-        public byte[] FileMac { get { return this._fileMac; } }
+        protected virtual void OnStreamRead()
+        {
+        }
         
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (this._position == this._stream.Length)
+            if (this._position == this._streamLength)
             {
                 return 0;
             }
 
-            for (long pos = this._position; pos < Math.Min(this._position + count, this._stream.Length); pos += 16)
+            for (long pos = this._position; pos < Math.Min(this._position + count, this._streamLength); pos += 16)
             {
                 // We are on a chunk bondary
                 if (this._chunksPositions.Any(chunk => chunk == pos) || pos == 0)
@@ -70,11 +124,11 @@ namespace CG.Web.MegaApiClient
                         this.ComputeChunk();
                     }
 
-                    // Init chunk mac with counter values
+                    // Init chunk mac with Iv values
                     for (int i = 0; i < 8; i++)
                     {
-                        _currentChunkMac[i] = this._counter[i];
-                        _currentChunkMac[i + 8] = this._counter[i];
+                        _currentChunkMac[i] = this._iv[i];
+                        _currentChunkMac[i + 8] = this._iv[i];
                     }
                 }
 
@@ -86,28 +140,42 @@ namespace CG.Web.MegaApiClient
                 byte[] output = new byte[input.Length];
                 int inputLength = this._stream.Read(input, 0, input.Length);
 
-                byte[] encryptedCounter = Crypto.EncryptAes(this._counter, this._fileKey);
+                // Merge Iv and counter
+                byte[] ivCounter = new byte[16];
+                Array.Copy(this._iv, ivCounter, 8);
+                Array.Copy(this._counter, 0, ivCounter, 8, 8);
+
+                byte[] encryptedIvCounter = Crypto.EncryptAes(ivCounter, this._fileKey);
 
                 for (int inputPos = 0; inputPos < inputLength; inputPos++)
                 {
-                    output[inputPos] = (byte)(encryptedCounter[inputPos] ^ input[inputPos]);
-                    this._currentChunkMac[inputPos] ^= input[inputPos];
+                    output[inputPos] = (byte)(encryptedIvCounter[inputPos] ^ input[inputPos]);
+                    this._currentChunkMac[inputPos] ^= (_mode == Mode.Crypt) ? input[inputPos] : output[inputPos];
                 }
 
                 // Copy to buffer
-                Array.Copy(output, 0, buffer, pos - this._position, Math.Min(output.Length, this._stream.Length - pos));
+                Array.Copy(output, 0, buffer, offset + pos - this._position, Math.Min(output.Length, this._streamLength - pos));
 
                 // Crypt to current chunk mac
                 this._currentChunkMac = Crypto.EncryptAes(this._currentChunkMac, this._fileKey);
             }
 
-            long len = (long)Math.Min(count, this._stream.Length - this._position);
+            long len = (long)Math.Min(count, this._streamLength - this._position);
             this._position += len;
 
             // When file is fully encrypted, we compute the last chunk
-            if (this._position == this._stream.Length)
+            if (this._position == this._streamLength)
             {
                 this.ComputeChunk();
+
+                // Compute Meta MAC
+                for (int i = 0; i < 4; i++)
+                {
+                    this._metaMac[i] = (byte)(this._fileMac[i] ^ this._fileMac[i + 4]);
+                    this._metaMac[i + 4] = (byte)(this._fileMac[i + 8] ^ this._fileMac[i + 12]);
+                }
+
+                this.OnStreamRead();
             }
 
             return (int)len;
@@ -150,7 +218,7 @@ namespace CG.Web.MegaApiClient
 
         public override long Length
         {
-            get { return this._stream.Length; }
+            get { return this._streamLength; }
         }
 
         public override long Position
@@ -178,7 +246,7 @@ namespace CG.Web.MegaApiClient
             {
                 Array.Reverse(bitCounter);
             }
-            Array.Copy(bitCounter, 0, this._counter, 8, 8);
+            Array.Copy(bitCounter, this._counter, 8);
         }
 
         private void ComputeChunk()
