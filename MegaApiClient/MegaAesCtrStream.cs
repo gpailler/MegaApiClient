@@ -101,10 +101,6 @@ namespace CG.Web.MegaApiClient
 
             this._chunksPositions = GetChunksPositions(this._streamLength);
         }
-
-        protected virtual void OnStreamRead()
-        {
-        }
         
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -139,6 +135,11 @@ namespace CG.Web.MegaApiClient
                 byte[] input = new byte[16];
                 byte[] output = new byte[input.Length];
                 int inputLength = this._stream.Read(input, 0, input.Length);
+                if (inputLength != input.Length)
+                {
+                    // Sometimes, the stream is not finished but the read is not complete
+                    inputLength += this._stream.Read(input, inputLength, input.Length - inputLength);
+                }
 
                 // Merge Iv and counter
                 byte[] ivCounter = new byte[16];
@@ -237,6 +238,10 @@ namespace CG.Web.MegaApiClient
         {
             Crypt,
             Decrypt
+        }
+
+        protected virtual void OnStreamRead()
+        {
         }
 
         private void IncrementCounter()
