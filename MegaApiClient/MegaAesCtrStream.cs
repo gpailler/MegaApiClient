@@ -28,7 +28,7 @@ namespace CG.Web.MegaApiClient
             {
                 if (this._position != this._streamLength)
                 {
-                    throw new NotSupportedException("Stream must be completely read to access computed FileMac");
+                    throw new NotSupportedException("Stream must be fully read to obtain computed FileMac");
                 }
 
                 return this._metaMac;
@@ -116,7 +116,7 @@ namespace CG.Web.MegaApiClient
                 {
                     if (pos != 0)
                     {
-                        // Compute the current chunk mac data
+                        // Compute the current chunk mac data on each chunk bondary
                         this.ComputeChunk();
                     }
 
@@ -128,7 +128,6 @@ namespace CG.Web.MegaApiClient
                     }
                 }
 
-                // Update counter
                 this.IncrementCounter();
 
                 // Iterate each AES 16 bytes block
@@ -164,7 +163,7 @@ namespace CG.Web.MegaApiClient
             long len = (long)Math.Min(count, this._streamLength - this._position);
             this._position += len;
 
-            // When file is fully encrypted, we compute the last chunk
+            // When stream is fully processed, we compute the last chunk
             if (this._position == this._streamLength)
             {
                 this.ComputeChunk();
@@ -246,12 +245,12 @@ namespace CG.Web.MegaApiClient
 
         private void IncrementCounter()
         {
-            byte[] bitCounter = BitConverter.GetBytes(_currentCounter++);
+            byte[] counter = BitConverter.GetBytes(_currentCounter++);
             if (BitConverter.IsLittleEndian)
             {
-                Array.Reverse(bitCounter);
+                Array.Reverse(counter);
             }
-            Array.Copy(bitCounter, this._counter, 8);
+            Array.Copy(counter, this._counter, 8);
         }
 
         private void ComputeChunk()

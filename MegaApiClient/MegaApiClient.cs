@@ -17,6 +17,7 @@ namespace CG.Web.MegaApiClient
     {
         private readonly IWebClient _webClient;
 
+        private const uint BufferSize = 8192;
         private const int ApiRequestAttempts = 10;
         private const int ApiRequestDelay = 200;
 
@@ -243,7 +244,7 @@ namespace CG.Web.MegaApiClient
             {
                 using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
                 {
-                    byte[] buffer = new byte[8 * 1024];
+                    byte[] buffer = new byte[BufferSize];
                     int len;
                     while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
                     {
