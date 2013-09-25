@@ -182,7 +182,7 @@ namespace CG.Web.MegaApiClient
             byte[] encryptedKey = Crypto.EncryptAes(key, this._masterKey);
 
             CreateNodeRequest request = CreateNodeRequest.CreateFolderNodeRequest(parent, attributes.ToBase64(), encryptedKey.ToBase64());
-            GetNodesResponse response = this.Request<GetNodesResponse>(request);
+            GetNodesResponse response = this.Request<GetNodesResponse>(request, this._masterKey);
             return response.Nodes[0];
         }
 
