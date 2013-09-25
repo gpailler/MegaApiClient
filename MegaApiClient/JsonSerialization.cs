@@ -63,8 +63,10 @@ namespace CG.Web.MegaApiClient
             this.TemporarySession = temporarySession;
         }
 
+        [JsonProperty("k")]
         public string MasterKey { get; set; }
 
+        [JsonProperty("ts")]
         public string TemporarySession { get; set; }
     }
 
