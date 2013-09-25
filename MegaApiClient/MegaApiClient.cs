@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
@@ -21,6 +22,8 @@ namespace CG.Web.MegaApiClient
 
         private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
         private static readonly Uri BaseUri = new Uri("https://mega.co.nz");
+
+        private Node _trashNode;
 
         private string _sessionId;
         private byte[] _masterKey;
@@ -143,19 +146,37 @@ namespace CG.Web.MegaApiClient
             GetNodesRequest request = new GetNodesRequest();
             GetNodesResponse response = this.Request<GetNodesResponse>(request, this._masterKey);
 
-            return response.Nodes;
+            Node[] nodes = response.Nodes;
+            if (this._trashNode == null)
+            {
+                this._trashNode = nodes.First(n => n.Type == NodeType.Trash);
+            }
+
+            return nodes;
         }
 
-        public void Delete(Node node)
+        public void Delete(Node node, bool moveToTrash = true)
         {
             if (node == null)
             {
                 throw new ArgumentNullException("node");
             }
 
+            if (node.Type != NodeType.Directory && node.Type != NodeType.File)
+            {
+                throw new ArgumentException("Invalid node type");
+            }
+
             this.EnsureLoggedIn();
 
-            this.Request(new DeleteRequest(node));
+            if (moveToTrash)
+            {
+                this.Move(node, this._trashNode);
+            }
+            else
+            {
+                this.Request(new DeleteRequest(node));
+            }
         }
 
         public Node CreateFolder(string name, Node parent)
@@ -334,6 +355,32 @@ namespace CG.Web.MegaApiClient
                 GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest, this._masterKey);
                 return createNodeResponse.Nodes[0];
             }
+        }
+
+        public Node Move(Node node, Node destinationParentNode)
+        {
+            if (node == null)
+            {
+                throw new ArgumentNullException("node");
+            }
+
+            if (destinationParentNode == null)
+            {
+                throw new ArgumentNullException("destinationParentNode");
+            }
+            
+            if (node.Type != NodeType.Directory && node.Type != NodeType.File)
+            {
+                throw new ArgumentException("Invalid node type");
+            }
+
+            if (destinationParentNode.Type == NodeType.File)
+            {
+                throw new ArgumentException("Invalid destination parent node");
+            }
+
+            this.Request(new MoveRequest(node, destinationParentNode));
+            return this.GetNodes().First(n => n.Equals(node));
         }
 
         #endregion

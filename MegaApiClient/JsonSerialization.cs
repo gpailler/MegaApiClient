@@ -237,6 +237,25 @@ namespace CG.Web.MegaApiClient
 
     #endregion
 
+    #region Move
+
+    internal class MoveRequest : RequestBase
+    {
+        public MoveRequest(Node node, Node destinationParentNode)
+            : base("m")
+        {
+            this.Id = node.Id;
+            this.DestinationParentId = destinationParentNode.Id;
+        }
+
+        [JsonProperty("n")]
+        public string Id { get; private set; }
+
+        [JsonProperty("t")]
+        public string DestinationParentId { get; private set; }
+    }
+
+    #endregion
 
     #region Attributes
 
@@ -257,7 +276,7 @@ namespace CG.Web.MegaApiClient
     #region Node
 
     [DebuggerDisplay("Type: {Type} - Name: {Name} - Id: {Id}")]
-    public class Node
+    public class Node : IEquatable<Node>
     {
         private static readonly DateTime OriginalDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
@@ -343,6 +362,15 @@ namespace CG.Web.MegaApiClient
                 Attributes attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
                 this.Name = attributes.Name;
             }
+        }
+
+        #endregion
+
+        #region Equality
+
+        public bool Equals(Node other)
+        {
+            return other != null && this.Id == other.Id;
         }
 
         #endregion
