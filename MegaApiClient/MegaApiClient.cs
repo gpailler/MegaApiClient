@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading;
 using System.Web;
 using Newtonsoft.Json;
@@ -53,7 +52,12 @@ namespace CG.Web.MegaApiClient
 
         public void Login(string email, string password)
         {
-            if (string.IsNullOrWhiteSpace(email))
+            this.Login(GenerateAuthInfos(email, password));
+        }
+
+        public static AuthInfos GenerateAuthInfos(string email, string password)
+        {
+            if (string.IsNullOrEmpty(email))
             {
                 throw new ArgumentNullException("email");
             }
@@ -63,24 +67,34 @@ namespace CG.Web.MegaApiClient
                 throw new ArgumentNullException("password");
             }
 
-            this.EnsureLoggedOut();
-
             // Retrieve password as UTF8 byte array
             byte[] passwordBytes = password.ToBytes();
 
             // Encrypt password to use password as key for the hash
-            byte[] passwordAesKey = this.PrepareKey(passwordBytes);
+            byte[] passwordAesKey = PrepareKey(passwordBytes);
 
             // Hash email and password to decrypt master key on Mega servers
-            string hash = this.GenerateHash(email.ToLowerInvariant(), passwordAesKey);
-           
+            string hash = GenerateHash(email.ToLowerInvariant(), passwordAesKey);
+
+            return new AuthInfos(email, hash, passwordAesKey);
+        }
+
+        public void Login(AuthInfos authInfos)
+        {
+            if (authInfos == null)
+            {
+                throw new ArgumentNullException("authInfos");
+            }
+
+            this.EnsureLoggedOut();
+
             // Request Mega Api
-            LoginRequest request = new LoginRequest(email, hash);
+            LoginRequest request = new LoginRequest(authInfos.Email, authInfos.Hash);
             LoginResponse response = this.Request<LoginResponse>(request);
 
             // Decrypt master key using our password key
             byte[] cryptedMasterKey = response.MasterKey.FromBase64();
-            this._masterKey = Crypto.DecryptKey(cryptedMasterKey, passwordAesKey);
+            this._masterKey = Crypto.DecryptKey(cryptedMasterKey, authInfos.PasswordAesKey);
 
             // Decrypt RSA private key using decrypted master key
             byte[] cryptedRsaPrivateKey = response.PrivateKey.FromBase64();
@@ -89,7 +103,7 @@ namespace CG.Web.MegaApiClient
             // Decrypt session id
             byte[] encryptedSid = response.SessionId.FromBase64();
             byte[] sid = Crypto.RsaDecrypt(encryptedSid.FromMPINumber(), rsaPrivateKeyComponents[0], rsaPrivateKeyComponents[1], rsaPrivateKeyComponents[2]);
-            
+
             // Session id contains only the first 43 decrypted bytes
             this._sessionId = sid.CopySubArray(43).ToBase64();
         }
@@ -99,7 +113,7 @@ namespace CG.Web.MegaApiClient
             this.EnsureLoggedOut();
 
             Random random = new Random();
-            
+
             // Generate random master key
             this._masterKey = new byte[16];
             random.NextBytes(this._masterKey);
@@ -182,7 +196,7 @@ namespace CG.Web.MegaApiClient
 
         public Node CreateFolder(string name, Node parent)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException("name");
             }
@@ -232,7 +246,7 @@ namespace CG.Web.MegaApiClient
         {
             if (node == null)
             {
-                throw  new ArgumentNullException("node");
+                throw new ArgumentNullException("node");
             }
 
             if (string.IsNullOrEmpty(outputFile))
@@ -275,7 +289,7 @@ namespace CG.Web.MegaApiClient
             Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
             return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, node.Key, node.Iv, node.MetaMac);
         }
-        
+
         public Node Upload(string filename, Node parent)
         {
             if (string.IsNullOrEmpty(filename))
@@ -308,7 +322,7 @@ namespace CG.Web.MegaApiClient
                 throw new ArgumentNullException("stream");
             }
 
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentNullException("name");
             }
@@ -369,7 +383,7 @@ namespace CG.Web.MegaApiClient
             {
                 throw new ArgumentNullException("destinationParentNode");
             }
-            
+
             if (node.Type != NodeType.Directory && node.Type != NodeType.File)
             {
                 throw new ArgumentException("Invalid node type");
@@ -405,11 +419,11 @@ namespace CG.Web.MegaApiClient
                 string dataResult = this._webClient.PostRequestJson(uri, dataRequest);
 
                 jsonData = JsonConvert.DeserializeObject(dataResult);
-                if (jsonData is long || (jsonData is JArray && ((JArray) jsonData)[0].Type == JTokenType.Integer))
+                if (jsonData is long || (jsonData is JArray && ((JArray)jsonData)[0].Type == JTokenType.Integer))
                 {
                     ApiResultCode apiCode = (jsonData is long)
-                                                ? (ApiResultCode) Enum.ToObject(typeof (ApiResultCode), jsonData)
-                                                : (ApiResultCode) ((JArray) jsonData)[0].Value<int>();
+                                                ? (ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
+                                                : (ApiResultCode)((JArray)jsonData)[0].Value<int>();
 
                     if (apiCode == ApiResultCode.RequestFailedRetry)
                     {
@@ -435,7 +449,7 @@ namespace CG.Web.MegaApiClient
             JsonSerializerSettings settings = new JsonSerializerSettings();
             settings.Context = new StreamingContext(StreamingContextStates.All, context);
 
-            string data = ((JArray) jsonData)[0].ToString();
+            string data = ((JArray)jsonData)[0].ToString();
             return (typeof(TResponse) == typeof(string)) ? data as TResponse : JsonConvert.DeserializeObject<TResponse>(data, settings);
         }
 
@@ -444,7 +458,7 @@ namespace CG.Web.MegaApiClient
             UriBuilder builder = new UriBuilder(BaseApiUri);
             NameValueCollection query = HttpUtility.ParseQueryString(builder.Query);
             query["id"] = (_sequenceIndex++ % uint.MaxValue).ToString(CultureInfo.InvariantCulture);
-            
+
             if (!string.IsNullOrEmpty(this._sessionId))
             {
                 query["sid"] = this._sessionId;
@@ -458,7 +472,7 @@ namespace CG.Web.MegaApiClient
 
         #region Private methods
 
-        private string GenerateHash(string email, byte[] passwordAesKey)
+        private static string GenerateHash(string email, byte[] passwordAesKey)
         {
             byte[] emailBytes = email.ToBytes();
             byte[] hash = new byte[16];
@@ -479,11 +493,11 @@ namespace CG.Web.MegaApiClient
             byte[] result = new byte[8];
             Array.Copy(hash, 0, result, 0, 4);
             Array.Copy(hash, 8, result, 4, 4);
-            
+
             return result.ToBase64();
         }
 
-        private byte[] PrepareKey(byte[] data)
+        private static byte[] PrepareKey(byte[] data)
         {
             byte[] pkey = new byte[] { 0x93, 0xC4, 0x67, 0xE3, 0x7D, 0xB0, 0xC7, 0xA4, 0xD1, 0xBE, 0x3F, 0x81, 0x01, 0x52, 0xCB, 0x56 };
 
@@ -515,6 +529,26 @@ namespace CG.Web.MegaApiClient
             {
                 throw new NotSupportedException("Already logged in");
             }
+        }
+
+        #endregion
+
+        #region AuthInfos
+
+        public class AuthInfos
+        {
+            public AuthInfos(string email, string hash, byte[] passwordAesKey)
+            {
+                this.Email = email;
+                this.Hash = hash;
+                this.PasswordAesKey = passwordAesKey;
+            }
+
+            public string Email { get; private set; }
+
+            public string Hash { get; private set; }
+
+            public byte[] PasswordAesKey { get; private set; }
         }
 
         #endregion
