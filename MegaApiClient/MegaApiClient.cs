@@ -544,10 +544,13 @@ namespace CG.Web.MegaApiClient
                 this.PasswordAesKey = passwordAesKey;
             }
 
+            [JsonProperty]
             public string Email { get; private set; }
 
+            [JsonProperty]
             public string Hash { get; private set; }
 
+            [JsonProperty]
             public byte[] PasswordAesKey { get; private set; }
         }
 
