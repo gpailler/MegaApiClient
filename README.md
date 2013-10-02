@@ -29,6 +29,7 @@ API functions:
 ---
 ```
 void Login(string email, string password)
+void Login(AuthInfos authInfos)
 void LoginAnonymous()
 void Logout()
 
@@ -43,4 +44,6 @@ Stream Download(Node node)
 
 Node Upload(string filename, Node parent)
 Node Upload(Stream stream, string name, Node parent)
+
+static AuthInfos GenerateAuthInfos(string email, string password)
 ```
