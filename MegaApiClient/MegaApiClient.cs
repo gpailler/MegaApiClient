@@ -246,7 +246,7 @@ namespace CG.Web.MegaApiClient
         /// You can only delete <see cref="NodeType.Directory" /> or <see cref="NodeType.File" /> node
         /// </remarks>
         /// <param name="node">Node to delete</param>
-        /// <param name="moveToTrash">Moved to trash if <see cref="true"/>, Permanently deleted if <see cref="false"/></param>
+        /// <param name="moveToTrash">Moved to trash if true, Permanently deleted if false</param>
         /// <exception cref="NotSupportedException">Not logged in</exception>
         /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
         /// <exception cref="ArgumentNullException">node is null</exception>
