@@ -360,12 +360,13 @@ namespace CG.Web.MegaApiClient
         {
             byte[] masterKey = (byte[])ctx.Context;
 
-            byte[] encryptedFileKey = this.SerializedKey.Substring(this.SerializedKey.IndexOf(":", StringComparison.InvariantCulture) + 1).FromBase64();
-            this.DecryptedFileKey = Crypto.DecryptKey(encryptedFileKey, masterKey);
             this.LastModificationDate = OriginalDateTime.AddSeconds(this.SerializedLastModificationDate).ToLocalTime();
 
             if (this.Type == NodeType.File || this.Type == NodeType.Directory)
             {
+                byte[] encryptedFileKey = this.SerializedKey.Substring(this.SerializedKey.IndexOf(":", StringComparison.InvariantCulture) + 1).FromBase64();
+                this.DecryptedFileKey = Crypto.DecryptKey(encryptedFileKey, masterKey);
+
                 this.Key = this.DecryptedFileKey;
 
                 if (this.Type == NodeType.File)
