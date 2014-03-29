@@ -27,11 +27,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CG.Web.MegaApiClient
 {
+
     #region Base
 
     internal abstract class RequestBase
@@ -115,8 +118,33 @@ namespace CG.Web.MegaApiClient
 
     internal class GetNodesResponse
     {
-        [JsonProperty("f")]
         public Node[] Nodes { get; private set; }
+
+        [JsonProperty("f")]
+        public JRaw NodesSerialized { get; private set; }
+
+        [JsonProperty("ok")]
+        public SharedKey[] SharedKeys { get; private set; }
+
+        internal class SharedKey
+        {
+            [JsonProperty("h")]
+            public string Id { get; private set; }
+
+            [JsonProperty("k")]
+            public string Key { get; private set; }
+        }
+
+        [OnDeserialized]
+        public void OnDeserialized(StreamingContext ctx)
+        {
+            JsonSerializerSettings settings = new JsonSerializerSettings();
+            settings.Context = new StreamingContext(StreamingContextStates.All, new [] { ctx.Context, this });
+
+            // For shared files/folders nodes, we need to retrieve SharedKeys.
+            // So we deserialize nodes in 2 steps
+            this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
+        }
     }
 
     #endregion
@@ -264,6 +292,7 @@ namespace CG.Web.MegaApiClient
 
     #endregion
 
+
     #region Move
 
     internal class MoveRequest : RequestBase
@@ -283,6 +312,7 @@ namespace CG.Web.MegaApiClient
     }
 
     #endregion
+
 
     #region Attributes
 
@@ -331,7 +361,7 @@ namespace CG.Web.MegaApiClient
         public DateTime LastModificationDate { get; private set; }
 
         [JsonIgnore]
-        internal byte[] DecryptedFileKey { get; private set; }
+        internal byte[] DecryptedKey { get; private set; }
 
         [JsonIgnore]
         internal byte[] Key { get; private set; }
@@ -354,28 +384,48 @@ namespace CG.Web.MegaApiClient
 
         [JsonProperty("k")]
         private string SerializedKey { get; set; }
-
+        
         [OnDeserialized]
         public void OnDeserialized(StreamingContext ctx)
         {
-            byte[] masterKey = (byte[])ctx.Context;
+            byte[] masterKey = (byte[])((object[])ctx.Context)[0];
+            GetNodesResponse nodesResponse = (GetNodesResponse)((object[])ctx.Context)[1];
 
             this.LastModificationDate = OriginalDateTime.AddSeconds(this.SerializedLastModificationDate).ToLocalTime();
 
             if (this.Type == NodeType.File || this.Type == NodeType.Directory)
             {
-                byte[] encryptedFileKey = this.SerializedKey.Substring(this.SerializedKey.IndexOf(":", StringComparison.InvariantCulture) + 1).FromBase64();
-                this.DecryptedFileKey = Crypto.DecryptKey(encryptedFileKey, masterKey);
+                int splitPosition = this.SerializedKey.IndexOf(":", StringComparison.InvariantCulture);
+                byte[] encryptedKey = this.SerializedKey.Substring(splitPosition + 1).FromBase64();
 
-                this.Key = this.DecryptedFileKey;
+                this.DecryptedKey = Crypto.DecryptKey(encryptedKey, masterKey);
+                this.Key = this.DecryptedKey;
+
+                // If node is shared, we need to retrieve shared masterkey
+                if (nodesResponse.SharedKeys != null)
+                {
+                    string owner = this.SerializedKey.Substring(0, splitPosition);
+                    GetNodesResponse.SharedKey sharedKey = nodesResponse.SharedKeys.FirstOrDefault(x => x.Id == owner);
+                    if (sharedKey != null)
+                    {
+                        masterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), masterKey);
+
+                        if (this.Type == NodeType.Directory)
+                        {
+                            this.DecryptedKey = masterKey;
+                        }
+
+                        this.Key = Crypto.DecryptKey(encryptedKey, masterKey);
+                    }
+                }
 
                 if (this.Type == NodeType.File)
                 {
                     // Extract Iv and MetaMac
                     byte[] iv = new byte[8];
                     byte[] metaMac = new byte[8];
-                    Array.Copy(this.DecryptedFileKey, 16, iv, 0, 8);
-                    Array.Copy(this.DecryptedFileKey, 24, metaMac, 0, 8);
+                    Array.Copy(this.DecryptedKey, 16, iv, 0, 8);
+                    Array.Copy(this.DecryptedKey, 24, metaMac, 0, 8);
                     this.Iv = iv;
                     this.MetaMac = metaMac;
 
@@ -383,7 +433,7 @@ namespace CG.Web.MegaApiClient
                     this.Key = new byte[16];
                     for (int idx = 0; idx < 16; idx++)
                     {
-                        this.Key[idx] = (byte)(this.DecryptedFileKey[idx] ^ this.DecryptedFileKey[idx + 16]);
+                        this.Key[idx] = (byte)(this.DecryptedKey[idx] ^ this.DecryptedKey[idx + 16]);
                     }
                 }
 

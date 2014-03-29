@@ -315,12 +315,12 @@ namespace CG.Web.MegaApiClient
         /// <summary>
         /// Retrieve an url to download specified node
         /// </summary>
-        /// <param name="node">Node to retrieve the download link (only <see cref="NodeType.File" /> can be downloaded)</param>
+        /// <param name="node">Node to retrieve the download link (only <see cref="NodeType.File" /> or <see cref="NodeType.Directory" /> can be downloaded)</param>
         /// <returns>Download link to retrieve the node with associated key</returns>
         /// <exception cref="NotSupportedException">Not logged in</exception>
         /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
         /// <exception cref="ArgumentNullException">node is null</exception>
-        /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
+        /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> or <see cref="NodeType.Directory" /> can be downloaded)</exception>
         public Uri GetDownloadLink(Node node)
         {
             if (node == null)
@@ -328,7 +328,7 @@ namespace CG.Web.MegaApiClient
                 throw new ArgumentNullException("node");
             }
 
-            if (node.Type != NodeType.File)
+            if (node.Type != NodeType.File && node.Type != NodeType.Directory)
             {
                 throw new ArgumentException("Invalid node");
             }
@@ -338,7 +338,11 @@ namespace CG.Web.MegaApiClient
             GetDownloadLinkRequest request = new GetDownloadLinkRequest(node);
             string response = this.Request<string>(request);
 
-            return new Uri(BaseUri, string.Format("/#!{0}!{1}", response, node.DecryptedFileKey.ToBase64()));
+            return new Uri(BaseUri, string.Format(
+                "/#{0}!{1}!{2}",
+                node.Type == NodeType.Directory ? "F" : string.Empty,
+                response,
+                node.DecryptedKey.ToBase64()));
         }
 
         /// <summary>

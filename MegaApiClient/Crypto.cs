@@ -123,7 +123,14 @@ namespace CG.Web.MegaApiClient
             byte[] decryptedAttributes = DecryptAes(attributes, nodeKey);
 
             // Remove MEGA prefix
-            return JsonConvert.DeserializeObject<Attributes>(decryptedAttributes.ToUTF8String().Substring(4));
+            try
+            {
+                return JsonConvert.DeserializeObject<Attributes>(decryptedAttributes.ToUTF8String().Substring(4));
+            }
+            catch (Exception ex)
+            {
+                return new Attributes(string.Format("Attribute deserialization failed: {0}", ex.Message));
+            }
         }
 
         #endregion
