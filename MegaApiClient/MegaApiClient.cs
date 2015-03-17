@@ -238,6 +238,27 @@ namespace CG.Web.MegaApiClient
 
             return nodes;
         }
+        /// <summary>
+        /// Retrieve child nodes of a parent node
+        /// </summary>
+        /// <returns>Flat representation of child nodes</returns>
+        /// <exception cref="NotSupportedException">Not logged in</exception>
+        /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+        /// <exception cref="ArgumentNullException">ParentNode is null</exception>
+        public IEnumerable<Node> GetChildNodes(Node ParentNode)
+        {
+            if (ParentNode == null)
+                throw new ArgumentNullException("ParentNode");
+
+            this.EnsureLoggedIn();
+
+            GetNodesRequest request = new GetNodesRequest();
+            GetNodesResponse response = this.Request<GetNodesResponse>(request, this._masterKey);
+
+            IEnumerable<Node> nodes = response.Nodes.Where(n=>n.ParentId == ParentNode.Id);
+
+            return nodes;
+        }
 
         /// <summary>
         /// Delete a node from the filesytem
