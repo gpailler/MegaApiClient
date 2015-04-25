@@ -73,6 +73,21 @@ namespace CG.Web.MegaApiClient
             return result;
         }
 
+        public static void GetPartsFromDecryptedKey(byte[] decryptedKey, out byte[] iv, out byte[] metaMac, out byte[] fileKey)
+        {
+            // Extract Iv and MetaMac
+            iv = new byte[8];
+            metaMac = new byte[8];
+            Array.Copy(decryptedKey, 16, iv, 0, 8);
+            Array.Copy(decryptedKey, 24, metaMac, 0, 8);
+
+            // For files, key is 256 bits long. Compute the key to retrieve 128 AES key
+            fileKey = new byte[16];
+            for (int idx = 0; idx < 16; idx++)
+            {
+                fileKey[idx] = (byte)(decryptedKey[idx] ^ decryptedKey[idx + 16]);
+            }
+        }
         #endregion
 
         #region Aes

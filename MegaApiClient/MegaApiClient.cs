@@ -32,6 +32,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using Newtonsoft.Json;
@@ -390,15 +391,35 @@ namespace CG.Web.MegaApiClient
 
             using (Stream stream = this.Download(node))
             {
-                using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
-                {
-                    byte[] buffer = new byte[BufferSize];
-                    int len;
-                    while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        fs.Write(buffer, 0, len);
-                    }
-                }
+                this.SaveStream(stream, outputFile);
+            }
+        }
+
+        /// <summary>
+        /// Download a specified Uri from Mega and save it to the specified file
+        /// </summary>
+        /// <param name="uri">Uri to download</param>
+        /// <param name="outputFile">File to save the Uri to</param>
+        /// <exception cref="NotSupportedException">Not logged in</exception>
+        /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+        /// <exception cref="ArgumentNullException">uri or outputFile is null</exception>
+        /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
+        /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+        public void DownloadFile(Uri uri, string outputFile)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
+
+            if (string.IsNullOrEmpty(outputFile))
+            {
+                throw new ArgumentNullException("outputFile");
+            }
+
+            using (Stream stream = this.Download(uri))
+            {
+                this.SaveStream(stream, outputFile);
             }
         }
 
@@ -431,6 +452,47 @@ namespace CG.Web.MegaApiClient
 
             Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
             return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, node.Key, node.Iv, node.MetaMac);
+        }
+
+        /// <summary>
+        /// Retrieve a Stream to download and decrypt the specified Uri
+        /// </summary>
+        /// <param name="uri">Uri to download</param>
+        /// <exception cref="NotSupportedException">Not logged in</exception>
+        /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+        /// <exception cref="ArgumentNullException">uri is null</exception>
+        /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
+        /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+        public Stream Download(Uri uri)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
+
+            this.EnsureLoggedIn();
+            
+            Regex uriRegex = new Regex("#!(?<id>.+)!(?<key>.+)");
+            Match match = uriRegex.Match(uri.Fragment);
+            if (match.Success == false)
+            {
+                throw new ArgumentException(string.Format("Invalid uri. Unable to extract Id and Key from the uri {0}", uri));
+            }
+
+            string id = match.Groups["id"].Value;
+            byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
+
+            byte[] iv;
+            byte[] metaMac;
+            byte[] fileKey;
+            Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out fileKey);
+
+            // Retrieve download URL
+            DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
+            DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
+
+            Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
+            return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, fileKey, iv, metaMac);
         }
 
         /// <summary>
@@ -642,6 +704,19 @@ namespace CG.Web.MegaApiClient
 
             builder.Query = query.ToString();
             return builder.Uri;
+        }
+
+        private void SaveStream(Stream stream, string outputFile)
+        {
+            using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
+            {
+                byte[] buffer = new byte[BufferSize];
+                int len;
+                while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    fs.Write(buffer, 0, len);
+                }
+            }
         }
 
         #endregion

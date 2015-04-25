@@ -278,6 +278,20 @@ namespace CG.Web.MegaApiClient
         public string Id { get; private set; }
     }
 
+    internal class DownloadUrlRequestFromId : RequestBase
+    {
+        public DownloadUrlRequestFromId(string id)
+            : base("g")
+        {
+            this.Id = id;
+        }
+
+        public int g { get { return 1; } }
+
+        [JsonProperty("p")]
+        public string Id { get; private set; }
+    }
+
     internal class DownloadUrlResponse
     {
         [JsonProperty("g")]
@@ -421,20 +435,12 @@ namespace CG.Web.MegaApiClient
 
                 if (this.Type == NodeType.File)
                 {
-                    // Extract Iv and MetaMac
-                    byte[] iv = new byte[8];
-                    byte[] metaMac = new byte[8];
-                    Array.Copy(this.DecryptedKey, 16, iv, 0, 8);
-                    Array.Copy(this.DecryptedKey, 24, metaMac, 0, 8);
+                    byte[] iv, metaMac, fileKey;
+                    Crypto.GetPartsFromDecryptedKey(this.DecryptedKey, out iv, out metaMac, out fileKey);
+                    
                     this.Iv = iv;
                     this.MetaMac = metaMac;
-
-                    // For files, key is 256 bits long. Compute the key to retrieve 128 AES key
-                    this.Key = new byte[16];
-                    for (int idx = 0; idx < 16; idx++)
-                    {
-                        this.Key[idx] = (byte)(this.DecryptedKey[idx] ^ this.DecryptedKey[idx + 16]);
-                    }
+                    this.Key = fileKey;
                 }
 
                 Attributes attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
