@@ -2,6 +2,8 @@ MegaApiClient
 =============
 
 [![Build Status](https://travis-ci.org/gpailler/MegaApiClient.svg?branch=develop)](https://travis-ci.org/gpailler/MegaApiClient)
+[![NuGet version](https://img.shields.io/nuget/v/MegaApiClient.svg)](https://img.shields.io/nuget/v/MegaApiClient.svg)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io/badge/license-MIT-blue.svg)
 
 C# library to access http://mega.co.nz API
 
