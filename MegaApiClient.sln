@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaApiClient-3.5", "MegaAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaApiClient-4.0", "MegaApiClient-4.0\MegaApiClient-4.0.csproj", "{0BAB4E80-F6D1-452C-8443-3BD0D53D4D9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaApiClient.Tests", "MegaApiClient.Tests\MegaApiClient.Tests.csproj", "{16CAE1A9-1690-4EBE-BBE1-DF9249FCFCB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{0BAB4E80-F6D1-452C-8443-3BD0D53D4D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BAB4E80-F6D1-452C-8443-3BD0D53D4D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BAB4E80-F6D1-452C-8443-3BD0D53D4D9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16CAE1A9-1690-4EBE-BBE1-DF9249FCFCB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16CAE1A9-1690-4EBE-BBE1-DF9249FCFCB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16CAE1A9-1690-4EBE-BBE1-DF9249FCFCB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16CAE1A9-1690-4EBE-BBE1-DF9249FCFCB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
