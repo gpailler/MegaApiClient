@@ -1,0 +1,6 @@
+language: csharp
+solution: MegaApiClient.sln
+install:
+  - nuget restore MegaApiClient.sln
+script:
+  - xbuild /p:Configuration=Release MegaApiClient.sln
