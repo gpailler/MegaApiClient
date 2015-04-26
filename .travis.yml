@@ -4,3 +4,4 @@ install:
   - nuget restore MegaApiClient.sln
 script:
   - xbuild /p:Configuration=Release MegaApiClient.sln
+  - nuget pack MegaApiClient.nuspec
