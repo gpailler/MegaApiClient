@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2689498-3543-43EA-8961-66385687E16F}"
 	ProjectSection(SolutionItems) = preProject
 		key.snk = key.snk
+		LICENSE = LICENSE
+		MegaApiClient.nuspec = MegaApiClient.nuspec
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaApiClient-3.5", "MegaApiClient-3.5\MegaApiClient-3.5.csproj", "{0DF3959D-22EE-48B3-B725-433D5497E61A}"
