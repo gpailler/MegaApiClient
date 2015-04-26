@@ -25,9 +25,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #endregion
 
-using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -154,7 +151,7 @@ namespace CG.Web.MegaApiClient
 
     internal class DeleteRequest : RequestBase
     {
-        public DeleteRequest(Node node)
+        public DeleteRequest(INode node)
             : base("d")
         {
             this.Node = node.Id;
@@ -171,7 +168,7 @@ namespace CG.Web.MegaApiClient
 
     internal class GetDownloadLinkRequest : RequestBase
     {
-        public GetDownloadLinkRequest(Node node)
+        public GetDownloadLinkRequest(INode node)
             : base("l")
         {
             this.Id = node.Id;
@@ -188,7 +185,7 @@ namespace CG.Web.MegaApiClient
 
     internal class CreateNodeRequest : RequestBase
     {
-        private CreateNodeRequest(Node parentNode, NodeType type, string attributes, string key, string completionHandle)
+        private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string key, string completionHandle)
             : base("p")
         {
             this.ParentId = parentNode.Id;
@@ -204,12 +201,12 @@ namespace CG.Web.MegaApiClient
                 };
         }
 
-        public static CreateNodeRequest CreateFileNodeRequest(Node parentNode, string attributes, string key, string completionHandle)
+        public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string key, string completionHandle)
         {
             return new CreateNodeRequest(parentNode, NodeType.File, attributes, key, completionHandle);
         }
 
-        public static CreateNodeRequest CreateFolderNodeRequest(Node parentNode, string attributes, string key)
+        public static CreateNodeRequest CreateFolderNodeRequest(INode parentNode, string attributes, string key)
         {
             return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, key, "xxxxxxxx");
         }
@@ -266,7 +263,7 @@ namespace CG.Web.MegaApiClient
 
     internal class DownloadUrlRequest : RequestBase
     {
-        public DownloadUrlRequest(Node node)
+        public DownloadUrlRequest(INode node)
             : base("g")
         {
             this.Id = node.Id;
@@ -311,7 +308,7 @@ namespace CG.Web.MegaApiClient
 
     internal class MoveRequest : RequestBase
     {
-        public MoveRequest(Node node, Node destinationParentNode)
+        public MoveRequest(INode node, INode destinationParentNode)
             : base("m")
         {
             this.Id = node.Id;
@@ -341,133 +338,5 @@ namespace CG.Web.MegaApiClient
         public string Name { get; set; }
     }
 
-    #endregion
-
-
-    #region Node
-
-    [DebuggerDisplay("Type: {Type} - Name: {Name} - Id: {Id}")]
-    public class Node : IEquatable<Node>
-    {
-        private static readonly DateTime OriginalDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-
-        #region Public properties
-
-        [JsonProperty("h")]
-        public string Id { get; private set; }
-
-        [JsonProperty("p")]
-        public string ParentId { get; private set; }
-
-        [JsonProperty("u")]
-        public string Owner { get; private set; }
-
-        [JsonProperty("t")]
-        public NodeType Type { get; private set; }
-
-        [JsonProperty("s")]
-        public long Size { get; private set; }
-
-        [JsonIgnore]
-        public string Name { get; private set; }
-
-        [JsonIgnore]
-        public DateTime LastModificationDate { get; private set; }
-
-        [JsonIgnore]
-        internal byte[] DecryptedKey { get; private set; }
-
-        [JsonIgnore]
-        internal byte[] Key { get; private set; }
-
-        [JsonIgnore]
-        internal byte[] Iv { get; private set; }
-
-        [JsonIgnore]
-        internal byte[] MetaMac { get; private set; }
-
-        #endregion
-
-        #region Deserialization
-
-        [JsonProperty("ts")]
-        private long SerializedLastModificationDate { get; set; }
-
-        [JsonProperty("a")]
-        private string SerializedAttributes { get; set; }
-
-        [JsonProperty("k")]
-        private string SerializedKey { get; set; }
-        
-        [OnDeserialized]
-        public void OnDeserialized(StreamingContext ctx)
-        {
-            byte[] masterKey = (byte[])((object[])ctx.Context)[0];
-            GetNodesResponse nodesResponse = (GetNodesResponse)((object[])ctx.Context)[1];
-
-            this.LastModificationDate = OriginalDateTime.AddSeconds(this.SerializedLastModificationDate).ToLocalTime();
-
-            if (this.Type == NodeType.File || this.Type == NodeType.Directory)
-            {
-                int splitPosition = this.SerializedKey.IndexOf(":", StringComparison.InvariantCulture);
-                byte[] encryptedKey = this.SerializedKey.Substring(splitPosition + 1).FromBase64();
-
-                this.DecryptedKey = Crypto.DecryptKey(encryptedKey, masterKey);
-                this.Key = this.DecryptedKey;
-
-                // If node is shared, we need to retrieve shared masterkey
-                if (nodesResponse.SharedKeys != null)
-                {
-                    string owner = this.SerializedKey.Substring(0, splitPosition);
-                    GetNodesResponse.SharedKey sharedKey = nodesResponse.SharedKeys.FirstOrDefault(x => x.Id == owner);
-                    if (sharedKey != null)
-                    {
-                        masterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), masterKey);
-
-                        if (this.Type == NodeType.Directory)
-                        {
-                            this.DecryptedKey = masterKey;
-                        }
-
-                        this.Key = Crypto.DecryptKey(encryptedKey, masterKey);
-                    }
-                }
-
-                if (this.Type == NodeType.File)
-                {
-                    byte[] iv, metaMac, fileKey;
-                    Crypto.GetPartsFromDecryptedKey(this.DecryptedKey, out iv, out metaMac, out fileKey);
-                    
-                    this.Iv = iv;
-                    this.MetaMac = metaMac;
-                    this.Key = fileKey;
-                }
-
-                Attributes attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
-                this.Name = attributes.Name;
-            }
-        }
-
-        #endregion
-
-        #region Equality
-
-        public bool Equals(Node other)
-        {
-            return other != null && this.Id == other.Id;
-        }
-
-        #endregion
-    }
-
-    public enum NodeType
-    {
-        File = 0,
-        Directory,
-        Root,
-        Inbox,
-        Trash
-    }
-
-    #endregion
+    #endregion\
 }

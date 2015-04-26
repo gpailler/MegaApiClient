@@ -75,6 +75,9 @@
     <Compile Include="..\MegaApiClient\Extensions.cs">
       <Link>Extensions.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\INode.cs">
+      <Link>INode.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\IWebClient.cs">
       <Link>IWebClient.cs</Link>
     </Compile>
@@ -86,6 +89,9 @@
     </Compile>
     <Compile Include="..\MegaApiClient\MegaApiClient.cs">
       <Link>MegaApiClient.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\Node.cs">
+      <Link>Node.cs</Link>
     </Compile>
     <Compile Include="..\MegaApiClient\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
