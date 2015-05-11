@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 
 namespace CG.Web.MegaApiClient.Tests
@@ -64,6 +65,9 @@ namespace CG.Web.MegaApiClient.Tests
             {
                 this.Client.Logout();
             }
+            
+            // Add delay between tests to avoid API errors
+            Thread.Sleep(2000);
         }
 
         protected IEnumerable<ITestCaseData> GetCredentials()
