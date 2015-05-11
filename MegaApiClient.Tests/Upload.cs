@@ -21,6 +21,7 @@ namespace CG.Web.MegaApiClient.Tests
                 () => this.Client.Upload(stream, name, parent),
                 Throws.TypeOf<ArgumentNullException>());
         }
+
         [TestCase(NodeType.Root)]
         [TestCase(NodeType.Inbox)]
         [TestCase(NodeType.Trash)]
@@ -30,7 +31,7 @@ namespace CG.Web.MegaApiClient.Tests
             Random r = new Random();
             r.NextBytes(data);
 
-            INode root = this.Client.GetNodes().First(x => x.Type == parent);
+            INode root = this.GetNode(parent);
 
             INode node;
             using (Stream stream = new MemoryStream(data))

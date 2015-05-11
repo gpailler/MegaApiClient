@@ -66,9 +66,21 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        protected IEnumerable<TestCaseData> GetCredentials()
+        protected IEnumerable<ITestCaseData> GetCredentials()
         {
             yield return new TestCaseData(Username, Password);
+        }
+
+        protected INode GetNode(NodeType nodeType)
+        {
+            return this.Client.GetNodes().Single(x => x.Type == nodeType);
+        }
+
+        protected INode CreateFolderNode(INode parentNode, string name = "NodeName")
+        {
+            var createdNode = this.Client.CreateFolder(name, parentNode);
+
+            return createdNode;
         }
     }
 }

@@ -639,6 +639,8 @@ namespace CG.Web.MegaApiClient
                 throw new ArgumentException("Invalid destination parent node");
             }
 
+            this.EnsureLoggedIn();
+
             this.Request(new MoveRequest(node, destinationParentNode));
             return this.GetNodes().First(n => n.Equals(node));
         }
