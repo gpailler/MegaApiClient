@@ -2,6 +2,7 @@ MegaApiClient
 =============
 
 [![Build Status](https://travis-ci.org/gpailler/MegaApiClient.svg?branch=develop)](https://travis-ci.org/gpailler/MegaApiClient)
+[![Coverity Status](https://img.shields.io/coverity/scan/5111.svg)](https://scan.coverity.com/projects/5111)
 [![NuGet version](https://img.shields.io/nuget/v/MegaApiClient.svg)](https://www.nuget.org/packages/MegaApiClient)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gpailler/MegaApiClient/blob/master/LICENSE)
 
