@@ -22,7 +22,7 @@ namespace CG.Web.MegaApiClient.Tests
             Login = 1 << 0,
             LoginAuthenticated = Login | 1 << 1,
             LoginAnonymous = Login | 1 << 2,
-            Clean = LoginAuthenticated | 1 << 3
+            Clean =  1 << 3
         }
 
         protected TestsBase(Options options)

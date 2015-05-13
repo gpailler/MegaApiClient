@@ -8,11 +8,12 @@ using NUnit.Framework.Constraints;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-    public class NodeOperations : TestsBase
+    public abstract class NodeOperations : TestsBase
     {
         private const string DefaultNodeName = "NodeName";
 
-        public NodeOperations() : base(Options.LoginAuthenticated | Options.Clean)
+        protected NodeOperations(Options options)
+            : base(options)
         {
         }
 
@@ -217,7 +218,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Has.Exactly(1).EqualTo(movedNode));
         }
 
-        private IEnumerable<ITestCaseData> GetInvalidCreateFolderParameters()
+        protected IEnumerable<ITestCaseData> GetInvalidCreateFolderParameters()
         {
             yield return new TestCaseData(null, null, 
                 Throws.TypeOf<ArgumentNullException>()
@@ -240,7 +241,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Message.EqualTo("Invalid parent node"));
         }
 
-        private IEnumerable<ITestCaseData> GetInvalidMoveParameters()
+        protected IEnumerable<ITestCaseData> GetInvalidMoveParameters()
         {
             yield return new TestCaseData(null, null, 
                 Throws.TypeOf<ArgumentNullException>()
