@@ -34,17 +34,17 @@ namespace CG.Web.MegaApiClient.Tests
         public void Setup()
         {
             this.Client = new MegaApiClient();
-            if ((this._options & Options.LoginAuthenticated) == Options.LoginAuthenticated)
+            if (this._options.HasFlag(Options.LoginAuthenticated))
             {
                 this.Client.Login(Username, Password);
             }
 
-            if ((this._options & Options.LoginAnonymous) == Options.LoginAnonymous)
+            if (this._options.HasFlag(Options.LoginAnonymous))
             {
                 this.Client.LoginAnonymous();
             }
 
-            if ((this._options & Options.Clean) == Options.Clean)
+            if (this._options.HasFlag(Options.Clean))
             {
                 IEnumerable<INode> nodes = this.Client.GetNodes().ToArray();
                 INode root = nodes.Single(x => x.Type == NodeType.Root);
@@ -61,7 +61,7 @@ namespace CG.Web.MegaApiClient.Tests
         [TearDown]
         public void Teardown()
         {
-            if ((this._options & Options.Login) == Options.Login)
+            if (this._options.HasFlag(Options.Login))
             {
                 this.Client.Logout();
             }
