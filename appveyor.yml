@@ -10,16 +10,18 @@ assembly_info:
   assembly_informational_version: '{version}'
 
 before_build:
-  - nuget restore "MegaApiClient.sln"
+  - nuget restore 'MegaApiClient.sln'
+
 build:
   project: MegaApiClient.sln
   verbosity: minimal
+
 after_build:
-  - nuget pack "MegaApiClient.nuspec"
+  - nuget pack 'MegaApiClient.nuspec'
 
 test:
   assemblies: '**\*.Tests.dll'
 
 artifacts:
-  - path: '**\*.nupkg'
-    name: Nuget
+  - path: 'MegaApiClient.*.nupkg'
+    name: 'MegaApiClient Nuget package'
