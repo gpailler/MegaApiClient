@@ -14,6 +14,12 @@ before_build:
 build:
   project: MegaApiClient.sln
   verbosity: minimal
+after_build:
+  - nuget pack "MegaApiClient.nuspec"
 
 test:
   assemblies: '**\*.Tests.dll'
+
+artifacts:
+  - path: '**\*.nupkg'
+    name: Nuget
