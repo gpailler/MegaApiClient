@@ -211,7 +211,7 @@ namespace CG.Web.MegaApiClient.Tests
 
             Assert.That(
                 this.Client.GetNodes(parentNode),
-                Is.Empty);
+                Has.Exactly(0).EqualTo(node));
 
             Assert.That(
                 this.Client.GetNodes(destinationParentNode),

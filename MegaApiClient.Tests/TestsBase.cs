@@ -96,7 +96,9 @@ namespace CG.Web.MegaApiClient.Tests
         {
             get
             {
-                return this._permanentFoldersNodes.Length + this._permanentFilesNodes.Length;
+                return this._options.HasFlag(Options.LoginAuthenticated)
+                    ? this._permanentFoldersNodes.Length + this._permanentFilesNodes.Length
+                    : 0;
             }
         }
 
@@ -104,7 +106,9 @@ namespace CG.Web.MegaApiClient.Tests
         {
             get
             {
-                return this._permanentFoldersNodes.Length;
+                return this._options.HasFlag(Options.LoginAuthenticated)
+                    ? this._permanentFoldersNodes.Length
+                    : 0;
             }
         }
 
