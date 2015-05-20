@@ -11,6 +11,23 @@ namespace CG.Web.MegaApiClient.Tests
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
 
+        private readonly string[] _systemNodes =
+        {
+            "bsxVBKLL", // Root
+            "j0wEGbTZ", // Trash
+            "zhITTbIJ", // Inbox
+        };
+
+        private readonly string[] _permanentFoldersNodes =
+        {
+            "SsRDGA4Y", // SharedFolder
+        };
+
+        private readonly string[] _permanentFilesNodes =
+        {
+            "KshlkSIK" // SharedFile
+        };
+
         private readonly Options _options;
 
         protected MegaApiClient Client;
@@ -46,21 +63,18 @@ namespace CG.Web.MegaApiClient.Tests
 
             if (this._options.HasFlag(Options.Clean))
             {
-                IEnumerable<INode> nodes = this.Client.GetNodes().ToArray();
-                INode root = nodes.Single(x => x.Type == NodeType.Root);
-                INode inbox = nodes.Single(x => x.Type == NodeType.Inbox);
-                INode trash = nodes.Single(x => x.Type == NodeType.Trash);
-                IEnumerable<INode> nodesToRemove = nodes.Where(x => x.ParentId == root.Id || x.ParentId == inbox.Id || x.ParentId == trash.Id);
-                foreach (INode node in nodesToRemove)
-                {
-                    this.Client.Delete(node, false);
-                }
+                this.SanitizeStorage();
             }
         }
 
         [TearDown]
         public void Teardown()
         {
+            if (this._options.HasFlag(Options.Clean))
+            {
+                this.SanitizeStorage();
+            }
+
             if (this._options.HasFlag(Options.Login))
             {
                 this.Client.Logout();
@@ -68,6 +82,30 @@ namespace CG.Web.MegaApiClient.Tests
             
             // Add delay between tests to avoid API errors
             Thread.Sleep(2000);
+        }
+
+        protected int SystemNodesCount
+        {
+            get
+            {
+                return this._systemNodes.Length;
+            }
+        }
+
+        protected int PermanentNodesCount
+        {
+            get
+            {
+                return this._permanentFoldersNodes.Length + this._permanentFilesNodes.Length;
+            }
+        }
+
+        protected int PermanentFoldersNodesCount
+        {
+            get
+            {
+                return this._permanentFoldersNodes.Length;
+            }
         }
 
         protected IEnumerable<ITestCaseData> GetCredentials()
@@ -85,6 +123,28 @@ namespace CG.Web.MegaApiClient.Tests
             var createdNode = this.Client.CreateFolder(name, parentNode);
 
             return createdNode;
+        }
+        private void SanitizeStorage()
+        {
+            IEnumerable<INode> nodes = this.Client.GetNodes().ToArray();
+
+            IEnumerable<INode> nodesToRemove = nodes.Where(x => this.IsProtectedNode(x) == false);
+            foreach (INode node in nodesToRemove)
+            {
+                this.Client.Delete(node, false);
+            }
+
+            Assert.That(
+                this.Client.GetNodes().ToArray(),
+                Has.Length.EqualTo(this.SystemNodesCount + this.PermanentNodesCount));
+        }
+
+        private bool IsProtectedNode(INode node)
+        {
+            return this._systemNodes
+                .Concat(this._permanentFoldersNodes)
+                .Concat(this._permanentFilesNodes)
+                .Any(x => x == node.Id);
         }
     }
 }

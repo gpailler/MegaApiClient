@@ -10,6 +10,8 @@ namespace CG.Web.MegaApiClient.Tests
 {
     public abstract class Upload : TestsBase
     {
+        private readonly Random random = new Random();
+
         protected Upload(Options options)
             : base(options)
         {
@@ -26,36 +28,52 @@ namespace CG.Web.MegaApiClient.Tests
         [TestCase(NodeType.Root)]
         [TestCase(NodeType.Inbox)]
         [TestCase(NodeType.Trash)]
-        public void UploadStream_Succeeds(NodeType parent)
+        public void UploadStream_DifferentParent_Succeeds(NodeType parentType)
         {
-            byte[] data = new byte[200000]; // Data bigger than a single chunk
-            Random r = new Random();
-            r.NextBytes(data);
+            byte[] data = new byte[123];
+            this.random.NextBytes(data);
 
-            INode root = this.GetNode(parent);
+            INode parent = this.GetNode(parentType);
 
             INode node;
             using (Stream stream = new MemoryStream(data))
             {
-                node = this.Client.Upload(stream, "test", root);
+                node = this.Client.Upload(stream, "test", parent);
             }
 
             Assert.That(node, Is.Not.Null);
             Assert.That(node.Type, Is.EqualTo(NodeType.File));
-            Assert.That(node.ParentId, Is.EqualTo(root.Id));
+            Assert.That(node.ParentId, Is.EqualTo(parent.Id));
             Assert.That(node.Name, Is.EqualTo("test"));
             Assert.That(node.Size, Is.EqualTo(data.Length));
             Assert.That(node, Is.EqualTo(this.Client.GetNodes().Single(x => x.Id == node.Id)));
+        }
 
-            Stream streamResult = this.Client.Download(node);
-            byte[] dataResult = new byte[streamResult.Length];
-            using (streamResult)
+        [TestCase(20000)] // 1 chunk
+        [TestCase(200000)] // 2 chunks
+        [TestCase(2000000)] // 3 chunks
+        public void UploadStream_ValidateContent_Succeeds(int dataSize)
+        {
+            byte[] uploadedData = new byte[dataSize];
+            this.random.NextBytes(uploadedData);
+
+            INode parent = this.GetNode(NodeType.Root);
+
+            INode node;
+            using (Stream stream = new MemoryStream(uploadedData))
             {
-                int read = streamResult.Read(dataResult, 0, dataResult.Length);
-                Assert.That(read, Is.EqualTo(dataResult.Length));
+                node = this.Client.Upload(stream, "test", parent);
             }
 
-            Assert.That(dataResult, Is.EqualTo(data));
+            byte[] downloadedData;
+            using (Stream streamResult = this.Client.Download(node))
+            { 
+                downloadedData = new byte[streamResult.Length];
+                int read = streamResult.Read(downloadedData, 0, downloadedData.Length);
+                Assert.That(read, Is.EqualTo(downloadedData.Length));
+            }
+
+            Assert.That(downloadedData, Is.EqualTo(uploadedData));
         }
 
         protected IEnumerable<TestCaseData> GetInvalidUploadStreamParameters()

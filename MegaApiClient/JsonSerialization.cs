@@ -338,5 +338,5 @@ namespace CG.Web.MegaApiClient
         public string Name { get; set; }
     }
 
-    #endregion\
+    #endregion
 }

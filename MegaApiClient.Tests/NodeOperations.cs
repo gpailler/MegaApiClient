@@ -24,7 +24,7 @@ namespace CG.Web.MegaApiClient.Tests
         {
             var nodes = this.Client.GetNodes().ToArray();
 
-            Assert.That(nodes, Has.Length.EqualTo(3));
+            Assert.That(nodes, Has.Length.EqualTo(this.SystemNodesCount + this.PermanentNodesCount));
             Assert.That(nodes, Has.Exactly(1)
                 .Matches<INode>(x => x.Type == nodeType)
                 .And.Property<INode>(x => x.ParentId).Empty
@@ -83,11 +83,11 @@ namespace CG.Web.MegaApiClient.Tests
 
             Assert.That(
                 this.Client.GetNodes(),
-                Has.Length.EqualTo(4));
+                Has.Length.EqualTo(this.SystemNodesCount + this.PermanentNodesCount + 1));
 
             Assert.That(
                 this.Client.GetNodes(parentNode).ToArray(), 
-                Has.Length.EqualTo(1)
+                Has.Length.EqualTo(this.PermanentFoldersNodesCount + 1)
                 .And.Exactly(1).EqualTo(createdNode));
         }
 
@@ -111,7 +111,7 @@ namespace CG.Web.MegaApiClient.Tests
 
             Assert.That(
                 this.Client.GetNodes(parentNode).ToArray(),
-                Has.Length.EqualTo(1)
+                Has.Length.EqualTo(this.PermanentFoldersNodesCount + 1)
                 .And.Exactly(1).EqualTo(createdNode));
 
             Assert.That(
@@ -129,8 +129,8 @@ namespace CG.Web.MegaApiClient.Tests
             }
 
             Assert.That(
-                this.Client.GetNodes(parentNode),
-                Is.Empty);
+                this.Client.GetNodes(parentNode).ToArray(),
+                Has.Length.EqualTo(this.PermanentFoldersNodesCount));
 
             if (moveToTrash.GetValueOrDefault(true))
             {
