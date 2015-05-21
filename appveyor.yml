@@ -10,7 +10,7 @@ assembly_info:
   assembly_informational_version: '{version}'
 
 before_build:
-  - nuget restore 'MegaApiClient.sln'
+  - nuget restore
 
 build:
   project: MegaApiClient.sln
