@@ -92,6 +92,10 @@ namespace CG.Web.MegaApiClient
                         {
                             this.DecryptedKey = masterKey;
                         }
+                        else
+                        {
+                            this.DecryptedKey = Crypto.DecryptKey(encryptedKey, masterKey);
+                        }
 
                         this.Key = Crypto.DecryptKey(encryptedKey, masterKey);
                     }
