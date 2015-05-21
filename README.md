@@ -2,7 +2,6 @@ MegaApiClient
 =============
 
 [![Build status](https://ci.appveyor.com/api/projects/status/a87jre98xr1wiryt/branch/develop?svg=true)](https://ci.appveyor.com/project/gpailler/megaapiclient/branch/develop)
-[![Coverity Status](https://img.shields.io/coverity/scan/5111.svg)](https://scan.coverity.com/projects/5111)
 [![NuGet version](https://img.shields.io/nuget/v/MegaApiClient.svg)](https://www.nuget.org/packages/MegaApiClient)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gpailler/MegaApiClient/blob/master/LICENSE)
 
