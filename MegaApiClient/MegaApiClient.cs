@@ -672,7 +672,7 @@ namespace CG.Web.MegaApiClient
                                                 ? (ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
                                                 : (ApiResultCode)((JArray)jsonData)[0].Value<int>();
 
-                    if (apiCode == ApiResultCode.RequestFailedRetry)
+                    if (apiCode == ApiResultCode.RequestFailedRetry || apiCode == ApiResultCode.BadSessionId)
                     {
                         if (currentAttempt == ApiRequestAttempts)
                         {

@@ -58,6 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="Polly">
+      <HintPath>..\packages\Polly-Signed.2.2.1\lib\net40\Polly.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -68,6 +71,7 @@
     <Compile Include="NodeOperationsAnonymous.cs" />
     <Compile Include="NodeOperationsAuthenticated.cs" />
     <Compile Include="NodeOperations.cs" />
+    <Compile Include="PollyWebClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="TestsBase.cs" />

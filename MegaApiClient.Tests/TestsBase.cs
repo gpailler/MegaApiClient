@@ -50,7 +50,7 @@ namespace CG.Web.MegaApiClient.Tests
         [SetUp]
         public void Setup()
         {
-            this.Client = new MegaApiClient();
+            this.Client = new MegaApiClient(new PollyWebClient());
             if (this._options.HasFlag(Options.LoginAuthenticated))
             {
                 this.Client.Login(Username, Password);
