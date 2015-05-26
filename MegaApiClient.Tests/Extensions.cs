@@ -7,10 +7,6 @@ namespace CG.Web.MegaApiClient.Tests
 {
     public static class Extensions
     {
-        public static void DoIt(this Has has)
-        {
-            
-        }
         // http://blog.drorhelper.com/2012/11/making-string-based-method-strongly.html?m=1
         public static ResolvableConstraintExpression Property<T>(this ConstraintExpression expression, Expression<Func<T, object>> lambda)
         {
