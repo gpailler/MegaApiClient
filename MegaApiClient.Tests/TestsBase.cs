@@ -79,9 +79,6 @@ namespace CG.Web.MegaApiClient.Tests
             {
                 this.Client.Logout();
             }
-            
-            // Add delay between tests to avoid API errors
-            Thread.Sleep(2000);
         }
 
         protected int SystemNodesCount
