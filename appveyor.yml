@@ -28,7 +28,7 @@ after_build:
 - nuget pack MegaApiClient.nuspec
 
 test_script:
-  - ps: packages\OpenCover.4.5.3723\OpenCover.Console.exe -register:user -target:nunit-console.exe "-targetargs:""MegaApiClient.Tests\bin\$env:CONFIGURATION\MegaApiClient.Tests.dll"" /noshadow" -returntargetcode "-filter:""+[*]CG.Web.MegaApiClient* -[MegaApiClient.Tests]*""" -output:opencoverCoverage.xml
+  - ps: packages\OpenCover.4.5.3723\OpenCover.Console.exe -register:user -target:nunit-console.exe "-targetargs:""MegaApiClient.Tests\bin\$env:CONFIGURATION\MegaApiClient.Tests.dll"" /noshadow" -returntargetcode "-filter:+[*]CG.Web.MegaApiClient* -[MegaApiClient.Tests]*" -output:opencoverCoverage.xml
   - ps: packages\coveralls.net.0.5.0\csmacnz.Coveralls.exe --opencover -i opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
 
 artifacts:
