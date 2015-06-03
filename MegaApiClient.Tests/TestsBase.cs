@@ -81,6 +81,11 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
+        protected string PermanentFile
+        {
+            get { return this._permanentFilesNodes[0]; }
+        }
+
         protected int SystemNodesCount
         {
             get
@@ -125,6 +130,7 @@ namespace CG.Web.MegaApiClient.Tests
 
             return createdNode;
         }
+
         private void SanitizeStorage()
         {
             IEnumerable<INode> nodes = this.Client.GetNodes().ToArray();

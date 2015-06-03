@@ -32,24 +32,6 @@ namespace CG.Web.MegaApiClient
 {
     internal static class Extensions
     {
-        public static byte[] ToBytes(this uint[] data)
-        {
-            byte[] result = new byte[data.Length * 4];
-
-            for (int idx = 0; idx < data.Length; idx++)
-            {
-                byte[] packet = BitConverter.GetBytes(data[idx]);
-
-                for (int packetIdx = 0; packetIdx < 4; packetIdx++)
-                {
-                    // Reverse order to convert from bigendian
-                    result[idx * 4 + packetIdx] = packet[3 - packetIdx];
-                }
-            }
-
-            return result;
-        }
-        
         public static string ToBase64(this byte[] data)
         {
             StringBuilder sb = new StringBuilder();

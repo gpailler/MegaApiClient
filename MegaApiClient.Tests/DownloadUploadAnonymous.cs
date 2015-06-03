@@ -3,9 +3,9 @@
 namespace CG.Web.MegaApiClient.Tests
 {
     [TestFixture]
-    public class UploadAnonymous : Upload
+    public class DownloadUploadAnonymous : DownloadUpload
     {
-        public UploadAnonymous()
+        public DownloadUploadAnonymous()
             : base(Options.LoginAnonymous)
         {
         }

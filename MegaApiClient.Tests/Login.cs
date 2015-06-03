@@ -18,6 +18,14 @@ namespace CG.Web.MegaApiClient.Tests
         }
 
         [Test]
+        public void ClientCtor_Succeeds()
+        {
+            Assert.That(
+                () => this.Client = new MegaApiClient(),
+                Throws.Nothing);
+        }
+
+        [Test]
         public void ClientCtor_NullWebClient_Throws()
         {
             Assert.That(
