@@ -53,6 +53,7 @@ namespace CG.Web.MegaApiClient
 
         private Node _trashNode;
 
+        private AuthInfos _authInfos;
         private string _sessionId;
         private byte[] _masterKey;
         private uint _sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
@@ -143,6 +144,9 @@ namespace CG.Web.MegaApiClient
             }
 
             this.EnsureLoggedOut();
+
+            // Store authInfos to relogin if required
+            this._authInfos = authInfos;
 
             // Request Mega Api
             LoginRequest request = new LoginRequest(authInfos.Email, authInfos.Hash);
@@ -682,6 +686,12 @@ namespace CG.Web.MegaApiClient
                         Thread.Sleep(ApiRequestDelay);
                         currentAttempt++;
                         continue;
+                    }
+
+                    if (apiCode == ApiResultCode.BadSessionId && this._authInfos != null)
+                    {
+                        this.Logout();
+                        this.Login(this._authInfos);
                     }
 
                     if (apiCode != ApiResultCode.Ok)
