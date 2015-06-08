@@ -3,7 +3,7 @@
 /*
 The MIT License (MIT)
 
-Copyright (c) 2014 Gregoire Pailler
+Copyright (c) 2015 Gregoire Pailler
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
@@ -32,6 +32,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using Newtonsoft.Json;
@@ -52,6 +53,7 @@ namespace CG.Web.MegaApiClient
 
         private Node _trashNode;
 
+        private AuthInfos _authInfos;
         private string _sessionId;
         private byte[] _masterKey;
         private uint _sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
@@ -143,6 +145,9 @@ namespace CG.Web.MegaApiClient
 
             this.EnsureLoggedOut();
 
+            // Store authInfos to relogin if required
+            this._authInfos = authInfos;
+
             // Request Mega Api
             LoginRequest request = new LoginRequest(authInfos.Email, authInfos.Hash);
             LoginResponse response = this.Request<LoginResponse>(request);
@@ -223,7 +228,7 @@ namespace CG.Web.MegaApiClient
         /// <returns>Flat representation of all the filesystem nodes</returns>
         /// <exception cref="NotSupportedException">Not logged in</exception>
         /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
-        public IEnumerable<Node> GetNodes()
+        public IEnumerable<INode> GetNodes()
         {
             this.EnsureLoggedIn();
 
@@ -239,25 +244,20 @@ namespace CG.Web.MegaApiClient
             return nodes;
         }
         /// <summary>
-        /// Retrieve child nodes of a parent node
+        /// Retrieve children nodes of a parent node
         /// </summary>
-        /// <returns>Flat representation of child nodes</returns>
+        /// <returns>Flat representation of children nodes</returns>
         /// <exception cref="NotSupportedException">Not logged in</exception>
         /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
-        /// <exception cref="ArgumentNullException">ParentNode is null</exception>
-        public IEnumerable<Node> GetChildNodes(Node ParentNode)
+        /// <exception cref="ArgumentNullException">Parent node is null</exception>
+        public IEnumerable<INode> GetNodes(INode parent)
         {
-            if (ParentNode == null)
-                throw new ArgumentNullException("ParentNode");
-
-            this.EnsureLoggedIn();
-
-            GetNodesRequest request = new GetNodesRequest();
-            GetNodesResponse response = this.Request<GetNodesResponse>(request, this._masterKey);
-
-            IEnumerable<Node> nodes = response.Nodes.Where(n=>n.ParentId == ParentNode.Id);
-
-            return nodes;
+            if (parent == null)
+            {
+                throw new ArgumentNullException("parent");
+            }
+            
+            return this.GetNodes().Where(n => n.ParentId == parent.Id);
         }
 
         /// <summary>
@@ -272,7 +272,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
         /// <exception cref="ArgumentNullException">node is null</exception>
         /// <exception cref="ArgumentException">node is not a directory or a file</exception>
-        public void Delete(Node node, bool moveToTrash = true)
+        public void Delete(INode node, bool moveToTrash = true)
         {
             if (node == null)
             {
@@ -305,7 +305,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
         /// <exception cref="ArgumentNullException">name or parent is null</exception>
         /// <exception cref="ArgumentException">parent is not valid (all types are allowed expect <see cref="NodeType.File" />)</exception>
-        public Node CreateFolder(string name, Node parent)
+        public INode CreateFolder(string name, INode parent)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -342,7 +342,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
         /// <exception cref="ArgumentNullException">node is null</exception>
         /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> or <see cref="NodeType.Directory" /> can be downloaded)</exception>
-        public Uri GetDownloadLink(Node node)
+        public Uri GetDownloadLink(INode node)
         {
             if (node == null)
             {
@@ -354,6 +354,12 @@ namespace CG.Web.MegaApiClient
                 throw new ArgumentException("Invalid node");
             }
 
+            INodeCrypto nodeCrypto = node as INodeCrypto;
+            if (nodeCrypto == null)
+            {
+                throw new ArgumentException("node must implement INodeCrypto");
+            }
+
             this.EnsureLoggedIn();
 
             GetDownloadLinkRequest request = new GetDownloadLinkRequest(node);
@@ -363,7 +369,7 @@ namespace CG.Web.MegaApiClient
                 "/#{0}!{1}!{2}",
                 node.Type == NodeType.Directory ? "F" : string.Empty,
                 response,
-                node.DecryptedKey.ToBase64()));
+                nodeCrypto.DecryptedKey.ToBase64()));
         }
 
         /// <summary>
@@ -376,7 +382,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
         /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
         /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
-        public void DownloadFile(Node node, string outputFile)
+        public void DownloadFile(INode node, string outputFile)
         {
             if (node == null)
             {
@@ -390,15 +396,35 @@ namespace CG.Web.MegaApiClient
 
             using (Stream stream = this.Download(node))
             {
-                using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
-                {
-                    byte[] buffer = new byte[BufferSize];
-                    int len;
-                    while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
-                    {
-                        fs.Write(buffer, 0, len);
-                    }
-                }
+                this.SaveStream(stream, outputFile);
+            }
+        }
+
+        /// <summary>
+        /// Download a specified Uri from Mega and save it to the specified file
+        /// </summary>
+        /// <param name="uri">Uri to download</param>
+        /// <param name="outputFile">File to save the Uri to</param>
+        /// <exception cref="NotSupportedException">Not logged in</exception>
+        /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+        /// <exception cref="ArgumentNullException">uri or outputFile is null</exception>
+        /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
+        /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+        public void DownloadFile(Uri uri, string outputFile)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
+
+            if (string.IsNullOrEmpty(outputFile))
+            {
+                throw new ArgumentNullException("outputFile");
+            }
+
+            using (Stream stream = this.Download(uri))
+            {
+                this.SaveStream(stream, outputFile);
             }
         }
 
@@ -411,7 +437,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
         /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
         /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
-        public Stream Download(Node node)
+        public Stream Download(INode node)
         {
             if (node == null)
             {
@@ -423,6 +449,12 @@ namespace CG.Web.MegaApiClient
                 throw new ArgumentException("Invalid node");
             }
 
+            INodeCrypto nodeCrypto = node as INodeCrypto;
+            if (nodeCrypto == null)
+            {
+                throw new ArgumentException("node must implement INodeCrypto");
+            }
+
             this.EnsureLoggedIn();
 
             // Retrieve download URL
@@ -430,7 +462,48 @@ namespace CG.Web.MegaApiClient
             DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
 
             Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
-            return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, node.Key, node.Iv, node.MetaMac);
+            return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
+        }
+
+        /// <summary>
+        /// Retrieve a Stream to download and decrypt the specified Uri
+        /// </summary>
+        /// <param name="uri">Uri to download</param>
+        /// <exception cref="NotSupportedException">Not logged in</exception>
+        /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+        /// <exception cref="ArgumentNullException">uri is null</exception>
+        /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
+        /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+        public Stream Download(Uri uri)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
+
+            this.EnsureLoggedIn();
+            
+            Regex uriRegex = new Regex("#!(?<id>.+)!(?<key>.+)");
+            Match match = uriRegex.Match(uri.Fragment);
+            if (match.Success == false)
+            {
+                throw new ArgumentException(string.Format("Invalid uri. Unable to extract Id and Key from the uri {0}", uri));
+            }
+
+            string id = match.Groups["id"].Value;
+            byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
+
+            byte[] iv;
+            byte[] metaMac;
+            byte[] fileKey;
+            Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out fileKey);
+
+            // Retrieve download URL
+            DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
+            DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
+
+            Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
+            return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, fileKey, iv, metaMac);
         }
 
         /// <summary>
@@ -444,7 +517,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ArgumentNullException">filename or parent is null</exception>
         /// <exception cref="FileNotFoundException">filename is not found</exception>
         /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
-        public Node Upload(string filename, Node parent)
+        public INode Upload(string filename, INode parent)
         {
             if (string.IsNullOrEmpty(filename))
             {
@@ -480,7 +553,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
         /// <exception cref="ArgumentNullException">stream or name or parent is null</exception>
         /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
-        public Node Upload(Stream stream, string name, Node parent)
+        public INode Upload(Stream stream, string name, INode parent)
         {
             if (stream == null)
             {
@@ -548,7 +621,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ArgumentNullException">node or destinationParentNode is null</exception>
         /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.Directory" /> and <see cref="NodeType.File" /> are supported)</exception>
         /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
-        public Node Move(Node node, Node destinationParentNode)
+        public INode Move(INode node, INode destinationParentNode)
         {
             if (node == null)
             {
@@ -569,6 +642,8 @@ namespace CG.Web.MegaApiClient
             {
                 throw new ArgumentException("Invalid destination parent node");
             }
+
+            this.EnsureLoggedIn();
 
             this.Request(new MoveRequest(node, destinationParentNode));
             return this.GetNodes().First(n => n.Equals(node));
@@ -613,6 +688,12 @@ namespace CG.Web.MegaApiClient
                         continue;
                     }
 
+                    if (apiCode == ApiResultCode.BadSessionId && this._authInfos != null)
+                    {
+                        this.Logout();
+                        this.Login(this._authInfos);
+                    }
+
                     if (apiCode != ApiResultCode.Ok)
                     {
                         throw new ApiException(apiCode);
@@ -642,6 +723,19 @@ namespace CG.Web.MegaApiClient
 
             builder.Query = query.ToString();
             return builder.Uri;
+        }
+
+        private void SaveStream(Stream stream, string outputFile)
+        {
+            using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
+            {
+                byte[] buffer = new byte[BufferSize];
+                int len;
+                while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    fs.Write(buffer, 0, len);
+                }
+            }
         }
 
         #endregion

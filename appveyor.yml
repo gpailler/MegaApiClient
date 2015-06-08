@@ -1,0 +1,38 @@
+version: 1.1.0.{build}
+branches:
+  only:
+  - develop
+skip_tags: true
+configuration: Release
+platform: Any CPU
+
+assembly_info:
+  patch: true
+  file: '**\AssemblyInfo.*'
+  assembly_version: '{version}'
+  assembly_file_version: '{version}'
+  assembly_informational_version: '{version}'
+
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: uJvwK/1oZXprkJ46fkTLEPBCGmHO15dUd1NxeUJl8P1l/TeaOhvlRoyjvZkAfLUT
+
+before_build:
+- nuget restore
+
+build:
+  project: MegaApiClient.sln
+  verbosity: minimal
+
+after_build:
+- nuget pack MegaApiClient.nuspec
+
+test_script:
+  - ps: packages\OpenCover.4.5.3723\OpenCover.Console.exe -register:user -target:nunit-console.exe "-targetargs:""MegaApiClient.Tests\bin\$env:CONFIGURATION\MegaApiClient.Tests.dll"" /noshadow" -returntargetcode "-filter:+[*]CG.Web.MegaApiClient* -[MegaApiClient.Tests]*" -output:opencoverCoverage.xml
+  - ps: packages\coveralls.net.0.5.0\csmacnz.Coveralls.exe --opencover -i opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
+
+artifacts:
+- path: MegaApiClient.*.nupkg
+  name: MegaApiClient package
+
+deploy: off
