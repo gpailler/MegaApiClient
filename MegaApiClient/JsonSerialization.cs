@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #endregion
 
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -121,10 +122,16 @@ namespace CG.Web.MegaApiClient
         public JRaw NodesSerialized { get; private set; }
 
         [JsonProperty("ok")]
-        public SharedKey[] SharedKeys { get; private set; }
+        public List<SharedKey> SharedKeys { get; private set; }
 
         internal class SharedKey
         {
+            public SharedKey(string id, string key)
+            {
+                this.Id = id;
+                this.Key = key;
+            }
+
             [JsonProperty("h")]
             public string Id { get; private set; }
 
@@ -136,10 +143,13 @@ namespace CG.Web.MegaApiClient
         public void OnDeserialized(StreamingContext ctx)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.Context = new StreamingContext(StreamingContextStates.All, new [] { ctx.Context, this });
 
-            // For shared files/folders nodes, we need to retrieve SharedKeys.
-            // So we deserialize nodes in 2 steps
+            // First Nodes deserialization to retrieve all shared keys
+            settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this });
+            JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
+
+            // Deserialize nodes
+            settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this, ctx.Context });
             this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
         }
     }
