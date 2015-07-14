@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 
 namespace CG.Web.MegaApiClient.Tests
@@ -11,6 +10,24 @@ namespace CG.Web.MegaApiClient.Tests
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
 
+        /*
+        Storage layout
+
+        +-Root                                      (bsxVBKLL)
+        |   +-SharedFolder                          (SsRDGA4Y) (Outgoing Share)
+        |       |-SharedFile.jpg                    (KshlkSIK)
+        |       +-SharedSubFolder                   (u95ATDYA) (Outgoing Share)
+        +-Trash                                     (j0wEGbTZ)
+        +-Inbox                                     (zhITTbIJ)
+        +-Contacts
+            +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
+                |-SharedRemoteFile.jpg              (e5wjkSJB)
+                +-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
+                    |-SharedRemoteSubFile.jpg       (HtonzYYY)
+                    +-SharedRemoteSubSubFolder      (z1YCibCT)
+
+        */
+
         private readonly string[] _systemNodes =
         {
             "bsxVBKLL", // Root
@@ -18,14 +35,32 @@ namespace CG.Web.MegaApiClient.Tests
             "zhITTbIJ", // Inbox
         };
 
-        private readonly string[] _permanentFoldersNodes =
+        private readonly string[] _permanentFoldersRootNodes =
         {
             "SsRDGA4Y", // SharedFolder
         };
 
+        private readonly string[] _permanentFoldersNodes =
+        {
+            "u95ATDYA", // SharedSubFolder
+        };
+
+        private readonly string[] _permanentRemoteFoldersNodes =
+        {
+            "b0I0QDhA", // SharedRemoteFolder
+            "KhZSWI7C", // SharedRemoteSubFolder
+            "z1YCibCT", // SharedRemoteSubSubFolder
+        };
+
         private readonly string[] _permanentFilesNodes =
         {
-            "KshlkSIK" // SharedFile
+            "KshlkSIK", // SharedFile.jpg
+        };
+
+        private readonly string[] _permanentRemoteFilesNodes =
+        {
+            "e5wjkSJB", // SharedRemoteFile.jpg
+            "HtonzYYY", // SharedRemoteSubFile.jpg
         };
 
         private readonly Options _options;
@@ -99,17 +134,21 @@ namespace CG.Web.MegaApiClient.Tests
             get
             {
                 return this._options.HasFlag(Options.LoginAuthenticated)
-                    ? this._permanentFoldersNodes.Length + this._permanentFilesNodes.Length
+                    ? this._permanentFoldersRootNodes.Length
+                        + this._permanentFilesNodes.Length
+                        + this._permanentFilesNodes.Length
+                        + this._permanentRemoteFoldersNodes.Length
+                        + this._permanentRemoteFilesNodes.Length
                     : 0;
             }
         }
 
-        protected int PermanentFoldersNodesCount
+        protected int PermanentFoldersRootNodesCount
         {
             get
             {
                 return this._options.HasFlag(Options.LoginAuthenticated)
-                    ? this._permanentFoldersNodes.Length
+                    ? this._permanentFoldersRootNodes.Length
                     : 0;
             }
         }
@@ -126,9 +165,7 @@ namespace CG.Web.MegaApiClient.Tests
 
         protected INode CreateFolderNode(INode parentNode, string name = "NodeName")
         {
-            var createdNode = this.Client.CreateFolder(name, parentNode);
-
-            return createdNode;
+            return this.Client.CreateFolder(name, parentNode);
         }
 
         private void SanitizeStorage()
@@ -149,8 +186,11 @@ namespace CG.Web.MegaApiClient.Tests
         private bool IsProtectedNode(INode node)
         {
             return this._systemNodes
+                .Concat(this._permanentFoldersRootNodes)
                 .Concat(this._permanentFoldersNodes)
                 .Concat(this._permanentFilesNodes)
+                .Concat(this._permanentRemoteFoldersNodes)
+                .Concat(this._permanentRemoteFilesNodes)
                 .Any(x => x == node.Id);
         }
     }
