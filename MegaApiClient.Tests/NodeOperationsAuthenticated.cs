@@ -29,7 +29,6 @@ namespace CG.Web.MegaApiClient.Tests
             string expectedModificationDate
             )
         {
-            var parentNode = this.GetNode(NodeType.Root);
             var node = this.Client.GetNodes().SingleOrDefault(x => x.Id == id);
 
             Assert.That(node, Is.Not.Null

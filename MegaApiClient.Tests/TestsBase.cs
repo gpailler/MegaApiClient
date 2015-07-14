@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 
 namespace CG.Web.MegaApiClient.Tests
@@ -166,9 +165,7 @@ namespace CG.Web.MegaApiClient.Tests
 
         protected INode CreateFolderNode(INode parentNode, string name = "NodeName")
         {
-            var createdNode = this.Client.CreateFolder(name, parentNode);
-
-            return createdNode;
+            return this.Client.CreateFolder(name, parentNode);
         }
 
         private void SanitizeStorage()
