@@ -20,10 +20,10 @@ namespace CG.Web.MegaApiClient
     }
 
     internal interface INodeCrypto
-    { 
-        byte[] DecryptedKey { get; }
-
+    {
         byte[] Key { get; }
+
+        byte[] SharedKey { get; }
 
         byte[] Iv { get; }
 

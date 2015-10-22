@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
@@ -195,34 +196,103 @@ namespace CG.Web.MegaApiClient
 
     internal class CreateNodeRequest : RequestBase
     {
-        private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string key, string completionHandle)
+        private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string encryptedKey, byte[] key, string completionHandle)
             : base("p")
         {
             this.ParentId = parentNode.Id;
-            this.Nodes = new []
+            this.Nodes = new[]
+            {
+                new CreateNodeRequestData
                 {
-                    new CreateNodeRequestData
-                        {
-                            Attributes = attributes,
-                            Key = key,
-                            Type = type,
-                            CompletionHandle = completionHandle
-                        }
-                };
+                    Attributes = attributes,
+                    Key = encryptedKey,
+                    Type = type,
+                    CompletionHandle = completionHandle
+                }
+            };
+
+            this.Share = new ShareData
+            {
+                CompletionHandle = completionHandle,
+                Parent = parentNode,
+                Key = key
+            };
         }
 
-        public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string key, string completionHandle)
+        public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] fileKey, string completionHandle)
         {
-            return new CreateNodeRequest(parentNode, NodeType.File, attributes, key, completionHandle);
+            return new CreateNodeRequest(parentNode, NodeType.File, attributes, encryptedkey, fileKey, completionHandle);
         }
 
-        public static CreateNodeRequest CreateFolderNodeRequest(INode parentNode, string attributes, string key)
+        public static CreateNodeRequest CreateFolderNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] key)
         {
-            return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, key, "xxxxxxxx");
+            return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, encryptedkey, key, "xxxxxxxx");
         }
 
         [JsonProperty("t")]
         public string ParentId { get; private set; }
+
+        [JsonProperty("cr")]
+        public ShareData Share { get; private set; }
+
+        [JsonConverter(typeof(ShareDataConverter))]
+        internal class ShareData
+        {
+            public string CompletionHandle { get; set; }
+
+            public INode Parent { get; set; }
+
+            public byte[] Key { get; set; }
+        }
+
+        private class ShareDataConverter : JsonConverter
+        {
+            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+            {
+                ShareData data = value as ShareData;
+                if (data == null)
+                {
+                    throw new ArgumentException("invalid data to serialize");
+                }
+
+                INodeCrypto parent = data.Parent as INodeCrypto;
+                if (parent == null)
+                {
+                    throw new ArgumentException("parent node must implement INodeCrypto");
+                }
+                
+                writer.WriteStartArray();
+
+                if (parent.SharedKey != null)
+                {
+                    writer.WriteStartArray();
+                    writer.WriteValue(data.Parent.Id);
+                    writer.WriteEndArray();
+
+                    writer.WriteStartArray();
+                    writer.WriteValue(data.CompletionHandle);
+                    writer.WriteEndArray();
+
+                    writer.WriteStartArray();
+                    writer.WriteValue(0);
+                    writer.WriteValue(0);
+                    writer.WriteValue(Crypto.EncryptAesEcb(data.Key, parent.SharedKey).ToBase64());
+                    writer.WriteEndArray();
+                }
+
+                writer.WriteEndArray();
+            }
+
+            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override bool CanConvert(Type objectType)
+            {
+                return objectType == typeof(ShareData);
+            }
+        }
 
         [JsonProperty("n")]
         public CreateNodeRequestData[] Nodes { get; private set; }
