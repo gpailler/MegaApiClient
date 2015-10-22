@@ -328,7 +328,7 @@ namespace CG.Web.MegaApiClient
             byte[] attributes = Crypto.EncryptAttributes(new Attributes(name), key);
             byte[] encryptedKey = Crypto.EncryptAes(key, this._masterKey);
 
-            CreateNodeRequest request = CreateNodeRequest.CreateFolderNodeRequest(parent, attributes.ToBase64(), encryptedKey.ToBase64());
+            CreateNodeRequest request = CreateNodeRequest.CreateFolderNodeRequest(parent, attributes.ToBase64(), encryptedKey.ToBase64(), key);
             GetNodesResponse response = this.Request<GetNodesResponse>(request, this._masterKey);
             return response.Nodes[0];
         }
@@ -369,7 +369,7 @@ namespace CG.Web.MegaApiClient
                 "/#{0}!{1}!{2}",
                 node.Type == NodeType.Directory ? "F" : string.Empty,
                 response,
-                nodeCrypto.DecryptedKey.ToBase64()));
+                nodeCrypto.Key.ToBase64()));
         }
 
         /// <summary>
@@ -604,7 +604,7 @@ namespace CG.Web.MegaApiClient
 
                 byte[] encryptedKey = Crypto.EncryptKey(fileKey, this._masterKey);
 
-                CreateNodeRequest createNodeRequest = CreateNodeRequest.CreateFileNodeRequest(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), completionHandle);
+                CreateNodeRequest createNodeRequest = CreateNodeRequest.CreateFileNodeRequest(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), fileKey, completionHandle);
                 GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest, this._masterKey);
                 return createNodeResponse.Nodes[0];
             }

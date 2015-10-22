@@ -33,14 +33,19 @@ namespace CG.Web.MegaApiClient
 {
     internal class Crypto
     {
-        private static readonly Rijndael Rijndael;
+        private static readonly Rijndael RijndaelCbc;
+        private static readonly Rijndael RijndaelEcb;
         private static readonly byte[] DefaultIv = new byte[16];
 
         static Crypto()
         {
-            Rijndael = Rijndael.Create();
-            Rijndael.Padding = PaddingMode.None;
-            Rijndael.Mode = CipherMode.CBC;
+            RijndaelCbc = Rijndael.Create();
+            RijndaelCbc.Padding = PaddingMode.None;
+            RijndaelCbc.Mode = CipherMode.CBC;
+
+            RijndaelEcb = Rijndael.Create();
+            RijndaelEcb.Padding = PaddingMode.None;
+            RijndaelEcb.Mode = CipherMode.ECB;
         }
 
         #region Key
@@ -94,7 +99,7 @@ namespace CG.Web.MegaApiClient
 
         public static byte[] DecryptAes(byte[] data, byte[] key)
         {
-            using (ICryptoTransform decryptor = Rijndael.CreateDecryptor(key, DefaultIv))
+            using (ICryptoTransform decryptor = RijndaelCbc.CreateDecryptor(key, DefaultIv))
             {
                 return decryptor.TransformFinalBlock(data, 0, data.Length);
             }
@@ -102,7 +107,7 @@ namespace CG.Web.MegaApiClient
 
         public static byte[] EncryptAes(byte[] data, byte[] key)
         {
-            using (ICryptoTransform encryptor = Rijndael.CreateEncryptor(key, DefaultIv))
+            using (ICryptoTransform encryptor = RijndaelCbc.CreateEncryptor(key, DefaultIv))
             {
                 return encryptor.TransformFinalBlock(data, 0, data.Length);
             }
@@ -119,7 +124,15 @@ namespace CG.Web.MegaApiClient
                 return rijndael.Key;
             }
         }
-        
+
+        public static byte[] EncryptAesEcb(byte[] data, byte[] key)
+        {
+            using (ICryptoTransform encryptor = RijndaelEcb.CreateEncryptor(key, DefaultIv))
+            {
+                return encryptor.TransformFinalBlock(data, 0, data.Length);
+            }
+        }
+
         #endregion
 
         #region Attributes
