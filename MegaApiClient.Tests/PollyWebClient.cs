@@ -7,7 +7,7 @@ namespace CG.Web.MegaApiClient.Tests
 {
     class PollyWebClient : IWebClient
     {
-        private const int Timeout = 10000;
+        private const int Timeout = 60000;
 
         private readonly WebClient _webClient;
         private readonly Policy _policy;
@@ -18,7 +18,7 @@ namespace CG.Web.MegaApiClient.Tests
 
             this._policy = Policy
                 .Handle<WebException>()
-                .WaitAndRetry(3, retryAttempt =>
+                .WaitAndRetry(1, retryAttempt =>
                     TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
                 );
         }
