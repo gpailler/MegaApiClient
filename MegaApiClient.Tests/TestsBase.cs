@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 
 namespace CG.Web.MegaApiClient.Tests
@@ -114,6 +115,8 @@ namespace CG.Web.MegaApiClient.Tests
             {
                 this.Client.Logout();
             }
+
+            Thread.Sleep(1000);
         }
 
         protected string PermanentFile
