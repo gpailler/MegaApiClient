@@ -115,8 +115,6 @@ namespace CG.Web.MegaApiClient.Tests
             {
                 this.Client.Logout();
             }
-
-            Thread.Sleep(1000);
         }
 
         protected string PermanentFile
