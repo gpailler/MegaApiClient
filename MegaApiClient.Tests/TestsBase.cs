@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 
 namespace CG.Web.MegaApiClient.Tests

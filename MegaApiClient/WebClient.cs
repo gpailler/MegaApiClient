@@ -30,18 +30,27 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 
 namespace CG.Web.MegaApiClient
 {
     public class WebClient : IWebClient
     {
-        private static readonly string UserAgent;
+        private const int DefaultResponseTimeout = Timeout.Infinite;
         private const uint BufferSize = 8192;
 
-        static WebClient()
+        private readonly int _responseTimeout;
+        private readonly string _userAgent;
+
+        public WebClient()
+            : this(DefaultResponseTimeout)
         {
-            AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
-            UserAgent = string.Format("{0} v{1}", assemblyName.Name, assemblyName.Version.ToString(2));
+        }
+
+        internal WebClient(int responseTimeout)
+        {
+            this._responseTimeout = responseTimeout;
+            this._userAgent = this.GenerateUserAgent();
         }
 
         public string PostRequestJson(Uri url, string jsonData)
@@ -59,21 +68,17 @@ namespace CG.Web.MegaApiClient
 
         public Stream GetRequestRaw(Uri url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = this.CreateRequest(url);
             request.Method = "GET";
-            request.Timeout = -1;
-            request.UserAgent = UserAgent;
 
             return request.GetResponse().GetResponseStream();
         }
 
         private string PostRequest(Uri url, Stream dataStream, string contentType)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = this.CreateRequest(url);
             request.ContentLength = dataStream.Length;
             request.Method = "POST";
-            request.Timeout = -1;
-            request.UserAgent = UserAgent;
             request.ContentType = contentType;
 
             using (Stream requestStream = request.GetRequestStream())
@@ -100,6 +105,21 @@ namespace CG.Web.MegaApiClient
                     }
                 }
             }
+        }
+
+        private HttpWebRequest CreateRequest(Uri url)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Timeout = this._responseTimeout;
+            request.UserAgent = this._userAgent;
+
+            return request;
+        }
+
+        private string GenerateUserAgent()
+        {
+            AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+            return string.Format("{0} v{1}", assemblyName.Name, assemblyName.Version.ToString(2));
         }
     }
 }
