@@ -81,7 +81,7 @@ namespace CG.Web.MegaApiClient.Tests
             var createdNode = this.CreateFolderNode(parentNode);
 
             Assert.That(
-                this.Client.GetNodes(),
+                this.Client.GetNodes().ToArray(),
                 Has.Length.EqualTo(this.SystemNodesCount + this.PermanentNodesCount + 1));
 
             Assert.That(
