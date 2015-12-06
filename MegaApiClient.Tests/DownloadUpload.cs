@@ -10,7 +10,7 @@ namespace CG.Web.MegaApiClient.Tests
 {
     public abstract class DownloadUpload : TestsBase
     {
-        private readonly Random random = new Random();
+        protected readonly Random random = new Random();
 
         protected DownloadUpload(Options options)
             : base(options)
@@ -47,26 +47,6 @@ namespace CG.Web.MegaApiClient.Tests
             Assert.That(node.Name, Is.EqualTo("test"));
             Assert.That(node.Size, Is.EqualTo(data.Length));
             Assert.That(node, Is.EqualTo(this.Client.GetNodes().Single(x => x.Id == node.Id)));
-        }
-        
-        [Test]
-        public void UploadStream_DownloadLink_Succeeds()
-        {
-            byte[] data = new byte[123];
-            this.random.NextBytes(data);
-
-            INode parent = this.GetNode(NodeType.Root);
-
-            INode node;
-            using (Stream stream = new MemoryStream(data))
-            {
-                node = this.Client.Upload(stream, "test", parent);
-
-                Uri uri = this.Client.GetDownloadLink(node);
-
-                stream.Position = 0;
-                this.AreStreamsEquals(this.Client.Download(uri), stream);
-            }
         }
 
         [TestCase(20000)] // 1 chunk
