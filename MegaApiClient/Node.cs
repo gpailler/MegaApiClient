@@ -51,6 +51,9 @@ namespace CG.Web.MegaApiClient
         public byte[] Key { get; private set; }
 
         [JsonIgnore]
+        public byte[] FullKey { get; private set; }
+
+        [JsonIgnore]
         public byte[] SharedKey { get; private set; }
 
         [JsonIgnore]
@@ -120,16 +123,20 @@ namespace CG.Web.MegaApiClient
                         }
                     }
 
-                    this.Key = Crypto.DecryptKey(encryptedKey, masterKey);
+                    this.FullKey = Crypto.DecryptKey(encryptedKey, masterKey);
 
                     if (this.Type == NodeType.File)
                     {
                         byte[] iv, metaMac, fileKey;
-                        Crypto.GetPartsFromDecryptedKey(this.Key, out iv, out metaMac, out fileKey);
+                        Crypto.GetPartsFromDecryptedKey(this.FullKey, out iv, out metaMac, out fileKey);
 
                         this.Iv = iv;
                         this.MetaMac = metaMac;
                         this.Key = fileKey;
+                    }
+                    else
+                    {
+                        this.Key = this.FullKey;
                     }
 
                     Attributes attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);

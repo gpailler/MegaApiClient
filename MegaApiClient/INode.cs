@@ -28,6 +28,8 @@ namespace CG.Web.MegaApiClient
         byte[] Iv { get; }
 
         byte[] MetaMac { get; }
+
+        byte[] FullKey { get; }
     }
 
     public enum NodeType
