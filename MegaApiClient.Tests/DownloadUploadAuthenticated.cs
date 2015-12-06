@@ -39,6 +39,26 @@ namespace CG.Web.MegaApiClient.Tests
                 constraint);
         }
 
+        [Test]
+        public void UploadStream_DownloadLink_Succeeds()
+        {
+            byte[] data = new byte[123];
+            this.random.NextBytes(data);
+
+            INode parent = this.GetNode(NodeType.Root);
+
+            INode node;
+            using (Stream stream = new MemoryStream(data))
+            {
+                node = this.Client.Upload(stream, "test", parent);
+
+                Uri uri = this.Client.GetDownloadLink(node);
+
+                stream.Position = 0;
+                this.AreStreamsEquals(this.Client.Download(uri), stream);
+            }
+        }
+
         [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
         public void DownloadLink_Succeeds(string expectedLink)
         {
