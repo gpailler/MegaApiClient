@@ -241,7 +241,7 @@ namespace CG.Web.MegaApiClient
                 this._trashNode = nodes.First(n => n.Type == NodeType.Trash);
             }
 
-            return nodes;
+            return nodes.Distinct().Cast<INode>();
         }
         /// <summary>
         /// Retrieve children nodes of a parent node
