@@ -61,6 +61,7 @@ namespace CG.Web.MegaApiClient
         private string _sessionId;
         private byte[] _masterKey;
         private uint _sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
+        private int progress;
 
         #region Properties
 #if (NET40)
