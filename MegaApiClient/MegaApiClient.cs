@@ -38,6 +38,10 @@ using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
+#if (NET40)
+using System.Threading.Tasks;
+#endif
+
 namespace CG.Web.MegaApiClient
 {
     public class MegaApiClient
@@ -57,6 +61,20 @@ namespace CG.Web.MegaApiClient
         private string _sessionId;
         private byte[] _masterKey;
         private uint _sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
+
+        #region Properties
+#if (NET40)
+
+        public int Progress
+        {
+            get
+            {
+                return progress;
+            }
+        }
+        
+#endif
+        #endregion Properties
 
         #region Constructors
 
@@ -649,6 +667,196 @@ namespace CG.Web.MegaApiClient
             return this.GetNodes().First(n => n.Equals(node));
         }
 
+#if(NET40)
+
+        /// <summary>
+        /// Retrieve a Stream to download and decrypt the specified Uri
+        /// </summary>
+        /// <param name="uri">Uri to download</param>
+        /// <param name="dataSize">Fill</param>
+        /// <exception cref="NotSupportedException">Not logged in</exception>
+        /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+        /// <exception cref="ArgumentNullException">uri is null</exception>
+        /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
+        /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+        public Stream Download(Uri uri, ref long dataSize)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
+
+            this.EnsureLoggedIn();
+
+            Regex uriRegex = new Regex("#!(?<id>.+)!(?<key>.+)");
+            Match match = uriRegex.Match(uri.Fragment);
+            if (match.Success == false)
+            {
+                throw new ArgumentException(string.Format("Invalid uri. Unable to extract Id and Key from the uri {0}", uri));
+            }
+
+            string id = match.Groups["id"].Value;
+            byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
+
+            byte[] iv;
+            byte[] metaMac;
+            byte[] fileKey;
+            Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out fileKey);
+
+            // Retrieve download URL
+            DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
+            DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
+
+            Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
+            dataSize = downloadResponse.Size;
+            return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, fileKey, iv, metaMac);
+        }
+
+#endif
+
+        #endregion
+
+        #region Public async methods
+#if (NET40)
+
+
+        public Task LoginAsync(string email, string password)
+        {
+            return LoginAsync(GenerateAuthInfos(email, password));
+        }
+
+        public Task LoginAsync(AuthInfos authInfos)
+        {
+            return Task.Run(() => Login(authInfos));
+        }
+
+        public Task LoginAnonymousAsync()
+        {
+            return Task.Run(() => LoginAnonymous());
+        }
+
+        public Task LogoutAsync()
+        {
+            return Task.Run(() => Logout());
+        }
+
+        public Task<IEnumerable<INode>> GetNodesAsync()
+        {
+            return Task<IEnumerable<INode>>.Run(() => GetNodes());
+        }
+
+        public Task<IEnumerable<INode>> GetNodesAsync(INode parent)
+        {
+            return Task<IEnumerable<INode>>.Run(() => GetNodes(parent));
+        }
+
+        public Task<INode> CreateFolderAsync(string name, INode parent)
+        {
+            return Task<INode>.Run(() => CreateFolder(name, parent));
+        }
+
+        public Task DeleteAsync(INode node, bool moveToTrash = true)
+        {
+            return Task.Run(() => Delete(node, moveToTrash));
+        }
+
+        public Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode)
+        {
+            return Task<INode>.Run(() => Move(sourceNode, destinationParentNode));
+        }
+
+        public Task<Uri> GetDownloadLinkAsync(INode node)
+        {
+            return Task<Uri>.Run(() => GetDownloadLink(node));
+        }
+
+        public Task DownloadFileAsync(INode node, string outputFile)
+        {
+            return Task.Run(() =>
+            {
+                if (node == null)
+                {
+                    throw new ArgumentNullException("node");
+                }
+
+                if (string.IsNullOrEmpty(outputFile))
+                {
+                    throw new ArgumentNullException("outputFile");
+                }
+
+                using (Stream stream = this.Download(node))
+                {
+                    SaveStreamReportProgress(stream, node.Size, outputFile);
+                }
+            });
+        }
+
+        public Task DownloadFileAsync(Uri uri, string outputFile)
+        {
+            return Task.Run(() =>
+            {
+                long dataSize = 0;
+                if (uri == null)
+                {
+                    throw new ArgumentNullException("uri");
+                }
+
+                if (string.IsNullOrEmpty(outputFile))
+                {
+                    throw new ArgumentNullException("outputFile");
+                }
+
+                using (Stream stream = this.Download(uri, ref dataSize))
+                {
+                    SaveStreamReportProgress(stream, dataSize, outputFile);
+                }
+            });
+        }
+
+        public Task<INode> UploadAsync(string filename, INode parent)
+        {
+            return Task<INode>.Run(() =>
+            {
+                if (string.IsNullOrEmpty(filename))
+                {
+                    throw new ArgumentNullException("filename");
+                }
+
+                if (parent == null)
+                {
+                    throw new ArgumentNullException("parent");
+                }
+
+                if (!File.Exists(filename))
+                {
+                    throw new FileNotFoundException(filename);
+                }
+
+                this.EnsureLoggedIn();
+
+                using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                {
+                    return this.UploadAsync(fileStream, Path.GetFileName(filename), parent);
+                }
+            });
+        }
+
+        public Task<INode> UploadAsync(Stream stream, string name, INode parent)
+        {
+            return Task<INode>.Run(() =>
+            {
+                Task<INode> task = Task<INode>.Run(() => Upload(stream, name, parent));
+                while (task.Status == TaskStatus.Running)
+                {
+                    progress = (int)(100 * stream.Position / stream.Length);
+                }
+
+                return task;
+            });
+        }
+
+
+#endif
         #endregion
 
         #region Web
