@@ -38,7 +38,7 @@ using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-#if (NET40)
+#if (NET45)
 using System.Threading.Tasks;
 #endif
 
@@ -64,7 +64,7 @@ namespace CG.Web.MegaApiClient
         private int progress;
 
         #region Properties
-#if (NET40)
+#if (NET45)
 
         public int Progress
         {
@@ -668,7 +668,7 @@ namespace CG.Web.MegaApiClient
             return this.GetNodes().First(n => n.Equals(node));
         }
 
-#if(NET40)
+#if(NET45)
 
         /// <summary>
         /// Retrieve a Stream to download and decrypt the specified Uri
@@ -718,7 +718,7 @@ namespace CG.Web.MegaApiClient
         #endregion
 
         #region Public async methods
-#if (NET40)
+#if (NET45)
 
 
         public Task LoginAsync(string email, string password)
@@ -946,6 +946,25 @@ namespace CG.Web.MegaApiClient
                 }
             }
         }
+
+#if (NET45)
+        private void SaveStreamReportProgress(Stream stream, long dataSize, string outputFile)
+        {
+            using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
+            {
+                byte[] buffer = new byte[BufferSize];
+                int len;
+                long bytesRead = 0;
+                while (bytesRead < dataSize)
+                {
+                    len = stream.Read(buffer, 0, buffer.Length);
+                    fs.Write(buffer, 0, len);
+                    bytesRead += len;
+                    progress = (int)(bytesRead / dataSize);
+                }
+            }
+        }
+#endif
 
         #endregion
 
