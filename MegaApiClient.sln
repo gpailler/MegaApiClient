@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaApiClient.Tests", "Mega
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaApiClient-4.5", "MegaApiClient-4.5\MegaApiClient-4.5.csproj", "{19D28272-9DDB-4868-93E7-D98DCFAE08E9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{6DF0D320-3FE0-4037-9AAF-D7F0ACBC5E02}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Coverity|Any CPU = Coverity|Any CPU

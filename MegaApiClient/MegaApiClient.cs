@@ -960,7 +960,7 @@ namespace CG.Web.MegaApiClient
                     len = stream.Read(buffer, 0, buffer.Length);
                     fs.Write(buffer, 0, len);
                     bytesRead += len;
-                    progress = (int)(bytesRead / dataSize);
+                    progress = (int)(100 * bytesRead / dataSize);
                 }
             }
         }
