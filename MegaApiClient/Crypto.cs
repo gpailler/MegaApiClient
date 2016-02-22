@@ -153,7 +153,10 @@ namespace CG.Web.MegaApiClient
             // Remove MEGA prefix
             try
             {
-                return JsonConvert.DeserializeObject<Attributes>(decryptedAttributes.ToUTF8String().Substring(4));
+                string json = decryptedAttributes.ToUTF8String().Substring(4);
+                json = json.Substring(0, json.IndexOf('\0'));
+
+                return JsonConvert.DeserializeObject<Attributes>(json);
             }
             catch (Exception ex)
             {
