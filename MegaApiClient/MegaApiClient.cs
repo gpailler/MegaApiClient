@@ -61,21 +61,6 @@ namespace CG.Web.MegaApiClient
         private string _sessionId;
         private byte[] _masterKey;
         private uint _sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
-        private int progress;
-
-        #region Properties
-#if (NET45)
-
-        public int Progress
-        {
-            get
-            {
-                return progress;
-            }
-        }
-        
-#endif
-        #endregion Properties
 
         #region Constructors
 
@@ -686,195 +671,124 @@ namespace CG.Web.MegaApiClient
             return this.GetNodes().First(n => n.Equals(node));
         }
 
-#if(NET45)
-
-        /// <summary>
-        /// Retrieve a Stream to download and decrypt the specified Uri
-        /// </summary>
-        /// <param name="uri">Uri to download</param>
-        /// <param name="dataSize">Fill</param>
-        /// <exception cref="NotSupportedException">Not logged in</exception>
-        /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
-        /// <exception cref="ArgumentNullException">uri is null</exception>
-        /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
-        /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
-        public Stream Download(Uri uri, ref long dataSize)
-        {
-            if (uri == null)
-            {
-                throw new ArgumentNullException("uri");
-            }
-
-            this.EnsureLoggedIn();
-
-            Regex uriRegex = new Regex("#!(?<id>.+)!(?<key>.+)");
-            Match match = uriRegex.Match(uri.Fragment);
-            if (match.Success == false)
-            {
-                throw new ArgumentException(string.Format("Invalid uri. Unable to extract Id and Key from the uri {0}", uri));
-            }
-
-            string id = match.Groups["id"].Value;
-            byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
-
-            byte[] iv;
-            byte[] metaMac;
-            byte[] fileKey;
-            Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out fileKey);
-
-            // Retrieve download URL
-            DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
-            DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
-
-            Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
-            dataSize = downloadResponse.Size;
-            return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, fileKey, iv, metaMac);
-        }
-
-#endif
-
         #endregion
 
         #region Public async methods
 #if (NET45)
 
-
         public Task LoginAsync(string email, string password)
         {
-            return LoginAsync(GenerateAuthInfos(email, password));
+            return Task.Run(() => this.Login(email, password));
         }
 
         public Task LoginAsync(AuthInfos authInfos)
         {
-            return Task.Run(() => Login(authInfos));
+            return Task.Run(() => this.Login(authInfos));
         }
 
         public Task LoginAnonymousAsync()
         {
-            return Task.Run(() => LoginAnonymous());
+            return Task.Run(() => this.LoginAnonymous());
         }
 
         public Task LogoutAsync()
         {
-            return Task.Run(() => Logout());
+            return Task.Run(() => this.Logout());
         }
 
         public Task<IEnumerable<INode>> GetNodesAsync()
         {
-            return Task<IEnumerable<INode>>.Run(() => GetNodes());
+            return Task<IEnumerable<INode>>.Run(() => this.GetNodes());
         }
 
         public Task<IEnumerable<INode>> GetNodesAsync(INode parent)
         {
-            return Task<IEnumerable<INode>>.Run(() => GetNodes(parent));
+            return Task<IEnumerable<INode>>.Run(() => this.GetNodes(parent));
         }
 
         public Task<INode> CreateFolderAsync(string name, INode parent)
         {
-            return Task<INode>.Run(() => CreateFolder(name, parent));
+            return Task<INode>.Run(() => this.CreateFolder(name, parent));
         }
 
         public Task DeleteAsync(INode node, bool moveToTrash = true)
         {
-            return Task.Run(() => Delete(node, moveToTrash));
+            return Task.Run(() => this.Delete(node, moveToTrash));
         }
 
         public Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode)
         {
-            return Task<INode>.Run(() => Move(sourceNode, destinationParentNode));
+            return Task<INode>.Run(() => this.Move(sourceNode, destinationParentNode));
         }
 
         public Task<Uri> GetDownloadLinkAsync(INode node)
         {
-            return Task<Uri>.Run(() => GetDownloadLink(node));
+            return Task<Uri>.Run(() => this.GetDownloadLink(node));
         }
 
-        public Task DownloadFileAsync(INode node, string outputFile)
+        public Task DownloadFileAsync(INode node, string outputFile, IProgress<int> progress)
         {
             return Task.Run(() =>
             {
-                if (node == null)
-                {
-                    throw new ArgumentNullException("node");
-                }
-
-                if (string.IsNullOrEmpty(outputFile))
-                {
-                    throw new ArgumentNullException("outputFile");
-                }
-
                 using (Stream stream = this.Download(node))
                 {
-                    SaveStreamReportProgress(stream, node.Size, outputFile);
+                    this.SaveStreamReportProgress(stream, node.Size, outputFile, progress);
                 }
             });
         }
 
-        public Task DownloadFileAsync(Uri uri, string outputFile)
+        public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<int> progress)
         {
             return Task.Run(() =>
             {
-                long dataSize = 0;
-                if (uri == null)
+                using (Stream stream = this.Download(uri))
                 {
-                    throw new ArgumentNullException("uri");
-                }
-
-                if (string.IsNullOrEmpty(outputFile))
-                {
-                    throw new ArgumentNullException("outputFile");
-                }
-
-                using (Stream stream = this.Download(uri, ref dataSize))
-                {
-                    SaveStreamReportProgress(stream, dataSize, outputFile);
+                    this.SaveStreamReportProgress(stream, stream.Length, outputFile, progress);
                 }
             });
         }
 
-        public Task<INode> UploadAsync(string filename, INode parent)
+        public Task<INode> UploadAsync(string filename, INode parent, IProgress<int> progress)
         {
             return Task<INode>.Run(() =>
             {
-                if (string.IsNullOrEmpty(filename))
-                {
-                    throw new ArgumentNullException("filename");
-                }
-
-                if (parent == null)
-                {
-                    throw new ArgumentNullException("parent");
-                }
-
-                if (!File.Exists(filename))
-                {
-                    throw new FileNotFoundException(filename);
-                }
-
-                this.EnsureLoggedIn();
-
                 using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
                 {
-                    return this.UploadAsync(fileStream, Path.GetFileName(filename), parent);
+                    Task<INode> task = Task<INode>.Run(() => this.Upload(fileStream, Path.GetFileName(filename), parent));
+                    while (task.Status == TaskStatus.Running)
+                    {
+                        progress.Report((int)(100 * fileStream.Position / fileStream.Length));
+                        Thread.Sleep(10);
+                    }
+
+                    progress.Report(100);
+
+                    return task;
                 }
             });
         }
 
-        public Task<INode> UploadAsync(Stream stream, string name, INode parent)
+        public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<int> progress)
         {
             return Task<INode>.Run(() =>
             {
-                Task<INode> task = Task<INode>.Run(() => Upload(stream, name, parent));
+                Task<INode> task = Task<INode>.Run(() => this.Upload(stream, name, parent));
                 while (task.Status == TaskStatus.Running)
                 {
-                    progress = (int)(100 * stream.Position / stream.Length);
+                    progress.Report((int)(100 * stream.Position / stream.Length));
+                    Thread.Sleep(10);
                 }
+
+                progress.Report(100);
 
                 return task;
             });
         }
 
-
+        public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
+        {
+            return Task<INodePublic>.Run(() => this.GetNodeFromLinkAsync(uri));
+        }
 #endif
         #endregion
 
@@ -966,20 +880,19 @@ namespace CG.Web.MegaApiClient
         }
 
 #if (NET45)
-        private void SaveStreamReportProgress(Stream stream, long dataSize, string outputFile)
+        private void SaveStreamReportProgress(Stream stream, long dataSize, string outputFile, IProgress<int> progress)
         {
             using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
             {
                 byte[] buffer = new byte[BufferSize];
                 int len;
-                long bytesRead = 0;
-                while (bytesRead < dataSize)
+                while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
                 {
-                    len = stream.Read(buffer, 0, buffer.Length);
                     fs.Write(buffer, 0, len);
-                    bytesRead += len;
-                    progress = (int)(100 * bytesRead / dataSize);
+                    progress.Report((int)(100 * stream.Position / stream.Length));
                 }
+
+                progress.Report(100);
             }
         }
 #endif
