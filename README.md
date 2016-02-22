@@ -43,6 +43,7 @@ IEnumerable<INode> GetNodes(INode parent)
 INode CreateFolder(string name, INode parent)
 void Delete(INode node, bool moveToTrash = true)
 INode Move(INode node, INode destinationParentNode)
+INodePublic GetNodeFromLink(Uri uri)
 
 Uri GetDownloadLink(INode node)
 void DownloadFile(INode node, string outputFile)

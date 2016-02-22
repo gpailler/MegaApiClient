@@ -378,7 +378,7 @@ namespace CG.Web.MegaApiClient
         public long Size { get; private set; }
 
         [JsonProperty("at")]
-        private string SerializedAttributes { get; set; }
+        public string SerializedAttributes { get; set; }
     }
 
     #endregion

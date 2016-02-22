@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace CG.Web.MegaApiClient
 {
     [DebuggerDisplay("Type: {Type} - Name: {Name} - Id: {Id}")]
-    internal class Node : INode, INodeCrypto
+    internal class Node : NodePublic, INode, INodeCrypto
     {
         private static readonly DateTime OriginalDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
@@ -26,12 +26,6 @@ namespace CG.Web.MegaApiClient
         [JsonProperty("u")]
         public string Owner { get; private set; }
 
-        [JsonProperty("t")]
-        public NodeType Type { get; private set; }
-
-        [JsonProperty("s")]
-        public long Size { get; private set; }
-
         [JsonProperty("su")]
         public string SharingId { get; private set; }
 
@@ -40,9 +34,6 @@ namespace CG.Web.MegaApiClient
 
         [JsonProperty("fa")]
         public string SerializedFileAttributes { get; private set; }
-
-        [JsonIgnore]
-        public string Name { get; private set; }
 
         [JsonIgnore]
         public DateTime LastModificationDate { get; private set; }
@@ -167,4 +158,27 @@ namespace CG.Web.MegaApiClient
         #endregion
     }
 
+    internal class NodePublic : INodePublic
+    {
+        public NodePublic(DownloadUrlResponse downloadResponse, byte[] fileKey)
+        {
+            Attributes attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), fileKey);
+            this.Name = attributes.Name;
+            this.Size = downloadResponse.Size;
+            this.Type = NodeType.File;
+        }
+
+        protected NodePublic()
+        {
+        }
+
+        [JsonIgnore]
+        public string Name { get; protected set; }
+
+        [JsonProperty("s")]
+        public long Size { get; protected set; }
+
+        [JsonProperty("t")]
+        public NodeType Type { get; protected set; }
+    }
 }

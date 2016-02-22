@@ -2,7 +2,14 @@ using System;
 
 namespace CG.Web.MegaApiClient
 {
-    public interface INode : IEquatable<INode>
+    public interface INodePublic
+    {
+        long Size { get; }
+
+        string Name { get; }
+    }
+
+    public interface INode : INodePublic, IEquatable<INode>
     {
         string Id { get; }
 
@@ -11,10 +18,6 @@ namespace CG.Web.MegaApiClient
         string Owner { get; }
 
         NodeType Type { get; }
-
-        long Size { get; }
-
-        string Name { get; }
 
         DateTime LastModificationDate { get; }
     }

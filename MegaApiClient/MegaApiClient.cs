@@ -243,6 +243,7 @@ namespace CG.Web.MegaApiClient
 
             return nodes.Distinct().Cast<INode>();
         }
+
         /// <summary>
         /// Retrieve children nodes of a parent node
         /// </summary>
@@ -482,21 +483,10 @@ namespace CG.Web.MegaApiClient
             }
 
             this.EnsureLoggedIn();
-            
-            Regex uriRegex = new Regex("#!(?<id>.+)!(?<key>.+)");
-            Match match = uriRegex.Match(uri.Fragment);
-            if (match.Success == false)
-            {
-                throw new ArgumentException(string.Format("Invalid uri. Unable to extract Id and Key from the uri {0}", uri));
-            }
 
-            string id = match.Groups["id"].Value;
-            byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
-
-            byte[] iv;
-            byte[] metaMac;
-            byte[] fileKey;
-            Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out fileKey);
+            string id;
+            byte[] iv, metaMac, fileKey;
+            this.GetPartsFromUri(uri, out id, out iv, out metaMac, out fileKey);
 
             // Retrieve download URL
             DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
@@ -504,6 +494,34 @@ namespace CG.Web.MegaApiClient
 
             Stream dataStream = this._webClient.GetRequestRaw(new Uri(downloadResponse.Url));
             return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, fileKey, iv, metaMac);
+        }
+
+        /// <summary>
+        /// Retrieve public properties of a file from a specified Uri
+        /// </summary>
+        /// <param name="uri">Uri to retrive properties</param>
+        /// <exception cref="NotSupportedException">Not logged in</exception>
+        /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+        /// <exception cref="ArgumentNullException">uri is null</exception>
+        /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
+        public INodePublic GetNodeFromLink(Uri uri)
+        {
+            if (uri == null)
+            {
+                throw new ArgumentNullException("uri");
+            }
+
+            this.EnsureLoggedIn();
+
+            string id;
+            byte[] iv, metaMac, fileKey;
+            this.GetPartsFromUri(uri, out id, out iv, out metaMac, out fileKey);
+
+            // Retrieve attributes
+            DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
+            DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
+
+            return new NodePublic(downloadResponse, fileKey);
         }
 
         /// <summary>
@@ -799,6 +817,21 @@ namespace CG.Web.MegaApiClient
             {
                 throw new NotSupportedException("Already logged in");
             }
+        }
+
+        private void GetPartsFromUri(Uri uri, out string id, out byte[] iv, out byte[] metaMac, out byte[] fileKey)
+        {
+            Regex uriRegex = new Regex("#!(?<id>.+)!(?<key>.+)");
+            Match match = uriRegex.Match(uri.Fragment);
+            if (match.Success == false)
+            {
+                throw new ArgumentException(string.Format("Invalid uri. Unable to extract Id and Key from the uri {0}", uri));
+            }
+
+            id = match.Groups["id"].Value;
+            byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
+
+            Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out fileKey);
         }
 
         #endregion

@@ -217,6 +217,17 @@ namespace CG.Web.MegaApiClient.Tests
                 Has.Exactly(1).EqualTo(movedNode));
         }
 
+        [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
+        public void GetLinkAttributes_Succeeds(string link)
+        {
+            INode node = this.Client.GetNodes().Single(x => x.Id == this.PermanentFile);
+            INodePublic publicNode = this.Client.GetNodeFromLink(new Uri(link));
+
+            Assert.That(publicNode, Is.Not.Null
+                .And.Property<INodePublic>(x => x.Name).EqualTo(node.Name)
+                .And.Property<INodePublic>(x => x.Size).EqualTo(node.Size));
+        }
+
         protected IEnumerable<ITestCaseData> GetInvalidCreateFolderParameters()
         {
             yield return new TestCaseData(null, null, 
