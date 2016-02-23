@@ -164,7 +164,7 @@ namespace CG.Web.MegaApiClient.Tests
         }
 
         [TestCaseSource("GetMethodsRequiredLogin")]
-        public void Methods_LoginRequired_Throws(Action<MegaApiClient> testMethod)
+        public void Methods_LoginRequired_Throws(Action<IMegaApiClient> testMethod)
         {
             Assert.That(
                 () => testMethod(this.Client),

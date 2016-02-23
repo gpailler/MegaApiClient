@@ -39,12 +39,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 #if (NET45)
+
 using System.Threading.Tasks;
+
 #endif
 
 namespace CG.Web.MegaApiClient
 {
-    public class MegaApiClient
+    public class MegaApiClient : IMegaApiClient
     {
         private readonly IWebClient _webClient;
 
@@ -674,7 +676,8 @@ namespace CG.Web.MegaApiClient
         #endregion
 
         #region Public async methods
-#if (NET45)
+
+        #if (NET45)
 
         public Task LoginAsync(string email, string password)
         {
@@ -787,9 +790,11 @@ namespace CG.Web.MegaApiClient
 
         public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
         {
-            return Task<INodePublic>.Run(() => this.GetNodeFromLinkAsync(uri));
+            return Task<INodePublic>.Run(() => this.GetNodeFromLink(uri));
         }
-#endif
+
+        #endif
+
         #endregion
 
         #region Web
@@ -879,7 +884,8 @@ namespace CG.Web.MegaApiClient
             }
         }
 
-#if (NET45)
+        #if (NET45)
+
         private void SaveStreamReportProgress(Stream stream, long dataSize, string outputFile, IProgress<int> progress)
         {
             using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
@@ -895,7 +901,8 @@ namespace CG.Web.MegaApiClient
                 progress.Report(100);
             }
         }
-#endif
+
+        #endif
 
         #endregion
 

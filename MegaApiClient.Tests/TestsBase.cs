@@ -66,7 +66,7 @@ namespace CG.Web.MegaApiClient.Tests
 
         private readonly Options _options;
 
-        protected MegaApiClient Client;
+        protected IMegaApiClient Client;
 
         [Flags]
         protected enum Options
@@ -75,7 +75,8 @@ namespace CG.Web.MegaApiClient.Tests
             Login = 1 << 0,
             LoginAuthenticated = Login | 1 << 1,
             LoginAnonymous = Login | 1 << 2,
-            Clean =  1 << 3
+            Clean =  1 << 3,
+            AsyncWrapper = 1 << 4
         }
 
         protected TestsBase(Options options)
@@ -87,6 +88,11 @@ namespace CG.Web.MegaApiClient.Tests
         public void Setup()
         {
             this.Client = new MegaApiClient(new PollyWebClient());
+            if (this._options.HasFlag(Options.AsyncWrapper))
+            {
+                this.Client = new MegaApiClientAsyncWrapper(this.Client);
+            }
+
             if (this._options.HasFlag(Options.LoginAuthenticated))
             {
                 this.Client.Login(Username, Password);

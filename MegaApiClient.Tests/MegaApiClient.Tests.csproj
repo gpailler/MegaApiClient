@@ -74,7 +74,10 @@
   <ItemGroup>
     <Compile Include="FiddlerProxy.cs" />
     <Compile Include="Login.cs" />
+    <Compile Include="MegaApiClientAsyncWrapper.cs" />
+    <Compile Include="NodeOperationsAnonymousAsync.cs" />
     <Compile Include="NodeOperationsAnonymous.cs" />
+    <Compile Include="NodeOperationsAuthenticatedAsync.cs" />
     <Compile Include="NodeOperationsAuthenticated.cs" />
     <Compile Include="NodeOperations.cs" />
     <Compile Include="PollyWebClient.cs" />

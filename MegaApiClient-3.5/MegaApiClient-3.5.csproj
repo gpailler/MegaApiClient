@@ -75,6 +75,9 @@
     <Compile Include="..\MegaApiClient\Extensions.cs">
       <Link>Extensions.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\IMegaApiClient.cs">
+      <Link>IMegaApiClient.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\INode.cs">
       <Link>INode.cs</Link>
     </Compile>

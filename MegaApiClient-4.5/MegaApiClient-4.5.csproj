@@ -32,7 +32,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET40</DefineConstants>
+    <DefineConstants>TRACE;NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\MegaApiClient.xml</DocumentationFile>
@@ -76,6 +76,9 @@
     </Compile>
     <Compile Include="..\MegaApiClient\Extensions.cs">
       <Link>Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\IMegaApiClient.cs">
+      <Link>IMegaApiClient.cs</Link>
     </Compile>
     <Compile Include="..\MegaApiClient\INode.cs">
       <Link>INode.cs</Link>
