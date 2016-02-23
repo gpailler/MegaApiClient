@@ -218,14 +218,13 @@ namespace CG.Web.MegaApiClient.Tests
         }
 
         [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
-        public void GetLinkAttributes_Succeeds(string link)
+        public void GetNodeFromLink_Succeeds(string link)
         {
-            INode node = this.Client.GetNodes().Single(x => x.Id == this.PermanentFile);
             INodePublic publicNode = this.Client.GetNodeFromLink(new Uri(link));
 
             Assert.That(publicNode, Is.Not.Null
-                .And.Property<INodePublic>(x => x.Name).EqualTo(node.Name)
-                .And.Property<INodePublic>(x => x.Size).EqualTo(node.Size));
+                .And.Property<INodePublic>(x => x.Name).EqualTo("SharedFile.jpg")
+                .And.Property<INodePublic>(x => x.Size).EqualTo(523265));
         }
 
         protected IEnumerable<ITestCaseData> GetInvalidCreateFolderParameters()
