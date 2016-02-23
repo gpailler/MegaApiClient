@@ -197,20 +197,20 @@ namespace CG.Web.MegaApiClient.Tests
             Uri uri = new Uri("http://www.example.com");
             string tempFile = Path.GetTempFileName();
 
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Delete(nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Delete(nodeDirectory, false)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Delete(nodeDirectory, true)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.DownloadFile(nodeFile, "outputFile")));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.DownloadFile(uri, "outputFile")));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.GetNodes()));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.GetNodes(nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.CreateFolder("name", nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Download(nodeFile)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Download(uri)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.GetDownloadLink(nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Move(nodeDirectory, nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Upload(new MemoryStream(new byte[0]), "name", nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Upload(tempFile, nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Delete(nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Delete(nodeDirectory, false)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Delete(nodeDirectory, true)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.DownloadFile(nodeFile, "outputFile")));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.DownloadFile(uri, "outputFile")));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.GetNodes()));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.GetNodes(nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.CreateFolder("name", nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Download(nodeFile)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Download(uri)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.GetDownloadLink(nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Move(nodeDirectory, nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Upload(new MemoryStream(new byte[0]), "name", nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Upload(tempFile, nodeDirectory)));
         }
     }
 }
