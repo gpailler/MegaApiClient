@@ -21,7 +21,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET45</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>1</WarningLevel>
     <DocumentationFile>bin\Debug\MegaApiClient.XML</DocumentationFile>
@@ -32,7 +32,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET45</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\MegaApiClient.xml</DocumentationFile>
@@ -80,6 +80,9 @@
     <Compile Include="..\MegaApiClient\IMegaApiClient.cs">
       <Link>IMegaApiClient.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\IMegaApiClientAsync.cs">
+      <Link>IMegaApiClientAsync.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\INode.cs">
       <Link>INode.cs</Link>
     </Compile>
@@ -94,6 +97,9 @@
     </Compile>
     <Compile Include="..\MegaApiClient\MegaApiClient.cs">
       <Link>MegaApiClient.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\MegaApiClientAsync.cs">
+      <Link>MegaApiClientAsync.cs</Link>
     </Compile>
     <Compile Include="..\MegaApiClient\Node.cs">
       <Link>Node.cs</Link>

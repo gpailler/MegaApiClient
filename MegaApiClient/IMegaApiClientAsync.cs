@@ -28,43 +28,40 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace CG.Web.MegaApiClient
 {
     public partial interface IMegaApiClient
     {
-        void Login(string email, string password);
+        Task LoginAsync(string email, string password);
 
-        void Login(MegaApiClient.AuthInfos authInfos);
+        Task LoginAsync(MegaApiClient.AuthInfos authInfos);
 
-        void LoginAnonymous();
+        Task LoginAnonymousAsync();
 
-        void Logout();
+        Task LogoutAsync();
 
-        IEnumerable<INode> GetNodes();
+        Task<IEnumerable<INode>> GetNodesAsync();
 
-        IEnumerable<INode> GetNodes(INode parent);
+        Task<IEnumerable<INode>> GetNodesAsync(INode parent);
 
-        void Delete(INode node, bool moveToTrash = true);
+        Task<INode> CreateFolderAsync(string name, INode parent);
 
-        INode CreateFolder(string name, INode parent);
+        Task DeleteAsync(INode node, bool moveToTrash = true);
 
-        Uri GetDownloadLink(INode node);
+        Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode);
 
-        void DownloadFile(INode node, string outputFile);
+        Task<Uri> GetDownloadLinkAsync(INode node);
 
-        void DownloadFile(Uri uri, string outputFile);
+        Task DownloadFileAsync(INode node, string outputFile, IProgress<int> progress);
 
-        Stream Download(INode node);
+        Task DownloadFileAsync(Uri uri, string outputFile, IProgress<int> progress);
 
-        Stream Download(Uri uri);
+        Task<INode> UploadAsync(string filename, INode parent, IProgress<int> progress);
 
-        INodePublic GetNodeFromLink(Uri uri);
+        Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<int> progress);
 
-        INode Upload(string filename, INode parent);
-
-        INode Upload(Stream stream, string name, INode parent);
-
-        INode Move(INode node, INode destinationParentNode);
+        Task<INodePublic> GetNodeFromLinkAsync(Uri uri);
     }
 }
