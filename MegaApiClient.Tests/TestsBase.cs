@@ -86,7 +86,7 @@ namespace CG.Web.MegaApiClient.Tests
             this._options = options;
         }
 
-        [SetUp, Retry(3)]
+        [SetUp]
         public void Setup()
         {
             this.Client = new MegaApiClient(new WebClient(WebTimeout));
