@@ -12,7 +12,12 @@ namespace CG.Web.MegaApiClient.Tests
     public class DownloadUploadAuthenticated : DownloadUpload
     {
         public DownloadUploadAuthenticated()
-            : base(Options.LoginAuthenticated | Options.Clean)
+            : this(null)
+        {
+        }
+
+        protected DownloadUploadAuthenticated(Options? options)
+            : base(Options.LoginAuthenticated | Options.Clean | options.GetValueOrDefault())
         {
         }
 
@@ -26,7 +31,7 @@ namespace CG.Web.MegaApiClient.Tests
             {
                 using (Stream expectedStream = new FileStream(ExpectedFile, FileMode.Open))
                 {
-                    this.AreStreamsEquals(stream, expectedStream);
+                    this.AreStreamsEquivalent(stream, expectedStream);
                 }
             }
         }
@@ -55,7 +60,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Uri uri = this.Client.GetDownloadLink(node);
 
                 stream.Position = 0;
-                this.AreStreamsEquals(this.Client.Download(uri), stream);
+                this.AreStreamsEquivalent(this.Client.Download(uri), stream);
             }
         }
 
@@ -72,7 +77,7 @@ namespace CG.Web.MegaApiClient.Tests
         private IEnumerable<ITestCaseData> GetGetDownloadLinkInvalidParameter()
         {
             yield return new TestCaseData(null, Throws.TypeOf<ArgumentNullException>());
-            
+
             foreach (NodeType nodeType in new[] { NodeType.Inbox, NodeType.Root, NodeType.Trash })
             {
                 Mock<INode> nodeMock = new Mock<INode>();

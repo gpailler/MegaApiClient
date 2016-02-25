@@ -28,13 +28,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace CG.Web.MegaApiClient
 {
     public partial class MegaApiClient : IMegaApiClient
     {
+        public static long ReportProgressChunkSize = 1024 * 50;
+
         #region Public async methods
 
         public Task LoginAsync(string email, string password)
@@ -59,17 +60,17 @@ namespace CG.Web.MegaApiClient
 
         public Task<IEnumerable<INode>> GetNodesAsync()
         {
-            return Task<IEnumerable<INode>>.Run(() => this.GetNodes());
+            return Task.Run(() => this.GetNodes());
         }
 
         public Task<IEnumerable<INode>> GetNodesAsync(INode parent)
         {
-            return Task<IEnumerable<INode>>.Run(() => this.GetNodes(parent));
+            return Task.Run(() => this.GetNodes(parent));
         }
 
         public Task<INode> CreateFolderAsync(string name, INode parent)
         {
-            return Task<INode>.Run(() => this.CreateFolder(name, parent));
+            return Task.Run(() => this.CreateFolder(name, parent));
         }
 
         public Task DeleteAsync(INode node, bool moveToTrash = true)
@@ -79,96 +80,77 @@ namespace CG.Web.MegaApiClient
 
         public Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode)
         {
-            return Task<INode>.Run(() => this.Move(sourceNode, destinationParentNode));
+            return Task.Run(() => this.Move(sourceNode, destinationParentNode));
         }
 
         public Task<Uri> GetDownloadLinkAsync(INode node)
         {
-            return Task<Uri>.Run(() => this.GetDownloadLink(node));
+            return Task.Run(() => this.GetDownloadLink(node));
         }
 
-        public Task DownloadFileAsync(INode node, string outputFile, IProgress<int> progress)
+        public Task<Stream> DownloadAsync(INode node, IProgress<double> progress)
         {
             return Task.Run(() =>
             {
-                using (Stream stream = this.Download(node))
-                {
-                    this.SaveStreamReportProgress(stream, node.Size, outputFile, progress);
-                }
+                return (Stream)new ProgressionStream(this.Download(node), progress);
             });
         }
 
-        public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<int> progress)
+        public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress)
         {
             return Task.Run(() =>
             {
-                using (Stream stream = this.Download(uri))
+                return (Stream)new ProgressionStream(this.Download(uri), progress);
+            });
+        }
+
+        public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress)
+        {
+            return Task.Run(() =>
+            {
+                using (Stream stream = new ProgressionStream(this.Download(node), progress))
                 {
-                    this.SaveStreamReportProgress(stream, stream.Length, outputFile, progress);
+                    this.SaveStream(stream, outputFile);
                 }
             });
         }
 
-        public Task<INode> UploadAsync(string filename, INode parent, IProgress<int> progress)
+        public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress)
         {
-            return Task<INode>.Run(() =>
+            return Task.Run(() =>
             {
-                using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                using (Stream stream = new ProgressionStream(this.Download(uri), progress))
                 {
-                    Task<INode> task = Task<INode>.Run(() => this.Upload(fileStream, Path.GetFileName(filename), parent));
-                    while (task.Status == TaskStatus.Running)
-                    {
-                        progress.Report((int)(100 * fileStream.Position / fileStream.Length));
-                        Thread.Sleep(10);
-                    }
-
-                    progress.Report(100);
-
-                    return task;
+                    this.SaveStream(stream, outputFile);
                 }
             });
         }
 
-        public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<int> progress)
+        public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress)
         {
-            return Task<INode>.Run(() =>
+            return Task.Run(() =>
             {
-                Task<INode> task = Task<INode>.Run(() => this.Upload(stream, name, parent));
-                while (task.Status == TaskStatus.Running)
+                using (Stream progressionStream = new ProgressionStream(stream, progress))
                 {
-                    progress.Report((int)(100 * stream.Position / stream.Length));
-                    Thread.Sleep(10);
+                    return this.Upload(progressionStream, name, parent);
                 }
+            });
+        }
 
-                progress.Report(100);
-
-                return task;
+        public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress)
+        {
+            return Task.Run(() =>
+            {
+                using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress))
+                {
+                    return this.Upload(stream, Path.GetFileName(filename), parent);
+                }
             });
         }
 
         public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
         {
-            return Task<INodePublic>.Run(() => this.GetNodeFromLink(uri));
-        }
-
-        #endregion
-
-        #region Web
-        
-        private void SaveStreamReportProgress(Stream stream, long dataSize, string outputFile, IProgress<int> progress)
-        {
-            using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
-            {
-                byte[] buffer = new byte[BufferSize];
-                int len;
-                while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    fs.Write(buffer, 0, len);
-                    progress.Report((int)(100 * stream.Position / stream.Length));
-                }
-
-                progress.Report(100);
-            }
+            return Task.Run(() => this.GetNodeFromLink(uri));
         }
 
         #endregion

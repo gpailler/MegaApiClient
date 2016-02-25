@@ -535,7 +535,7 @@ namespace CG.Web.MegaApiClient
         /// <exception cref="ArgumentNullException">filename or parent is null</exception>
         /// <exception cref="FileNotFoundException">filename is not found</exception>
         /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
-        public INode Upload(string filename, INode parent)
+        public INode UploadFile(string filename, INode parent)
         {
             if (string.IsNullOrEmpty(filename))
             {

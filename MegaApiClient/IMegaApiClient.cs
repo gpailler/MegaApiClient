@@ -61,7 +61,7 @@ namespace CG.Web.MegaApiClient
 
         INodePublic GetNodeFromLink(Uri uri);
 
-        INode Upload(string filename, INode parent);
+        INode UploadFile(string filename, INode parent);
 
         INode Upload(Stream stream, string name, INode parent);
 

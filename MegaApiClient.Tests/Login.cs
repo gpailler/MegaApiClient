@@ -210,7 +210,7 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData((Action<IMegaApiClient>)(x => x.GetDownloadLink(nodeDirectory)));
             yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Move(nodeDirectory, nodeDirectory)));
             yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Upload(new MemoryStream(new byte[0]), "name", nodeDirectory)));
-            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Upload(tempFile, nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.UploadFile(tempFile, nodeDirectory)));
         }
     }
 }

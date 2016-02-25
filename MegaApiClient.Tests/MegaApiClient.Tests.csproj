@@ -72,6 +72,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DownloadUploadAuthenticatedAsync.cs" />
+    <Compile Include="EventTester.cs" />
     <Compile Include="FiddlerProxy.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="MegaApiClientAsyncWrapper.cs" />

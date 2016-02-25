@@ -104,6 +104,9 @@
     <Compile Include="..\MegaApiClient\Node.cs">
       <Link>Node.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\ProgressionStream.cs">
+      <Link>ProgressionStream.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>

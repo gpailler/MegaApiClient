@@ -67,24 +67,26 @@ namespace CG.Web.MegaApiClient.Tests
 
         public void DownloadFile(INode node, string outputFile)
         {
-            Progress<int> progress = new Progress<int>();
+            Progress<double> progress = new Progress<double>();
             this.UnwrapException(() => this.client.DownloadFileAsync(node, outputFile, progress).Wait());
         }
 
         public void DownloadFile(Uri uri, string outputFile)
         {
-            Progress<int> progress = new Progress<int>();
+            Progress<double> progress = new Progress<double>();
             this.UnwrapException(() => this.client.DownloadFileAsync(uri, outputFile, progress).Wait());
         }
 
         public Stream Download(INode node)
         {
-            throw new NotImplementedException();
+            Progress<double> progress = new Progress<double>();
+            return this.UnwrapException(() => this.client.DownloadAsync(node, progress).Result);
         }
 
         public Stream Download(Uri uri)
         {
-            throw new NotImplementedException();
+            Progress<double> progress = new Progress<double>();
+            return this.UnwrapException(() => this.client.DownloadAsync(uri, progress).Result);
         }
 
         public INodePublic GetNodeFromLink(Uri uri)
@@ -92,15 +94,15 @@ namespace CG.Web.MegaApiClient.Tests
             return this.UnwrapException(() => this.client.GetNodeFromLinkAsync(uri).Result);
         }
 
-        public INode Upload(string filename, INode parent)
+        public INode UploadFile(string filename, INode parent)
         {
-            Progress<int> progress = new Progress<int>();
-            return this.UnwrapException(() => this.client.UploadAsync(filename, parent, progress).Result);
+            Progress<double> progress = new Progress<double>();
+            return this.UnwrapException(() => this.client.UploadFileAsync(filename, parent, progress).Result);
         }
 
         public INode Upload(Stream stream, string name, INode parent)
         {
-            Progress<int> progress = new Progress<int>();
+            Progress<double> progress = new Progress<double>();
             return this.UnwrapException(() => this.client.UploadAsync(stream, name, parent, progress).Result);
         }
 
@@ -159,24 +161,34 @@ namespace CG.Web.MegaApiClient.Tests
             throw new NotImplementedException();
         }
 
-        public Task DownloadFileAsync(INode node, string outputFile, IProgress<int> progress)
+        public Task<Stream> DownloadAsync(INode node, IProgress<double> progress)
         {
             throw new NotImplementedException();
         }
 
-        public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<int> progress)
+        public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress)
         {
             throw new NotImplementedException();
         }
 
-        public Task<INode> UploadAsync(string filename, INode parent, IProgress<int> progress)
+        public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress)
         {
-            throw new NotImplementedException();
+            return this.client.DownloadFileAsync(node, outputFile, progress);
         }
 
-        public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<int> progress)
+        public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress)
         {
-            throw new NotImplementedException();
+            return this.client.DownloadFileAsync(uri, outputFile, progress);
+        }
+
+        public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress)
+        {
+            return this.client.UploadFileAsync(filename, parent, progress);
+        }
+
+        public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress)
+        {
+            return this.client.UploadAsync(stream, name, parent, progress);
         }
 
         public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)

@@ -53,14 +53,18 @@ namespace CG.Web.MegaApiClient
         Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode);
 
         Task<Uri> GetDownloadLinkAsync(INode node);
+        
+        Task<Stream> DownloadAsync(INode node, IProgress<double> progress);
 
-        Task DownloadFileAsync(INode node, string outputFile, IProgress<int> progress);
+        Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress);
 
-        Task DownloadFileAsync(Uri uri, string outputFile, IProgress<int> progress);
+        Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress);
 
-        Task<INode> UploadAsync(string filename, INode parent, IProgress<int> progress);
+        Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress);
 
-        Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<int> progress);
+        Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress);
+
+        Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress);
 
         Task<INodePublic> GetNodeFromLinkAsync(Uri uri);
     }

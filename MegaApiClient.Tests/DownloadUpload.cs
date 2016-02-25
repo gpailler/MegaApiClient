@@ -64,7 +64,7 @@ namespace CG.Web.MegaApiClient.Tests
                 var node = this.Client.Upload(stream, "test", parent);
 
                 stream.Position = 0;
-                this.AreStreamsEquals(this.Client.Download(node), stream);
+                this.AreStreamsEquivalent(this.Client.Download(node), stream);
             }
         }
 
@@ -81,7 +81,7 @@ namespace CG.Web.MegaApiClient.Tests
         {
             using (Stream stream = new FileStream(expectedResultFile, FileMode.Open))
             {
-                this.AreStreamsEquals(this.Client.Download(new Uri(link)), stream);
+                this.AreStreamsEquivalent(this.Client.Download(new Uri(link)), stream);
             }
         }
 
@@ -169,7 +169,7 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), outFile, Throws.TypeOf<IOException>());
         }
 
-        protected void AreStreamsEquals(Stream stream1, Stream stream2)
+        protected void AreStreamsEquivalent(Stream stream1, Stream stream2)
         {
             byte[] stream1data = new byte[stream1.Length];
             byte[] stream2data = new byte[stream2.Length];
@@ -181,6 +181,17 @@ namespace CG.Web.MegaApiClient.Tests
             Assert.That(readStream2, Is.EqualTo(stream2data.Length));
 
             Assert.That(stream1data, Is.EqualTo(stream2data));
+        }
+
+        protected void AreFileEquivalent(string file1, string file2)
+        {
+            using (Stream stream1 = new FileStream(file1, FileMode.Open))
+            {
+                using (Stream stream2 = new FileStream(file2, FileMode.Open))
+                {
+                    this.AreStreamsEquivalent(stream1, stream2);
+                }
+            }
         }
     }
 }
