@@ -92,6 +92,11 @@
     {
       return Task.Run(() =>
       {
+        if (string.IsNullOrEmpty(outputFile))
+        {
+          throw new ArgumentNullException("outputFile");
+        }
+
         using (Stream stream = new ProgressionStream(this.Download(uri), progress))
         {
           this.SaveStream(stream, outputFile);
@@ -103,6 +108,11 @@
     {
       return Task.Run(() =>
       {
+        if (stream == null)
+        {
+          throw new ArgumentNullException("stream");
+        }
+
         using (Stream progressionStream = new ProgressionStream(stream, progress))
         {
           return this.Upload(progressionStream, name, parent);
