@@ -1,158 +1,131 @@
-﻿#region License
-
-/*
-The MIT License (MIT)
-
-Copyright (c) 2015 Gregoire Pailler
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
-    public partial class MegaApiClient : IMegaApiClient
+  using System;
+  using System.Collections.Generic;
+  using System.IO;
+  using System.Threading.Tasks;
+
+  public partial class MegaApiClient : IMegaApiClient
+  {
+    public static long ReportProgressChunkSize = 1024 * 50;
+
+    #region Public async methods
+
+    public Task LoginAsync(string email, string password)
     {
-        public static long ReportProgressChunkSize = 1024 * 50;
-
-        #region Public async methods
-
-        public Task LoginAsync(string email, string password)
-        {
-            return Task.Run(() => this.Login(email, password));
-        }
-
-        public Task LoginAsync(AuthInfos authInfos)
-        {
-            return Task.Run(() => this.Login(authInfos));
-        }
-
-        public Task LoginAnonymousAsync()
-        {
-            return Task.Run(() => this.LoginAnonymous());
-        }
-
-        public Task LogoutAsync()
-        {
-            return Task.Run(() => this.Logout());
-        }
-
-        public Task<IEnumerable<INode>> GetNodesAsync()
-        {
-            return Task.Run(() => this.GetNodes());
-        }
-
-        public Task<IEnumerable<INode>> GetNodesAsync(INode parent)
-        {
-            return Task.Run(() => this.GetNodes(parent));
-        }
-
-        public Task<INode> CreateFolderAsync(string name, INode parent)
-        {
-            return Task.Run(() => this.CreateFolder(name, parent));
-        }
-
-        public Task DeleteAsync(INode node, bool moveToTrash = true)
-        {
-            return Task.Run(() => this.Delete(node, moveToTrash));
-        }
-
-        public Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode)
-        {
-            return Task.Run(() => this.Move(sourceNode, destinationParentNode));
-        }
-
-        public Task<Uri> GetDownloadLinkAsync(INode node)
-        {
-            return Task.Run(() => this.GetDownloadLink(node));
-        }
-
-        public Task<Stream> DownloadAsync(INode node, IProgress<double> progress)
-        {
-            return Task.Run(() =>
-            {
-                return (Stream)new ProgressionStream(this.Download(node), progress);
-            });
-        }
-
-        public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress)
-        {
-            return Task.Run(() =>
-            {
-                return (Stream)new ProgressionStream(this.Download(uri), progress);
-            });
-        }
-
-        public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress)
-        {
-            return Task.Run(() =>
-            {
-                using (Stream stream = new ProgressionStream(this.Download(node), progress))
-                {
-                    this.SaveStream(stream, outputFile);
-                }
-            });
-        }
-
-        public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress)
-        {
-            return Task.Run(() =>
-            {
-                using (Stream stream = new ProgressionStream(this.Download(uri), progress))
-                {
-                    this.SaveStream(stream, outputFile);
-                }
-            });
-        }
-
-        public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress)
-        {
-            return Task.Run(() =>
-            {
-                using (Stream progressionStream = new ProgressionStream(stream, progress))
-                {
-                    return this.Upload(progressionStream, name, parent);
-                }
-            });
-        }
-
-        public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress)
-        {
-            return Task.Run(() =>
-            {
-                using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress))
-                {
-                    return this.Upload(stream, Path.GetFileName(filename), parent);
-                }
-            });
-        }
-
-        public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
-        {
-            return Task.Run(() => this.GetNodeFromLink(uri));
-        }
-
-        #endregion
+      return Task.Run(() => this.Login(email, password));
     }
+
+    public Task LoginAsync(AuthInfos authInfos)
+    {
+      return Task.Run(() => this.Login(authInfos));
+    }
+
+    public Task LoginAnonymousAsync()
+    {
+      return Task.Run(() => this.LoginAnonymous());
+    }
+
+    public Task LogoutAsync()
+    {
+      return Task.Run(() => this.Logout());
+    }
+
+    public Task<IEnumerable<INode>> GetNodesAsync()
+    {
+      return Task.Run(() => this.GetNodes());
+    }
+
+    public Task<IEnumerable<INode>> GetNodesAsync(INode parent)
+    {
+      return Task.Run(() => this.GetNodes(parent));
+    }
+
+    public Task<INode> CreateFolderAsync(string name, INode parent)
+    {
+      return Task.Run(() => this.CreateFolder(name, parent));
+    }
+
+    public Task DeleteAsync(INode node, bool moveToTrash = true)
+    {
+      return Task.Run(() => this.Delete(node, moveToTrash));
+    }
+
+    public Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode)
+    {
+      return Task.Run(() => this.Move(sourceNode, destinationParentNode));
+    }
+
+    public Task<Uri> GetDownloadLinkAsync(INode node)
+    {
+      return Task.Run(() => this.GetDownloadLink(node));
+    }
+
+    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress)
+    {
+      return Task.Run(() =>
+      {
+        return (Stream)new ProgressionStream(this.Download(node), progress);
+      });
+    }
+
+    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress)
+    {
+      return Task.Run(() =>
+      {
+        return (Stream)new ProgressionStream(this.Download(uri), progress);
+      });
+    }
+
+    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress)
+    {
+      return Task.Run(() =>
+      {
+        using (Stream stream = new ProgressionStream(this.Download(node), progress))
+        {
+          this.SaveStream(stream, outputFile);
+        }
+      });
+    }
+
+    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress)
+    {
+      return Task.Run(() =>
+      {
+        using (Stream stream = new ProgressionStream(this.Download(uri), progress))
+        {
+          this.SaveStream(stream, outputFile);
+        }
+      });
+    }
+
+    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress)
+    {
+      return Task.Run(() =>
+      {
+        using (Stream progressionStream = new ProgressionStream(stream, progress))
+        {
+          return this.Upload(progressionStream, name, parent);
+        }
+      });
+    }
+
+    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress)
+    {
+      return Task.Run(() =>
+      {
+        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress))
+        {
+          return this.Upload(stream, Path.GetFileName(filename), parent);
+        }
+      });
+    }
+
+    public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
+    {
+      return Task.Run(() => this.GetNodeFromLink(uri));
+    }
+
+    #endregion
+  }
 }

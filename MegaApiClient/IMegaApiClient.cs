@@ -1,70 +1,43 @@
-#region License
-
-/*
-The MIT License (MIT)
-
-Copyright (c) 2015 Gregoire Pailler
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.IO;
-
 namespace CG.Web.MegaApiClient
 {
-    public partial interface IMegaApiClient
-    {
-        void Login(string email, string password);
+  using System;
+  using System.Collections.Generic;
+  using System.IO;
 
-        void Login(MegaApiClient.AuthInfos authInfos);
+  public partial interface IMegaApiClient
+  {
+    void Login(string email, string password);
 
-        void LoginAnonymous();
+    void Login(MegaApiClient.AuthInfos authInfos);
 
-        void Logout();
+    void LoginAnonymous();
 
-        IEnumerable<INode> GetNodes();
+    void Logout();
 
-        IEnumerable<INode> GetNodes(INode parent);
+    IEnumerable<INode> GetNodes();
 
-        void Delete(INode node, bool moveToTrash = true);
+    IEnumerable<INode> GetNodes(INode parent);
 
-        INode CreateFolder(string name, INode parent);
+    void Delete(INode node, bool moveToTrash = true);
 
-        Uri GetDownloadLink(INode node);
+    INode CreateFolder(string name, INode parent);
 
-        void DownloadFile(INode node, string outputFile);
+    Uri GetDownloadLink(INode node);
 
-        void DownloadFile(Uri uri, string outputFile);
+    void DownloadFile(INode node, string outputFile);
 
-        Stream Download(INode node);
+    void DownloadFile(Uri uri, string outputFile);
 
-        Stream Download(Uri uri);
+    Stream Download(INode node);
 
-        INodePublic GetNodeFromLink(Uri uri);
+    Stream Download(Uri uri);
 
-        INode UploadFile(string filename, INode parent);
+    INodePublic GetNodeFromLink(Uri uri);
 
-        INode Upload(Stream stream, string name, INode parent);
+    INode UploadFile(string filename, INode parent);
 
-        INode Move(INode node, INode destinationParentNode);
-    }
+    INode Upload(Stream stream, string name, INode parent);
+
+    INode Move(INode node, INode destinationParentNode);
+  }
 }
