@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -10,6 +11,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
+        private const int WebTimeout = 15000;
 
         /*
         Storage layout
@@ -84,10 +86,10 @@ namespace CG.Web.MegaApiClient.Tests
             this._options = options;
         }
 
-        [SetUp]
+        [SetUp, Retry(3)]
         public void Setup()
         {
-            this.Client = new MegaApiClient(new PollyWebClient());
+            this.Client = new MegaApiClient(new WebClient(WebTimeout));
             if (this._options.HasFlag(Options.AsyncWrapper))
             {
                 this.Client = new MegaApiClientAsyncWrapper(this.Client);

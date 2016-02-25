@@ -5,6 +5,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using NUnit.Framework.Interfaces;
 
 namespace CG.Web.MegaApiClient.Tests
 {

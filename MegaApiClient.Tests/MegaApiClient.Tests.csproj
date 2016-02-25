@@ -39,32 +39,17 @@
     <AssemblyOriginatorKeyFile>..\key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BCMakeCert, Version=2.0.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FiddlerCore.4.5.1.0\lib\net40\BCMakeCert.dll</HintPath>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="CertMaker, Version=4.5.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\FiddlerCore.4.5.1.0\lib\net40\CertMaker.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="FiddlerCore4, Version=4.5.1.0, Culture=neutral, PublicKeyToken=67cb91587178ac5a, processorArchitecture=MSIL">
-      <HintPath>..\packages\FiddlerCore.4.5.1.0\lib\net40\FiddlerCore4.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Moq, Version=4.2.1409.1722, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Polly">
-      <HintPath>..\packages\Polly-Signed.2.2.1\lib\net40\Polly.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -74,7 +59,6 @@
   <ItemGroup>
     <Compile Include="DownloadUploadAuthenticatedAsync.cs" />
     <Compile Include="EventTester.cs" />
-    <Compile Include="FiddlerProxy.cs" />
     <Compile Include="Login.cs" />
     <Compile Include="MegaApiClientAsyncWrapper.cs" />
     <Compile Include="NodeOperationsAnonymousAsync.cs" />
@@ -82,7 +66,6 @@
     <Compile Include="NodeOperationsAuthenticatedAsync.cs" />
     <Compile Include="NodeOperationsAuthenticated.cs" />
     <Compile Include="NodeOperations.cs" />
-    <Compile Include="PollyWebClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="TestsBase.cs" />

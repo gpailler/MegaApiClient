@@ -17,8 +17,8 @@ namespace CG.Web.MegaApiClient.Tests
         {
         }
 
-        [TestCase(null, Result = 10L)]
-        [TestCase(10L, Result = 65L)]
+        [TestCase(null, ExpectedResult = 10L)]
+        [TestCase(10L, ExpectedResult = 65L)]
         public long DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize)
         {
             // Arrange

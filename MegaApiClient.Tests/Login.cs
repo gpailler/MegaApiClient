@@ -6,6 +6,7 @@ using System.IO;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -155,7 +156,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .Or.With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("password"));
         }
 
-        [TestCase("username@example.com", "password", Result = "{'Email':'username@example.com','Hash':'ObELy57HULI','PasswordAesKey':'ZAM5cl5uvROiXwBSEp98sQ=='}")]
+        [TestCase("username@example.com", "password", ExpectedResult = "{'Email':'username@example.com','Hash':'ObELy57HULI','PasswordAesKey':'ZAM5cl5uvROiXwBSEp98sQ=='}")]
         public string GenerateAuthInfos_ValidCredentials_Succeeds(string email, string password)
         {
             var authInfos = MegaApiClient.GenerateAuthInfos(email, password);
