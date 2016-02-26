@@ -18,7 +18,7 @@ namespace CG.Web.MegaApiClient.Tests
         {
         }
 
-        [TestCaseSource("GetInvalidUploadStreamParameters")]
+        [TestCaseSource(typeof(DownloadUpload), nameof(GetInvalidUploadStreamParameters))]
         public void UploadStream_InvalidParameters_Throws(Stream stream, string name, INode parent, IResolveConstraint constraint)
         {
             Assert.That(
@@ -69,7 +69,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCaseSource("GetDownloadLinkInvalidParameter")]
+        [TestCaseSource(typeof(DownloadUpload), nameof(GetDownloadLinkInvalidParameter))]
         public void DownloadLink_ToStream_InvalidParameter_Throws(Uri uri, IResolveConstraint constraint)
         {
             Assert.That(
@@ -104,7 +104,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCaseSource("GetDownloadLinkToFileInvalidParameter")]
+        [TestCaseSource(typeof(DownloadUpload), nameof(GetDownloadLinkToFileInvalidParameter))]
         public void DownloadLink_ToFile_InvalidParameter_Throws(Uri uri, string outFile, IResolveConstraint constraint)
         {
             Assert.That(
@@ -122,52 +122,6 @@ namespace CG.Web.MegaApiClient.Tests
             Assert.That(
                 File.ReadAllBytes(outFile),
                 Is.EqualTo(File.ReadAllBytes(expectedResultFile)));
-        }
-
-        protected IEnumerable<TestCaseData> GetInvalidUploadStreamParameters()
-        {
-            INode nodeDirectory = Mock.Of<INode>(x => x.Type == NodeType.Directory);
-            INode nodeFile = Mock.Of<INode>(x => x.Type == NodeType.File);
-            Stream stream = new MemoryStream();
-
-            yield return new TestCaseData(null, null, null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, null, nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, "", null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, "", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, "name", null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, "name", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, null, null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, null, nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, "", null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, "", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, "name", null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, "name", nodeFile, Throws.TypeOf<ArgumentException>());
-        }
-
-        protected IEnumerable<ITestCaseData> GetDownloadLinkInvalidParameter()
-        {
-            yield return new TestCaseData(null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("http://www.example.com"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!"), Throws.TypeOf<ArgumentException>());
-        }
-
-        protected IEnumerable<ITestCaseData> GetDownloadLinkToFileInvalidParameter()
-        {
-            string outFile = Path.GetTempFileName();
-
-            yield return new TestCaseData(null, null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, outFile, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("http://www.example.com"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), string.Empty, Throws.TypeOf<ArgumentNullException>());
-
-            
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), outFile, Throws.TypeOf<IOException>());
         }
 
         protected void AreStreamsEquivalent(Stream stream1, Stream stream2)
@@ -193,6 +147,52 @@ namespace CG.Web.MegaApiClient.Tests
                     this.AreStreamsEquivalent(stream1, stream2);
                 }
             }
+        }
+
+        private static IEnumerable<TestCaseData> GetInvalidUploadStreamParameters()
+        {
+            INode nodeDirectory = Mock.Of<INode>(x => x.Type == NodeType.Directory);
+            INode nodeFile = Mock.Of<INode>(x => x.Type == NodeType.File);
+            Stream stream = new MemoryStream();
+
+            yield return new TestCaseData(null, null, null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(null, null, nodeDirectory, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(null, "", null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(null, "", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(null, "name", null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(null, "name", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(stream, null, null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(stream, null, nodeDirectory, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(stream, "", null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(stream, "", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(stream, "name", null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(stream, "name", nodeFile, Throws.TypeOf<ArgumentException>());
+        }
+
+        private static IEnumerable<ITestCaseData> GetDownloadLinkInvalidParameter()
+        {
+            yield return new TestCaseData(null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("http://www.example.com"), Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz"), Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL"), Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!"), Throws.TypeOf<ArgumentException>());
+        }
+
+        private static IEnumerable<ITestCaseData> GetDownloadLinkToFileInvalidParameter()
+        {
+            string outFile = Path.GetTempFileName();
+
+            yield return new TestCaseData(null, null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(null, outFile, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("http://www.example.com"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), string.Empty, Throws.TypeOf<ArgumentNullException>());
+
+
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), outFile, Throws.TypeOf<IOException>());
         }
     }
 }

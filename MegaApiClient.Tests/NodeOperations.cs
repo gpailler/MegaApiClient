@@ -52,7 +52,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .Matches<INode>(x => x.Name == DefaultNodeName));
         }
 
-        [TestCaseSource("GetInvalidCreateFolderParameters")]
+        [TestCaseSource(typeof(NodeOperations), nameof(GetInvalidCreateFolderParameters))]
         public void CreateFolder_InvalidParameters_Throws(string name, INode parentNode, IResolveConstraint constraint)
         {
             Assert.That(
@@ -182,7 +182,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .And.Not.SameAs(node2));
         }
 
-        [TestCaseSource("GetInvalidMoveParameters")]
+        [TestCaseSource(typeof(NodeOperations), nameof(GetInvalidMoveParameters))]
         public void Move_InvalidParameters_Throws(INode node, INode destinationParentNode, IResolveConstraint constraint)
         {
             Assert.That(
@@ -228,7 +228,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .And.Property<INodePublic>(x => x.Size).EqualTo(523265));
         }
 
-        protected IEnumerable<ITestCaseData> GetInvalidCreateFolderParameters()
+        private static IEnumerable<ITestCaseData> GetInvalidCreateFolderParameters()
         {
             yield return new TestCaseData(null, null, 
                 Throws.TypeOf<ArgumentNullException>()
@@ -251,7 +251,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Message.EqualTo("Invalid parent node"));
         }
 
-        protected IEnumerable<ITestCaseData> GetInvalidMoveParameters()
+        private static IEnumerable<ITestCaseData> GetInvalidMoveParameters()
         {
             yield return new TestCaseData(null, null, 
                 Throws.TypeOf<ArgumentNullException>()

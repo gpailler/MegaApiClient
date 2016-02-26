@@ -162,7 +162,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        protected IEnumerable<ITestCaseData> GetCredentials()
+        protected static IEnumerable<ITestCaseData> GetCredentials()
         {
             yield return new TestCaseData(Username, Password);
         }

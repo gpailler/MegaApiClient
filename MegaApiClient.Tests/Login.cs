@@ -35,7 +35,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("webClient"));
         }
 
-        [TestCaseSource("GetInvalidCredentials")]
+        [TestCaseSource(typeof(Login), nameof(GetInvalidCredentials))]
         public void Login_UnsupportedCredentials_Throws(string email, string password)
         {
             Assert.That(
@@ -55,7 +55,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Property<ApiException>(x => x.ApiResultCode).EqualTo(expectedErrorCode));
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void Login_ValidCredentials_Succeeds(string email, string password)
         {
             Assert.That(
@@ -63,7 +63,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Throws.Nothing);
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void LoginTwice_ValidCredentials_Throws(string email, string password)
         {
             this.Client.Login(email, password);
@@ -93,7 +93,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Message.EqualTo("Already logged in"));
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void LogoutAfterLogin_Succeeds(string email, string password)
         {
             this.Client.Login(email, password);
@@ -103,7 +103,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Throws.Nothing);
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void LogoutTwiceAfterLogin_Throws(string email, string password)
         {
             this.Client.Login(email, password);
@@ -134,7 +134,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("authInfos"));
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void Login_DeserializedAuthInfos_Succeeds(string email, string password)
         {
             var authInfos = MegaApiClient.GenerateAuthInfos(email, password);
@@ -146,7 +146,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Throws.Nothing);
         }
 
-        [TestCaseSource("GetInvalidCredentials")]
+        [TestCaseSource(typeof(Login), nameof(GetInvalidCredentials))]
         public void GenerateAuthInfos_InvalidCredentials_Throws(string email, string password)
         {
             Assert.That(() =>
@@ -164,7 +164,7 @@ namespace CG.Web.MegaApiClient.Tests
             return JsonConvert.SerializeObject(authInfos, Formatting.None).Replace('\"', '\'');
         }
 
-        [TestCaseSource("GetMethodsRequiredLogin")]
+        [TestCaseSource(typeof(Login), nameof(GetMethodsRequiredLogin))]
         public void Methods_LoginRequired_Throws(Action<IMegaApiClient> testMethod)
         {
             Assert.That(
@@ -173,7 +173,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Message.EqualTo("Not logged in"));
         }
 
-        private IEnumerable<ITestCaseData> GetInvalidCredentials()
+        private static IEnumerable<ITestCaseData> GetInvalidCredentials()
         {
             yield return new TestCaseData(null, null);
             yield return new TestCaseData(null, "");
@@ -183,7 +183,7 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData("username", null);
         }
 
-        private IEnumerable<ITestCaseData> GetMethodsRequiredLogin()
+        private static IEnumerable<ITestCaseData> GetMethodsRequiredLogin()
         {
             Mock<INode> nodeDirectoryMock = new Mock<INode>();
             nodeDirectoryMock.SetupGet(x => x.Type).Returns(NodeType.Directory);

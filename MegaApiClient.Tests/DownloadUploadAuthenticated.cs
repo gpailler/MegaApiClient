@@ -37,7 +37,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCaseSource("GetGetDownloadLinkInvalidParameter")]
+        [TestCaseSource(typeof(DownloadUploadAuthenticated), nameof(GetGetDownloadLinkInvalidParameter))]
         public void GetDownloadLink_InvalidNode_Throws(INode node, IResolveConstraint constraint)
         {
             Assert.That(
@@ -75,7 +75,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Is.EqualTo(new Uri(expectedLink)));
         }
 
-        private IEnumerable<ITestCaseData> GetGetDownloadLinkInvalidParameter()
+        private static IEnumerable<ITestCaseData> GetGetDownloadLinkInvalidParameter()
         {
             yield return new TestCaseData(null, Throws.TypeOf<ArgumentNullException>());
 
