@@ -14,7 +14,7 @@ This library is based on highly valuable articles from http://julien-marchand.fr
 
 Usage example:
 ---
-```
+```csharp
 MegaApiClient client = new MegaApiClient();
 
 client.Login("megaclient@yopmail.com", "megaclient");
@@ -23,7 +23,7 @@ var nodes = client.GetNodes();
 INode root = nodes.Single(n => n.Type == NodeType.Root);
 INode myFolder = client.CreateFolder("Upload", root);
 
-INode myFile = client.Upload("MyFile.ext", myFolder);
+INode myFile = client.UploadFile("MyFile.ext", myFolder);
 
 Uri downloadUrl = client.GetDownloadLink(myFile);
 Console.WriteLine(downloadUrl);
