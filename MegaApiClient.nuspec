@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>MegaApiClient</id>
-        <version>1.1.3</version>
+        <version>1.2.0</version>
         <title>Mega.co.nz client library</title>
         <authors>Grégoire Pailler</authors>
         <owners>Grégoire Pailler</owners>
@@ -18,10 +18,12 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="MegaApiClient-3.5/bin/Release/MegaApiClient.dll" target="lib\net35\MegaApiClient.dll" />
-        <file src="MegaApiClient-3.5/bin/Release/MegaApiClient.xml" target="lib\net35\MegaApiClient.xml" />
-        <file src="MegaApiClient-4.0/bin/Release/MegaApiClient.dll" target="lib\net40\MegaApiClient.dll" />
-        <file src="MegaApiClient-4.0/bin/Release/MegaApiClient.xml" target="lib\net40\MegaApiClient.xml" />
+        <file src="MegaApiClient-3.5\bin\Release\MegaApiClient.dll" target="lib\net35\MegaApiClient.dll" />
+        <file src="MegaApiClient-3.5\bin\Release\MegaApiClient.xml" target="lib\net35\MegaApiClient.xml" />
+        <file src="MegaApiClient-4.0\bin\Release\MegaApiClient.dll" target="lib\net40\MegaApiClient.dll" />
+        <file src="MegaApiClient-4.0\bin\Release\MegaApiClient.xml" target="lib\net40\MegaApiClient.xml" />
+        <file src="MegaApiClient-4.5\bin\Release\MegaApiClient.dll" target="lib\net45\MegaApiClient.dll" />
+        <file src="MegaApiClient-4.5\bin\Release\MegaApiClient.xml" target="lib\net45\MegaApiClient.xml" />
         <file src="LICENSE" target="lib\LICENSE" />
     </files>
 </package>

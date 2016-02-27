@@ -5,6 +5,7 @@ using System.Linq;
 using Moq;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+using NUnit.Framework.Interfaces;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -17,7 +18,7 @@ namespace CG.Web.MegaApiClient.Tests
         {
         }
 
-        [TestCaseSource("GetInvalidUploadStreamParameters")]
+        [TestCaseSource(typeof(DownloadUpload), nameof(GetInvalidUploadStreamParameters))]
         public void UploadStream_InvalidParameters_Throws(Stream stream, string name, INode parent, IResolveConstraint constraint)
         {
             Assert.That(
@@ -64,11 +65,11 @@ namespace CG.Web.MegaApiClient.Tests
                 var node = this.Client.Upload(stream, "test", parent);
 
                 stream.Position = 0;
-                this.AreStreamsEquals(this.Client.Download(node), stream);
+                this.AreStreamsEquivalent(this.Client.Download(node), stream);
             }
         }
 
-        [TestCaseSource("GetDownloadLinkInvalidParameter")]
+        [TestCaseSource(typeof(DownloadUpload), nameof(GetDownloadLinkInvalidParameter))]
         public void DownloadLink_ToStream_InvalidParameter_Throws(Uri uri, IResolveConstraint constraint)
         {
             Assert.That(
@@ -81,7 +82,7 @@ namespace CG.Web.MegaApiClient.Tests
         {
             using (Stream stream = new FileStream(expectedResultFile, FileMode.Open))
             {
-                this.AreStreamsEquals(this.Client.Download(new Uri(link)), stream);
+                this.AreStreamsEquivalent(this.Client.Download(new Uri(link)), stream);
             }
         }
 
@@ -103,7 +104,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCaseSource("GetDownloadLinkToFileInvalidParameter")]
+        [TestCaseSource(typeof(DownloadUpload), nameof(GetDownloadLinkToFileInvalidParameter))]
         public void DownloadLink_ToFile_InvalidParameter_Throws(Uri uri, string outFile, IResolveConstraint constraint)
         {
             Assert.That(
@@ -123,7 +124,32 @@ namespace CG.Web.MegaApiClient.Tests
                 Is.EqualTo(File.ReadAllBytes(expectedResultFile)));
         }
 
-        protected IEnumerable<TestCaseData> GetInvalidUploadStreamParameters()
+        protected void AreStreamsEquivalent(Stream stream1, Stream stream2)
+        {
+            byte[] stream1data = new byte[stream1.Length];
+            byte[] stream2data = new byte[stream2.Length];
+
+            int readStream1 = stream1.Read(stream1data, 0, stream1data.Length);
+            Assert.That(readStream1, Is.EqualTo(stream1data.Length));
+
+            int readStream2 = stream2.Read(stream2data, 0, stream2data.Length);
+            Assert.That(readStream2, Is.EqualTo(stream2data.Length));
+
+            Assert.That(stream1data, Is.EqualTo(stream2data));
+        }
+
+        protected void AreFileEquivalent(string file1, string file2)
+        {
+            using (Stream stream1 = new FileStream(file1, FileMode.Open))
+            {
+                using (Stream stream2 = new FileStream(file2, FileMode.Open))
+                {
+                    this.AreStreamsEquivalent(stream1, stream2);
+                }
+            }
+        }
+
+        private static IEnumerable<TestCaseData> GetInvalidUploadStreamParameters()
         {
             INode nodeDirectory = Mock.Of<INode>(x => x.Type == NodeType.Directory);
             INode nodeFile = Mock.Of<INode>(x => x.Type == NodeType.File);
@@ -143,7 +169,7 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(stream, "name", nodeFile, Throws.TypeOf<ArgumentException>());
         }
 
-        protected IEnumerable<ITestCaseData> GetDownloadLinkInvalidParameter()
+        private static IEnumerable<ITestCaseData> GetDownloadLinkInvalidParameter()
         {
             yield return new TestCaseData(null, Throws.TypeOf<ArgumentNullException>());
             yield return new TestCaseData(new Uri("http://www.example.com"), Throws.TypeOf<ArgumentException>());
@@ -152,7 +178,7 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!"), Throws.TypeOf<ArgumentException>());
         }
 
-        protected IEnumerable<ITestCaseData> GetDownloadLinkToFileInvalidParameter()
+        private static IEnumerable<ITestCaseData> GetDownloadLinkToFileInvalidParameter()
         {
             string outFile = Path.GetTempFileName();
 
@@ -165,22 +191,8 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), null, Throws.TypeOf<ArgumentNullException>());
             yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), string.Empty, Throws.TypeOf<ArgumentNullException>());
 
-            
+
             yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), outFile, Throws.TypeOf<IOException>());
-        }
-
-        protected void AreStreamsEquals(Stream stream1, Stream stream2)
-        {
-            byte[] stream1data = new byte[stream1.Length];
-            byte[] stream2data = new byte[stream2.Length];
-
-            int readStream1 = stream1.Read(stream1data, 0, stream1data.Length);
-            Assert.That(readStream1, Is.EqualTo(stream1data.Length));
-
-            int readStream2 = stream2.Read(stream2data, 0, stream2data.Length);
-            Assert.That(readStream2, Is.EqualTo(stream2data.Length));
-
-            Assert.That(stream1data, Is.EqualTo(stream2data));
         }
     }
 }

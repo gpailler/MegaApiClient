@@ -6,6 +6,7 @@ using System.IO;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -34,7 +35,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("webClient"));
         }
 
-        [TestCaseSource("GetInvalidCredentials")]
+        [TestCaseSource(typeof(Login), nameof(GetInvalidCredentials))]
         public void Login_UnsupportedCredentials_Throws(string email, string password)
         {
             Assert.That(
@@ -54,7 +55,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Property<ApiException>(x => x.ApiResultCode).EqualTo(expectedErrorCode));
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void Login_ValidCredentials_Succeeds(string email, string password)
         {
             Assert.That(
@@ -62,7 +63,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Throws.Nothing);
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void LoginTwice_ValidCredentials_Throws(string email, string password)
         {
             this.Client.Login(email, password);
@@ -92,7 +93,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Message.EqualTo("Already logged in"));
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void LogoutAfterLogin_Succeeds(string email, string password)
         {
             this.Client.Login(email, password);
@@ -102,7 +103,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Throws.Nothing);
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void LogoutTwiceAfterLogin_Throws(string email, string password)
         {
             this.Client.Login(email, password);
@@ -133,7 +134,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("authInfos"));
         }
 
-        [TestCaseSource("GetCredentials")]
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
         public void Login_DeserializedAuthInfos_Succeeds(string email, string password)
         {
             var authInfos = MegaApiClient.GenerateAuthInfos(email, password);
@@ -145,7 +146,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Throws.Nothing);
         }
 
-        [TestCaseSource("GetInvalidCredentials")]
+        [TestCaseSource(typeof(Login), nameof(GetInvalidCredentials))]
         public void GenerateAuthInfos_InvalidCredentials_Throws(string email, string password)
         {
             Assert.That(() =>
@@ -155,7 +156,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .Or.With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("password"));
         }
 
-        [TestCase("username@example.com", "password", Result = "{'Email':'username@example.com','Hash':'ObELy57HULI','PasswordAesKey':'ZAM5cl5uvROiXwBSEp98sQ=='}")]
+        [TestCase("username@example.com", "password", ExpectedResult = "{'Email':'username@example.com','Hash':'ObELy57HULI','PasswordAesKey':'ZAM5cl5uvROiXwBSEp98sQ=='}")]
         public string GenerateAuthInfos_ValidCredentials_Succeeds(string email, string password)
         {
             var authInfos = MegaApiClient.GenerateAuthInfos(email, password);
@@ -163,8 +164,8 @@ namespace CG.Web.MegaApiClient.Tests
             return JsonConvert.SerializeObject(authInfos, Formatting.None).Replace('\"', '\'');
         }
 
-        [TestCaseSource("GetMethodsRequiredLogin")]
-        public void Methods_LoginRequired_Throws(Action<MegaApiClient> testMethod)
+        [TestCaseSource(typeof(Login), nameof(GetMethodsRequiredLogin))]
+        public void Methods_LoginRequired_Throws(Action<IMegaApiClient> testMethod)
         {
             Assert.That(
                 () => testMethod(this.Client),
@@ -172,7 +173,7 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Message.EqualTo("Not logged in"));
         }
 
-        private IEnumerable<ITestCaseData> GetInvalidCredentials()
+        private static IEnumerable<ITestCaseData> GetInvalidCredentials()
         {
             yield return new TestCaseData(null, null);
             yield return new TestCaseData(null, "");
@@ -182,7 +183,7 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData("username", null);
         }
 
-        private IEnumerable<ITestCaseData> GetMethodsRequiredLogin()
+        private static IEnumerable<ITestCaseData> GetMethodsRequiredLogin()
         {
             Mock<INode> nodeDirectoryMock = new Mock<INode>();
             nodeDirectoryMock.SetupGet(x => x.Type).Returns(NodeType.Directory);
@@ -197,20 +198,20 @@ namespace CG.Web.MegaApiClient.Tests
             Uri uri = new Uri("http://www.example.com");
             string tempFile = Path.GetTempFileName();
 
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Delete(nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Delete(nodeDirectory, false)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Delete(nodeDirectory, true)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.DownloadFile(nodeFile, "outputFile")));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.DownloadFile(uri, "outputFile")));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.GetNodes()));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.GetNodes(nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.CreateFolder("name", nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Download(nodeFile)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Download(uri)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.GetDownloadLink(nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Move(nodeDirectory, nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Upload(new MemoryStream(new byte[0]), "name", nodeDirectory)));
-            yield return new TestCaseData((Action<MegaApiClient>)(x => x.Upload(tempFile, nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Delete(nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Delete(nodeDirectory, false)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Delete(nodeDirectory, true)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.DownloadFile(nodeFile, "outputFile")));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.DownloadFile(uri, "outputFile")));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.GetNodes()));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.GetNodes(nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.CreateFolder("name", nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Download(nodeFile)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Download(uri)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.GetDownloadLink(nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Move(nodeDirectory, nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.Upload(new MemoryStream(new byte[0]), "name", nodeDirectory)));
+            yield return new TestCaseData((Action<IMegaApiClient>)(x => x.UploadFile(tempFile, nodeDirectory)));
         }
     }
 }

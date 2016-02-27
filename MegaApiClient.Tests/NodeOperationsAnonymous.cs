@@ -6,7 +6,12 @@ namespace CG.Web.MegaApiClient.Tests
     public class NodeOperationsAnonymous : NodeOperations
     {
         public NodeOperationsAnonymous()
-            : base(Options.LoginAnonymous)
+            : this(null)
+        {
+        }
+
+        protected NodeOperationsAnonymous(Options? options)
+            : base(Options.LoginAnonymous | options.GetValueOrDefault())
         {
         }
     }

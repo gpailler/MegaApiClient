@@ -1,207 +1,180 @@
-﻿#region License
-
-/*
-The MIT License (MIT)
-
-Copyright (c) 2015 Gregoire Pailler
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-#endregion
-
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
+  using System;
+  using System.Collections.Generic;
+  using System.Runtime.Serialization;
 
-    #region Base
+  using Newtonsoft.Json;
+  using Newtonsoft.Json.Linq;
 
-    internal abstract class RequestBase
+  #region Base
+
+  internal abstract class RequestBase
+  {
+    protected RequestBase(string action)
     {
-        protected RequestBase(string action)
-        {
-            this.Action = action;
-        }
-
-        [JsonProperty("a")]
-        public string Action { get; private set; }
+      this.Action = action;
     }
 
-    #endregion
+    [JsonProperty("a")]
+    public string Action { get; private set; }
+  }
+
+  #endregion
 
 
-    #region Login
+  #region Login
 
-    internal class LoginRequest : RequestBase
+  internal class LoginRequest : RequestBase
+  {
+    public LoginRequest(string userHandle, string passwordHash)
+      : base("us")
     {
-        public LoginRequest(string userHandle, string passwordHash)
-            : base("us")
-        {
-            this.UserHandle = userHandle;
-            this.PasswordHash = passwordHash;
-        }
-
-        [JsonProperty("user")]
-        public string UserHandle { get; private set; }
-
-        [JsonProperty("uh")]
-        public string PasswordHash { get; private set; }
+      this.UserHandle = userHandle;
+      this.PasswordHash = passwordHash;
     }
 
-    internal class LoginResponse
+    [JsonProperty("user")]
+    public string UserHandle { get; private set; }
+
+    [JsonProperty("uh")]
+    public string PasswordHash { get; private set; }
+  }
+
+  internal class LoginResponse
+  {
+    [JsonProperty("csid")]
+    public string SessionId { get; private set; }
+
+    [JsonProperty("tsid")]
+    public string TemporarySessionId { get; private set; }
+
+    [JsonProperty("privk")]
+    public string PrivateKey { get; private set; }
+
+    [JsonProperty("k")]
+    public string MasterKey { get; private set; }
+  }
+
+  internal class AnonymousLoginRequest : RequestBase
+  {
+    public AnonymousLoginRequest(string masterKey, string temporarySession)
+      : base("up")
     {
-        [JsonProperty("csid")]
-        public string SessionId { get; private set; }
-
-        [JsonProperty("tsid")]
-        public string TemporarySessionId { get; private set; }
-
-        [JsonProperty("privk")]
-        public string PrivateKey { get; private set; }
-
-        [JsonProperty("k")]
-        public string MasterKey { get; private set; }
+      this.MasterKey = masterKey;
+      this.TemporarySession = temporarySession;
     }
 
-    internal class AnonymousLoginRequest : RequestBase
+    [JsonProperty("k")]
+    public string MasterKey { get; set; }
+
+    [JsonProperty("ts")]
+    public string TemporarySession { get; set; }
+  }
+
+  #endregion
+
+
+  #region Nodes
+
+  internal class GetNodesRequest : RequestBase
+  {
+    public GetNodesRequest()
+      : base("f")
     {
-        public AnonymousLoginRequest(string masterKey, string temporarySession)
-            : base("up")
-        {
-            this.MasterKey = masterKey;
-            this.TemporarySession = temporarySession;
-        }
-
-        [JsonProperty("k")]
-        public string MasterKey { get; set; }
-
-        [JsonProperty("ts")]
-        public string TemporarySession { get; set; }
+      this.c = 1;
     }
 
-    #endregion
+    public int c { get; private set; }
+  }
 
+  internal class GetNodesResponse
+  {
+    public Node[] Nodes { get; private set; }
 
-    #region Nodes
+    [JsonProperty("f")]
+    public JRaw NodesSerialized { get; private set; }
 
-    internal class GetNodesRequest : RequestBase
+    [JsonProperty("ok")]
+    public List<SharedKey> SharedKeys { get; private set; }
+
+    [OnDeserialized]
+    public void OnDeserialized(StreamingContext ctx)
     {
-        public GetNodesRequest()
-            : base("f")
-        {
-            this.c = 1;
-        }
+      JsonSerializerSettings settings = new JsonSerializerSettings();
 
-        public int c { get; private set; }
+      // First Nodes deserialization to retrieve all shared keys
+      settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this });
+      JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
+
+      // Deserialize nodes
+      settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this, ctx.Context });
+      this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
     }
 
-    internal class GetNodesResponse
+    internal class SharedKey
     {
-        public Node[] Nodes { get; private set; }
+      public SharedKey(string id, string key)
+      {
+        this.Id = id;
+        this.Key = key;
+      }
 
-        [JsonProperty("f")]
-        public JRaw NodesSerialized { get; private set; }
+      [JsonProperty("h")]
+      public string Id { get; private set; }
 
-        [JsonProperty("ok")]
-        public List<SharedKey> SharedKeys { get; private set; }
+      [JsonProperty("k")]
+      public string Key { get; private set; }
+    }
+  }
 
-        internal class SharedKey
-        {
-            public SharedKey(string id, string key)
-            {
-                this.Id = id;
-                this.Key = key;
-            }
+  #endregion
 
-            [JsonProperty("h")]
-            public string Id { get; private set; }
 
-            [JsonProperty("k")]
-            public string Key { get; private set; }
-        }
+  #region Delete
 
-        [OnDeserialized]
-        public void OnDeserialized(StreamingContext ctx)
-        {
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-
-            // First Nodes deserialization to retrieve all shared keys
-            settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this });
-            JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
-
-            // Deserialize nodes
-            settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this, ctx.Context });
-            this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
-        }
+  internal class DeleteRequest : RequestBase
+  {
+    public DeleteRequest(INode node)
+      : base("d")
+    {
+      this.Node = node.Id;
     }
 
-    #endregion
+    [JsonProperty("n")]
+    public string Node { get; private set; }
+  }
+
+  #endregion
 
 
-    #region Delete
+  #region Link
 
-    internal class DeleteRequest : RequestBase
+  internal class GetDownloadLinkRequest : RequestBase
+  {
+    public GetDownloadLinkRequest(INode node)
+      : base("l")
     {
-        public DeleteRequest(INode node)
-            : base("d")
-        {
-            this.Node = node.Id;
-        }
-
-        [JsonProperty("n")]
-        public string Node { get; private set; }
+      this.Id = node.Id;
     }
 
-    #endregion
+    [JsonProperty("n")]
+    public string Id { get; private set; }
+  }
+
+  #endregion
 
 
-    #region Link
+  #region Create node
 
-    internal class GetDownloadLinkRequest : RequestBase
+  internal class CreateNodeRequest : RequestBase
+  {
+    private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string encryptedKey, byte[] key, string completionHandle)
+      : base("p")
     {
-        public GetDownloadLinkRequest(INode node)
-            : base("l")
-        {
-            this.Id = node.Id;
-        }
-
-        [JsonProperty("n")]
-        public string Id { get; private set; }
-    }
-
-    #endregion
-
-
-    #region Create node
-
-    internal class CreateNodeRequest : RequestBase
-    {
-        private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string encryptedKey, byte[] key, string completionHandle)
-            : base("p")
-        {
-            this.ParentId = parentNode.Id;
-            this.Nodes = new[]
-            {
+      this.ParentId = parentNode.Id;
+      this.Nodes = new[]
+      {
                 new CreateNodeRequestData
                 {
                     Attributes = attributes,
@@ -211,212 +184,212 @@ namespace CG.Web.MegaApiClient
                 }
             };
 
-            this.Share = new ShareData
-            {
-                CompletionHandle = completionHandle,
-                Parent = parentNode,
-                Key = key
-            };
-        }
-
-        public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] fileKey, string completionHandle)
-        {
-            return new CreateNodeRequest(parentNode, NodeType.File, attributes, encryptedkey, fileKey, completionHandle);
-        }
-
-        public static CreateNodeRequest CreateFolderNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] key)
-        {
-            return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, encryptedkey, key, "xxxxxxxx");
-        }
-
-        [JsonProperty("t")]
-        public string ParentId { get; private set; }
-
-        [JsonProperty("cr")]
-        public ShareData Share { get; private set; }
-
-        [JsonConverter(typeof(ShareDataConverter))]
-        internal class ShareData
-        {
-            public string CompletionHandle { get; set; }
-
-            public INode Parent { get; set; }
-
-            public byte[] Key { get; set; }
-        }
-
-        private class ShareDataConverter : JsonConverter
-        {
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-            {
-                ShareData data = value as ShareData;
-                if (data == null)
-                {
-                    throw new ArgumentException("invalid data to serialize");
-                }
-
-                INodeCrypto parent = data.Parent as INodeCrypto;
-                if (parent == null)
-                {
-                    throw new ArgumentException("parent node must implement INodeCrypto");
-                }
-                
-                writer.WriteStartArray();
-
-                if (parent.SharedKey != null)
-                {
-                    writer.WriteStartArray();
-                    writer.WriteValue(data.Parent.Id);
-                    writer.WriteEndArray();
-
-                    writer.WriteStartArray();
-                    writer.WriteValue(data.CompletionHandle);
-                    writer.WriteEndArray();
-
-                    writer.WriteStartArray();
-                    writer.WriteValue(0);
-                    writer.WriteValue(0);
-                    writer.WriteValue(Crypto.EncryptAesEcb(data.Key, parent.SharedKey).ToBase64());
-                    writer.WriteEndArray();
-                }
-
-                writer.WriteEndArray();
-            }
-
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-            {
-                throw new NotImplementedException();
-            }
-
-            public override bool CanConvert(Type objectType)
-            {
-                return objectType == typeof(ShareData);
-            }
-        }
-
-        [JsonProperty("n")]
-        public CreateNodeRequestData[] Nodes { get; private set; }
-
-        internal class CreateNodeRequestData
-        {
-            [JsonProperty("h")]
-            public string CompletionHandle { get; set; }
-
-            [JsonProperty("t")]
-            public NodeType Type { get; set; }
-
-            [JsonProperty("a")]
-            public string Attributes { get; set; }
-
-            [JsonProperty("k")]
-            public string Key { get; set; }
-        }
+      this.Share = new ShareData
+      {
+        CompletionHandle = completionHandle,
+        Parent = parentNode,
+        Key = key
+      };
     }
 
-    #endregion
+    [JsonProperty("t")]
+    public string ParentId { get; private set; }
 
+    [JsonProperty("cr")]
+    public ShareData Share { get; private set; }
 
-    #region UploadRequest
+    [JsonProperty("n")]
+    public CreateNodeRequestData[] Nodes { get; private set; }
 
-    internal class UploadUrlRequest : RequestBase
+    public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] fileKey, string completionHandle)
     {
-        public UploadUrlRequest(long fileSize)
-            : base("u")
+      return new CreateNodeRequest(parentNode, NodeType.File, attributes, encryptedkey, fileKey, completionHandle);
+    }
+
+    public static CreateNodeRequest CreateFolderNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] key)
+    {
+      return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, encryptedkey, key, "xxxxxxxx");
+    }
+
+    internal class CreateNodeRequestData
+    {
+      [JsonProperty("h")]
+      public string CompletionHandle { get; set; }
+
+      [JsonProperty("t")]
+      public NodeType Type { get; set; }
+
+      [JsonProperty("a")]
+      public string Attributes { get; set; }
+
+      [JsonProperty("k")]
+      public string Key { get; set; }
+    }
+
+    [JsonConverter(typeof(ShareDataConverter))]
+    internal class ShareData
+    {
+      public string CompletionHandle { get; set; }
+
+      public INode Parent { get; set; }
+
+      public byte[] Key { get; set; }
+    }
+
+    private class ShareDataConverter : JsonConverter
+    {
+      public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+      {
+        ShareData data = value as ShareData;
+        if (data == null)
         {
-            this.Size = fileSize;
+          throw new ArgumentException("invalid data to serialize");
         }
 
-        [JsonProperty("s")]
-        public long Size { get; private set; }
-    }
-
-    internal class UploadUrlResponse
-    {
-        [JsonProperty("p")]
-        public string Url { get; private set; }
-    }
-
-    #endregion
-
-
-    #region DownloadRequest
-
-    internal class DownloadUrlRequest : RequestBase
-    {
-        public DownloadUrlRequest(INode node)
-            : base("g")
+        INodeCrypto parent = data.Parent as INodeCrypto;
+        if (parent == null)
         {
-            this.Id = node.Id;
+          throw new ArgumentException("parent node must implement INodeCrypto");
         }
 
-        public int g { get { return 1; } }
+        writer.WriteStartArray();
 
-        [JsonProperty("n")]
-        public string Id { get; private set; }
-    }
-
-    internal class DownloadUrlRequestFromId : RequestBase
-    {
-        public DownloadUrlRequestFromId(string id)
-            : base("g")
+        if (parent.SharedKey != null)
         {
-            this.Id = id;
+          writer.WriteStartArray();
+          writer.WriteValue(data.Parent.Id);
+          writer.WriteEndArray();
+
+          writer.WriteStartArray();
+          writer.WriteValue(data.CompletionHandle);
+          writer.WriteEndArray();
+
+          writer.WriteStartArray();
+          writer.WriteValue(0);
+          writer.WriteValue(0);
+          writer.WriteValue(Crypto.EncryptAesEcb(data.Key, parent.SharedKey).ToBase64());
+          writer.WriteEndArray();
         }
 
-        public int g { get { return 1; } }
+        writer.WriteEndArray();
+      }
 
-        [JsonProperty("p")]
-        public string Id { get; private set; }
+      public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+      {
+        throw new NotImplementedException();
+      }
+
+      public override bool CanConvert(Type objectType)
+      {
+        return objectType == typeof(ShareData);
+      }
     }
+  }
 
-    internal class DownloadUrlResponse
+  #endregion
+
+
+  #region UploadRequest
+
+  internal class UploadUrlRequest : RequestBase
+  {
+    public UploadUrlRequest(long fileSize)
+      : base("u")
     {
-        [JsonProperty("g")]
-        public string Url { get; private set; }
-
-        [JsonProperty("s")]
-        public long Size { get; private set; }
-
-        [JsonProperty("at")]
-        private string SerializedAttributes { get; set; }
+      this.Size = fileSize;
     }
 
-    #endregion
+    [JsonProperty("s")]
+    public long Size { get; private set; }
+  }
+
+  internal class UploadUrlResponse
+  {
+    [JsonProperty("p")]
+    public string Url { get; private set; }
+  }
+
+  #endregion
 
 
-    #region Move
+  #region DownloadRequest
 
-    internal class MoveRequest : RequestBase
+  internal class DownloadUrlRequest : RequestBase
+  {
+    public DownloadUrlRequest(INode node)
+      : base("g")
     {
-        public MoveRequest(INode node, INode destinationParentNode)
-            : base("m")
-        {
-            this.Id = node.Id;
-            this.DestinationParentId = destinationParentNode.Id;
-        }
-
-        [JsonProperty("n")]
-        public string Id { get; private set; }
-
-        [JsonProperty("t")]
-        public string DestinationParentId { get; private set; }
+      this.Id = node.Id;
     }
 
-    #endregion
+    public int g { get { return 1; } }
 
+    [JsonProperty("n")]
+    public string Id { get; private set; }
+  }
 
-    #region Attributes
-
-    internal class Attributes
+  internal class DownloadUrlRequestFromId : RequestBase
+  {
+    public DownloadUrlRequestFromId(string id)
+      : base("g")
     {
-        public Attributes(string name)
-        {
-            this.Name = name;
-        }
-
-        [JsonProperty("n")]
-        public string Name { get; set; }
+      this.Id = id;
     }
 
-    #endregion
+    public int g { get { return 1; } }
+
+    [JsonProperty("p")]
+    public string Id { get; private set; }
+  }
+
+  internal class DownloadUrlResponse
+  {
+    [JsonProperty("g")]
+    public string Url { get; private set; }
+
+    [JsonProperty("s")]
+    public long Size { get; private set; }
+
+    [JsonProperty("at")]
+    public string SerializedAttributes { get; set; }
+  }
+
+  #endregion
+
+
+  #region Move
+
+  internal class MoveRequest : RequestBase
+  {
+    public MoveRequest(INode node, INode destinationParentNode)
+      : base("m")
+    {
+      this.Id = node.Id;
+      this.DestinationParentId = destinationParentNode.Id;
+    }
+
+    [JsonProperty("n")]
+    public string Id { get; private set; }
+
+    [JsonProperty("t")]
+    public string DestinationParentId { get; private set; }
+  }
+
+  #endregion
+
+
+  #region Attributes
+
+  internal class Attributes
+  {
+    public Attributes(string name)
+    {
+      this.Name = name;
+    }
+
+    [JsonProperty("n")]
+    public string Name { get; set; }
+  }
+
+  #endregion
 }

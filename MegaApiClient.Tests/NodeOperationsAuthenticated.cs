@@ -8,7 +8,12 @@ namespace CG.Web.MegaApiClient.Tests
     public class NodeOperationsAuthenticated : NodeOperations
     {
         public NodeOperationsAuthenticated()
-            : base(Options.LoginAuthenticated | Options.Clean)
+            : this(null)
+        {
+        }
+
+        protected NodeOperationsAuthenticated(Options? options)
+            : base(Options.LoginAuthenticated | Options.Clean | options.GetValueOrDefault())
         {
         }
 

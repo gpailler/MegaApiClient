@@ -1,43 +1,46 @@
-using System;
-
 namespace CG.Web.MegaApiClient
 {
-    public interface INode : IEquatable<INode>
-    {
-        string Id { get; }
+  using System;
 
-        string ParentId { get; }
+  public interface INodePublic
+  {
+    long Size { get; }
 
-        string Owner { get; }
+    string Name { get; }
+  }
 
-        NodeType Type { get; }
+  public interface INode : INodePublic, IEquatable<INode>
+  {
+    string Id { get; }
 
-        long Size { get; }
+    string ParentId { get; }
 
-        string Name { get; }
+    string Owner { get; }
 
-        DateTime LastModificationDate { get; }
-    }
+    NodeType Type { get; }
 
-    internal interface INodeCrypto
-    {
-        byte[] Key { get; }
+    DateTime LastModificationDate { get; }
+  }
 
-        byte[] SharedKey { get; }
+  internal interface INodeCrypto
+  {
+    byte[] Key { get; }
 
-        byte[] Iv { get; }
+    byte[] SharedKey { get; }
 
-        byte[] MetaMac { get; }
+    byte[] Iv { get; }
 
-        byte[] FullKey { get; }
-    }
+    byte[] MetaMac { get; }
 
-    public enum NodeType
-    {
-        File = 0,
-        Directory,
-        Root,
-        Inbox,
-        Trash
-    }
+    byte[] FullKey { get; }
+  }
+
+  public enum NodeType
+  {
+    File = 0,
+    Directory,
+    Root,
+    Inbox,
+    Trash
+  }
 }

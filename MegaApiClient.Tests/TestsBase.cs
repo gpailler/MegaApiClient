@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+
 using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -10,6 +11,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
+        private const int WebTimeout = 30000;
 
         /*
         Storage layout
@@ -66,7 +68,7 @@ namespace CG.Web.MegaApiClient.Tests
 
         private readonly Options _options;
 
-        protected MegaApiClient Client;
+        protected IMegaApiClient Client;
 
         [Flags]
         protected enum Options
@@ -75,7 +77,8 @@ namespace CG.Web.MegaApiClient.Tests
             Login = 1 << 0,
             LoginAuthenticated = Login | 1 << 1,
             LoginAnonymous = Login | 1 << 2,
-            Clean =  1 << 3
+            Clean =  1 << 3,
+            AsyncWrapper = 1 << 4
         }
 
         protected TestsBase(Options options)
@@ -86,7 +89,12 @@ namespace CG.Web.MegaApiClient.Tests
         [SetUp]
         public void Setup()
         {
-            this.Client = new MegaApiClient(new PollyWebClient());
+            this.Client = new MegaApiClient(new WebClient(WebTimeout));
+            if (this._options.HasFlag(Options.AsyncWrapper))
+            {
+                this.Client = new MegaApiClientAsyncWrapper(this.Client);
+            }
+
             if (this._options.HasFlag(Options.LoginAuthenticated))
             {
                 this.Client.Login(Username, Password);
@@ -154,7 +162,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        protected IEnumerable<ITestCaseData> GetCredentials()
+        protected static IEnumerable<ITestCaseData> GetCredentials()
         {
             yield return new TestCaseData(Username, Password);
         }
