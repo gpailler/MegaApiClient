@@ -8,8 +8,11 @@ MegaApiClient
 
 C# library to access http://mega.co.nz API
 
-This library is based on highly valuable articles from http://julien-marchand.fr
 
+Installation:
+---
+MegaApiClient is available on [NuGet](https://www.nuget.org/packages/MegaApiClient)
+or from the [releases](https://github.com/gpailler/MegaApiClient/releases) section   (NewtonSoft.Json 6.0.8 or higher is required)
 
 
 Usage example:
@@ -81,7 +84,3 @@ Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress);
 Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress);
 Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress);
 ```
-
-Dependencies
----
-This library requires NewtonSoft.Json 6.0.8 or higher
