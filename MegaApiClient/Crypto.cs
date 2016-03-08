@@ -129,7 +129,11 @@
       try
       {
         string json = decryptedAttributes.ToUTF8String().Substring(4);
-        json = json.Substring(0, json.IndexOf('\0'));
+        int nullTerminationIndex = json.IndexOf('\0');
+        if (nullTerminationIndex != -1)
+        {
+          json = json.Substring(0, nullTerminationIndex);
+        }
 
         return JsonConvert.DeserializeObject<Attributes>(json);
       }
