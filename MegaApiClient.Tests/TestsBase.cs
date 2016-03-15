@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 
@@ -107,7 +107,20 @@ namespace CG.Web.MegaApiClient.Tests
 
             if (this._options.HasFlag(Options.Clean))
             {
-                this.SanitizeStorage();
+                try
+                {
+                    this.SanitizeStorage();
+                }
+                catch (ApiException ex)
+                {
+                    if (ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
+                    {
+                        Console.WriteLine("Second login attempt");
+                        Thread.Sleep(500);
+                        this.Client.Logout();
+                        this.Client.Login(Username, Password);
+                    }
+                }
             }
         }
 
