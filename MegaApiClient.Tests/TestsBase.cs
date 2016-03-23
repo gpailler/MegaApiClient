@@ -115,6 +115,18 @@ namespace CG.Web.MegaApiClient.Tests
                 {
                     if (ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
                     {
+                        Console.WriteLine(ex.Message);
+                        Console.WriteLine("Second login attempt");
+                        Thread.Sleep(500);
+                        this.Client.Logout();
+                        this.Client.Login(Username, Password);
+                    }
+                }
+                catch (NotSupportedException ex)
+                {
+                    if (this._options.HasFlag(Options.LoginAuthenticated))
+                    {
+                        Console.WriteLine(ex.Message);
                         Console.WriteLine("Second login attempt");
                         Thread.Sleep(500);
                         this.Client.Logout();
