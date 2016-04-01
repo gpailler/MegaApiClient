@@ -1,6 +1,7 @@
 ﻿namespace CG.Web.MegaApiClient
 {
   using System;
+  using System.IO;
   using System.Text;
 
   internal static class Extensions
@@ -61,6 +62,18 @@
       Array.Copy(data, 2, result, 0, result.Length);
 
       return new BigInteger(result);
+    }
+
+    public static void CopyTo(this Stream inputStream, Stream outputStream, int bufferSize)
+    {
+      // For .Net 3.5
+      // From http://referencesource.microsoft.com/#mscorlib/system/io/stream.cs,98ac7cf3acb04bb1
+      byte[] buffer = new byte[bufferSize];
+      int read;
+      while ((read = inputStream.Read(buffer, 0, buffer.Length)) != 0)
+      {
+        outputStream.Write(buffer, 0, read);
+      }
     }
   }
 }

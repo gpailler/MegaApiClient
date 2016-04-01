@@ -16,9 +16,10 @@
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    internal const uint BufferSize = 8192;
     private const int ApiRequestAttempts = 10;
     private const int ApiRequestDelay = 200;
+
+    public static int BufferSize = 8192;
 
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
     private static readonly Uri BaseUri = new Uri("https://mega.co.nz");
@@ -767,12 +768,7 @@
     {
       using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
       {
-        byte[] buffer = new byte[BufferSize];
-        int len;
-        while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
-        {
-          fs.Write(buffer, 0, len);
-        }
+        stream.CopyTo(fs, BufferSize);
       }
     }
 
