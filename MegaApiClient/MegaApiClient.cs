@@ -575,7 +575,29 @@
 
       using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
       {
-        string completionHandle = this.webClient.PostRequestRaw(new Uri(uploadResponse.Url), encryptedStream);
+        string completionHandle = null;
+        for (int i = 0; i < encryptedStream.ChunksPositions.Length; i++)
+        {
+          long currentChunkPosition = encryptedStream.ChunksPositions[i];
+          long nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
+            ? encryptedStream.Length
+            : encryptedStream.ChunksPositions[i + 1];
+
+          int chunkSize = (int)(nextChunkPosition - currentChunkPosition);
+          byte[] chunkBuffer = new byte[chunkSize];
+          encryptedStream.Read(chunkBuffer, 0, chunkSize);
+          using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
+          {
+            Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[i]);
+            string result = this.webClient.PostRequestRaw(uri, chunkStream);
+            if (result.StartsWith("-"))
+            {
+              throw new UploadException(result);
+            }
+
+            completionHandle = result;
+          }
+        }
 
         // Encrypt attributes
         byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name), encryptedStream.FileKey);

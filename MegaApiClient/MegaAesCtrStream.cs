@@ -108,6 +108,11 @@
       Decrypt
     }
 
+    public long[] ChunksPositions
+    {
+      get { return this.chunksPositions; }
+    }
+
     public override bool CanRead
     {
       get { return true; }
@@ -154,7 +159,7 @@
       for (long pos = this.position; pos < Math.Min(this.position + count, this.streamLength); pos += 16)
       {
         // We are on a chunk bondary
-        if (this.chunksPositions.Any(chunk => chunk == pos) || pos == 0)
+        if (this.chunksPositions.Any(chunk => chunk == pos))
         {
           if (pos != 0)
           {
@@ -271,6 +276,7 @@
     private long[] GetChunksPositions(long size)
     {
       List<long> chunks = new List<long>();
+      chunks.Add(0);
 
       long chunkStartPosition = 0;
       for (int idx = 1; (idx <= 8) && (chunkStartPosition < (size - (idx * 131072))); idx++)
