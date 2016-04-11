@@ -3,6 +3,8 @@ branches:
   only:
   - develop
   - master
+  - /feature-.*/
+  - /bug-.*/
 skip_tags: true
 configuration: Release
 platform: Any CPU

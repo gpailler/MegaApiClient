@@ -16,9 +16,10 @@
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    internal const uint BufferSize = 8192;
     private const int ApiRequestAttempts = 10;
     private const int ApiRequestDelay = 200;
+
+    public static int BufferSize = 8192;
 
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
     private static readonly Uri BaseUri = new Uri("https://mega.co.nz");
@@ -574,7 +575,29 @@
 
       using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
       {
-        string completionHandle = this.webClient.PostRequestRaw(new Uri(uploadResponse.Url), encryptedStream);
+        string completionHandle = null;
+        for (int i = 0; i < encryptedStream.ChunksPositions.Length; i++)
+        {
+          long currentChunkPosition = encryptedStream.ChunksPositions[i];
+          long nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
+            ? encryptedStream.Length
+            : encryptedStream.ChunksPositions[i + 1];
+
+          int chunkSize = (int)(nextChunkPosition - currentChunkPosition);
+          byte[] chunkBuffer = new byte[chunkSize];
+          encryptedStream.Read(chunkBuffer, 0, chunkSize);
+          using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
+          {
+            Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[i]);
+            string result = this.webClient.PostRequestRaw(uri, chunkStream);
+            if (result.StartsWith("-"))
+            {
+              throw new UploadException(result);
+            }
+
+            completionHandle = result;
+          }
+        }
 
         // Encrypt attributes
         byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name), encryptedStream.FileKey);
@@ -767,12 +790,7 @@
     {
       using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
       {
-        byte[] buffer = new byte[BufferSize];
-        int len;
-        while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
-        {
-          fs.Write(buffer, 0, len);
-        }
+        stream.CopyTo(fs, BufferSize);
       }
     }
 
