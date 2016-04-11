@@ -12,7 +12,8 @@ C# library to access http://mega.co.nz API
 Installation:
 ---
 MegaApiClient is available on [NuGet](https://www.nuget.org/packages/MegaApiClient)
-or from the [releases](https://github.com/gpailler/MegaApiClient/releases) section (NewtonSoft.Json 6.0.8 or higher is required)
+or from the [releases](https://github.com/gpailler/MegaApiClient/releases) section
+(NewtonSoft.Json 6.0.8 or higher is required)
 
 
 Usage example:
@@ -42,7 +43,8 @@ void Login(AuthInfos authInfos)
 void LoginAnonymous()
 void Logout()
 
-// A AuthInfos object is a JSon serializable object containing encrypted password and key. It allows to store encrypted credentials in your application settings instead login and password
+// A AuthInfos object is a JSon serializable object containing encrypted password and key.
+// It allows to store encrypted credentials in your application settings instead login and password
 static AuthInfos GenerateAuthInfos(string email, string password)
 
 // Nodes management
@@ -67,8 +69,8 @@ INode Upload(Stream stream, string name, INode parent)
 
 Async methods and download/upload progression:
 ---
-- If your application targets .Net 4.5 or higher, async versions of the above methods are available (suffixed by `Async`. For example `Task LoginAsync(string email, string password)`. The Download/Upload methods have an additional `IProgress<double>` argument to be notified about operation progression.
-- If your application targets .Net 3.5 or 4.0, you can retrieve Download/Upload progression by implementing your own stream. You have an example on the [wiki](wiki/Retrieve-progression-of-an-upload-or-download).
+- If your application targets .Net 4.5 or higher, async versions of the above methods are available (suffixed by `Async`. For example `Task LoginAsync(string email, string password)`). The Download/Upload methods have an additional `IProgress<double>` argument to be notified about operation progression.
+- If your application targets .Net 3.5 or 4.0, you can retrieve Download/Upload progression by implementing your own stream. You can find an example on the [wiki](../../wiki/Retrieve-progression-of-an-upload-or-download).
 
 Customization
 ---
@@ -76,8 +78,8 @@ Customization
 - The default download/upload buffer size is set to 8192 bytes and can be changed by editing `MegaApiClient.BufferSize` static variable. This can improve transfers if you have high bandwidth.
 - For .Net 4.5 and higher, the progression in Download/Upload methods is reported on each 50KB downloaded or uploaded block. This can  be changed by editing `MegaApiClient.ReportProgressChunkSize` static variable.
 
-Donations
+Donations :gift:
 ---
-If you like this project, but don't know anything about PR, Git or cryptography, don't worry! You can still contribute by a donation ;-)
+If you like this project, but don't know anything about PR, Git or cryptography, don't worry! You can still contribute by a donation :smile:
 
 https://www.paypal.me/gpailler
