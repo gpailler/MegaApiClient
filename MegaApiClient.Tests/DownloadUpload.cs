@@ -113,6 +113,7 @@ namespace CG.Web.MegaApiClient.Tests
         }
 
         [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
+        [Retry(MaxRetry)]
         public void DownloadLink_ToFile_Succeeds(string link, string expectedResultFile)
         {
             string outFile = Path.GetTempFileName();

@@ -13,6 +13,8 @@ namespace CG.Web.MegaApiClient.Tests
         private const string Password = "megaapiclient";
         private const int WebTimeout = 30000;
 
+        protected const int MaxRetry = 5;
+
         /*
         Storage layout
 
@@ -107,32 +109,7 @@ namespace CG.Web.MegaApiClient.Tests
 
             if (this._options.HasFlag(Options.Clean))
             {
-                try
-                {
-                    this.SanitizeStorage();
-                }
-                catch (ApiException ex)
-                {
-                    if (ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
-                    {
-                        Console.WriteLine(ex.Message);
-                        Console.WriteLine("Second login attempt");
-                        Thread.Sleep(500);
-                        this.Client.Logout();
-                        this.Client.Login(Username, Password);
-                    }
-                }
-                catch (NotSupportedException ex)
-                {
-                    if (this._options.HasFlag(Options.LoginAuthenticated))
-                    {
-                        Console.WriteLine(ex.Message);
-                        Console.WriteLine("Second login attempt");
-                        Thread.Sleep(500);
-                        this.Client.Logout();
-                        this.Client.Login(Username, Password);
-                    }
-                }
+                this.ExecuteWithRetry(this.SanitizeStorage, MaxRetry);
             }
         }
 
@@ -226,6 +203,53 @@ namespace CG.Web.MegaApiClient.Tests
                 .Concat(this._permanentRemoteFoldersNodes)
                 .Concat(this._permanentRemoteFilesNodes)
                 .Any(x => x == node.Id);
+        }
+
+        private void ExecuteWithRetry(Action action, int maxRetry)
+        {
+            Exception lastException = null;
+            int remainingRetry = maxRetry;
+            while (remainingRetry > 0)
+            {
+                try
+                {
+                    action();
+                    return;
+                }
+                catch (ApiException ex)
+                {
+                    lastException = ex;
+                    if (ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
+                    {
+                        this.ReconnectOnException(ex, maxRetry);
+                    }
+                }
+                catch (NotSupportedException ex)
+                {
+                    lastException = ex;
+                    if (this._options.HasFlag(Options.LoginAuthenticated))
+                    {
+                        this.ReconnectOnException(ex, maxRetry);
+                    }
+                }
+                catch (Exception e)
+                {
+                    lastException = e;
+                }
+
+                remainingRetry--;
+            }
+
+            throw lastException;
+        }
+
+        private void ReconnectOnException(Exception exception, int remainingRetry)
+        {
+            Console.WriteLine(exception.Message);
+            Console.WriteLine("New login attempt (remaining retry: {0}", remainingRetry);
+            Thread.Sleep(500);
+            this.Client.Logout();
+            this.Client.Login(Username, Password);
         }
     }
 }
