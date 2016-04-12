@@ -53,6 +53,7 @@ namespace CG.Web.MegaApiClient.Tests
         [TestCase(20000)] // 1 chunk
         [TestCase(200000)] // 2 chunks
         [TestCase(2000000)] // 3 chunks
+        [Retry(MaxRetry)]
         public void UploadStream_ValidateContent_Succeeds(int dataSize)
         {
             byte[] uploadedData = new byte[dataSize];

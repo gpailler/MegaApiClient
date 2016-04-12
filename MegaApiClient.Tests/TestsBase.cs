@@ -11,7 +11,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
-        private const int WebTimeout = 30000;
+        private const int WebTimeout = 60000;
 
         protected const int MaxRetry = 5;
 
@@ -246,7 +246,7 @@ namespace CG.Web.MegaApiClient.Tests
         private void ReconnectOnException(Exception exception, int remainingRetry)
         {
             Console.WriteLine(exception.Message);
-            Console.WriteLine("New login attempt (remaining retry: {0}", remainingRetry);
+            Console.WriteLine("New login attempt (remaining retry: {0})", remainingRetry);
             Thread.Sleep(500);
             this.Client.Logout();
             this.Client.Login(Username, Password);
