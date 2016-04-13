@@ -588,11 +588,27 @@
           encryptedStream.Read(chunkBuffer, 0, chunkSize);
           using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
           {
-            Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[i]);
-            string result = this.webClient.PostRequestRaw(uri, chunkStream);
-            if (result.StartsWith("-"))
+            int remainingRetry = ApiRequestAttempts;
+            string result = null;
+            UploadException lastException = null;
+            while (remainingRetry-- > 0)
             {
-              throw new UploadException(result);
+                Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[i]);
+                result = this.webClient.PostRequestRaw(uri, chunkStream);
+                if (result.StartsWith("-"))
+                {
+                    lastException = new UploadException(result);
+                    Thread.Sleep(ApiRequestDelay);
+                    continue;
+                }
+
+                lastException = null;
+                break;
+            }
+
+            if (lastException != null)
+            {
+                throw lastException;
             }
 
             completionHandle = result;
