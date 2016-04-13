@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using Polly;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -91,7 +91,7 @@ namespace CG.Web.MegaApiClient.Tests
         [SetUp]
         public void Setup()
         {
-            this.Client = new MegaApiClient(new WebClient(WebTimeout));
+            this.Client = new MegaApiClient(new PollyWebClient(new WebClient(WebTimeout), MaxRetry));
             if (this._options.HasFlag(Options.AsyncWrapper))
             {
                 this.Client = new MegaApiClientAsyncWrapper(this.Client);
@@ -109,7 +109,11 @@ namespace CG.Web.MegaApiClient.Tests
 
             if (this._options.HasFlag(Options.Clean))
             {
-                this.ExecuteWithRetry(this.SanitizeStorage, MaxRetry);
+                Policy
+                    .Handle<ApiException>(ex => ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
+                    .Or<NotSupportedException>(ex => this._options.HasFlag(Options.LoginAuthenticated))
+                    .WaitAndRetry(MaxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), this.ReconnectOnException)
+                    .Execute(this.SanitizeStorage);
             }
         }
 
@@ -205,49 +209,11 @@ namespace CG.Web.MegaApiClient.Tests
                 .Any(x => x == node.Id);
         }
 
-        private void ExecuteWithRetry(Action action, int maxRetry)
-        {
-            Exception lastException = null;
-            int remainingRetry = maxRetry;
-            while (remainingRetry > 0)
-            {
-                try
-                {
-                    action();
-                    return;
-                }
-                catch (ApiException ex)
-                {
-                    lastException = ex;
-                    if (ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
-                    {
-                        this.ReconnectOnException(ex, maxRetry);
-                    }
-                }
-                catch (NotSupportedException ex)
-                {
-                    lastException = ex;
-                    if (this._options.HasFlag(Options.LoginAuthenticated))
-                    {
-                        this.ReconnectOnException(ex, maxRetry);
-                    }
-                }
-                catch (Exception e)
-                {
-                    lastException = e;
-                }
-
-                remainingRetry--;
-            }
-
-            throw lastException;
-        }
-
-        private void ReconnectOnException(Exception exception, int remainingRetry)
+        private void ReconnectOnException(Exception exception, TimeSpan waitDelay)
         {
             Console.WriteLine(exception.Message);
-            Console.WriteLine("New login attempt (remaining retry: {0})", remainingRetry);
-            Thread.Sleep(500);
+            Console.WriteLine("New login attempt (wait delay: {0})", waitDelay.TotalSeconds);
+
             this.Client.Logout();
             this.Client.Login(Username, Password);
         }
