@@ -78,7 +78,7 @@ namespace CG.Web.MegaApiClient.Tests
                 constraint);
         }
 
-        [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
+        [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
         public void DownloadLink_ToStream_Succeeds(string link, string expectedResultFile)
         {
             using (Stream stream = new FileStream(expectedResultFile, FileMode.Open))
@@ -87,7 +87,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
+        [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
         public void Download_ValidateStream_Succeeds(string link)
         {
             using (Stream stream = this.Client.Download(new Uri(link)))
@@ -113,7 +113,7 @@ namespace CG.Web.MegaApiClient.Tests
                 constraint);
         }
 
-        [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
+        [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
         [Retry(MaxRetry)]
         public void DownloadLink_ToFile_Succeeds(string link, string expectedResultFile)
         {
@@ -175,9 +175,9 @@ namespace CG.Web.MegaApiClient.Tests
         {
             yield return new TestCaseData(null, Throws.TypeOf<ArgumentNullException>());
             yield return new TestCaseData(new Uri("http://www.example.com"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!"), Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz"), Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL"), Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL!"), Throws.TypeOf<ArgumentException>());
         }
 
         private static IEnumerable<ITestCaseData> GetDownloadLinkToFileInvalidParameter()
@@ -187,11 +187,11 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(null, null, Throws.TypeOf<ArgumentNullException>());
             yield return new TestCaseData(null, outFile, Throws.TypeOf<ArgumentNullException>());
             yield return new TestCaseData(new Uri("http://www.example.com"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), string.Empty, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("https://mega.nz"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL!"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), string.Empty, Throws.TypeOf<ArgumentNullException>());
 
 
             yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), outFile, Throws.TypeOf<IOException>());
