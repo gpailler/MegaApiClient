@@ -14,6 +14,8 @@ namespace CG.Web.MegaApiClient
 
     void Logout();
 
+    IAccountInformation GetAccountInformation();
+
     IEnumerable<INode> GetNodes();
 
     IEnumerable<INode> GetNodes(INode parent);

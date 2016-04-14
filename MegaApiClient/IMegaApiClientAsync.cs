@@ -15,6 +15,8 @@ namespace CG.Web.MegaApiClient
 
     Task LogoutAsync();
 
+    Task<IAccountInformation> GetAccountInformationAsync();
+
     Task<IEnumerable<INode>> GetNodesAsync();
 
     Task<IEnumerable<INode>> GetNodesAsync(INode parent);

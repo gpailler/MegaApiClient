@@ -40,6 +40,11 @@ namespace CG.Web.MegaApiClient.Tests
             this.UnwrapException(() => this.client.LogoutAsync().Wait());
         }
 
+        public IAccountInformation GetAccountInformation()
+        {
+          return this.UnwrapException(() => this.client.GetAccountInformationAsync().Result);
+        }
+
         public IEnumerable<INode> GetNodes()
         {
             return this.UnwrapException(() => this.client.GetNodesAsync().Result);
@@ -129,6 +134,11 @@ namespace CG.Web.MegaApiClient.Tests
         public Task LogoutAsync()
         {
             throw new NotImplementedException();
+        }
+
+        public Task<IAccountInformation> GetAccountInformationAsync()
+        {
+          throw new NotImplementedException();
         }
 
         public Task<IEnumerable<INode>> GetNodesAsync()

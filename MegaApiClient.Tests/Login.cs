@@ -173,6 +173,39 @@ namespace CG.Web.MegaApiClient.Tests
                 .With.Message.EqualTo("Not logged in"));
         }
 
+        [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]
+        public void GetAccountInformation_AuthenticatedUser_Succeeds(string email, string password)
+        {
+            this.Client.Login(email, password);
+
+            IAccountInformation accountInformation = this.Client.GetAccountInformation();
+
+            Assert.That(accountInformation, Is.Not.Null
+                .And.Property<IAccountInformation>(x => x.TotalQuota).EqualTo(53687091200)
+                .And.Property<IAccountInformation>(x => x.UsedQuota).EqualTo(523265));
+        }
+
+        [Test]
+        public void GetAccountInformation_AnonymousUser_Succeeds()
+        {
+            this.Client.LoginAnonymous();
+
+            IAccountInformation accountInformation = this.Client.GetAccountInformation();
+
+            Assert.That(accountInformation, Is.Not.Null
+                .And.Property<IAccountInformation>(x => x.TotalQuota).EqualTo(53687091200)
+                .And.Property<IAccountInformation>(x => x.UsedQuota).EqualTo(0));
+        }
+
+        [Test]
+        public void GetAccountInformation_NotLoggedIn_Throws()
+        {
+            Assert.That(
+                () => this.Client.GetAccountInformation(),
+                Throws.TypeOf<NotSupportedException>()
+                .With.Message.EqualTo("Not logged in"));
+        }
+
         private static IEnumerable<ITestCaseData> GetInvalidCredentials()
         {
             yield return new TestCaseData(null, null);

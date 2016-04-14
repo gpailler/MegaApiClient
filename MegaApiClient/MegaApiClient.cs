@@ -197,6 +197,20 @@
     }
 
     /// <summary>
+    /// Retrieve account (quota) information
+    /// </summary>
+    /// <returns>An object containing account information</returns>
+    /// <exception cref="NotSupportedException">Not logged in</exception>
+    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    public IAccountInformation GetAccountInformation()
+    {
+      this.EnsureLoggedIn();
+
+      AccountInformationRequest request = new AccountInformationRequest();
+      return this.Request<AccountInformationResponse>(request);
+    }
+
+    /// <summary>
     /// Retrieve all filesystem nodes
     /// </summary>
     /// <returns>Flat representation of all the filesystem nodes</returns>
