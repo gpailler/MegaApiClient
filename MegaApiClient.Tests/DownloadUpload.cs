@@ -114,9 +114,10 @@ namespace CG.Web.MegaApiClient.Tests
         }
 
         [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
-        [Retry(MaxRetry)]
         public void DownloadLink_ToFile_Succeeds(string link, string expectedResultFile)
         {
+            this.IgnoreTestIfAppVeyorCi();
+            
             string outFile = Path.GetTempFileName();
             File.Delete(outFile);
             this.Client.DownloadFile(new Uri(link), outFile);
