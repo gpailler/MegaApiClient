@@ -138,12 +138,8 @@
       byte[] encryptedSid = response.SessionId.FromBase64();
       byte[] sid = Crypto.RsaDecrypt(encryptedSid.FromMPINumber(), rsaPrivateKeyComponents[0], rsaPrivateKeyComponents[1], rsaPrivateKeyComponents[2]);
 
-      // Session id contains only the first 43 decrypted bytes
-      this.sessionId = sid.CopySubArray(43).ToBase64();
-
-      Console.WriteLine("Response sessionId: {0}", response.SessionId);
-      Console.WriteLine("Decrypted sessionId: {0}", sid.ToBase64());
-      Console.WriteLine("Final sessionId: {0}", this.sessionId);
+      // Session id contains only the first 58 base64 characters
+      this.sessionId = sid.ToBase64().Substring(0, 58);
     }
 
     /// <summary>
@@ -185,8 +181,6 @@
       LoginResponse response2 = this.Request<LoginResponse>(request2);
 
       this.sessionId = response2.TemporarySessionId;
-
-      Console.WriteLine("Response temporarySessionId: {0}", response2.TemporarySessionId);
     }
 
     /// <summary>
