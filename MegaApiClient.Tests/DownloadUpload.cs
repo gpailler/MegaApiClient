@@ -89,8 +89,6 @@ namespace CG.Web.MegaApiClient.Tests
         [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
         public void Download_ValidateStream_Succeeds(string link)
         {
-            this.IgnoreTestIfAppVeyorCi();
-
             using (Stream stream = this.Client.Download(new Uri(link)))
             {
                 Assert.That(
