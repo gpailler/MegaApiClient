@@ -765,12 +765,6 @@
             continue;
           }
 
-          if (apiCode == ApiResultCode.BadSessionId && this.authInfos != null)
-          {
-            this.Logout();
-            this.Login(this.authInfos);
-          }
-
           if (apiCode != ApiResultCode.Ok)
           {
             throw new ApiException(apiCode);
