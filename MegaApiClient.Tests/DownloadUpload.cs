@@ -81,6 +81,8 @@ namespace CG.Web.MegaApiClient.Tests
         [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
         public void DownloadLink_ToStream_Succeeds(string link, string expectedResultFile)
         {
+            this.IgnoreTestIfAppVeyorCi();
+
             using (Stream stream = new FileStream(expectedResultFile, FileMode.Open))
             {
                 this.AreStreamsEquivalent(this.Client.Download(new Uri(link)), stream);
@@ -90,6 +92,8 @@ namespace CG.Web.MegaApiClient.Tests
         [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
         public void Download_ValidateStream_Succeeds(string link)
         {
+            this.IgnoreTestIfAppVeyorCi();
+
             using (Stream stream = this.Client.Download(new Uri(link)))
             {
                 Assert.That(
@@ -117,7 +121,7 @@ namespace CG.Web.MegaApiClient.Tests
         public void DownloadLink_ToFile_Succeeds(string link, string expectedResultFile)
         {
             this.IgnoreTestIfAppVeyorCi();
-            
+
             string outFile = Path.GetTempFileName();
             File.Delete(outFile);
             this.Client.DownloadFile(new Uri(link), outFile);
