@@ -218,7 +218,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Has.Exactly(1).EqualTo(movedNode));
         }
 
-        [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
+        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
         public void GetNodeFromLink_Succeeds(string link)
         {
             INodePublic publicNode = this.Client.GetNodeFromLink(new Uri(link));

@@ -77,7 +77,7 @@ namespace CG.Web.MegaApiClient.Tests
                 constraint);
         }
 
-        [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
+        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
         public void DownloadLink_ToStream_Succeeds(string link, string expectedResultFile)
         {
             using (Stream stream = new FileStream(expectedResultFile, FileMode.Open))
@@ -86,7 +86,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
+        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
         public void Download_ValidateStream_Succeeds(string link)
         {
             using (Stream stream = this.Client.Download(new Uri(link)))
@@ -112,7 +112,7 @@ namespace CG.Web.MegaApiClient.Tests
                 constraint);
         }
 
-        [TestCase("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM", "Data/SampleFile.jpg")]
+        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
         public void DownloadLink_ToFile_Succeeds(string link, string expectedResultFile)
         {
             string outFile = Path.GetTempFileName();
