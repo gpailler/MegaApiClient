@@ -15,9 +15,9 @@ namespace CG.Web.MegaApiClient.Tests
         {
             this._webClient = webClient;
             this._policy = Policy
-                .Handle<WebException>(ex => ex.Status == WebExceptionStatus.Timeout)
+                .Handle<WebException>()
                 .Or<SocketException>()
-                .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => Console.WriteLine(ex.Message));
+                .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => Console.WriteLine(ts.TotalSeconds + " " + ex.Message));
         }
 
         public string PostRequestJson(Uri url, string jsonData)

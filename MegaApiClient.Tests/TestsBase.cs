@@ -178,7 +178,7 @@ namespace CG.Web.MegaApiClient.Tests
         {
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPVEYOR")) == false)
             {
-                Assert.Ignore("AppVeyor is unable to run this test. TimeoutException");
+                Assert.Inconclusive("AppVeyor is unable to run this test. TimeoutException");
             }
         }
 
