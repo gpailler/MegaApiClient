@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Sockets;
 using Polly;
 
 namespace CG.Web.MegaApiClient.Tests
@@ -15,6 +16,7 @@ namespace CG.Web.MegaApiClient.Tests
             this._webClient = webClient;
             this._policy = Policy
                 .Handle<WebException>(ex => ex.Status == WebExceptionStatus.Timeout)
+                .Or<SocketException>()
                 .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => Console.WriteLine(ex.Message));
         }
 
