@@ -22,7 +22,7 @@
     public static int BufferSize = 8192;
 
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
-    private static readonly Uri BaseUri = new Uri("https://mega.co.nz");
+    private static readonly Uri BaseUri = new Uri("https://mega.nz");
 
     private readonly IWebClient webClient;
 
@@ -819,7 +819,7 @@
     }
 
     #endregion
-    
+
     #region Private methods
 
     private void EnsureLoggedIn()
