@@ -186,13 +186,13 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(null, outFile, Throws.TypeOf<ArgumentNullException>());
             yield return new TestCaseData(new Uri("http://www.example.com"), outFile, Throws.TypeOf<ArgumentException>());
             yield return new TestCaseData(new Uri("https://mega.nz"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL!"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), string.Empty, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!m9Q20Qwa"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!m9Q20Qwa!"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), string.Empty, Throws.TypeOf<ArgumentNullException>());
 
 
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM"), outFile, Throws.TypeOf<IOException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), outFile, Throws.TypeOf<IOException>());
         }
     }
 }

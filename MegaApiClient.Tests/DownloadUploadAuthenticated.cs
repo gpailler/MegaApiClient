@@ -65,7 +65,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCase("https://mega.co.nz/#!axYS1TLL!GJNtvGJXjdD1YZYqTj5SXQ8HtFvfocoSrtBSdbgeSLM")]
+        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
         public void DownloadLink_Succeeds(string expectedLink)
         {
             INode node = this.Client.GetNodes().Single(x => x.Id == this.PermanentFile);
