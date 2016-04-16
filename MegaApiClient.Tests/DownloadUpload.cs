@@ -107,6 +107,8 @@ namespace CG.Web.MegaApiClient.Tests
         [TestCaseSource(typeof(DownloadUpload), nameof(GetDownloadLinkToFileInvalidParameter))]
         public void DownloadLink_ToFile_InvalidParameter_Throws(Uri uri, string outFile, IResolveConstraint constraint)
         {
+            this.IgnoreTestIfAppVeyorCi();
+
             Assert.That(
                 () => this.Client.DownloadFile(uri, outFile),
                 constraint);
