@@ -16,12 +16,13 @@
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    internal const uint BufferSize = 8192;
     private const int ApiRequestAttempts = 10;
     private const int ApiRequestDelay = 200;
 
+    public static int BufferSize = 8192;
+
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
-    private static readonly Uri BaseUri = new Uri("https://mega.co.nz");
+    private static readonly Uri BaseUri = new Uri("https://mega.nz");
 
     private readonly IWebClient webClient;
 
@@ -137,8 +138,8 @@
       byte[] encryptedSid = response.SessionId.FromBase64();
       byte[] sid = Crypto.RsaDecrypt(encryptedSid.FromMPINumber(), rsaPrivateKeyComponents[0], rsaPrivateKeyComponents[1], rsaPrivateKeyComponents[2]);
 
-      // Session id contains only the first 43 decrypted bytes
-      this.sessionId = sid.CopySubArray(43).ToBase64();
+      // Session id contains only the first 58 base64 characters
+      this.sessionId = sid.ToBase64().Substring(0, 58);
     }
 
     /// <summary>
@@ -193,6 +194,20 @@
       // Reset values retrieved by Login methods
       this.masterKey = null;
       this.sessionId = null;
+    }
+
+    /// <summary>
+    /// Retrieve account (quota) information
+    /// </summary>
+    /// <returns>An object containing account information</returns>
+    /// <exception cref="NotSupportedException">Not logged in</exception>
+    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    public IAccountInformation GetAccountInformation()
+    {
+      this.EnsureLoggedIn();
+
+      AccountInformationRequest request = new AccountInformationRequest();
+      return this.Request<AccountInformationResponse>(request);
     }
 
     /// <summary>
@@ -574,7 +589,45 @@
 
       using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
       {
-        string completionHandle = this.webClient.PostRequestRaw(new Uri(uploadResponse.Url), encryptedStream);
+        string completionHandle = null;
+        for (int i = 0; i < encryptedStream.ChunksPositions.Length; i++)
+        {
+          long currentChunkPosition = encryptedStream.ChunksPositions[i];
+          long nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
+            ? encryptedStream.Length
+            : encryptedStream.ChunksPositions[i + 1];
+
+          int chunkSize = (int)(nextChunkPosition - currentChunkPosition);
+          byte[] chunkBuffer = new byte[chunkSize];
+          encryptedStream.Read(chunkBuffer, 0, chunkSize);
+          using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
+          {
+            int remainingRetry = ApiRequestAttempts;
+            string result = null;
+            UploadException lastException = null;
+            while (remainingRetry-- > 0)
+            {
+                Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[i]);
+                result = this.webClient.PostRequestRaw(uri, chunkStream);
+                if (result.StartsWith("-"))
+                {
+                    lastException = new UploadException(result);
+                    Thread.Sleep(ApiRequestDelay);
+                    continue;
+                }
+
+                lastException = null;
+                break;
+            }
+
+            if (lastException != null)
+            {
+                throw lastException;
+            }
+
+            completionHandle = result;
+          }
+        }
 
         // Encrypt attributes
         byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name), encryptedStream.FileKey);
@@ -726,12 +779,6 @@
             continue;
           }
 
-          if (apiCode == ApiResultCode.BadSessionId && this.authInfos != null)
-          {
-            this.Logout();
-            this.Login(this.authInfos);
-          }
-
           if (apiCode != ApiResultCode.Ok)
           {
             throw new ApiException(apiCode);
@@ -767,17 +814,12 @@
     {
       using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
       {
-        byte[] buffer = new byte[BufferSize];
-        int len;
-        while ((len = stream.Read(buffer, 0, buffer.Length)) > 0)
-        {
-          fs.Write(buffer, 0, len);
-        }
+        stream.CopyTo(fs, BufferSize);
       }
     }
 
     #endregion
-    
+
     #region Private methods
 
     private void EnsureLoggedIn()

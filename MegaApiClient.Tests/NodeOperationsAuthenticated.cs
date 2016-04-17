@@ -17,9 +17,9 @@ namespace CG.Web.MegaApiClient.Tests
         {
         }
 
-        [TestCase("SsRDGA4Y", "bsxVBKLL", NodeType.Directory, "SharedFolder", 0, "2015-05-19T09:38:13.0000000+08:00")]
-        [TestCase("u95ATDYA", "SsRDGA4Y", NodeType.Directory, "SharedSubFolder", 0, "2015-07-14T18:24:31.0000000+08:00")]
-        [TestCase("KshlkSIK", "SsRDGA4Y", NodeType.File, "SharedFile.jpg", 523265, "2015-05-19T09:40:47.0000000+08:00")]
+        [TestCase("KoRAhTbQ", "bsxVBKLL", NodeType.Directory, "SharedFolder", 0, "2016-04-15 22:41:35.0000000+08:00")]
+        [TestCase("nxxWXJAb", "KoRAhTbQ", NodeType.Directory, "SharedSubFolder", 0, "2016-04-15 22:41:48.0000000+08:00")]
+        [TestCase("eooj3IwY", "KoRAhTbQ", NodeType.File, "SharedFile.jpg", 523265, "2016-04-15 22:42:56.0000000+08:00")]
         [TestCase("b0I0QDhA", "u4IgDb5K", NodeType.Directory, "SharedRemoteFolder", 0, "2015-05-21T02:35:22.0000000+08:00")]
         [TestCase("e5wjkSJB", "b0I0QDhA", NodeType.File, "SharedRemoteFile.jpg", 523265, "2015-05-21T02:36:06.0000000+08:00")]
         [TestCase("KhZSWI7C", "b0I0QDhA", NodeType.Directory, "SharedRemoteSubFolder", 0, "2015-07-14T17:05:03.0000000+08:00")]

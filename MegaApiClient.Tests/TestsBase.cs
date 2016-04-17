@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
+using Polly;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -11,27 +11,29 @@ namespace CG.Web.MegaApiClient.Tests
     {
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
-        private const int WebTimeout = 30000;
+        private const int WebTimeout = 60000;
 
-        /*
-        Storage layout
+        protected const int MaxRetry = 5;
 
-        +-Root                                      (bsxVBKLL)
-        |   +-SharedFolder                          (SsRDGA4Y) (Outgoing Share)
-        |       |-SharedFile.jpg                    (KshlkSIK)
-        |       +-SharedSubFolder                   (u95ATDYA) (Outgoing Share)
-        +-Trash                                     (j0wEGbTZ)
-        +-Inbox                                     (zhITTbIJ)
-        +-Contacts
-            +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
-                |-SharedRemoteFile.jpg              (e5wjkSJB)
-                +-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
-                    |-SharedRemoteSubFile.jpg       (HtonzYYY)
-                    +-SharedRemoteSubSubFolder      (z1YCibCT)
+    /*
+    Storage layout
 
-        */
+    +-Root                                      (bsxVBKLL)
+    |   +-SharedFolder                          (KoRAhTbQ) (Outgoing Share)
+    |       |-SharedFile.jpg                    (eooj3IwY)
+    |       +-SharedSubFolder                   (nxxWXJAb) (Outgoing Share)
+    +-Trash                                     (j0wEGbTZ)
+    +-Inbox                                     (zhITTbIJ)
+    +-Contacts
+        +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
+            |-SharedRemoteFile.jpg              (e5wjkSJB)
+            +-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
+                |-SharedRemoteSubFile.jpg       (HtonzYYY)
+                +-SharedRemoteSubSubFolder      (z1YCibCT)
 
-        private readonly string[] _systemNodes =
+    */
+
+    private readonly string[] _systemNodes =
         {
             "bsxVBKLL", // Root
             "j0wEGbTZ", // Trash
@@ -40,12 +42,12 @@ namespace CG.Web.MegaApiClient.Tests
 
         private readonly string[] _permanentFoldersRootNodes =
         {
-            "SsRDGA4Y", // SharedFolder
+            "KoRAhTbQ" // SharedFolder
         };
 
         private readonly string[] _permanentFoldersNodes =
         {
-            "u95ATDYA", // SharedSubFolder
+            "nxxWXJAb", // SharedSubFolder
         };
 
         private readonly string[] _permanentRemoteFoldersNodes =
@@ -57,7 +59,7 @@ namespace CG.Web.MegaApiClient.Tests
 
         private readonly string[] _permanentFilesNodes =
         {
-            "KshlkSIK", // SharedFile.jpg
+            "eooj3IwY", // SharedFile.jpg
         };
 
         private readonly string[] _permanentRemoteFilesNodes =
@@ -89,7 +91,7 @@ namespace CG.Web.MegaApiClient.Tests
         [SetUp]
         public void Setup()
         {
-            this.Client = new MegaApiClient(new WebClient(WebTimeout));
+            this.Client = new MegaApiClient(new PollyWebClient(new WebClient(WebTimeout), MaxRetry));
             if (this._options.HasFlag(Options.AsyncWrapper))
             {
                 this.Client = new MegaApiClientAsyncWrapper(this.Client);
@@ -107,20 +109,11 @@ namespace CG.Web.MegaApiClient.Tests
 
             if (this._options.HasFlag(Options.Clean))
             {
-                try
-                {
-                    this.SanitizeStorage();
-                }
-                catch (ApiException ex)
-                {
-                    if (ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
-                    {
-                        Console.WriteLine("Second login attempt");
-                        Thread.Sleep(500);
-                        this.Client.Logout();
-                        this.Client.Login(Username, Password);
-                    }
-                }
+                Policy
+                    .Handle<ApiException>(ex => ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
+                    .Or<NotSupportedException>(ex => this._options.HasFlag(Options.LoginAuthenticated))
+                    .WaitAndRetry(MaxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), this.ReconnectOnException)
+                    .Execute(this.SanitizeStorage);
             }
         }
 
@@ -180,6 +173,15 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(Username, Password);
         }
 
+
+        protected void IgnoreTestIfAppVeyorCi()
+        {
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPVEYOR")) == false)
+            {
+                Assert.Inconclusive("AppVeyor is unable to run this test. TimeoutException");
+            }
+        }
+
         protected INode GetNode(NodeType nodeType)
         {
             return this.Client.GetNodes().Single(x => x.Type == nodeType);
@@ -214,6 +216,15 @@ namespace CG.Web.MegaApiClient.Tests
                 .Concat(this._permanentRemoteFoldersNodes)
                 .Concat(this._permanentRemoteFilesNodes)
                 .Any(x => x == node.Id);
+        }
+
+        private void ReconnectOnException(Exception exception, TimeSpan waitDelay)
+        {
+            Console.WriteLine(exception.Message);
+            Console.WriteLine("New login attempt (wait delay: {0})", waitDelay.TotalSeconds);
+
+            this.Client.Logout();
+            this.Client.Login(Username, Password);
         }
     }
 }

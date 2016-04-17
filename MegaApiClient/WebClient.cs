@@ -56,15 +56,7 @@
       using (Stream requestStream = request.GetRequestStream())
       {
         dataStream.Position = 0;
-
-        int length = (int)Math.Min(MegaApiClient.BufferSize, dataStream.Length);
-        byte[] buffer = new byte[length];
-        int bytesRead;
-
-        while ((bytesRead = dataStream.Read(buffer, 0, length)) > 0)
-        {
-          requestStream.Write(buffer, 0, bytesRead);
-        }
+        dataStream.CopyTo(requestStream, MegaApiClient.BufferSize);
       }
 
       using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())

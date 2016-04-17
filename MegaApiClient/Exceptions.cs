@@ -25,6 +25,14 @@
     }
   }
 
+  public class UploadException : Exception
+  {
+    public UploadException(string error)
+      : base("Upload error: " + error)
+    {
+    }
+  }
+
   public enum ApiResultCode
   {
     Ok = 0,

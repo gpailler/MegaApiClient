@@ -31,6 +31,11 @@
       return Task.Run(() => this.Logout());
     }
 
+    public Task<IAccountInformation> GetAccountInformationAsync()
+    {
+      return Task.Run(() => this.GetAccountInformation());
+    }
+
     public Task<IEnumerable<INode>> GetNodesAsync()
     {
       return Task.Run(() => this.GetNodes());
