@@ -47,6 +47,9 @@ void Logout()
 // It allows to store encrypted credentials in your application settings instead login and password
 static AuthInfos GenerateAuthInfos(string email, string password)
 
+// Gives total and used quota for the logged user
+IAccountInformation GetAccountInformation()
+
 // Nodes management
 IEnumerable<INode> GetNodes()
 IEnumerable<INode> GetNodes(INode parent)
