@@ -12,9 +12,8 @@ namespace CG.Web.MegaApiClient.Tests
     {
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
-        private const int WebTimeout = 60000;
-
-        protected const int MaxRetry = 5;
+        private const int WebTimeout = 10000;
+        private const int MaxRetry = 3;
 
         /*
         Storage layout
@@ -92,7 +91,7 @@ namespace CG.Web.MegaApiClient.Tests
         [SetUp]
         public void Setup()
         {
-            this.Client = new MegaApiClient(new PollyWebClient(new WebClient(WebTimeout), MaxRetry));
+            this.Client = new MegaApiClient(new TestWebClient(new WebClient(WebTimeout), MaxRetry));
             if (this._options.HasFlag(Options.AsyncWrapper))
             {
                 this.Client = new MegaApiClientAsyncWrapper(this.Client);

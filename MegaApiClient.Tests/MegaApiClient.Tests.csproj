@@ -61,8 +61,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DownloadUploadAuthenticatedAsync.cs" />
@@ -74,7 +73,7 @@
     <Compile Include="NodeOperationsAuthenticatedAsync.cs" />
     <Compile Include="NodeOperationsAuthenticated.cs" />
     <Compile Include="NodeOperations.cs" />
-    <Compile Include="PollyWebClient.cs" />
+    <Compile Include="TestWebClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="TestsBase.cs" />
