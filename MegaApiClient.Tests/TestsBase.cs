@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
@@ -15,25 +16,25 @@ namespace CG.Web.MegaApiClient.Tests
 
         protected const int MaxRetry = 5;
 
-    /*
-    Storage layout
+        /*
+        Storage layout
 
-    +-Root                                      (bsxVBKLL)
-    |   +-SharedFolder                          (KoRAhTbQ) (Outgoing Share)
-    |       |-SharedFile.jpg                    (eooj3IwY)
-    |       +-SharedSubFolder                   (nxxWXJAb) (Outgoing Share)
-    +-Trash                                     (j0wEGbTZ)
-    +-Inbox                                     (zhITTbIJ)
-    +-Contacts
-        +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
-            |-SharedRemoteFile.jpg              (e5wjkSJB)
-            +-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
-                |-SharedRemoteSubFile.jpg       (HtonzYYY)
-                +-SharedRemoteSubSubFolder      (z1YCibCT)
+        +-Root                                      (bsxVBKLL)
+        |   +-SharedFolder                          (KoRAhTbQ) (Outgoing Share)
+        |       |-SharedFile.jpg                    (eooj3IwY)
+        |       +-SharedSubFolder                   (nxxWXJAb) (Outgoing Share)
+        +-Trash                                     (j0wEGbTZ)
+        +-Inbox                                     (zhITTbIJ)
+        +-Contacts
+            +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
+                |-SharedRemoteFile.jpg              (e5wjkSJB)
+                +-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
+                    |-SharedRemoteSubFile.jpg       (HtonzYYY)
+                    +-SharedRemoteSubSubFolder      (z1YCibCT)
 
-    */
+        */
 
-    private readonly string[] _systemNodes =
+        private readonly string[] _systemNodes =
         {
             "bsxVBKLL", // Root
             "j0wEGbTZ", // Trash
@@ -190,6 +191,11 @@ namespace CG.Web.MegaApiClient.Tests
         protected INode CreateFolderNode(INode parentNode, string name = "NodeName")
         {
             return this.Client.CreateFolder(name, parentNode);
+        }
+
+        protected string GetAbsoluteFilePath(string relativeFilePath)
+        {
+          return Path.Combine(TestContext.CurrentContext.TestDirectory, relativeFilePath);
         }
 
         private void SanitizeStorage()

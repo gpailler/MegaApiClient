@@ -30,7 +30,7 @@ namespace CG.Web.MegaApiClient.Tests
 
             using (Stream stream = this.Client.Download(node))
             {
-                using (Stream expectedStream = new FileStream(ExpectedFile, FileMode.Open))
+                using (Stream expectedStream = new FileStream(this.GetAbsoluteFilePath(ExpectedFile), FileMode.Open))
                 {
                     this.AreStreamsEquivalent(stream, expectedStream);
                 }

@@ -80,7 +80,7 @@ namespace CG.Web.MegaApiClient.Tests
         [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
         public void DownloadLink_ToStream_Succeeds(string link, string expectedResultFile)
         {
-            using (Stream stream = new FileStream(expectedResultFile, FileMode.Open))
+            using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
             {
                 this.AreStreamsEquivalent(this.Client.Download(new Uri(link)), stream);
             }
@@ -123,7 +123,7 @@ namespace CG.Web.MegaApiClient.Tests
 
             Assert.That(
                 File.ReadAllBytes(outFile),
-                Is.EqualTo(File.ReadAllBytes(expectedResultFile)));
+                Is.EqualTo(File.ReadAllBytes(this.GetAbsoluteFilePath(expectedResultFile))));
         }
 
         protected void AreStreamsEquivalent(Stream stream1, Stream stream2)

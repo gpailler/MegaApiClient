@@ -42,7 +42,7 @@ namespace CG.Web.MegaApiClient.Tests
 
                 // Assert
                 Assert.That(result, Is.True);
-                this.AreFileEquivalent(ExpectedFile, outputFile);
+                this.AreFileEquivalent(this.GetAbsoluteFilePath(ExpectedFile), outputFile);
 
                 return eventTester.Calls;
             }
@@ -69,7 +69,7 @@ namespace CG.Web.MegaApiClient.Tests
             // Assert
             Assert.That(result, Is.True);
             Assert.That(eventTester.Calls, Is.EqualTo(10));
-            this.AreFileEquivalent(expectedFile, outputFile);
+            this.AreFileEquivalent(this.GetAbsoluteFilePath(expectedFile), outputFile);
         }
 
         [Test]
