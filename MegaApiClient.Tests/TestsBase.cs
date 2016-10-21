@@ -173,15 +173,6 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(Username, Password);
         }
 
-
-        protected void IgnoreTestIfAppVeyorCi()
-        {
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPVEYOR")) == false)
-            {
-                Assert.Inconclusive("AppVeyor is unable to run this test. TimeoutException");
-            }
-        }
-
         protected INode GetNode(NodeType nodeType)
         {
             return this.Client.GetNodes().Single(x => x.Type == nodeType);
