@@ -12,7 +12,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
-        private const int WebTimeout = 10000;
+        private const int WebTimeout = 30000;
         private const int MaxRetry = 3;
 
         /*
