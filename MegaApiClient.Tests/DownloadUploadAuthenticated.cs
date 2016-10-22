@@ -65,10 +65,10 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
-        public void DownloadLink_Succeeds(string expectedLink)
+        [TestCase("eooj3IwY", "https://mega.nz/#!38JjRYIA!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
+        public void GetDownloadLink_Succeeds(string id, string expectedLink)
         {
-            INode node = this.Client.GetNodes().Single(x => x.Id == this.PermanentFile);
+            INode node = this.Client.GetNodes().Single(x => x.Id == id);
 
             Assert.That(
                 this.Client.GetDownloadLink(node),
