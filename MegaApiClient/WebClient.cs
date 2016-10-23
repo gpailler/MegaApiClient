@@ -2,17 +2,18 @@
 {
   using System;
   using System.IO;
-  using System.Net;
   using System.Reflection;
   using System.Text;
   using System.Threading;
+
+  using System.Net.Http;
+  using System.Net.Http.Headers;
 
   public class WebClient : IWebClient
   {
     private const int DefaultResponseTimeout = Timeout.Infinite;
 
-    private readonly int responseTimeout;
-    private readonly string userAgent;
+    private readonly HttpClient httpClient = new HttpClient();
 
     public WebClient()
         : this(DefaultResponseTimeout)
@@ -21,8 +22,8 @@
 
     internal WebClient(int responseTimeout)
     {
-      this.responseTimeout = responseTimeout;
-      this.userAgent = this.GenerateUserAgent();
+      this.httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
+      this.httpClient.DefaultRequestHeaders.UserAgent.Add(this.GenerateUserAgent());
     }
 
     public string PostRequestJson(Uri url, string jsonData)
@@ -40,30 +41,18 @@
 
     public Stream GetRequestRaw(Uri url)
     {
-      HttpWebRequest request = this.CreateRequest(url);
-      request.Method = "GET";
-
-      return request.GetResponse().GetResponseStream();
+      HttpResponseMessage response = this.httpClient.GetAsync(url).Result;
+      return response.Content.ReadAsStreamAsync().Result;
     }
 
     private string PostRequest(Uri url, Stream dataStream, string contentType)
     {
-      HttpWebRequest request = this.CreateRequest(url);
-      request.ContentLength = dataStream.Length;
-      request.Method = "POST";
-      request.ContentType = contentType;
-
-      using (Stream requestStream = request.GetRequestStream())
+      using (StreamContent content = new StreamContent(dataStream))
       {
-        dataStream.Position = 0;
-        dataStream.CopyTo(requestStream, MegaApiClient.BufferSize);
-      }
-
-      using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-      {
-        using (Stream responseStream = response.GetResponseStream())
+        content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+        using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)
         {
-          using (StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8))
+          using (StreamReader streamReader = new StreamReader(response.Content.ReadAsStreamAsync().Result, Encoding.UTF8))
           {
             return streamReader.ReadToEnd();
           }
@@ -71,19 +60,10 @@
       }
     }
 
-    private HttpWebRequest CreateRequest(Uri url)
-    {
-      HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-      request.Timeout = this.responseTimeout;
-      request.UserAgent = this.userAgent;
-
-      return request;
-    }
-
-    private string GenerateUserAgent()
+    private ProductInfoHeaderValue GenerateUserAgent()
     {
       AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
-      return string.Format("{0} v{1}", assemblyName.Name, assemblyName.Version.ToString(2));
+      return new ProductInfoHeaderValue(assemblyName.Name, assemblyName.Version.ToString(2));
     }
   }
 }
