@@ -105,8 +105,8 @@
     <Compile Include="..\MegaApiClient\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\MegaApiClient\WebClient.cs">
-      <Link>WebClient.cs</Link>
+    <Compile Include="..\MegaApiClient\WebClient_HttpWebRequest.cs">
+      <Link>WebClient_HttpWebRequest.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
