@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2689498-3543-43EA-8961-66385687E16F}"
 	ProjectSection(SolutionItems) = preProject
@@ -9,6 +9,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		MegaApiClient.nuspec = MegaApiClient.nuspec
 		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaApiClient-3.5", "MegaApiClient-3.5\MegaApiClient-3.5.csproj", "{0DF3959D-22EE-48B3-B725-433D5497E61A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{19D28272-9DDB-4868-93E7-D98DCFAE08E9} = {19D28272-9DDB-4868-93E7-D98DCFAE08E9}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MegaApiClient-4.0", "MegaApiClient-4.0\MegaApiClient-4.0.csproj", "{0BAB4E80-F6D1-452C-8443-3BD0D53D4D9A}"
@@ -26,6 +31,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DF3959D-22EE-48B3-B725-433D5497E61A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF3959D-22EE-48B3-B725-433D5497E61A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DF3959D-22EE-48B3-B725-433D5497E61A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF3959D-22EE-48B3-B725-433D5497E61A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0BAB4E80-F6D1-452C-8443-3BD0D53D4D9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0BAB4E80-F6D1-452C-8443-3BD0D53D4D9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BAB4E80-F6D1-452C-8443-3BD0D53D4D9A}.Release|Any CPU.ActiveCfg = Release|Any CPU

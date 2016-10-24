@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>MegaApiClient</id>
         <version>1.2.2</version>
@@ -14,15 +14,12 @@
         <language>en-US</language>
         <tags>mega mega.co.nz api</tags>
         <dependencies>
-            <group>
-                <dependency id="Newtonsoft.Json" version="9.0.1" />
-            </group>
-            <group targetFramework=".NETFramework4.0">
-                <dependency id="Microsoft.Net.Http" version="2.2.29" />
-            </group>
+            <dependency id="Newtonsoft.Json" version="6.0.8" />
         </dependencies>
     </metadata>
     <files>
+        <file src="MegaApiClient-3.5\bin\Release\MegaApiClient.dll" target="lib\net35\MegaApiClient.dll" />
+        <file src="MegaApiClient-3.5\bin\Release\MegaApiClient.xml" target="lib\net35\MegaApiClient.xml" />
         <file src="MegaApiClient-4.0\bin\Release\MegaApiClient.dll" target="lib\net40\MegaApiClient.dll" />
         <file src="MegaApiClient-4.0\bin\Release\MegaApiClient.xml" target="lib\net40\MegaApiClient.xml" />
         <file src="MegaApiClient-4.5\bin\Release\MegaApiClient.dll" target="lib\net45\MegaApiClient.dll" />

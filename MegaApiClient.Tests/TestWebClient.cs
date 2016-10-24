@@ -33,7 +33,18 @@ namespace CG.Web.MegaApiClient.Tests
 
         public Stream GetRequestRaw(Uri url)
         {
-            return this._policy.Execute(() => this._webClient.GetRequestRaw(url));
+            // Calling the original webClient.GetRequestRaw may fail with timeout in unit tests
+            // We use a different implementation in UTs based on HttpClient
+            // (We cannot use HttpClient in the production code because it targets .net 4.5)
+            return this._policy.Execute(() => this.GetHttpClientRequestRaw(url));
+        }
+
+        private Stream GetHttpClientRequestRaw(Uri url)
+        {
+          HttpClient httpClient = new HttpClient();
+          HttpResponseMessage response = httpClient.GetAsync(url).Result;
+
+          return response.Content.ReadAsStreamAsync().Result;
         }
     }
 }
