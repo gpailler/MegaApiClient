@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
@@ -11,29 +12,28 @@ namespace CG.Web.MegaApiClient.Tests
     {
         private const string Username = "megaapiclient@yopmail.com";
         private const string Password = "megaapiclient";
-        private const int WebTimeout = 60000;
+        private const int WebTimeout = 30000;
+        private const int MaxRetry = 3;
 
-        protected const int MaxRetry = 5;
+        /*
+        Storage layout
 
-    /*
-    Storage layout
+        +-Root                                      (bsxVBKLL)
+        |   +-SharedFolder                          (KoRAhTbQ) (Outgoing Share)
+        |       |-SharedFile.jpg                    (eooj3IwY)
+        |       +-SharedSubFolder                   (nxxWXJAb) (Outgoing Share)
+        +-Trash                                     (j0wEGbTZ)
+        +-Inbox                                     (zhITTbIJ)
+        +-Contacts
+            +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
+                |-SharedRemoteFile.jpg              (e5wjkSJB)
+                +-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
+                    |-SharedRemoteSubFile.jpg       (HtonzYYY)
+                    +-SharedRemoteSubSubFolder      (z1YCibCT)
 
-    +-Root                                      (bsxVBKLL)
-    |   +-SharedFolder                          (KoRAhTbQ) (Outgoing Share)
-    |       |-SharedFile.jpg                    (eooj3IwY)
-    |       +-SharedSubFolder                   (nxxWXJAb) (Outgoing Share)
-    +-Trash                                     (j0wEGbTZ)
-    +-Inbox                                     (zhITTbIJ)
-    +-Contacts
-        +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
-            |-SharedRemoteFile.jpg              (e5wjkSJB)
-            +-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
-                |-SharedRemoteSubFile.jpg       (HtonzYYY)
-                +-SharedRemoteSubSubFolder      (z1YCibCT)
+        */
 
-    */
-
-    private readonly string[] _systemNodes =
+        private readonly string[] _systemNodes =
         {
             "bsxVBKLL", // Root
             "j0wEGbTZ", // Trash
@@ -91,7 +91,7 @@ namespace CG.Web.MegaApiClient.Tests
         [SetUp]
         public void Setup()
         {
-            this.Client = new MegaApiClient(new PollyWebClient(new WebClient(WebTimeout), MaxRetry));
+            this.Client = new MegaApiClient(new TestWebClient(new WebClient(WebTimeout), MaxRetry));
             if (this._options.HasFlag(Options.AsyncWrapper))
             {
                 this.Client = new MegaApiClientAsyncWrapper(this.Client);
@@ -173,15 +173,6 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(Username, Password);
         }
 
-
-        protected void IgnoreTestIfAppVeyorCi()
-        {
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPVEYOR")) == false)
-            {
-                Assert.Inconclusive("AppVeyor is unable to run this test. TimeoutException");
-            }
-        }
-
         protected INode GetNode(NodeType nodeType)
         {
             return this.Client.GetNodes().Single(x => x.Type == nodeType);
@@ -190,6 +181,11 @@ namespace CG.Web.MegaApiClient.Tests
         protected INode CreateFolderNode(INode parentNode, string name = "NodeName")
         {
             return this.Client.CreateFolder(name, parentNode);
+        }
+
+        protected string GetAbsoluteFilePath(string relativeFilePath)
+        {
+          return Path.Combine(TestContext.CurrentContext.TestDirectory, relativeFilePath);
         }
 
         private void SanitizeStorage()

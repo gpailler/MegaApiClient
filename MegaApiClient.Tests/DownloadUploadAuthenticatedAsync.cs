@@ -42,7 +42,7 @@ namespace CG.Web.MegaApiClient.Tests
 
                 // Assert
                 Assert.That(result, Is.True);
-                this.AreFileEquivalent(ExpectedFile, outputFile);
+                this.AreFileEquivalent(this.GetAbsoluteFilePath(ExpectedFile), outputFile);
 
                 return eventTester.Calls;
             }
@@ -52,7 +52,7 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
+        [TestCase("https://mega.nz/#!38JjRYIA!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
         public void DownloadFileAsync_FromLink_Succeeds(string uri, string expectedFile)
         {
             // Arrange
@@ -69,7 +69,7 @@ namespace CG.Web.MegaApiClient.Tests
             // Assert
             Assert.That(result, Is.True);
             Assert.That(eventTester.Calls, Is.EqualTo(10));
-            this.AreFileEquivalent(expectedFile, outputFile);
+            this.AreFileEquivalent(this.GetAbsoluteFilePath(expectedFile), outputFile);
         }
 
         [Test]

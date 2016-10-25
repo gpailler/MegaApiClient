@@ -21,6 +21,7 @@
 
     public static int BufferSize = 8192;
 
+    private const string ApplicationKey = "axhQiYyQ";
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
     private static readonly Uri BaseUri = new Uri("https://mega.nz");
 
@@ -800,6 +801,7 @@
       UriBuilder builder = new UriBuilder(BaseApiUri);
       NameValueCollection query = HttpUtility.ParseQueryString(builder.Query);
       query["id"] = (this.sequenceIndex++ % uint.MaxValue).ToString(CultureInfo.InvariantCulture);
+      query["ak"] = ApplicationKey;
 
       if (!string.IsNullOrEmpty(this.sessionId))
       {
