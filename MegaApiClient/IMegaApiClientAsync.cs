@@ -27,6 +27,8 @@ namespace CG.Web.MegaApiClient
 
     Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode);
 
+    Task<INode> RenameAsync(INode sourceNode, string newName);
+
     Task<Uri> GetDownloadLinkAsync(INode node);
 
     Task<Stream> DownloadAsync(INode node, IProgress<double> progress);

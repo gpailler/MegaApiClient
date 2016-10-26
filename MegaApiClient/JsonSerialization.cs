@@ -407,6 +407,26 @@
 
   #endregion
 
+  #region Rename
+
+  internal class RenameRequest : RequestBase
+  {
+    public RenameRequest(INode node, string attributes)
+      : base("a")
+    {
+      this.Id = node.Id;
+      this.SerializedAttributes = attributes;
+    }
+
+    [JsonProperty("n")]
+    public string Id { get; private set; }
+
+    [JsonProperty("attr")]
+    public string SerializedAttributes { get; set; }
+  }
+
+  #endregion
+
 
   #region Attributes
 

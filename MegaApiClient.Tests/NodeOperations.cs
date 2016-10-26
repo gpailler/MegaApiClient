@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -216,6 +217,40 @@ namespace CG.Web.MegaApiClient.Tests
             Assert.That(
                 this.Client.GetNodes(destinationParentNode),
                 Has.Exactly(1).EqualTo(movedNode));
+        }
+
+        [TestCase(NodeType.Directory)]
+        [TestCase(NodeType.File)]
+        public void Rename_Succeeds(NodeType nodeType)
+        {
+            var parentNode = this.GetNode(NodeType.Root);
+            INode createdNode;
+            switch (nodeType)
+            {
+                case NodeType.Directory:
+                    createdNode = this.Client.CreateFolder("Data", parentNode);
+                    break;
+
+                case NodeType.File:
+                    createdNode = this.Client.Upload(new MemoryStream(), "Data", parentNode);
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+
+            Assert.That(
+                  this.Client.GetNodes(parentNode).ToArray(),
+                  Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
+                  .And.Exactly(1).EqualTo(createdNode));
+
+            var renamedNode = this.Client.Rename(createdNode, "Data2");
+            Assert.That(renamedNode.Name, Is.EqualTo("Data2"));
+
+            Assert.That(
+                  this.Client.GetNodes(parentNode).ToArray(),
+                  Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
+                  .And.Exactly(1).EqualTo(renamedNode));
         }
 
         [TestCase("https://mega.nz/#!38JjRYIA!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]

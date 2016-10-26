@@ -41,5 +41,7 @@ namespace CG.Web.MegaApiClient
     INode Upload(Stream stream, string name, INode parent);
 
     INode Move(INode node, INode destinationParentNode);
+
+    INode Rename(INode node, string newName);
   }
 }
