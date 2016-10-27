@@ -116,6 +116,11 @@ namespace CG.Web.MegaApiClient.Tests
             return this.UnwrapException(() => this.client.MoveAsync(node, destinationParentNode).Result);
         }
 
+        public INode Rename(INode node, string newName)
+        {
+            return this.UnwrapException(() => this.client.RenameAsync(node, newName).Result);
+        }
+
         public Task LoginAsync(string email, string password)
         {
             throw new NotImplementedException();
@@ -162,6 +167,11 @@ namespace CG.Web.MegaApiClient.Tests
         }
 
         public Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<INode> RenameAsync(INode sourceNode, string newName)
         {
             throw new NotImplementedException();
         }

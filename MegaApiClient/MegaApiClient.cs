@@ -694,6 +694,36 @@
       return this.GetNodes().First(n => n.Equals(node));
     }
 
+    public INode Rename(INode node, string newName)
+    {
+      if (node == null)
+      {
+        throw new ArgumentNullException("node");
+      }
+
+      if (node.Type != NodeType.Directory && node.Type != NodeType.File)
+      {
+        throw new ArgumentException("Invalid node type");
+      }
+
+      if (string.IsNullOrEmpty(newName))
+      {
+        throw new ArgumentNullException("newName");
+      }
+
+      INodeCrypto nodeCrypto = node as INodeCrypto;
+      if (nodeCrypto == null)
+      {
+        throw new ArgumentException("node must implement INodeCrypto");
+      }
+
+      this.EnsureLoggedIn();
+
+      byte[] encryptedAttributes = Crypto.EncryptAttributes(new Attributes(newName), nodeCrypto.Key);
+      this.Request(new RenameRequest(node, encryptedAttributes.ToBase64()));
+      return this.GetNodes().First(n => n.Equals(node));
+    }
+
     #endregion
 
     #region Private static methods

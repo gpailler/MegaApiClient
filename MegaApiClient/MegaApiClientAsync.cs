@@ -61,6 +61,11 @@
       return Task.Run(() => this.Move(sourceNode, destinationParentNode));
     }
 
+    public Task<INode> RenameAsync(INode sourceNode, string newName)
+    {
+      return Task.Run(() => this.Rename(sourceNode, newName));
+    }
+
     public Task<Uri> GetDownloadLinkAsync(INode node)
     {
       return Task.Run(() => this.GetDownloadLink(node));
