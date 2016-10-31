@@ -352,6 +352,13 @@
 
       this.EnsureLoggedIn();
 
+      if (node.Type == NodeType.Directory)
+      {
+        // Request an export share on the node or we will receive an AccessDenied
+        this.Request(new ShareNodeRequest(node, masterKey));
+      }
+
+      node = this.GetNodes().First(x => x.Equals(node));
       GetDownloadLinkRequest request = new GetDownloadLinkRequest(node);
       string response = this.Request<string>(request);
 
@@ -359,7 +366,7 @@
           "/#{0}!{1}!{2}",
           node.Type == NodeType.Directory ? "F" : string.Empty,
           response,
-          nodeCrypto.FullKey.ToBase64()));
+          node.Type == NodeType.Directory ? nodeCrypto.SharedKey.ToBase64() : nodeCrypto.Key.ToBase64()));
     }
 
     /// <summary>

@@ -75,9 +75,9 @@
       if (context.Length == 1)
       {
         // Add key from incoming sharing.
-        if (this.SharingKey != null)
+        if (this.SharingKey != null && nodesResponse.SharedKeys.Any(x => x.Id == this.Id) == false)
         {
-          nodesResponse.SharedKeys.Add(new GetNodesResponse.SharedKey(this.Id, this.SharingKey));
+          nodesResponse.SharedKeys.Add(new SharedKey(this.Id, this.SharingKey));
         }
         return;
       }
@@ -100,7 +100,7 @@
           if (nodesResponse.SharedKeys != null)
           {
             string handle = serializedKey.Substring(0, splitPosition);
-            GetNodesResponse.SharedKey sharedKey = nodesResponse.SharedKeys.FirstOrDefault(x => x.Id == handle);
+            SharedKey sharedKey = nodesResponse.SharedKeys.FirstOrDefault(x => x.Id == handle);
             if (sharedKey != null)
             {
               masterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), masterKey);

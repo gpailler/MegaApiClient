@@ -65,13 +65,16 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCase("eooj3IwY", "https://mega.nz/#!2sZwQJRZ!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
+        //[TestCase("eooj3IwY", "https://mega.nz/#!2sZwQJRZ!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
+        //[TestCase("KoRAhTbQ", "https://mega.nz/#F!Xho1QZob!W_8GYHXH-COtmfWxOkMCFQ")]
+        [TestCase("j9pk3bRS", "https://mega.nz/#F!Xho1QZob!W_8GYHXH-COtmfWxOkMCFQ")]
         public void GetDownloadLink_Succeeds(string id, string expectedLink)
         {
             INode node = this.Client.GetNodes().Single(x => x.Id == id);
 
+          var link = this.Client.GetDownloadLink(node);
             Assert.That(
-                this.Client.GetDownloadLink(node),
+                link,
                 Is.EqualTo(new Uri(expectedLink)));
         }
 

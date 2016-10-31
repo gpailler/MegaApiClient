@@ -190,6 +190,7 @@ namespace CG.Web.MegaApiClient.Tests
 
         private void SanitizeStorage()
         {
+      return;
             IEnumerable<INode> nodes = this.Client.GetNodes().ToArray();
 
             IEnumerable<INode> nodesToRemove = nodes.Where(x => this.IsProtectedNode(x) == false);
