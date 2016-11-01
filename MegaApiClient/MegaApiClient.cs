@@ -19,7 +19,7 @@
     private const int ApiRequestAttempts = 10;
     private const int ApiRequestDelay = 200;
 
-    public static int BufferSize = 8192;
+    public static int BufferSize = 81920;
 
     private const string ApplicationKey = "axhQiYyQ";
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
