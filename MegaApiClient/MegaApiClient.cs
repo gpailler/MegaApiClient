@@ -21,6 +21,14 @@
 
     public static int BufferSize = 81920;
 
+    /// <summary>
+    /// Upload is splitted in multiple fragments (useful for big uploads)
+    /// The size of the fragments is defined by mega.nz and are the following:
+    /// 0 / 128K / 384K / 768K / 1280K / 1920K / 2688K / 3584K / 4608K / ... (every 1024 KB) / EOF
+    /// This value is used to merge multiple fragments in a single upload
+    /// </summary>
+    public static int ChunksPackSize = 1024 * 1024;
+
     private const string ApplicationKey = "axhQiYyQ";
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
     private static readonly Uri BaseUri = new Uri("https://mega.nz");
@@ -597,12 +605,26 @@
         string completionHandle = null;
         for (int i = 0; i < encryptedStream.ChunksPositions.Length; i++)
         {
+          int chunkStartPosition = i;
           long currentChunkPosition = encryptedStream.ChunksPositions[i];
           long nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
             ? encryptedStream.Length
             : encryptedStream.ChunksPositions[i + 1];
 
           int chunkSize = (int)(nextChunkPosition - currentChunkPosition);
+
+          // Pack multiple chunks in a single upload
+          while (chunkSize < ChunksPackSize && i < encryptedStream.ChunksPositions.Length - 1)
+          {
+            i++;
+            currentChunkPosition = encryptedStream.ChunksPositions[i];
+            nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
+              ? encryptedStream.Length
+              : encryptedStream.ChunksPositions[i + 1];
+
+            chunkSize += (int)(nextChunkPosition - currentChunkPosition);
+          }
+
           byte[] chunkBuffer = new byte[chunkSize];
           encryptedStream.Read(chunkBuffer, 0, chunkSize);
           using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
@@ -612,7 +634,7 @@
             UploadException lastException = null;
             while (remainingRetry-- > 0)
             {
-                Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[i]);
+                Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[chunkStartPosition]);
                 result = this.webClient.PostRequestRaw(uri, chunkStream);
                 if (result.StartsWith("-"))
                 {
