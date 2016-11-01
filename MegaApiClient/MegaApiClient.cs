@@ -28,7 +28,6 @@
     private readonly IWebClient webClient;
 
     private Node trashNode;
-    private AuthInfos authInfos;
     private string sessionId;
     private byte[] masterKey;
     private uint sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
@@ -119,9 +118,6 @@
       }
 
       this.EnsureLoggedOut();
-
-      // Store authInfos to relogin if required
-      this.authInfos = authInfos;
 
       // Request Mega Api
       LoginRequest request = new LoginRequest(authInfos.Email, authInfos.Hash);
