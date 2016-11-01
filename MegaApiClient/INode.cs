@@ -22,7 +22,7 @@ namespace CG.Web.MegaApiClient
     DateTime LastModificationDate { get; }
   }
 
-  internal interface INodeCrypto : INode
+  internal interface INodeCrypto
   {
     byte[] Key { get; }
 

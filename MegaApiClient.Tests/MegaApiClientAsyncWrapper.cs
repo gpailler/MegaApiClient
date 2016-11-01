@@ -231,11 +231,11 @@ namespace CG.Web.MegaApiClient.Tests
     private void UnwrapException(Action action)
     {
       this.UnwrapException(
-          () =>
-              {
-                action();
-                return true;
-              });
+        () =>
+        {
+          action();
+          return true;
+        });
     }
   }
 }

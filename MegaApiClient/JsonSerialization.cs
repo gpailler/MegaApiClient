@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
-
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System;
   using System.Collections.Generic;
+  using System.Diagnostics;
+  using System.Linq;
   using System.Runtime.Serialization;
 
   using Newtonsoft.Json;
@@ -207,12 +207,11 @@ namespace CG.Web.MegaApiClient
         throw new ArgumentException("parentNode node must implement INodeCrypto");
       }
 
-      this.Share = new ShareData
+      if (parentNodeCrypto.SharedKey != null)
       {
-        CompletionHandle = completionHandle,
-        SharedKey = parentNodeCrypto.SharedKey,
-        Key = key,
-        Id = parentNode.Id};
+        this.Share = new ShareData(parentNode.Id);
+        this.Share.AddItem(completionHandle, key, parentNodeCrypto.SharedKey);
+      }
     }
 
     [JsonProperty("t")]
@@ -257,29 +256,70 @@ namespace CG.Web.MegaApiClient
 
   internal class ShareNodeRequest : RequestBase
   {
-    public ShareNodeRequest(INode node, byte[] masterKey)
+    public ShareNodeRequest(INode node, byte[] masterKey, IEnumerable<INode> nodes)
       : base("s2")
     {
       this.Id = node.Id;
       this.Options = new object[] { new { r = 0, u = "EXP" } };
 
-      this.Share = new ShareData
+      INodeCrypto nodeCrypto = (INodeCrypto)node;
+      byte[] uncryptedSharedKey = nodeCrypto.SharedKey;
+      if (uncryptedSharedKey == null)
       {
-        CompletionHandle = "xxxxxxxx",
-        SharedKey = Crypto.EncryptKey(((INodeCrypto)node).Key, masterKey),
-        Key = ((INodeCrypto)node).Key,
-        Id = node.Id
-      };
+        uncryptedSharedKey = Crypto.CreateAesKey();
+      }
+
+      this.SharedKey = Crypto.EncryptKey(uncryptedSharedKey, masterKey).ToBase64();
+
+      if (nodeCrypto.SharedKey == null)
+      {
+        this.Share = new ShareData(node.Id);
+
+        this.Share.AddItem(node.Id, nodeCrypto.FullKey, uncryptedSharedKey);
+
+        // Add all children
+        IEnumerable<INode> allChildren = this.GetRecursiveChildren(nodes.ToArray(), node);
+        foreach (var child in allChildren)
+        {
+          this.Share.AddItem(child.Id, ((INodeCrypto)child).FullKey, uncryptedSharedKey);
+        }
+      }
+
+      byte[] handle = (node.Id + node.Id).ToBytes();
+      this.HandleAuth = Crypto.EncryptKey(handle, masterKey).ToBase64();
+    }
+
+    private IEnumerable<INode> GetRecursiveChildren(INode[] nodes, INode parent)
+    {
+      foreach (var node in nodes.Where(x => x.Type == NodeType.Directory || x.Type == NodeType.File))
+      {
+        string parentId = node.Id;
+        do
+        {
+          parentId = nodes.FirstOrDefault(x => x.Id == parentId)?.ParentId;
+          if (parentId == parent.Id)
+          {
+            yield return node;
+            break;
+          }
+        } while (parentId != null);
+      }
     }
 
     [JsonProperty("n")]
     public string Id { get; private set; }
+
+    [JsonProperty("ha")]
+    public string HandleAuth { get; private set; }
 
     [JsonProperty("s")]
     public object[] Options { get; private set; }
 
     [JsonProperty("cr")]
     public ShareData Share { get; private set; }
+
+    [JsonProperty("ok")]
+    public string SharedKey { get; private set; }
   }
 
   #endregion
@@ -414,13 +454,38 @@ namespace CG.Web.MegaApiClient
   [JsonConverter(typeof(ShareDataConverter))]
   internal class ShareData
   {
-    public string CompletionHandle { get; set; }
+    private IList<ShareDataItem> items;
 
-    public byte[] SharedKey { get; set; }
+    public ShareData(string nodeId)
+    {
+      this.NodeId = nodeId;
+      this.items = new List<ShareDataItem>();
+    }
 
-    public byte[] Key { get; set; }
+    public string NodeId { get; private set; }
 
-    public string Id { get; set; }
+    public IEnumerable<ShareDataItem> Items { get { return this.items; } }
+
+    public void AddItem(string nodeId, byte[] data, byte[] key)
+    {
+      ShareDataItem item = new ShareDataItem
+      {
+        NodeId = nodeId,
+        Data = data,
+        Key = key
+      };
+
+      this.items.Add(item);
+    }
+
+    public class ShareDataItem
+    {
+      public string NodeId { get; set; }
+
+      public byte[] Data { get; set; }
+
+      public byte[] Key { get; set; }
+    }
   }
 
   internal class ShareDataConverter : JsonConverter
@@ -435,24 +500,26 @@ namespace CG.Web.MegaApiClient
 
       writer.WriteStartArray();
 
-      if (data.SharedKey != null)
+      writer.WriteStartArray();
+      writer.WriteValue(data.NodeId);
+      writer.WriteEndArray();
+
+      writer.WriteStartArray();
+      foreach (var item in data.Items)
       {
-        writer.WriteStartArray();
-        writer.WriteValue(data.Id);
-        writer.WriteEndArray();
-
-        writer.WriteStartArray();
-        writer.WriteValue(data.Id);
-        writer.WriteEndArray();
-
-        writer.WriteStartArray();
-        writer.WriteValue(0);
-        writer.WriteValue(0);
-        writer.WriteValue("tGQQE8syOVhXSo1obq3phA");
-        //writer.WriteValue(data.SharedKey.ToBase64());
-        //writer.WriteValue(Crypto.EncryptAesEcb(data.Key, data.SharedKey).ToBase64());
-        writer.WriteEndArray();
+        writer.WriteValue(item.NodeId);
       }
+      writer.WriteEndArray();
+
+      writer.WriteStartArray();
+      int counter = 0;
+      foreach (var item in data.Items)
+      {
+        writer.WriteValue(0);
+        writer.WriteValue(counter++);
+        writer.WriteValue(Crypto.EncryptKey(item.Data, item.Key).ToBase64());
+      }
+      writer.WriteEndArray();
 
       writer.WriteEndArray();
     }
