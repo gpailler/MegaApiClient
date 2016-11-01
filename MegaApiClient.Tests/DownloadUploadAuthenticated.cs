@@ -65,14 +65,38 @@ namespace CG.Web.MegaApiClient.Tests
             }
         }
 
-        [TestCase("eooj3IwY", "https://mega.nz/#!2sZwQJRZ!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
-        public void GetDownloadLink_Succeeds(string id, string expectedLink)
+        [TestCase("eooj3IwY", "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
+        [TestCase("KoRAhTbQ", "https://mega.nz/#F!6kgE3YIQ!W_8GYHXH-COtmfWxOkMCFQ")]
+        public void GetDownloadLink_ExistingLinks_Succeeds(string id, string expectedLink)
         {
             INode node = this.Client.GetNodes().Single(x => x.Id == id);
 
+            var link = this.Client.GetDownloadLink(node);
             Assert.That(
-                this.Client.GetDownloadLink(node),
-                Is.EqualTo(new Uri(expectedLink)));
+                link.AbsoluteUri,
+                Is.EqualTo(expectedLink));
+        }
+
+        [Test]
+        public void GetDownloadLink_FolderNewLink_Succeeds()
+        {
+            // Create folders structure with subdirectories and file to ensure
+            // SharedKey is distributed on all children
+            var rootNode = this.GetNode(NodeType.Root);
+            var folderNode = this.CreateFolderNode(rootNode, "Test");
+            var subFolderNode = this.CreateFolderNode(folderNode, "AA");
+            var subFolderNode2 = this.CreateFolderNode(folderNode, "BB");
+            var subSubFolderNode = this.CreateFolderNode(subFolderNode, "subAA");
+            var subSubFileNode = this.Client.UploadFile(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), subSubFolderNode);
+
+            Assert.DoesNotThrow(() => this.Client.GetDownloadLink(folderNode));
+
+            var nodes = this.Client.GetNodes().ToArray();
+            foreach (var node in new[] { folderNode, subFolderNode, subFolderNode2, subSubFolderNode, subSubFileNode })
+            {
+                var updatedNode = nodes.First(x => x.Id == node.Id);
+                Assert.That(((INodeCrypto)updatedNode).SharedKey, Is.Not.Null);
+            }
         }
 
         private static IEnumerable<ITestCaseData> GetGetDownloadLinkInvalidParameter()

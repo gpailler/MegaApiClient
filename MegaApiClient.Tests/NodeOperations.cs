@@ -232,7 +232,13 @@ namespace CG.Web.MegaApiClient.Tests
                     break;
 
                 case NodeType.File:
-                    createdNode = this.Client.Upload(new MemoryStream(), "Data", parentNode);
+                    byte[] data = new byte[123];
+                    new Random().NextBytes(data);
+
+                    using (MemoryStream stream = new MemoryStream(data))
+                    {
+                        createdNode = this.Client.Upload(stream, "Data", parentNode);
+                    }
                     break;
 
                 default:
@@ -253,7 +259,7 @@ namespace CG.Web.MegaApiClient.Tests
                   .And.Exactly(1).EqualTo(renamedNode));
         }
 
-        [TestCase("https://mega.nz/#!2sZwQJRZ!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
+        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
         public void GetNodeFromLink_Succeeds(string link)
         {
             INodePublic publicNode = this.Client.GetNodeFromLink(new Uri(link));

@@ -344,13 +344,21 @@
         throw new ArgumentException("Invalid node");
       }
 
+      this.EnsureLoggedIn();
+
+      if (node.Type == NodeType.Directory)
+      {
+        // Request an export share on the node or we will receive an AccessDenied
+        this.Request(new ShareNodeRequest(node, this.masterKey, this.GetNodes()));
+
+        node = this.GetNodes().First(x => x.Equals(node));
+      }
+
       INodeCrypto nodeCrypto = node as INodeCrypto;
       if (nodeCrypto == null)
       {
         throw new ArgumentException("node must implement INodeCrypto");
       }
-
-      this.EnsureLoggedIn();
 
       GetDownloadLinkRequest request = new GetDownloadLinkRequest(node);
       string response = this.Request<string>(request);
@@ -359,7 +367,7 @@
           "/#{0}!{1}!{2}",
           node.Type == NodeType.Directory ? "F" : string.Empty,
           response,
-          nodeCrypto.FullKey.ToBase64()));
+          node.Type == NodeType.Directory ? nodeCrypto.SharedKey.ToBase64() : nodeCrypto.FullKey.ToBase64()));
     }
 
     /// <summary>
