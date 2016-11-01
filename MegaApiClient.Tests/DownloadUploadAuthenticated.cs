@@ -91,9 +91,10 @@ namespace CG.Web.MegaApiClient.Tests
 
             Assert.DoesNotThrow(() => this.Client.GetDownloadLink(folderNode));
 
+            var nodes = this.Client.GetNodes().ToArray();
             foreach (var node in new[] { folderNode, subFolderNode, subFolderNode2, subSubFolderNode, subSubFileNode })
             {
-                var updatedNode = this.Client.GetNodes().First(x => x.Id == node.Id);
+                var updatedNode = nodes.First(x => x.Id == node.Id);
                 Assert.That(((INodeCrypto)updatedNode).SharedKey, Is.Not.Null);
             }
         }

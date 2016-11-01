@@ -133,18 +133,12 @@ namespace CG.Web.MegaApiClient.Tests
 
     protected string PermanentFile
     {
-      get
-      {
-        return this._permanentFilesNodes[0];
-      }
+      get { return this._permanentFilesNodes[0]; }
     }
 
     protected int SystemNodesCount
     {
-      get
-      {
-        return this._systemNodes.Length;
-      }
+      get { return this._systemNodes.Length; }
     }
 
     protected int PermanentNodesCount
@@ -198,7 +192,18 @@ namespace CG.Web.MegaApiClient.Tests
       IEnumerable<INode> nodesToRemove = nodes.Where(x => this.IsProtectedNode(x) == false);
       foreach (INode node in nodesToRemove)
       {
-        this.Client.Delete(node, false);
+        try
+        {
+          this.Client.Delete(node, false);
+        }
+        catch (ApiException ex)
+        {
+          // Don't throw if node is already removed
+          if (ex.ApiResultCode != ApiResultCode.AccessDenied)
+          {
+            throw;
+          }
+        }
       }
 
       Assert.That(

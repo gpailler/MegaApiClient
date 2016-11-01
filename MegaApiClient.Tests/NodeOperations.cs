@@ -232,7 +232,13 @@ namespace CG.Web.MegaApiClient.Tests
                     break;
 
                 case NodeType.File:
-                    createdNode = this.Client.Upload(new MemoryStream(), "Data", parentNode);
+                    byte[] data = new byte[123];
+                    new Random().NextBytes(data);
+
+                    using (MemoryStream stream = new MemoryStream(data))
+                    {
+                        createdNode = this.Client.Upload(stream, "Data", parentNode);
+                    }
                     break;
 
                 default:
