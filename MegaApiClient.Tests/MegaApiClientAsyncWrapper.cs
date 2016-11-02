@@ -32,6 +32,12 @@ namespace CG.Web.MegaApiClient.Tests
       set { this.client.ChunksPackSize = value; }
     }
 
+    public long ReportProgressChunkSize
+    {
+      get { return this.client.ReportProgressChunkSize; }
+      set { this.client.ReportProgressChunkSize = value; }
+    }
+
     public void Login(string email, string password)
     {
       this.UnwrapException(() => this.client.LoginAsync(email, password).Wait());

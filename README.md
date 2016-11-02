@@ -1,10 +1,10 @@
 MegaApiClient
 =============
 
-[![Build status](https://ci.appveyor.com/api/projects/status/a87jre98xr1wiryt/branch/master?svg=true)](https://ci.appveyor.com/project/gpailler/megaapiclient/branch/master)
-[![Coverage Status](https://coveralls.io/repos/gpailler/MegaApiClient/badge.svg?branch=master)](https://coveralls.io/r/gpailler/MegaApiClient?branch=master)
+[![Build status](https://ci.appveyor.com/api/projects/status/a87jre98xr1wiryt/branch/develop?svg=true)](https://ci.appveyor.com/project/gpailler/megaapiclient/branch/develop)
+[![Coverage Status](https://coveralls.io/repos/gpailler/MegaApiClient/badge.svg?branch=develop)](https://coveralls.io/r/gpailler/MegaApiClient?branch=develop)
 [![NuGet version](https://badge.fury.io/nu/MegaApiClient.svg)](https://badge.fury.io/nu/MegaApiClient)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gpailler/MegaApiClient/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gpailler/MegaApiClient/blob/develop/LICENSE)
 
 C# library to access http://mega.co.nz API
 
@@ -79,8 +79,9 @@ Async methods and download/upload progression:
 Customization
 ---
 - MegaApiClient constructor can use a optional IWebClient implementation to customize network layer (retry, timeout, transfer cancellation...).
-- The default download/upload buffer size is set to 8192 bytes and can be changed by editing `MegaApiClient.BufferSize` static variable. This can improve transfers if you have high bandwidth.
-- For .Net 4.5 and higher, the progression in Download/Upload methods is reported on each 50KB downloaded or uploaded block. This can  be changed by editing `MegaApiClient.ReportProgressChunkSize` static variable.
+- The default download/upload buffer size is set to 8192 bytes and can be changed by editing `MegaApiClient.BufferSize` instance variable. This can improve transfers if you have high bandwidth (but you have less progression reports).
+- Files are splitted in chunks and uploaded chunk by chunk (to support large uploads). MegaApiClient tries to pack chunks in 1MB uploads fragments by default. You can edit `MegaApiClient.ChunksPackSize` to specify a custom value to pack more or less chunks in a single upload.
+- For .Net 4.5 and higher, the progression in Download/Upload methods is reported on each 50KB downloaded or uploaded block. This can be changed by editing `MegaApiClient.ReportProgressChunkSize` instance variable. This value should be higher or equals to `MegaApiClient.BufferSize` or you will have a less smooth progression report.
 
 Donations :gift:
 ---

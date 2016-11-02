@@ -7,7 +7,9 @@
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    public static long ReportProgressChunkSize = 1024 * 50;
+    private const long DefaultReportProgressChunkSize = 1024 * 50;
+
+    public long ReportProgressChunkSize { get; set; }
 
     #region Public async methods
 
@@ -75,7 +77,7 @@
     {
       return Task.Run(() =>
       {
-        return (Stream)new ProgressionStream(this.Download(node), progress);
+        return (Stream)new ProgressionStream(this.Download(node), progress, this.ReportProgressChunkSize);
       });
     }
 
@@ -83,7 +85,7 @@
     {
       return Task.Run(() =>
       {
-        return (Stream)new ProgressionStream(this.Download(uri), progress);
+        return (Stream)new ProgressionStream(this.Download(uri), progress, this.ReportProgressChunkSize);
       });
     }
 
@@ -91,7 +93,7 @@
     {
       return Task.Run(() =>
       {
-        using (Stream stream = new ProgressionStream(this.Download(node), progress))
+        using (Stream stream = new ProgressionStream(this.Download(node), progress, this.ReportProgressChunkSize))
         {
           this.SaveStream(stream, outputFile);
         }
@@ -107,7 +109,7 @@
           throw new ArgumentNullException("outputFile");
         }
 
-        using (Stream stream = new ProgressionStream(this.Download(uri), progress))
+        using (Stream stream = new ProgressionStream(this.Download(uri), progress, this.ReportProgressChunkSize))
         {
           this.SaveStream(stream, outputFile);
         }
@@ -123,7 +125,7 @@
           throw new ArgumentNullException("stream");
         }
 
-        using (Stream progressionStream = new ProgressionStream(stream, progress))
+        using (Stream progressionStream = new ProgressionStream(stream, progress, this.ReportProgressChunkSize))
         {
           return this.Upload(progressionStream, name, parent);
         }
@@ -134,7 +136,7 @@
     {
       return Task.Run(() =>
       {
-        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress))
+        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress, this.ReportProgressChunkSize))
         {
           return this.Upload(stream, Path.GetFileName(filename), parent);
         }

@@ -57,6 +57,10 @@
       this.webClient = webClient;
       this.BufferSize = DefaultBufferSize;
       this.ChunksPackSize = DefaultChunksPackSize;
+
+#if NET45
+      this.ReportProgressChunkSize = DefaultReportProgressChunkSize;
+#endif
     }
 
     #endregion

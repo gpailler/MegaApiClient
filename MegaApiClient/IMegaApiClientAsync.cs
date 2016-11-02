@@ -7,6 +7,8 @@ namespace CG.Web.MegaApiClient
 
   public partial interface IMegaApiClient
   {
+    long ReportProgressChunkSize { get; set; }
+
     Task LoginAsync(string email, string password);
 
     Task LoginAsync(MegaApiClient.AuthInfos authInfos);
