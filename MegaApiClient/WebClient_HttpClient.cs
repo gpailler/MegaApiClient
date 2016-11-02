@@ -50,24 +50,15 @@
 
     private string PostRequest(Uri url, Stream dataStream, string contentType)
     {
-      // Copy original stream to allow retries
-      // HttpClient will dispose the source stream at the end of PostAsync call
-      byte[] buffer = new byte[dataStream.Length];
-      using (Stream dataStreamCopy = new MemoryStream(buffer))
+      using (StreamContent content = new StreamContent(dataStream, this.BufferSize))
       {
-        dataStream.CopyTo(dataStreamCopy);
-        dataStreamCopy.Position = 0;
-
-        using (StreamContent content = new StreamContent(dataStreamCopy, this.BufferSize))
+        content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+        using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)
         {
-          content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-          using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)
+          using (Stream stream = response.Content.ReadAsStreamAsync().Result)
+          using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
           {
-            using (Stream stream = response.Content.ReadAsStreamAsync().Result)
-            using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
-            {
-              return streamReader.ReadToEnd();
-            }
+            return streamReader.ReadToEnd();
           }
         }
       }

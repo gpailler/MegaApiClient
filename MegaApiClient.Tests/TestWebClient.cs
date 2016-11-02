@@ -49,7 +49,12 @@ namespace CG.Web.MegaApiClient.Tests
       return this._policy.Execute(() =>
       {
         this.OnCalled?.Invoke(CallType.PostRequestRaw);
-        return this._webClient.PostRequestRaw(url, dataStream);
+
+        // Create a copy of the stream because webClient can dispose it
+        // It's useful in case of retries
+        Stream dataStreamCopy = this.CloneStream(dataStream);
+
+        return this._webClient.PostRequestRaw(url, dataStreamCopy);
       });
     }
 
@@ -60,6 +65,18 @@ namespace CG.Web.MegaApiClient.Tests
         this.OnCalled?.Invoke(CallType.GetRequestRaw);
         return this._webClient.GetRequestRaw(url);
       });
+    }
+
+    private Stream CloneStream(Stream dataStream)
+    {
+      byte[] buffer = new byte[dataStream.Length];
+      MemoryStream cloneStream = new MemoryStream(buffer);
+      dataStream.CopyTo(cloneStream);
+
+      dataStream.Position = 0;
+      cloneStream.Position = 0;
+
+      return cloneStream;
     }
   }
 }
