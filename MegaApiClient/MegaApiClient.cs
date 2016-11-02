@@ -624,6 +624,10 @@
 
       this.EnsureLoggedIn();
 
+      // Retrieve upload URL
+      UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
+      UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
+
       using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
       {
         string completionHandle = null;
@@ -659,10 +663,6 @@
           {
             using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
             {
-              // Retrieve upload URL
-              UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
-              UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
-
               Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[chunkStartPosition]);
               result = this.webClient.PostRequestRaw(uri, chunkStream);
               if (result.StartsWith("-"))
