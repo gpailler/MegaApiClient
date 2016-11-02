@@ -18,6 +18,7 @@
     public WebClient()
         : this(DefaultResponseTimeout)
     {
+      this.BufferSize = MegaApiClient.DefaultBufferSize;
     }
 
     internal WebClient(int responseTimeout)
@@ -25,6 +26,8 @@
       this.httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
       this.httpClient.DefaultRequestHeaders.UserAgent.Add(this.GenerateUserAgent());
     }
+
+    public int BufferSize { get; set; }
 
     public string PostRequestJson(Uri url, string jsonData)
     {
@@ -47,7 +50,7 @@
 
     private string PostRequest(Uri url, Stream dataStream, string contentType)
     {
-      using (StreamContent content = new StreamContent(dataStream))
+      using (StreamContent content = new StreamContent(dataStream, this.BufferSize))
       {
         content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
         using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)

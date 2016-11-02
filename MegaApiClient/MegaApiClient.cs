@@ -19,15 +19,8 @@
     private const int ApiRequestAttempts = 10;
     private const int ApiRequestDelay = 200;
 
-    public static int BufferSize = 81920;
-
-    /// <summary>
-    /// Upload is splitted in multiple fragments (useful for big uploads)
-    /// The size of the fragments is defined by mega.nz and are the following:
-    /// 0 / 128K / 384K / 768K / 1280K / 1920K / 2688K / 3584K / 4608K / ... (every 1024 KB) / EOF
-    /// This value is used to merge multiple fragments in a single upload
-    /// </summary>
-    public static int ChunksPackSize = 1024 * 1024;
+    internal const int DefaultBufferSize = 8192;
+    private const int DefaultChunksPackSize = 1024 * 1024;
 
     private const string ApplicationKey = "axhQiYyQ";
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
@@ -39,6 +32,7 @@
     private string sessionId;
     private byte[] masterKey;
     private uint sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
+    private int bufferSize;
 
     #region Constructors
 
@@ -61,6 +55,8 @@
       }
 
       this.webClient = webClient;
+      this.BufferSize = DefaultBufferSize;
+      this.ChunksPackSize = DefaultChunksPackSize;
     }
 
     #endregion
@@ -97,6 +93,34 @@
 
       return new AuthInfos(email, hash, passwordAesKey);
     }
+
+    /// <summary>
+    /// Size of the buffer used when downloading files
+    /// This value has an impact on the progression.
+    /// A lower value means more progression reports but a possible higher CPU usage
+    /// </summary>
+    public int BufferSize
+    {
+      get
+      {
+        return this.bufferSize;
+      }
+
+      set
+      {
+        this.bufferSize = value;
+        this.webClient.BufferSize = value;
+      }
+    }
+
+    /// <summary>
+    /// Upload is splitted in multiple fragments (useful for big uploads)
+    /// The size of the fragments is defined by mega.nz and are the following:
+    /// 0 / 128K / 384K / 768K / 1280K / 1920K / 2688K / 3584K / 4608K / ... (every 1024 KB) / EOF
+    /// The upload method tries to upload multiple fragments at once.
+    /// Fragments are merged until the total size reaches this value.
+    /// </summary>
+    public int ChunksPackSize { get; set; }
 
     /// <summary>
     /// Login to Mega.co.nz service using email/password credentials
@@ -614,7 +638,7 @@
           int chunkSize = (int)(nextChunkPosition - currentChunkPosition);
 
           // Pack multiple chunks in a single upload
-          while (chunkSize < ChunksPackSize && i < encryptedStream.ChunksPositions.Length - 1)
+          while (chunkSize < this.ChunksPackSize && i < encryptedStream.ChunksPositions.Length - 1)
           {
             i++;
             currentChunkPosition = encryptedStream.ChunksPositions[i];
@@ -872,7 +896,7 @@
     {
       using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
       {
-        stream.CopyTo(fs, BufferSize);
+        stream.CopyTo(fs, this.BufferSize);
       }
     }
 

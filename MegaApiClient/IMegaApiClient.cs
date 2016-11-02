@@ -6,6 +6,10 @@ namespace CG.Web.MegaApiClient
 
   public partial interface IMegaApiClient
   {
+    int BufferSize { get; set; }
+
+    int ChunksPackSize { get; set; }
+
     void Login(string email, string password);
 
     void Login(MegaApiClient.AuthInfos authInfos);

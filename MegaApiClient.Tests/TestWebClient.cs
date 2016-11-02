@@ -29,6 +29,12 @@ namespace CG.Web.MegaApiClient.Tests
 
     public event Action<CallType> OnCalled;
 
+    public int BufferSize
+    {
+      get { return this._webClient.BufferSize; }
+      set { this._webClient.BufferSize = value; }
+    }
+
     public string PostRequestJson(Uri url, string jsonData)
     {
       return this._policy.Execute(() =>

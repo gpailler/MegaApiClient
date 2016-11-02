@@ -69,7 +69,7 @@ namespace CG.Web.MegaApiClient.Tests
                 Action<TestWebClient.CallType> onCall = callType => uploadCalls += callType == TestWebClient.CallType.PostRequestRaw ? 1 : 0;
                 ((TestWebClient) this.WebClient).OnCalled += onCall;
 
-                MegaApiClient.ChunksPackSize = chunksPackSize;
+                this.Client.ChunksPackSize = chunksPackSize;
                 var node = this.Client.Upload(stream, "test", parent);
 
                 stream.Position = 0;
