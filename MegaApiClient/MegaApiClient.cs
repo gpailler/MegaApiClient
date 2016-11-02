@@ -16,8 +16,8 @@
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    private const int ApiRequestAttempts = 10;
-    private const int ApiRequestDelay = 200;
+    private const int ApiRequestAttempts = 60;
+    private const int ApiRequestDelay = 500;
 
     internal const int DefaultBufferSize = 8192;
     private const int DefaultChunksPackSize = 1024 * 1024;
