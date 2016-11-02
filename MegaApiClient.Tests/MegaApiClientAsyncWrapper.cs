@@ -20,6 +20,18 @@ namespace CG.Web.MegaApiClient.Tests
       this.client = client;
     }
 
+    public int BufferSize
+    {
+      get { return this.client.BufferSize; }
+      set { this.client.BufferSize = value; }
+    }
+
+    public int ChunksPackSize
+    {
+      get { return this.client.ChunksPackSize; }
+      set { this.client.ChunksPackSize = value; }
+    }
+
     public void Login(string email, string password)
     {
       this.UnwrapException(() => this.client.LoginAsync(email, password).Wait());

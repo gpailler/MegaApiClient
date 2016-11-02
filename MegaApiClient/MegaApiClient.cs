@@ -19,7 +19,8 @@
     private const int ApiRequestAttempts = 10;
     private const int ApiRequestDelay = 200;
 
-    public static int BufferSize = 8192;
+    internal const int DefaultBufferSize = 8192;
+    private const int DefaultChunksPackSize = 1024 * 1024;
 
     private const string ApplicationKey = "axhQiYyQ";
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
@@ -28,10 +29,10 @@
     private readonly IWebClient webClient;
 
     private Node trashNode;
-    private AuthInfos authInfos;
     private string sessionId;
     private byte[] masterKey;
     private uint sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
+    private int bufferSize;
 
     #region Constructors
 
@@ -54,6 +55,8 @@
       }
 
       this.webClient = webClient;
+      this.BufferSize = DefaultBufferSize;
+      this.ChunksPackSize = DefaultChunksPackSize;
     }
 
     #endregion
@@ -92,6 +95,34 @@
     }
 
     /// <summary>
+    /// Size of the buffer used when downloading files
+    /// This value has an impact on the progression.
+    /// A lower value means more progression reports but a possible higher CPU usage
+    /// </summary>
+    public int BufferSize
+    {
+      get
+      {
+        return this.bufferSize;
+      }
+
+      set
+      {
+        this.bufferSize = value;
+        this.webClient.BufferSize = value;
+      }
+    }
+
+    /// <summary>
+    /// Upload is splitted in multiple fragments (useful for big uploads)
+    /// The size of the fragments is defined by mega.nz and are the following:
+    /// 0 / 128K / 384K / 768K / 1280K / 1920K / 2688K / 3584K / 4608K / ... (every 1024 KB) / EOF
+    /// The upload method tries to upload multiple fragments at once.
+    /// Fragments are merged until the total size reaches this value.
+    /// </summary>
+    public int ChunksPackSize { get; set; }
+
+    /// <summary>
     /// Login to Mega.co.nz service using email/password credentials
     /// </summary>
     /// <param name="email">email</param>
@@ -119,9 +150,6 @@
       }
 
       this.EnsureLoggedOut();
-
-      // Store authInfos to relogin if required
-      this.authInfos = authInfos;
 
       // Request Mega Api
       LoginRequest request = new LoginRequest(authInfos.Email, authInfos.Hash);
@@ -601,12 +629,26 @@
         string completionHandle = null;
         for (int i = 0; i < encryptedStream.ChunksPositions.Length; i++)
         {
+          int chunkStartPosition = i;
           long currentChunkPosition = encryptedStream.ChunksPositions[i];
           long nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
             ? encryptedStream.Length
             : encryptedStream.ChunksPositions[i + 1];
 
           int chunkSize = (int)(nextChunkPosition - currentChunkPosition);
+
+          // Pack multiple chunks in a single upload
+          while (chunkSize < this.ChunksPackSize && i < encryptedStream.ChunksPositions.Length - 1)
+          {
+            i++;
+            currentChunkPosition = encryptedStream.ChunksPositions[i];
+            nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
+              ? encryptedStream.Length
+              : encryptedStream.ChunksPositions[i + 1];
+
+            chunkSize += (int)(nextChunkPosition - currentChunkPosition);
+          }
+
           byte[] chunkBuffer = new byte[chunkSize];
           encryptedStream.Read(chunkBuffer, 0, chunkSize);
           using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
@@ -616,7 +658,7 @@
             UploadException lastException = null;
             while (remainingRetry-- > 0)
             {
-                Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[i]);
+                Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[chunkStartPosition]);
                 result = this.webClient.PostRequestRaw(uri, chunkStream);
                 if (result.StartsWith("-"))
                 {
@@ -854,7 +896,7 @@
     {
       using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
       {
-        stream.CopyTo(fs, BufferSize);
+        stream.CopyTo(fs, this.BufferSize);
       }
     }
 

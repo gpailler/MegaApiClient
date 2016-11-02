@@ -50,10 +50,13 @@ namespace CG.Web.MegaApiClient.Tests
             Assert.That(node, Is.EqualTo(this.Client.GetNodes().Single(x => x.Id == node.Id)));
         }
 
-        [TestCase(20000)] // 1 chunk
-        [TestCase(200000)] // 2 chunks
-        [TestCase(2000000)] // 3 chunks
-        public void UploadStream_ValidateContent_Succeeds(int dataSize)
+        [TestCase(20000, 128 * 1024, 1)]
+        [TestCase(200000, 128 * 1024, 2)]
+        [TestCase(2000000, 128 * 1024, 6)]
+        [TestCase(20000, 1024 * 1024, 1)]
+        [TestCase(200000, 1024 * 1024, 1)]
+        [TestCase(2000000, 1024 * 1024, 2)]
+        public void UploadStream_ValidateContent_Succeeds(int dataSize, int chunksPackSize, int expectedUploadCalls)
         {
             byte[] uploadedData = new byte[dataSize];
             this.random.NextBytes(uploadedData);
@@ -62,10 +65,16 @@ namespace CG.Web.MegaApiClient.Tests
 
             using (Stream stream = new MemoryStream(uploadedData))
             {
+                int uploadCalls = 0;
+                Action<TestWebClient.CallType> onCall = callType => uploadCalls += callType == TestWebClient.CallType.PostRequestRaw ? 1 : 0;
+                ((TestWebClient) this.WebClient).OnCalled += onCall;
+
+                this.Client.ChunksPackSize = chunksPackSize;
                 var node = this.Client.Upload(stream, "test", parent);
 
                 stream.Position = 0;
                 this.AreStreamsEquivalent(this.Client.Download(node), stream);
+                Assert.That(uploadCalls, Is.EqualTo(expectedUploadCalls));
             }
         }
 
