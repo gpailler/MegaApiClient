@@ -55,7 +55,8 @@
         content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
         using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)
         {
-          using (StreamReader streamReader = new StreamReader(response.Content.ReadAsStreamAsync().Result, Encoding.UTF8))
+          using (Stream stream = response.Content.ReadAsStreamAsync().Result)
+          using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
           {
             return streamReader.ReadToEnd();
           }
