@@ -669,6 +669,10 @@
               {
                 lastException = new UploadException(result);
                 Thread.Sleep(ApiRequestDelay);
+
+                // Request a new upload URL
+                uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
+
                 continue;
               }
 
