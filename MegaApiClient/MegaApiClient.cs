@@ -847,11 +847,13 @@
         string dataResult = this.webClient.PostRequestJson(uri, dataRequest);
 
         jsonData = JsonConvert.DeserializeObject(dataResult);
-        if (jsonData is long || (jsonData is JArray && ((JArray)jsonData)[0].Type == JTokenType.Integer))
+        if (jsonData == null || jsonData is long || (jsonData is JArray && ((JArray)jsonData)[0].Type == JTokenType.Integer))
         {
-          ApiResultCode apiCode = (jsonData is long)
-                                      ? (ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
-                                      : (ApiResultCode)((JArray)jsonData)[0].Value<int>();
+          ApiResultCode apiCode = jsonData == null
+            ? ApiResultCode.RequestFailedRetry
+            : jsonData is long
+              ?(ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
+              : (ApiResultCode)((JArray)jsonData)[0].Value<int>();
 
           if (apiCode == ApiResultCode.RequestFailedRetry)
           {

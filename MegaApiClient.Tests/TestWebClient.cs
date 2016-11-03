@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using Polly;
 
 namespace CG.Web.MegaApiClient.Tests
@@ -17,6 +19,8 @@ namespace CG.Web.MegaApiClient.Tests
       this._policy = Policy
         .Handle<WebException>()
         .Or<SocketException>()
+        .Or<TaskCanceledException>()
+        .Or<HttpRequestException>()
         .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => Console.WriteLine(ts.TotalSeconds + " " + ex.Message));
     }
 

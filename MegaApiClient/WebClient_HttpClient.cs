@@ -44,8 +44,7 @@
 
     public Stream GetRequestRaw(Uri url)
     {
-      HttpResponseMessage response = this.httpClient.GetAsync(url).Result;
-      return response.Content.ReadAsStreamAsync().Result;
+      return this.httpClient.GetStreamAsync(url).Result;
     }
 
     private string PostRequest(Uri url, Stream dataStream, string contentType)
