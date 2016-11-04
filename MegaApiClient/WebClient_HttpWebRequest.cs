@@ -17,6 +17,7 @@
     public WebClient()
         : this(DefaultResponseTimeout)
     {
+      this.BufferSize = MegaApiClient.DefaultBufferSize;
     }
 
     internal WebClient(int responseTimeout)
@@ -24,6 +25,8 @@
       this.responseTimeout = responseTimeout;
       this.userAgent = this.GenerateUserAgent();
     }
+
+    public int BufferSize { get; set; }
 
     public string PostRequestJson(Uri url, string jsonData)
     {
@@ -56,7 +59,7 @@
       using (Stream requestStream = request.GetRequestStream())
       {
         dataStream.Position = 0;
-        dataStream.CopyTo(requestStream, MegaApiClient.BufferSize);
+        dataStream.CopyTo(requestStream, this.BufferSize);
       }
 
       using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())

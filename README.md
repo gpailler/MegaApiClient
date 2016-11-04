@@ -56,6 +56,7 @@ IEnumerable<INode> GetNodes(INode parent)
 INode CreateFolder(string name, INode parent)
 void Delete(INode node, bool moveToTrash = true)
 INode Move(INode node, INode destinationParentNode)
+INode Rename(INode node, string newName)
 INodePublic GetNodeFromLink(Uri uri)
 
 // Download
@@ -78,8 +79,9 @@ Async methods and download/upload progression:
 Customization
 ---
 - MegaApiClient constructor can use a optional IWebClient implementation to customize network layer (retry, timeout, transfer cancellation...).
-- The default download/upload buffer size is set to 8192 bytes and can be changed by editing `MegaApiClient.BufferSize` static variable. This can improve transfers if you have high bandwidth.
-- For .Net 4.5 and higher, the progression in Download/Upload methods is reported on each 50KB downloaded or uploaded block. This can  be changed by editing `MegaApiClient.ReportProgressChunkSize` static variable.
+- The default download/upload buffer size is set to 8192 bytes and can be changed by editing `MegaApiClient.BufferSize` instance variable. This can improve transfers if you have high bandwidth (but you have less progression reports).
+- Files are splitted in chunks and uploaded chunk by chunk (to support large uploads). MegaApiClient tries to pack chunks in 1MB uploads fragments by default. You can edit `MegaApiClient.ChunksPackSize` to specify a custom value to pack more or less chunks in a single upload.
+- For .Net 4.5 and higher, the progression in Download/Upload methods is reported on each 50KB downloaded or uploaded block. This can be changed by editing `MegaApiClient.ReportProgressChunkSize` instance variable. This value should be higher or equals to `MegaApiClient.BufferSize` or you will have a less smooth progression report.
 
 Donations :gift:
 ---

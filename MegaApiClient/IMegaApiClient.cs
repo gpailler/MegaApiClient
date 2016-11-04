@@ -6,6 +6,10 @@ namespace CG.Web.MegaApiClient
 
   public partial interface IMegaApiClient
   {
+    int BufferSize { get; set; }
+
+    int ChunksPackSize { get; set; }
+
     void Login(string email, string password);
 
     void Login(MegaApiClient.AuthInfos authInfos);
@@ -41,5 +45,7 @@ namespace CG.Web.MegaApiClient
     INode Upload(Stream stream, string name, INode parent);
 
     INode Move(INode node, INode destinationParentNode);
+
+    INode Rename(INode node, string newName);
   }
 }

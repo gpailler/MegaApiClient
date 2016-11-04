@@ -8,7 +8,6 @@
   internal class Crypto
   {
     private static readonly Rijndael RijndaelCbc;
-    private static readonly Rijndael RijndaelEcb;
     private static readonly byte[] DefaultIv = new byte[16];
 
     static Crypto()
@@ -16,10 +15,6 @@
       RijndaelCbc = Rijndael.Create();
       RijndaelCbc.Padding = PaddingMode.None;
       RijndaelCbc.Mode = CipherMode.CBC;
-
-      RijndaelEcb = Rijndael.Create();
-      RijndaelEcb.Padding = PaddingMode.None;
-      RijndaelEcb.Mode = CipherMode.ECB;
     }
 
     #region Key
@@ -97,14 +92,6 @@
         rijndael.Padding = PaddingMode.None;
         rijndael.GenerateKey();
         return rijndael.Key;
-      }
-    }
-
-    public static byte[] EncryptAesEcb(byte[] data, byte[] key)
-    {
-      using (ICryptoTransform encryptor = RijndaelEcb.CreateEncryptor(key, DefaultIv))
-      {
-        return encryptor.TransformFinalBlock(data, 0, data.Length);
       }
     }
 

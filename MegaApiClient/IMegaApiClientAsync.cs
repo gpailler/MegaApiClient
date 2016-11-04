@@ -7,6 +7,8 @@ namespace CG.Web.MegaApiClient
 
   public partial interface IMegaApiClient
   {
+    long ReportProgressChunkSize { get; set; }
+
     Task LoginAsync(string email, string password);
 
     Task LoginAsync(MegaApiClient.AuthInfos authInfos);
@@ -26,6 +28,8 @@ namespace CG.Web.MegaApiClient
     Task DeleteAsync(INode node, bool moveToTrash = true);
 
     Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode);
+
+    Task<INode> RenameAsync(INode sourceNode, string newName);
 
     Task<Uri> GetDownloadLinkAsync(INode node);
 

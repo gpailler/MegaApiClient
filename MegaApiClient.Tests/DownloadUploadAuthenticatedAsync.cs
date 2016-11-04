@@ -22,37 +22,28 @@ namespace CG.Web.MegaApiClient.Tests
         public long DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize)
         {
             // Arrange
-            long defaultReportProgressChunkSize = MegaApiClient.ReportProgressChunkSize;
-            try
-            {
-                MegaApiClient.ReportProgressChunkSize =
-                    reportProgressChunkSize.GetValueOrDefault(defaultReportProgressChunkSize);
-                const string ExpectedFile = "Data/SampleFile.jpg";
-                INode node = this.Client.GetNodes().Single(x => x.Id == this.PermanentFile);
+            this.Client.ReportProgressChunkSize = reportProgressChunkSize.GetValueOrDefault(this.Client.ReportProgressChunkSize);
+            const string ExpectedFile = "Data/SampleFile.jpg";
+            INode node = this.Client.GetNodes().Single(x => x.Id == this.PermanentFile);
 
-                EventTester<double> eventTester = new EventTester<double>();
-                Progress<double> progress = new Progress<double>(eventTester.OnRaised);
+            EventTester<double> eventTester = new EventTester<double>();
+            Progress<double> progress = new Progress<double>(eventTester.OnRaised);
 
-                string outputFile = Path.GetTempFileName();
-                File.Delete(outputFile);
+            string outputFile = Path.GetTempFileName();
+            File.Delete(outputFile);
 
-                // Act
-                Task task = this.Client.DownloadFileAsync(node, outputFile, progress);
-                bool result = task.Wait(Timeout);
+            // Act
+            Task task = this.Client.DownloadFileAsync(node, outputFile, progress);
+            bool result = task.Wait(Timeout);
 
-                // Assert
-                Assert.That(result, Is.True);
-                this.AreFileEquivalent(ExpectedFile, outputFile);
+            // Assert
+            Assert.That(result, Is.True);
+            this.AreFileEquivalent(this.GetAbsoluteFilePath(ExpectedFile), outputFile);
 
-                return eventTester.Calls;
-            }
-            finally
-            {
-                MegaApiClient.ReportProgressChunkSize = defaultReportProgressChunkSize;
-            }
+            return eventTester.Calls;
         }
 
-        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
+        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
         public void DownloadFileAsync_FromLink_Succeeds(string uri, string expectedFile)
         {
             // Arrange
@@ -69,7 +60,7 @@ namespace CG.Web.MegaApiClient.Tests
             // Assert
             Assert.That(result, Is.True);
             Assert.That(eventTester.Calls, Is.EqualTo(10));
-            this.AreFileEquivalent(expectedFile, outputFile);
+            this.AreFileEquivalent(this.GetAbsoluteFilePath(expectedFile), outputFile);
         }
 
         [Test]

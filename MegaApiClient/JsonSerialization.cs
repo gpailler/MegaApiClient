@@ -2,6 +2,8 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.Diagnostics;
+  using System.Linq;
   using System.Runtime.Serialization;
 
   using Newtonsoft.Json;
@@ -141,21 +143,6 @@
       settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this, ctx.Context });
       this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
     }
-
-    internal class SharedKey
-    {
-      public SharedKey(string id, string key)
-      {
-        this.Id = id;
-        this.Key = key;
-      }
-
-      [JsonProperty("h")]
-      public string Id { get; private set; }
-
-      [JsonProperty("k")]
-      public string Key { get; private set; }
-    }
   }
 
   #endregion
@@ -205,21 +192,26 @@
       this.ParentId = parentNode.Id;
       this.Nodes = new[]
       {
-                new CreateNodeRequestData
-                {
-                    Attributes = attributes,
-                    Key = encryptedKey,
-                    Type = type,
-                    CompletionHandle = completionHandle
-                }
-            };
-
-      this.Share = new ShareData
-      {
-        CompletionHandle = completionHandle,
-        Parent = parentNode,
-        Key = key
+        new CreateNodeRequestData
+        {
+            Attributes = attributes,
+            Key = encryptedKey,
+            Type = type,
+            CompletionHandle = completionHandle
+        }
       };
+
+      INodeCrypto parentNodeCrypto = parentNode as INodeCrypto;
+      if (parentNodeCrypto == null)
+      {
+        throw new ArgumentException("parentNode node must implement INodeCrypto");
+      }
+
+      if (parentNodeCrypto.SharedKey != null)
+      {
+        this.Share = new ShareData(parentNode.Id);
+        this.Share.AddItem(completionHandle, key, parentNodeCrypto.SharedKey);
+      }
     }
 
     [JsonProperty("t")]
@@ -255,65 +247,79 @@
       [JsonProperty("k")]
       public string Key { get; set; }
     }
+  }
 
-    [JsonConverter(typeof(ShareDataConverter))]
-    internal class ShareData
+  #endregion
+
+
+  #region ShareRequest
+
+  internal class ShareNodeRequest : RequestBase
+  {
+    public ShareNodeRequest(INode node, byte[] masterKey, IEnumerable<INode> nodes)
+      : base("s2")
     {
-      public string CompletionHandle { get; set; }
+      this.Id = node.Id;
+      this.Options = new object[] { new { r = 0, u = "EXP" } };
 
-      public INode Parent { get; set; }
+      INodeCrypto nodeCrypto = (INodeCrypto)node;
+      byte[] uncryptedSharedKey = nodeCrypto.SharedKey;
+      if (uncryptedSharedKey == null)
+      {
+        uncryptedSharedKey = Crypto.CreateAesKey();
+      }
 
-      public byte[] Key { get; set; }
+      this.SharedKey = Crypto.EncryptKey(uncryptedSharedKey, masterKey).ToBase64();
+
+      if (nodeCrypto.SharedKey == null)
+      {
+        this.Share = new ShareData(node.Id);
+
+        this.Share.AddItem(node.Id, nodeCrypto.FullKey, uncryptedSharedKey);
+
+        // Add all children
+        IEnumerable<INode> allChildren = this.GetRecursiveChildren(nodes.ToArray(), node);
+        foreach (var child in allChildren)
+        {
+          this.Share.AddItem(child.Id, ((INodeCrypto)child).FullKey, uncryptedSharedKey);
+        }
+      }
+
+      byte[] handle = (node.Id + node.Id).ToBytes();
+      this.HandleAuth = Crypto.EncryptKey(handle, masterKey).ToBase64();
     }
 
-    private class ShareDataConverter : JsonConverter
+    private IEnumerable<INode> GetRecursiveChildren(INode[] nodes, INode parent)
     {
-      public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+      foreach (var node in nodes.Where(x => x.Type == NodeType.Directory || x.Type == NodeType.File))
       {
-        ShareData data = value as ShareData;
-        if (data == null)
+        string parentId = node.Id;
+        do
         {
-          throw new ArgumentException("invalid data to serialize");
-        }
-
-        INodeCrypto parent = data.Parent as INodeCrypto;
-        if (parent == null)
-        {
-          throw new ArgumentException("parent node must implement INodeCrypto");
-        }
-
-        writer.WriteStartArray();
-
-        if (parent.SharedKey != null)
-        {
-          writer.WriteStartArray();
-          writer.WriteValue(data.Parent.Id);
-          writer.WriteEndArray();
-
-          writer.WriteStartArray();
-          writer.WriteValue(data.CompletionHandle);
-          writer.WriteEndArray();
-
-          writer.WriteStartArray();
-          writer.WriteValue(0);
-          writer.WriteValue(0);
-          writer.WriteValue(Crypto.EncryptAesEcb(data.Key, parent.SharedKey).ToBase64());
-          writer.WriteEndArray();
-        }
-
-        writer.WriteEndArray();
-      }
-
-      public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-      {
-        throw new NotImplementedException();
-      }
-
-      public override bool CanConvert(Type objectType)
-      {
-        return objectType == typeof(ShareData);
+          parentId = nodes.FirstOrDefault(x => x.Id == parentId)?.ParentId;
+          if (parentId == parent.Id)
+          {
+            yield return node;
+            break;
+          }
+        } while (parentId != null);
       }
     }
+
+    [JsonProperty("n")]
+    public string Id { get; private set; }
+
+    [JsonProperty("ha")]
+    public string HandleAuth { get; private set; }
+
+    [JsonProperty("s")]
+    public object[] Options { get; private set; }
+
+    [JsonProperty("cr")]
+    public ShareData Share { get; private set; }
+
+    [JsonProperty("ok")]
+    public string SharedKey { get; private set; }
   }
 
   #endregion
@@ -407,6 +413,26 @@
 
   #endregion
 
+  #region Rename
+
+  internal class RenameRequest : RequestBase
+  {
+    public RenameRequest(INode node, string attributes)
+      : base("a")
+    {
+      this.Id = node.Id;
+      this.SerializedAttributes = attributes;
+    }
+
+    [JsonProperty("n")]
+    public string Id { get; private set; }
+
+    [JsonProperty("attr")]
+    public string SerializedAttributes { get; set; }
+  }
+
+  #endregion
+
 
   #region Attributes
 
@@ -419,6 +445,110 @@
 
     [JsonProperty("n")]
     public string Name { get; set; }
+  }
+
+  #endregion
+
+  #region ShareData
+
+  [JsonConverter(typeof(ShareDataConverter))]
+  internal class ShareData
+  {
+    private IList<ShareDataItem> items;
+
+    public ShareData(string nodeId)
+    {
+      this.NodeId = nodeId;
+      this.items = new List<ShareDataItem>();
+    }
+
+    public string NodeId { get; private set; }
+
+    public IEnumerable<ShareDataItem> Items { get { return this.items; } }
+
+    public void AddItem(string nodeId, byte[] data, byte[] key)
+    {
+      ShareDataItem item = new ShareDataItem
+      {
+        NodeId = nodeId,
+        Data = data,
+        Key = key
+      };
+
+      this.items.Add(item);
+    }
+
+    public class ShareDataItem
+    {
+      public string NodeId { get; set; }
+
+      public byte[] Data { get; set; }
+
+      public byte[] Key { get; set; }
+    }
+  }
+
+  internal class ShareDataConverter : JsonConverter
+  {
+    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+    {
+      ShareData data = value as ShareData;
+      if (data == null)
+      {
+        throw new ArgumentException("invalid data to serialize");
+      }
+
+      writer.WriteStartArray();
+
+      writer.WriteStartArray();
+      writer.WriteValue(data.NodeId);
+      writer.WriteEndArray();
+
+      writer.WriteStartArray();
+      foreach (var item in data.Items)
+      {
+        writer.WriteValue(item.NodeId);
+      }
+      writer.WriteEndArray();
+
+      writer.WriteStartArray();
+      int counter = 0;
+      foreach (var item in data.Items)
+      {
+        writer.WriteValue(0);
+        writer.WriteValue(counter++);
+        writer.WriteValue(Crypto.EncryptKey(item.Data, item.Key).ToBase64());
+      }
+      writer.WriteEndArray();
+
+      writer.WriteEndArray();
+    }
+
+    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+    {
+      throw new NotImplementedException();
+    }
+
+    public override bool CanConvert(Type objectType)
+    {
+      return objectType == typeof(ShareData);
+    }
+  }
+
+  [DebuggerDisplay("Id: {Id} / Key: {Key}")]
+  internal class SharedKey
+  {
+    public SharedKey(string id, string key)
+    {
+      this.Id = id;
+      this.Key = key;
+    }
+
+    [JsonProperty("h")]
+    public string Id { get; private set; }
+
+    [JsonProperty("k")]
+    public string Key { get; private set; }
   }
 
   #endregion

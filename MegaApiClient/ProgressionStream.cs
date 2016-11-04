@@ -7,13 +7,15 @@ namespace CG.Web.MegaApiClient
   {
     private readonly Stream baseStream;
     private readonly IProgress<double> progress;
+    private readonly long reportProgressChunkSize;
 
     private long chunkSize;
 
-    public ProgressionStream(Stream baseStream, IProgress<double> progress)
+    public ProgressionStream(Stream baseStream, IProgress<double> progress, long reportProgressChunkSize)
     {
       this.baseStream = baseStream;
       this.progress = progress;
+      this.reportProgressChunkSize = reportProgressChunkSize;
     }
 
     public override int Read(byte[] array, int offset, int count)
@@ -71,7 +73,7 @@ namespace CG.Web.MegaApiClient
     private void ReportProgress(int count)
     {
       this.chunkSize += count;
-      if (this.chunkSize >= MegaApiClient.ReportProgressChunkSize)
+      if (this.chunkSize >= this.reportProgressChunkSize)
       {
         this.chunkSize = 0;
         this.progress.Report(this.Position / (double)this.Length * 100);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -218,7 +219,47 @@ namespace CG.Web.MegaApiClient.Tests
                 Has.Exactly(1).EqualTo(movedNode));
         }
 
-        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
+        [TestCase(NodeType.Directory)]
+        [TestCase(NodeType.File)]
+        public void Rename_Succeeds(NodeType nodeType)
+        {
+            var parentNode = this.GetNode(NodeType.Root);
+            INode createdNode;
+            switch (nodeType)
+            {
+                case NodeType.Directory:
+                    createdNode = this.Client.CreateFolder("Data", parentNode);
+                    break;
+
+                case NodeType.File:
+                    byte[] data = new byte[123];
+                    new Random().NextBytes(data);
+
+                    using (MemoryStream stream = new MemoryStream(data))
+                    {
+                        createdNode = this.Client.Upload(stream, "Data", parentNode);
+                    }
+                    break;
+
+                default:
+                    throw new NotSupportedException();
+            }
+
+            Assert.That(
+                  this.Client.GetNodes(parentNode).ToArray(),
+                  Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
+                  .And.Exactly(1).EqualTo(createdNode));
+
+            var renamedNode = this.Client.Rename(createdNode, "Data2");
+            Assert.That(renamedNode.Name, Is.EqualTo("Data2"));
+
+            Assert.That(
+                  this.Client.GetNodes(parentNode).ToArray(),
+                  Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
+                  .And.Exactly(1).EqualTo(renamedNode));
+        }
+
+        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
         public void GetNodeFromLink_Succeeds(string link)
         {
             INodePublic publicNode = this.Client.GetNodeFromLink(new Uri(link));

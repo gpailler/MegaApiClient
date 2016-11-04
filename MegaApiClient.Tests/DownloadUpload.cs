@@ -50,10 +50,13 @@ namespace CG.Web.MegaApiClient.Tests
             Assert.That(node, Is.EqualTo(this.Client.GetNodes().Single(x => x.Id == node.Id)));
         }
 
-        [TestCase(20000)] // 1 chunk
-        [TestCase(200000)] // 2 chunks
-        [TestCase(2000000)] // 3 chunks
-        public void UploadStream_ValidateContent_Succeeds(int dataSize)
+        [TestCase(20000, 128 * 1024, 1)]
+        [TestCase(200000, 128 * 1024, 2)]
+        [TestCase(2000000, 128 * 1024, 6)]
+        [TestCase(20000, 1024 * 1024, 1)]
+        [TestCase(200000, 1024 * 1024, 1)]
+        [TestCase(2000000, 1024 * 1024, 2)]
+        public void UploadStream_ValidateContent_Succeeds(int dataSize, int chunksPackSize, int expectedUploadCalls)
         {
             byte[] uploadedData = new byte[dataSize];
             this.random.NextBytes(uploadedData);
@@ -62,10 +65,16 @@ namespace CG.Web.MegaApiClient.Tests
 
             using (Stream stream = new MemoryStream(uploadedData))
             {
+                int uploadCalls = 0;
+                Action<TestWebClient.CallType> onCall = callType => uploadCalls += callType == TestWebClient.CallType.PostRequestRaw ? 1 : 0;
+                ((TestWebClient) this.WebClient).OnCalled += onCall;
+
+                this.Client.ChunksPackSize = chunksPackSize;
                 var node = this.Client.Upload(stream, "test", parent);
 
                 stream.Position = 0;
                 this.AreStreamsEquivalent(this.Client.Download(node), stream);
+                Assert.That(uploadCalls, Is.EqualTo(expectedUploadCalls));
             }
         }
 
@@ -77,16 +86,16 @@ namespace CG.Web.MegaApiClient.Tests
                 constraint);
         }
 
-        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
+        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
         public void DownloadLink_ToStream_Succeeds(string link, string expectedResultFile)
         {
-            using (Stream stream = new FileStream(expectedResultFile, FileMode.Open))
+            using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
             {
                 this.AreStreamsEquivalent(this.Client.Download(new Uri(link)), stream);
             }
         }
 
-        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
+        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
         public void Download_ValidateStream_Succeeds(string link)
         {
             using (Stream stream = this.Client.Download(new Uri(link)))
@@ -107,14 +116,12 @@ namespace CG.Web.MegaApiClient.Tests
         [TestCaseSource(typeof(DownloadUpload), nameof(GetDownloadLinkToFileInvalidParameter))]
         public void DownloadLink_ToFile_InvalidParameter_Throws(Uri uri, string outFile, IResolveConstraint constraint)
         {
-            this.IgnoreTestIfAppVeyorCi();
-
             Assert.That(
                 () => this.Client.DownloadFile(uri, outFile),
                 constraint);
         }
 
-        [TestCase("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
+        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
         public void DownloadLink_ToFile_Succeeds(string link, string expectedResultFile)
         {
             string outFile = Path.GetTempFileName();
@@ -123,7 +130,7 @@ namespace CG.Web.MegaApiClient.Tests
 
             Assert.That(
                 File.ReadAllBytes(outFile),
-                Is.EqualTo(File.ReadAllBytes(expectedResultFile)));
+                Is.EqualTo(File.ReadAllBytes(this.GetAbsoluteFilePath(expectedResultFile))));
         }
 
         protected void AreStreamsEquivalent(Stream stream1, Stream stream2)
@@ -188,13 +195,13 @@ namespace CG.Web.MegaApiClient.Tests
             yield return new TestCaseData(null, outFile, Throws.TypeOf<ArgumentNullException>());
             yield return new TestCaseData(new Uri("http://www.example.com"), outFile, Throws.TypeOf<ArgumentException>());
             yield return new TestCaseData(new Uri("https://mega.nz"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!m9Q20Qwa"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!m9Q20Qwa!"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), string.Empty, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!38JjRYIA"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!ulISSQIb!"), outFile, Throws.TypeOf<ArgumentException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), null, Throws.TypeOf<ArgumentNullException>());
+            yield return new TestCaseData(new Uri("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), string.Empty, Throws.TypeOf<ArgumentNullException>());
 
 
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!m9Q20Qwa!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), outFile, Throws.TypeOf<IOException>());
+            yield return new TestCaseData(new Uri("https://mega.co.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), outFile, Throws.TypeOf<IOException>());
         }
     }
 }
