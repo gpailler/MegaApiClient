@@ -624,94 +624,82 @@
 
       this.EnsureLoggedIn();
 
-      // Retrieve upload URL
-      UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
-      UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
-
-      using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
+      string completionHandle = "-";
+      int remainingRetry = ApiRequestAttempts;
+      while (remainingRetry-- > 0)
       {
-        string completionHandle = null;
-        for (int i = 0; i < encryptedStream.ChunksPositions.Length; i++)
+        // Retrieve upload URL
+        UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
+        UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
+
+        using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
         {
-          int chunkStartPosition = i;
-          long currentChunkPosition = encryptedStream.ChunksPositions[i];
-          long nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
-            ? encryptedStream.Length
-            : encryptedStream.ChunksPositions[i + 1];
-
-          int chunkSize = (int)(nextChunkPosition - currentChunkPosition);
-
-          // Pack multiple chunks in a single upload
-          while (chunkSize < this.ChunksPackSize && i < encryptedStream.ChunksPositions.Length - 1)
+          var chunkStartPosition = 0;
+          var chunksSizesToUpload = this.ComputeChunksSizesToUpload(encryptedStream.ChunksPositions, encryptedStream.Length).ToArray();
+          for (int i = 0; i < chunksSizesToUpload.Length; i++)
           {
-            i++;
-            currentChunkPosition = encryptedStream.ChunksPositions[i];
-            nextChunkPosition = i == encryptedStream.ChunksPositions.Length - 1
-              ? encryptedStream.Length
-              : encryptedStream.ChunksPositions[i + 1];
+            int chunkSize = chunksSizesToUpload[i];
+            byte[] chunkBuffer = new byte[chunkSize];
+            encryptedStream.Read(chunkBuffer, 0, chunkSize);
 
-            chunkSize += (int)(nextChunkPosition - currentChunkPosition);
-          }
-
-          byte[] chunkBuffer = new byte[chunkSize];
-          encryptedStream.Read(chunkBuffer, 0, chunkSize);
-
-          int remainingRetry = ApiRequestAttempts;
-          string result = null;
-          UploadException lastException = null;
-          while (remainingRetry-- > 0)
-          {
             using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
             {
-              Uri uri = new Uri(uploadResponse.Url + "/" + encryptedStream.ChunksPositions[chunkStartPosition]);
-              result = this.webClient.PostRequestRaw(uri, chunkStream);
-              if (result.StartsWith("-"))
+              Uri uri = new Uri(uploadResponse.Url + "/" + chunkStartPosition);
+              chunkStartPosition += chunkSize;
+              try
               {
-                lastException = new UploadException(result);
-                Thread.Sleep(ApiRequestDelay);
+                completionHandle = this.webClient.PostRequestRaw(uri, chunkStream);
 
-                // Request a new upload URL
-                uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
-
-                continue;
+                if (completionHandle.StartsWith("-"))
+                {
+                  break;
+                }
               }
-
-              lastException = null;
-              break;
+              catch (Exception ex)
+              {
+                Console.WriteLine(ex);
+                break;
+              }
             }
           }
 
-          if (lastException != null)
+          if (completionHandle.StartsWith("-"))
           {
-              throw lastException;
+            // Restart upload from the beginning
+            Thread.Sleep(ApiRequestDelay);
+
+            // Reset steam position
+            stream.Position = 0;
+
+            continue;
           }
 
-          completionHandle = result;
+          // Encrypt attributes
+          byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name), encryptedStream.FileKey);
+
+          // Compute the file key
+          byte[] fileKey = new byte[32];
+          for (int i = 0; i < 8; i++)
+          {
+            fileKey[i] = (byte)(encryptedStream.FileKey[i] ^ encryptedStream.Iv[i]);
+            fileKey[i + 16] = encryptedStream.Iv[i];
+          }
+
+          for (int i = 8; i < 16; i++)
+          {
+            fileKey[i] = (byte)(encryptedStream.FileKey[i] ^ encryptedStream.MetaMac[i - 8]);
+            fileKey[i + 16] = encryptedStream.MetaMac[i - 8];
+          }
+
+          byte[] encryptedKey = Crypto.EncryptKey(fileKey, this.masterKey);
+
+          CreateNodeRequest createNodeRequest = CreateNodeRequest.CreateFileNodeRequest(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), fileKey, completionHandle);
+          GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest, this.masterKey);
+          return createNodeResponse.Nodes[0];
         }
-
-        // Encrypt attributes
-        byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name), encryptedStream.FileKey);
-
-        // Compute the file key
-        byte[] fileKey = new byte[32];
-        for (int i = 0; i < 8; i++)
-        {
-          fileKey[i] = (byte)(encryptedStream.FileKey[i] ^ encryptedStream.Iv[i]);
-          fileKey[i + 16] = encryptedStream.Iv[i];
-        }
-
-        for (int i = 8; i < 16; i++)
-        {
-          fileKey[i] = (byte)(encryptedStream.FileKey[i] ^ encryptedStream.MetaMac[i - 8]);
-          fileKey[i + 16] = encryptedStream.MetaMac[i - 8];
-        }
-
-        byte[] encryptedKey = Crypto.EncryptKey(fileKey, this.masterKey);
-
-        CreateNodeRequest createNodeRequest = CreateNodeRequest.CreateFileNodeRequest(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), fileKey, completionHandle);
-        GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest, this.masterKey);
-        return createNodeResponse.Nodes[0];
       }
+
+      throw new UploadException(completionHandle);
     }
 
     /// <summary>
@@ -944,6 +932,28 @@
       byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
 
       Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out fileKey);
+    }
+
+    private IEnumerable<int> ComputeChunksSizesToUpload(long[] chunksPositions, long streamLength)
+    {
+      for (int i = 0; i < chunksPositions.Length; i++)
+      {
+        long currentChunkPosition = chunksPositions[i];
+        long nextChunkPosition = i == chunksPositions.Length - 1
+          ? streamLength
+          : chunksPositions[i + 1];
+
+        // Pack multiple chunks in a single upload
+        while ((int)(nextChunkPosition - currentChunkPosition) < this.ChunksPackSize && i < chunksPositions.Length - 1)
+        {
+          i++;
+          nextChunkPosition = i == chunksPositions.Length - 1
+            ? streamLength
+            : chunksPositions[i + 1];
+        }
+
+        yield return (int)(nextChunkPosition - currentChunkPosition);
+      }
     }
 
     #endregion

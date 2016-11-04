@@ -19,8 +19,6 @@ namespace CG.Web.MegaApiClient.Tests
       this._policy = Policy
         .Handle<WebException>()
         .Or<SocketException>()
-        .Or<TaskCanceledException>()
-        .Or<HttpRequestException>()
         .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => Console.WriteLine(ts.TotalSeconds + " " + ex.Message));
     }
 

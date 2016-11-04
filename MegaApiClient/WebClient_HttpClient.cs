@@ -55,9 +55,11 @@
         using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)
         {
           using (Stream stream = response.Content.ReadAsStreamAsync().Result)
-          using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
           {
-            return streamReader.ReadToEnd();
+            using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+            {
+              return streamReader.ReadToEnd();
+            }
           }
         }
       }
