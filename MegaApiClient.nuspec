@@ -17,9 +17,6 @@
             <group>
                 <dependency id="Newtonsoft.Json" version="9.0.1" />
             </group>
-            <group targetFramework=".NETFramework4.0">
-                <dependency id="Microsoft.Net.Http" version="2.2.29" />
-            </group>
         </dependencies>
     </metadata>
     <files>
