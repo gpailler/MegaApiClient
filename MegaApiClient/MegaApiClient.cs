@@ -123,6 +123,7 @@
     /// 0 / 128K / 384K / 768K / 1280K / 1920K / 2688K / 3584K / 4608K / ... (every 1024 KB) / EOF
     /// The upload method tries to upload multiple fragments at once.
     /// Fragments are merged until the total size reaches this value.
+    /// The special value -1 merges all chunks in a single fragment and a single upload
     /// </summary>
     public int ChunksPackSize { get; set; }
 
@@ -944,7 +945,7 @@
           : chunksPositions[i + 1];
 
         // Pack multiple chunks in a single upload
-        while ((int)(nextChunkPosition - currentChunkPosition) < this.ChunksPackSize && i < chunksPositions.Length - 1)
+        while (((int)(nextChunkPosition - currentChunkPosition) < this.ChunksPackSize || this.ChunksPackSize == -1) && i < chunksPositions.Length - 1)
         {
           i++;
           nextChunkPosition = i == chunksPositions.Length - 1
