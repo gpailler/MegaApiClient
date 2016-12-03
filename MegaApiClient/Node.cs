@@ -10,7 +10,7 @@
   [DebuggerDisplay("Type: {Type} - Name: {Name} - Id: {Id}")]
   internal class Node : NodePublic, INode, INodeCrypto
   {
-    private static readonly DateTime OriginalDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+    internal static readonly DateTime OriginalDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
     private Node()
     {
@@ -37,7 +37,7 @@
     public string SerializedFileAttributes { get; private set; }
 
     [JsonIgnore]
-    public DateTime LastModificationDate { get; private set; }
+    public DateTime CreationDate { get; private set; }
 
     [JsonIgnore]
     public byte[] Key { get; private set; }
@@ -59,7 +59,7 @@
     #region Deserialization
 
     [JsonProperty("ts")]
-    private long SerializedLastModificationDate { get; set; }
+    private long SerializedCreationDate { get; set; }
 
     [JsonProperty("a")]
     private string SerializedAttributes { get; set; }
@@ -85,7 +85,8 @@
       {
         byte[] masterKey = (byte[])context[1];
 
-        this.LastModificationDate = OriginalDateTime.AddSeconds(this.SerializedLastModificationDate).ToLocalTime();
+        this.CreationDate = OriginalDateTime.AddSeconds(this.SerializedCreationDate).ToLocalTime();
+        this.ModificationDate = this.CreationDate;
 
         if (this.Type == NodeType.File || this.Type == NodeType.Directory)
         {
@@ -132,7 +133,12 @@
           }
 
           Attributes attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
+          this.FileAttributes = attributes;
           this.Name = attributes.Name;
+            if (this.Type == NodeType.File && attributes.ModificationDate.HasValue)
+            {
+                this.ModificationDate = attributes.ModificationDate.Value;
+            }
         }
       }
     }
@@ -164,8 +170,11 @@
     public NodePublic(DownloadUrlResponse downloadResponse, byte[] fileKey)
     {
       Attributes attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), fileKey);
+      this.FileAttributes = attributes;
       this.Name = attributes.Name;
       this.Size = downloadResponse.Size;
+        
+      this.ModificationDate = attributes.ModificationDate.Value;
       this.Type = NodeType.File;
     }
 
@@ -173,11 +182,18 @@
     {
     }
 
+
+      [JsonIgnore]
+    public Attributes FileAttributes { get; protected set; }
+
     [JsonIgnore]
     public string Name { get; protected set; }
 
     [JsonProperty("s")]
     public long Size { get; protected set; }
+      
+    [JsonIgnore]
+    public DateTime ModificationDate { get; protected set; }
 
     [JsonProperty("t")]
     public NodeType Type { get; protected set; }

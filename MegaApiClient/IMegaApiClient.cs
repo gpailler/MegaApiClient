@@ -3,12 +3,15 @@ namespace CG.Web.MegaApiClient
   using System;
   using System.Collections.Generic;
   using System.IO;
+using System.Threading;
 
   public partial interface IMegaApiClient
   {
     int BufferSize { get; set; }
 
     int ChunksPackSize { get; set; }
+
+    bool IsLoggedIn { get; }
 
     void Login(string email, string password);
 
@@ -42,7 +45,11 @@ namespace CG.Web.MegaApiClient
 
     INode UploadFile(string filename, INode parent);
 
-    INode Upload(Stream stream, string name, INode parent);
+#if NET35
+    INode Upload(Stream stream, string name, INode parent, DateTime? lastModifiedDate = null);
+#else
+    INode Upload(Stream stream, string name, INode parent, DateTime? lastModifiedDate = null, CancellationToken? cancellationToken = null);
+#endif
 
     INode Move(INode node, INode destinationParentNode);
 

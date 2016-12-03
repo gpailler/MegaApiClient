@@ -33,7 +33,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;NET4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <DocumentationFile>bin\Release\MegaApiClient.xml</DocumentationFile>
@@ -70,6 +70,9 @@
     <Compile Include="..\MegaApiClient\BigInteger.cs">
       <Link>BigInteger.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\Crc32.cs">
+      <Link>Crc32.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\Crypto.cs">
       <Link>Crypto.cs</Link>
     </Compile>
@@ -78,6 +81,9 @@
     </Compile>
     <Compile Include="..\MegaApiClient\Extensions.cs">
       <Link>Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\FileFingerprint.cs">
+      <Link>FileFingerprint.cs</Link>
     </Compile>
     <Compile Include="..\MegaApiClient\IAccountInformation.cs">
       <Link>IAccountInformation.cs</Link>
@@ -105,6 +111,9 @@
     </Compile>
     <Compile Include="..\MegaApiClient\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\Serialize64.cs">
+      <Link>Serialize64.cs</Link>
     </Compile>
     <Compile Include="..\MegaApiClient\WebClient_HttpWebRequest.cs">
       <Link>WebClient_HttpWebRequest.cs</Link>

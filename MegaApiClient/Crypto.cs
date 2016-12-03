@@ -10,6 +10,8 @@
     private static readonly Rijndael RijndaelCbc;
     private static readonly byte[] DefaultIv = new byte[16];
 
+    public static uint CryptoPPCRC32Polynomial = 0xEDB88320;
+
     static Crypto()
     {
       RijndaelCbc = Rijndael.Create();
@@ -103,6 +105,17 @@
     {
       string data = "MEGA" + JsonConvert.SerializeObject(attributes, Formatting.None);
       byte[] dataBytes = data.ToBytes();
+
+        if (attributes.CRC != null)
+        {
+            FileFingerprint fileFingerprint = new FileFingerprint(attributes.CRC, attributes.ModificationDate);
+            byte[] fingerprintBytes = fileFingerprint.SerializeFingerprint();
+            attributes.SetFingerprint(ref fileFingerprint);
+      string crcStr = String.Format("{0:x} {1:x} {2:x} {3:x}", attributes.CRC[0], attributes.CRC[1], attributes.CRC[2], attributes.CRC[3]);
+      //var fingerprintBytes = attributes.FingerprintBase64.FromBase64();
+      string fingerprintBytesStr = BitConverter.ToString(fingerprintBytes).Replace("-", "");
+            //throw new Exception(String.Format("Encrypt attrs: fingerprint={0}, crc={1}, mtime={2}", fingerprintBytesStr, crcStr, attributes.ModificationDate.HasValue ? attributes.ModificationDate.Value.ToUniversalTime().Subtract(Node.OriginalDateTime).TotalSeconds : 0));
+        }
       dataBytes = dataBytes.CopySubArray(dataBytes.Length + 16 - (dataBytes.Length % 16));
 
       return EncryptAes(dataBytes, nodeKey);
@@ -122,7 +135,20 @@
           json = json.Substring(0, nullTerminationIndex);
         }
 
-        return JsonConvert.DeserializeObject<Attributes>(json);
+        var attrs = JsonConvert.DeserializeObject<Attributes>(json);
+        if (attrs.FingerprintBase64 != null)
+        {
+            FileFingerprint ff = default(FileFingerprint);
+            var fingerprintBytes = attrs.FingerprintBase64.FromBase64();
+            ff.UnserializeFingerprint(fingerprintBytes);
+
+            attrs.ParseFingerprint(ff);
+            //string crcStr = String.Format("{0:x} {1:x} {2:x} {3:x}", attrs.CRC[0], attrs.CRC[1], attrs.CRC[2], attrs.CRC[3]);
+            //string fingerprintBytesStr = BitConverter.ToString(fingerprintBytes).Replace("-", "");
+            //throw new Exception(String.Format("Decrypt attrs: fingerprint={0}, crc={1}, mtime={2}", fingerprintBytesStr, crcStr, ff.ModificationTimeStamp));
+        }
+
+        return attrs;
       }
       catch (Exception ex)
       {

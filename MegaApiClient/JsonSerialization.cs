@@ -186,7 +186,7 @@
 
   internal class CreateNodeRequest : RequestBase
   {
-    private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string encryptedKey, byte[] key, string completionHandle)
+    private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string encryptedKey, byte[] key, string completionHandle, long? lastModificationTime = null)
       : base("p")
     {
       this.ParentId = parentNode.Id;
@@ -197,7 +197,8 @@
             Attributes = attributes,
             Key = encryptedKey,
             Type = type,
-            CompletionHandle = completionHandle
+            CompletionHandle = completionHandle,
+            ModificationDate = lastModificationTime
         }
       };
 
@@ -223,14 +224,14 @@
     [JsonProperty("n")]
     public CreateNodeRequestData[] Nodes { get; private set; }
 
-    public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] fileKey, string completionHandle)
+    public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] fileKey, string completionHandle, long? lastModificationTime = null)
     {
-      return new CreateNodeRequest(parentNode, NodeType.File, attributes, encryptedkey, fileKey, completionHandle);
+      return new CreateNodeRequest(parentNode, NodeType.File, attributes, encryptedkey, fileKey, completionHandle, lastModificationTime);
     }
 
-    public static CreateNodeRequest CreateFolderNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] key)
+    public static CreateNodeRequest CreateFolderNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] key, long? lastModificationTime = null)
     {
-      return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, encryptedkey, key, "xxxxxxxx");
+      return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, encryptedkey, key, "xxxxxxxx", lastModificationTime);
     }
 
     internal class CreateNodeRequestData
@@ -246,6 +247,9 @@
 
       [JsonProperty("k")]
       public string Key { get; set; }
+
+        [JsonProperty("ts", DefaultValueHandling = DefaultValueHandling.Ignore)]
+      public long? ModificationDate { get; set; }
     }
   }
 
@@ -296,7 +300,7 @@
         string parentId = node.Id;
         do
         {
-          parentId = nodes.FirstOrDefault(x => x.Id == parentId)?.ParentId;
+          parentId = nodes.FirstOrDefault(x => x.Id == parentId).ParentId;
           if (parentId == parent.Id)
           {
             yield return node;
@@ -436,15 +440,70 @@
 
   #region Attributes
 
+
   internal class Attributes
   {
-    public Attributes(string name)
-    {
-      this.Name = name;
-    }
+      public Attributes()
+      { }
 
-    [JsonProperty("n")]
-    public string Name { get; set; }
+      public Attributes(string name)
+      {
+          this.Name = name;
+      }
+
+      public Attributes(string name, uint[] crc, DateTime? modificationDate = null)
+      {
+          this.Name = name;
+          CRC = crc;
+          ModificationDate = modificationDate;
+      }
+
+      [JsonProperty("n")]
+      public string Name { get; private set; }
+      
+     [JsonProperty("c", DefaultValueHandling = DefaultValueHandling.Ignore)]
+     public string FingerprintBase64 { get; private set; }
+
+     [JsonIgnore]
+     public DateTime? ModificationDate
+     {
+         get;
+         private set;
+     }
+
+     [JsonIgnore]
+     public uint[] CRC
+     {
+         get;
+         private set;
+     }
+      
+      public bool ParseFingerprint(FileFingerprint? fileFingerprintRef = null)
+      {
+          if (this.FingerprintBase64 == null)
+              return false;
+          var fingerprintBytes = this.FingerprintBase64.FromBase64();
+
+          FileFingerprint fileFingerprint = fileFingerprintRef.HasValue ? fileFingerprintRef.Value : default(FileFingerprint);
+          
+          if (!fileFingerprint.UnserializeFingerprint(fingerprintBytes))
+              return false;
+
+          ulong modificationDateSeconds = fileFingerprint.ModificationTimeStamp;
+          CRC = fileFingerprint.CRC;
+
+          ModificationDate = Node.OriginalDateTime.AddSeconds(modificationDateSeconds).ToLocalTime();
+
+          return true;
+      }
+
+      public bool SetFingerprint(ref FileFingerprint fileFingerprint)
+      {
+          byte[] fingerprintBytes = fileFingerprint.SerializeFingerprint();
+          string fingerprintBase64Encoded = Convert.ToBase64String(fingerprintBytes);
+          FingerprintBase64 = fingerprintBase64Encoded;
+          return true;
+      }
   }
 
   #endregion

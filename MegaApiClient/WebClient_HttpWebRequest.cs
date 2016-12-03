@@ -79,7 +79,7 @@
       HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
       request.Timeout = this.responseTimeout;
       request.UserAgent = this.userAgent;
-
+        
       return request;
     }
 
