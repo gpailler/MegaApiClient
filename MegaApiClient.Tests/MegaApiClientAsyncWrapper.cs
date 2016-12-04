@@ -9,6 +9,7 @@ namespace CG.Web.MegaApiClient.Tests
   using System;
   using System.Collections.Generic;
   using System.IO;
+  using System.Threading;
   using System.Threading.Tasks;
 
   public class MegaApiClientAsyncWrapper : IMegaApiClient
@@ -20,22 +21,9 @@ namespace CG.Web.MegaApiClient.Tests
       this.client = client;
     }
 
-    public int BufferSize
+    public bool IsLoggedIn
     {
-      get { return this.client.BufferSize; }
-      set { this.client.BufferSize = value; }
-    }
-
-    public int ChunksPackSize
-    {
-      get { return this.client.ChunksPackSize; }
-      set { this.client.ChunksPackSize = value; }
-    }
-
-    public long ReportProgressChunkSize
-    {
-      get { return this.client.ReportProgressChunkSize; }
-      set { this.client.ReportProgressChunkSize = value; }
+      get { return this.client.IsLoggedIn; }
     }
 
     public void Login(string email, string password)
@@ -123,7 +111,7 @@ namespace CG.Web.MegaApiClient.Tests
       return this.UnwrapException(() => this.client.UploadFileAsync(filename, parent, progress).Result);
     }
 
-    public INode Upload(Stream stream, string name, INode parent)
+    public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
       return this.UnwrapException(() => this.client.UploadAsync(stream, name, parent, progress).Result);

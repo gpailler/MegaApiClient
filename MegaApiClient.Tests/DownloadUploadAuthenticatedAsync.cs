@@ -22,7 +22,7 @@ namespace CG.Web.MegaApiClient.Tests
         public long DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize)
         {
             // Arrange
-            this.Client.ReportProgressChunkSize = reportProgressChunkSize.GetValueOrDefault(this.Client.ReportProgressChunkSize);
+            this.ClientOptions.ReportProgressChunkSize = reportProgressChunkSize.GetValueOrDefault(this.ClientOptions.ReportProgressChunkSize);
             const string ExpectedFile = "Data/SampleFile.jpg";
             INode node = this.Client.GetNodes().Single(x => x.Id == this.PermanentFile);
 

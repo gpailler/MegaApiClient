@@ -16,23 +16,18 @@
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    private const int ApiRequestAttempts = 60;
-    private const int ApiRequestDelay = 500;
-
-    internal const int DefaultBufferSize = 8192;
-    private const int DefaultChunksPackSize = 1024 * 1024;
-
-    private const string ApplicationKey = "axhQiYyQ";
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
     private static readonly Uri BaseUri = new Uri("https://mega.nz");
 
+    private readonly Options options;
     private readonly IWebClient webClient;
+
+    private readonly Object apiRequestLocker = new Object();
 
     private Node trashNode;
     private string sessionId;
     private byte[] masterKey;
     private uint sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
-    private int bufferSize;
 
     #region Constructors
 
@@ -40,27 +35,36 @@
     /// Instantiate a new <see cref="MegaApiClient" /> object
     /// </summary>
     public MegaApiClient()
-        : this(new WebClient())
+        : this(new Options(), new WebClient())
     {
     }
 
     /// <summary>
-    /// Instantiate a new <see cref="MegaApiClient" /> object with the provided <see cref="IWebClient" />
+    /// Instantiate a new <see cref="MegaApiClient" /> object with the custom options
     /// </summary>
-    public MegaApiClient(IWebClient webClient)
+    public MegaApiClient(Options options)
+        : this(options, new WebClient())
     {
+    }
+
+    /// <summary>
+    /// Instantiate a new <see cref="MegaApiClient" /> object with the custom options and <see cref="IWebClient" />
+    /// </summary>
+    public MegaApiClient(Options options, IWebClient webClient)
+    {
+      if (options == null)
+      {
+        throw new ArgumentNullException("options");
+      }
+
       if (webClient == null)
       {
         throw new ArgumentNullException("webClient");
       }
 
+      this.options = options;
       this.webClient = webClient;
-      this.BufferSize = DefaultBufferSize;
-      this.ChunksPackSize = DefaultChunksPackSize;
-
-#if NET45
-      this.ReportProgressChunkSize = DefaultReportProgressChunkSize;
-#endif
+      this.webClient.BufferSize = options.BufferSize;
     }
 
     #endregion
@@ -98,34 +102,12 @@
       return new AuthInfos(email, hash, passwordAesKey);
     }
 
-    /// <summary>
-    /// Size of the buffer used when downloading files
-    /// This value has an impact on the progression.
-    /// A lower value means more progression reports but a possible higher CPU usage
-    /// </summary>
-    public int BufferSize
+    public event EventHandler<ApiRequestFailedArgs> ApiRequestFailed;
+
+    public bool IsLoggedIn
     {
-      get
-      {
-        return this.bufferSize;
-      }
-
-      set
-      {
-        this.bufferSize = value;
-        this.webClient.BufferSize = value;
-      }
+      get { return this.sessionId != null; }
     }
-
-    /// <summary>
-    /// Upload is splitted in multiple fragments (useful for big uploads)
-    /// The size of the fragments is defined by mega.nz and are the following:
-    /// 0 / 128K / 384K / 768K / 1280K / 1920K / 2688K / 3584K / 4608K / ... (every 1024 KB) / EOF
-    /// The upload method tries to upload multiple fragments at once.
-    /// Fragments are merged until the total size reaches this value.
-    /// The special value -1 merges all chunks in a single fragment and a single upload
-    /// </summary>
-    public int ChunksPackSize { get; set; }
 
     /// <summary>
     /// Login to Mega.co.nz service using email/password credentials
@@ -584,9 +566,10 @@
 
       this.EnsureLoggedIn();
 
+      DateTime modificationDate = File.GetLastWriteTime(filename);
       using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
       {
-        return this.Upload(fileStream, Path.GetFileName(filename), parent);
+        return this.Upload(fileStream, Path.GetFileName(filename), parent, modificationDate);
       }
     }
 
@@ -601,7 +584,11 @@
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">stream or name or parent is null</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
-    public INode Upload(Stream stream, string name, INode parent)
+#if NET35
+    public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null)
+#else
+    public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
+#endif
     {
       if (stream == null)
       {
@@ -625,8 +612,16 @@
 
       this.EnsureLoggedIn();
 
+#if !NET35
+      if (cancellationToken.HasValue)
+      {
+        stream = new CancellableStream(stream, cancellationToken.Value);
+      }
+#endif
+
       string completionHandle = "-";
-      int remainingRetry = ApiRequestAttempts;
+      int requestDelay = this.options.ApiRequestDelay;
+      int remainingRetry = this.options.ApiRequestAttempts;
       while (remainingRetry-- > 0)
       {
         // Retrieve upload URL
@@ -637,15 +632,18 @@
         {
           var chunkStartPosition = 0;
           var chunksSizesToUpload = this.ComputeChunksSizesToUpload(encryptedStream.ChunksPositions, encryptedStream.Length).ToArray();
+          Uri uri = null;
           for (int i = 0; i < chunksSizesToUpload.Length; i++)
           {
+            completionHandle = "-";
+
             int chunkSize = chunksSizesToUpload[i];
             byte[] chunkBuffer = new byte[chunkSize];
             encryptedStream.Read(chunkBuffer, 0, chunkSize);
 
             using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
             {
-              Uri uri = new Uri(uploadResponse.Url + "/" + chunkStartPosition);
+              uri = new Uri(uploadResponse.Url + "/" + chunkStartPosition);
               chunkStartPosition += chunkSize;
               try
               {
@@ -666,17 +664,19 @@
 
           if (completionHandle.StartsWith("-"))
           {
+            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedArgs(uri, remainingRetry, requestDelay, ApiResultCode.RequestFailedRetry, null));
+
             // Restart upload from the beginning
-            Thread.Sleep(ApiRequestDelay);
+            Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
 
             // Reset steam position
-            stream.Position = 0;
+            stream.Seek(0, SeekOrigin.Begin);
 
             continue;
           }
 
           // Encrypt attributes
-          byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name), encryptedStream.FileKey);
+          byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name, stream, modificationDate), encryptedStream.FileKey);
 
           // Compute the file key
           byte[] fileKey = new byte[32];
@@ -829,18 +829,37 @@
     }
 
     private TResponse Request<TResponse>(RequestBase request, object context = null)
+            where TResponse : class
+    {
+      if (this.options.SynchronizeApiRequests)
+      {
+        lock (this.apiRequestLocker)
+        {
+          return this.RequestCore<TResponse>(request, context);
+        }
+      }
+      else
+      {
+        return this.RequestCore<TResponse>(request, context);
+      }
+    }
+
+    private TResponse RequestCore<TResponse>(RequestBase request, object context = null)
         where TResponse : class
     {
       string dataRequest = JsonConvert.SerializeObject(new object[] { request });
       Uri uri = this.GenerateUrl();
       object jsonData = null;
-      int currentAttempt = 0;
-      while (true)
+      int requestDelay = this.options.ApiRequestDelay;
+      int remainingRetry = this.options.ApiRequestAttempts;
+      while (remainingRetry-- > 0)
       {
         string dataResult = this.webClient.PostRequestJson(uri, dataRequest);
 
-        jsonData = JsonConvert.DeserializeObject(dataResult);
-        if (jsonData == null || jsonData is long || (jsonData is JArray && ((JArray)jsonData)[0].Type == JTokenType.Integer))
+        if (string.IsNullOrEmpty(dataResult) 
+          || (jsonData = JsonConvert.DeserializeObject(dataResult)) == null
+          || jsonData is long
+          || (jsonData is JArray && ((JArray)jsonData)[0].Type == JTokenType.Integer))
         {
           ApiResultCode apiCode = jsonData == null
             ? ApiResultCode.RequestFailedRetry
@@ -848,15 +867,14 @@
               ?(ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
               : (ApiResultCode)((JArray)jsonData)[0].Value<int>();
 
+          if (apiCode != ApiResultCode.Ok)
+          {
+            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedArgs(uri, this.options.ApiRequestAttempts - remainingRetry, requestDelay, apiCode, dataResult));
+          }
+
           if (apiCode == ApiResultCode.RequestFailedRetry)
           {
-            if (currentAttempt == ApiRequestAttempts)
-            {
-              throw new NotSupportedException("Api not available");
-            }
-
-            Thread.Sleep(ApiRequestDelay);
-            currentAttempt++;
+            Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
             continue;
           }
 
@@ -881,7 +899,7 @@
       UriBuilder builder = new UriBuilder(BaseApiUri);
       NameValueCollection query = HttpUtility.ParseQueryString(builder.Query);
       query["id"] = (this.sequenceIndex++ % uint.MaxValue).ToString(CultureInfo.InvariantCulture);
-      query["ak"] = ApplicationKey;
+      query["ak"] = this.options.ApplicationKey;
 
       if (!string.IsNullOrEmpty(this.sessionId))
       {
@@ -896,7 +914,7 @@
     {
       using (FileStream fs = new FileStream(outputFile, FileMode.CreateNew, FileAccess.Write))
       {
-        stream.CopyTo(fs, this.BufferSize);
+        stream.CopyTo(fs, this.options.BufferSize);
       }
     }
 
@@ -945,7 +963,7 @@
           : chunksPositions[i + 1];
 
         // Pack multiple chunks in a single upload
-        while (((int)(nextChunkPosition - currentChunkPosition) < this.ChunksPackSize || this.ChunksPackSize == -1) && i < chunksPositions.Length - 1)
+        while (((int)(nextChunkPosition - currentChunkPosition) < this.options.ChunksPackSize || this.options.ChunksPackSize == -1) && i < chunksPositions.Length - 1)
         {
           i++;
           nextChunkPosition = i == chunksPositions.Length - 1
@@ -981,5 +999,27 @@
     }
 
     #endregion
+
+    public class ApiRequestFailedArgs : EventArgs
+    {
+      public ApiRequestFailedArgs(Uri url, int attemptNum, int delayMilliseconds, ApiResultCode apiResult, string responseJson)
+      {
+        this.ApiUrl = url;
+        this.AttemptNum = attemptNum;
+        this.DelayMilliseconds = delayMilliseconds;
+        this.ApiResult = apiResult;
+        this.ResponseJson = responseJson;
+      }
+
+      public Uri ApiUrl { get; private set; }
+
+      public ApiResultCode ApiResult { get; private set; }
+
+      public string ResponseJson { get; private set; }
+
+      public int AttemptNum { get; private set; }
+
+      public int DelayMilliseconds { get; private set; }
+    }
   }
 }

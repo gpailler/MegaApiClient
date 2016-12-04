@@ -67,11 +67,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MegaApiClient\BigInteger.cs">
-      <Link>BigInteger.cs</Link>
+    <Compile Include="..\MegaApiClient\CancellableStream.cs">
+      <Link>CancellableStream.cs</Link>
     </Compile>
-    <Compile Include="..\MegaApiClient\Crypto.cs">
-      <Link>Crypto.cs</Link>
+    <Compile Include="..\MegaApiClient\Cryptography\BigInteger.cs">
+      <Link>Cryptography\BigInteger.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\Cryptography\Crc32.cs">
+      <Link>Cryptography\Crc32.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\Cryptography\Crypto.cs">
+      <Link>Cryptography\Crypto.cs</Link>
     </Compile>
     <Compile Include="..\MegaApiClient\Exceptions.cs">
       <Link>Exceptions.cs</Link>
@@ -109,6 +115,9 @@
     <Compile Include="..\MegaApiClient\Node.cs">
       <Link>Node.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\Options.cs">
+      <Link>Options.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\ProgressionStream.cs">
       <Link>ProgressionStream.cs</Link>
     </Compile>
@@ -121,7 +130,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

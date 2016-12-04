@@ -72,6 +72,8 @@ namespace CG.Web.MegaApiClient.Tests
 
     protected IMegaApiClient Client;
 
+    protected CG.Web.MegaApiClient.Options ClientOptions;
+
     protected IWebClient WebClient;
 
     [Flags]
@@ -93,8 +95,9 @@ namespace CG.Web.MegaApiClient.Tests
     [SetUp]
     public void Setup()
     {
+      this.ClientOptions = new CG.Web.MegaApiClient.Options();
       this.WebClient = new TestWebClient(new WebClient(WebTimeout), MaxRetry);
-      this.Client = new MegaApiClient(this.WebClient);
+      this.Client = new MegaApiClient(this.ClientOptions, this.WebClient);
       if (this._options.HasFlag(Options.AsyncWrapper))
       {
         this.Client = new MegaApiClientAsyncWrapper(this.Client);

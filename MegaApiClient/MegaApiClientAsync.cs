@@ -7,10 +7,6 @@
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    private const long DefaultReportProgressChunkSize = 1024 * 50;
-
-    public long ReportProgressChunkSize { get; set; }
-
     #region Public async methods
 
     public Task LoginAsync(string email, string password)
@@ -77,7 +73,7 @@
     {
       return Task.Run(() =>
       {
-        return (Stream)new ProgressionStream(this.Download(node), progress, this.ReportProgressChunkSize);
+        return (Stream)new ProgressionStream(this.Download(node), progress, this.options.ReportProgressChunkSize);
       });
     }
 
@@ -85,7 +81,7 @@
     {
       return Task.Run(() =>
       {
-        return (Stream)new ProgressionStream(this.Download(uri), progress, this.ReportProgressChunkSize);
+        return (Stream)new ProgressionStream(this.Download(uri), progress, this.options.ReportProgressChunkSize);
       });
     }
 
@@ -93,7 +89,7 @@
     {
       return Task.Run(() =>
       {
-        using (Stream stream = new ProgressionStream(this.Download(node), progress, this.ReportProgressChunkSize))
+        using (Stream stream = new ProgressionStream(this.Download(node), progress, this.options.ReportProgressChunkSize))
         {
           this.SaveStream(stream, outputFile);
         }
@@ -109,7 +105,7 @@
           throw new ArgumentNullException("outputFile");
         }
 
-        using (Stream stream = new ProgressionStream(this.Download(uri), progress, this.ReportProgressChunkSize))
+        using (Stream stream = new ProgressionStream(this.Download(uri), progress, this.options.ReportProgressChunkSize))
         {
           this.SaveStream(stream, outputFile);
         }
@@ -125,7 +121,7 @@
           throw new ArgumentNullException("stream");
         }
 
-        using (Stream progressionStream = new ProgressionStream(stream, progress, this.ReportProgressChunkSize))
+        using (Stream progressionStream = new ProgressionStream(stream, progress, this.options.ReportProgressChunkSize))
         {
           return this.Upload(progressionStream, name, parent);
         }
@@ -136,7 +132,7 @@
     {
       return Task.Run(() =>
       {
-        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress, this.ReportProgressChunkSize))
+        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress, this.options.ReportProgressChunkSize))
         {
           return this.Upload(stream, Path.GetFileName(filename), parent);
         }

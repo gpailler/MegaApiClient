@@ -17,7 +17,7 @@
     public WebClient()
         : this(DefaultResponseTimeout)
     {
-      this.BufferSize = MegaApiClient.DefaultBufferSize;
+      this.BufferSize = Options.DefaultBufferSize;
     }
 
     internal WebClient(int responseTimeout)

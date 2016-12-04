@@ -7,6 +7,8 @@ namespace CG.Web.MegaApiClient
     long Size { get; }
 
     string Name { get; }
+
+    DateTime? ModificationDate { get; }
   }
 
   public interface INode : INodePublic, IEquatable<INode>
@@ -19,7 +21,7 @@ namespace CG.Web.MegaApiClient
 
     NodeType Type { get; }
 
-    DateTime LastModificationDate { get; }
+    DateTime CreationDate { get; }
   }
 
   internal interface INodeCrypto
