@@ -3,6 +3,7 @@ namespace CG.Web.MegaApiClient
   using System;
   using System.Collections.Generic;
   using System.IO;
+  using System.Threading;
   using System.Threading.Tasks;
 
   public partial interface IMegaApiClient
@@ -31,17 +32,17 @@ namespace CG.Web.MegaApiClient
 
     Task<Uri> GetDownloadLinkAsync(INode node);
 
-    Task<Stream> DownloadAsync(INode node, IProgress<double> progress);
+    Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
-    Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress);
+    Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
-    Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress);
+    Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
-    Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress);
+    Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
-    Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress);
+    Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null);
 
-    Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress);
+    Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
     Task<INodePublic> GetNodeFromLinkAsync(Uri uri);
   }

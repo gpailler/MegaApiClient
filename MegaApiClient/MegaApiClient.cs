@@ -403,7 +403,11 @@
     /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+#if NET35
     public void DownloadFile(INode node, string outputFile)
+#else
+    public void DownloadFile(INode node, string outputFile, CancellationToken? cancellationToken = null)
+#endif
     {
       if (node == null)
       {
@@ -415,7 +419,11 @@
         throw new ArgumentNullException("outputFile");
       }
 
+#if NET35
       using (Stream stream = this.Download(node))
+#else
+      using (Stream stream = this.Download(node, cancellationToken))
+#endif
       {
         this.SaveStream(stream, outputFile);
       }
@@ -431,7 +439,11 @@
     /// <exception cref="ArgumentNullException">uri or outputFile is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+#if NET35
     public void DownloadFile(Uri uri, string outputFile)
+#else
+    public void DownloadFile(Uri uri, string outputFile, CancellationToken? cancellationToken = null)
+#endif
     {
       if (uri == null)
       {
@@ -443,7 +455,11 @@
         throw new ArgumentNullException("outputFile");
       }
 
+#if NET35
       using (Stream stream = this.Download(uri))
+#else
+        using (Stream stream = this.Download(uri, cancellationToken))
+#endif
       {
         this.SaveStream(stream, outputFile);
       }
@@ -458,7 +474,11 @@
     /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+#if NET35
     public Stream Download(INode node)
+#else
+    public Stream Download(INode node, CancellationToken? cancellationToken = null)
+#endif
     {
       if (node == null)
       {
@@ -483,7 +503,15 @@
       DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
 
       Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
-      return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
+
+      Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
+#if !NET35
+      if (cancellationToken.HasValue)
+      {
+        resultStream = new CancellableStream(resultStream, cancellationToken.Value);
+      }
+#endif
+      return resultStream;
     }
 
     /// <summary>
@@ -495,7 +523,11 @@
     /// <exception cref="ArgumentNullException">uri is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
+#if NET35
     public Stream Download(Uri uri)
+#else
+    public Stream Download(Uri uri, CancellationToken? cancellationToken = null)
+#endif
     {
       if (uri == null)
       {
@@ -513,7 +545,15 @@
       DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
 
       Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
-      return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, fileKey, iv, metaMac);
+
+      Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, fileKey, iv, metaMac);
+#if !NET35
+      if (cancellationToken.HasValue)
+      {
+        resultStream = new CancellableStream(resultStream, cancellationToken.Value);
+      }
+#endif
+      return resultStream;
     }
 
     /// <summary>
@@ -555,7 +595,11 @@
     /// <exception cref="ArgumentNullException">filename or parent is null</exception>
     /// <exception cref="FileNotFoundException">filename is not found</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
+#if NET35
     public INode UploadFile(string filename, INode parent)
+#else
+    public INode UploadFile(string filename, INode parent, CancellationToken? cancellationToken = null)
+#endif
     {
       if (string.IsNullOrEmpty(filename))
       {
@@ -577,7 +621,11 @@
       DateTime modificationDate = File.GetLastWriteTime(filename);
       using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
       {
+#if NET35
         return this.Upload(fileStream, Path.GetFileName(filename), parent, modificationDate);
+#else
+        return this.Upload(fileStream, Path.GetFileName(filename), parent, modificationDate, cancellationToken);
+#endif
       }
     }
 
@@ -780,9 +828,9 @@
       return this.GetNodes().First(n => n.Equals(node));
     }
 
-    #endregion
+#endregion
 
-    #region Private static methods
+#region Private static methods
 
     private static string GenerateHash(string email, byte[] passwordAesKey)
     {
@@ -827,9 +875,9 @@
       return pkey;
     }
 
-    #endregion
+#endregion
 
-    #region Web
+#region Web
 
     private string Request(RequestBase request)
     {
@@ -926,9 +974,9 @@
       }
     }
 
-    #endregion
+#endregion
 
-    #region Private methods
+#region Private methods
 
     private void EnsureLoggedIn()
     {
@@ -983,9 +1031,9 @@
       }
     }
 
-    #endregion
+#endregion
 
-    #region AuthInfos
+#region AuthInfos
 
     public class AuthInfos
     {
@@ -1006,7 +1054,7 @@
       public byte[] PasswordAesKey { get; private set; }
     }
 
-    #endregion
+#endregion
 
   }
 }

@@ -84,28 +84,28 @@ namespace CG.Web.MegaApiClient.Tests
       return this.UnwrapException(() => this.client.GetDownloadLinkAsync(node).Result);
     }
 
-    public void DownloadFile(INode node, string outputFile)
+    public void DownloadFile(INode node, string outputFile, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      this.UnwrapException(() => this.client.DownloadFileAsync(node, outputFile, progress).Wait());
+      this.UnwrapException(() => this.client.DownloadFileAsync(node, outputFile, progress, cancellationToken).Wait());
     }
 
-    public void DownloadFile(Uri uri, string outputFile)
+    public void DownloadFile(Uri uri, string outputFile, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      this.UnwrapException(() => this.client.DownloadFileAsync(uri, outputFile, progress).Wait());
+      this.UnwrapException(() => this.client.DownloadFileAsync(uri, outputFile, progress, cancellationToken).Wait());
     }
 
-    public Stream Download(INode node)
+    public Stream Download(INode node, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      return this.UnwrapException(() => this.client.DownloadAsync(node, progress).Result);
+      return this.UnwrapException(() => this.client.DownloadAsync(node, progress, cancellationToken).Result);
     }
 
-    public Stream Download(Uri uri)
+    public Stream Download(Uri uri, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      return this.UnwrapException(() => this.client.DownloadAsync(uri, progress).Result);
+      return this.UnwrapException(() => this.client.DownloadAsync(uri, progress, cancellationToken).Result);
     }
 
     public INodePublic GetNodeFromLink(Uri uri)
@@ -113,10 +113,10 @@ namespace CG.Web.MegaApiClient.Tests
       return this.UnwrapException(() => this.client.GetNodeFromLinkAsync(uri).Result);
     }
 
-    public INode UploadFile(string filename, INode parent)
+    public INode UploadFile(string filename, INode parent, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      return this.UnwrapException(() => this.client.UploadFileAsync(filename, parent, progress).Result);
+      return this.UnwrapException(() => this.client.UploadFileAsync(filename, parent, progress, cancellationToken).Result);
     }
 
     public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
@@ -195,34 +195,34 @@ namespace CG.Web.MegaApiClient.Tests
       throw new NotImplementedException();
     }
 
-    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress)
+    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       throw new NotImplementedException();
     }
 
-    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress)
+    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       throw new NotImplementedException();
     }
 
-    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress)
+    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
-      return this.client.DownloadFileAsync(node, outputFile, progress);
+      return this.client.DownloadFileAsync(node, outputFile, progress, cancellationToken);
     }
 
-    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress)
+    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
-      return this.client.DownloadFileAsync(uri, outputFile, progress);
+      return this.client.DownloadFileAsync(uri, outputFile, progress, cancellationToken);
     }
 
-    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress)
+    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
-      return this.client.UploadFileAsync(filename, parent, progress);
+      return this.client.UploadFileAsync(filename, parent, progress, cancellationToken);
     }
 
-    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress)
+    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
     {
-      return this.client.UploadAsync(stream, name, parent, progress);
+      return this.client.UploadAsync(stream, name, parent, progress, modificationDate, cancellationToken);
     }
 
     public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
