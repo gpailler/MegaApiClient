@@ -27,12 +27,30 @@ namespace CG.Web.MegaApiClient.Tests
         }
 
         [Test]
+        public void ClientCtor_NullOptions_Throws()
+        {
+            Assert.That(
+                () => this.Client = new MegaApiClient((CG.Web.MegaApiClient.Options)null),
+                Throws.TypeOf<ArgumentNullException>()
+                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("options"));
+        }
+
+        [Test]
         public void ClientCtor_NullWebClient_Throws()
         {
             Assert.That(
-                () => this.Client = new MegaApiClient(null),
+                () => this.Client = new MegaApiClient((IWebClient)null),
                 Throws.TypeOf<ArgumentNullException>()
                 .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("webClient"));
+        }
+
+        [Test]
+        public void ClientCtor_NullOptionsAndNullWebClient_Throws()
+        {
+            Assert.That(
+                () => this.Client = new MegaApiClient(null, null),
+                Throws.TypeOf<ArgumentNullException>()
+                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("options"));
         }
 
         [TestCaseSource(typeof(Login), nameof(GetInvalidCredentials))]

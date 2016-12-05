@@ -32,7 +32,7 @@
     #region Constructors
 
     /// <summary>
-    /// Instantiate a new <see cref="MegaApiClient" /> object
+    /// Instantiate a new <see cref="MegaApiClient" /> object with default <see cref="Options"/> and default <see cref="IWebClient"/> 
     /// </summary>
     public MegaApiClient()
         : this(new Options(), new WebClient())
@@ -40,7 +40,7 @@
     }
 
     /// <summary>
-    /// Instantiate a new <see cref="MegaApiClient" /> object with the custom options
+    /// Instantiate a new <see cref="MegaApiClient" /> object with custom <see cref="Options" /> and default <see cref="IWebClient"/> 
     /// </summary>
     public MegaApiClient(Options options)
         : this(options, new WebClient())
@@ -48,18 +48,26 @@
     }
 
     /// <summary>
-    /// Instantiate a new <see cref="MegaApiClient" /> object with the custom options and <see cref="IWebClient" />
+    /// Instantiate a new <see cref="MegaApiClient" /> object with default <see cref="Options" /> and custom <see cref="IWebClient"/> 
+    /// </summary>
+    public MegaApiClient(IWebClient webClient)
+        : this(new Options(), webClient)
+    {
+    }
+
+    /// <summary>
+    /// Instantiate a new <see cref="MegaApiClient" /> object with custom <see cref="Options"/> and custom <see cref="IWebClient" />
     /// </summary>
     public MegaApiClient(Options options, IWebClient webClient)
     {
       if (options == null)
       {
-        throw new ArgumentNullException("options");
+        throw new ArgumentNullException(nameof(options));
       }
 
       if (webClient == null)
       {
-        throw new ArgumentNullException("webClient");
+        throw new ArgumentNullException(nameof(webClient));
       }
 
       this.options = options;
