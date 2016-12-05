@@ -9,6 +9,8 @@ namespace CG.Web.MegaApiClient
 
   public partial interface IMegaApiClient
   {
+    event EventHandler<ApiRequestFailedEventArgs> ApiRequestFailed;
+
     bool IsLoggedIn { get; }
 
     void Login(string email, string password);

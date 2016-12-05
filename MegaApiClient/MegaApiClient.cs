@@ -102,7 +102,7 @@
       return new AuthInfos(email, hash, passwordAesKey);
     }
 
-    public event EventHandler<ApiRequestFailedArgs> ApiRequestFailed;
+    public event EventHandler<ApiRequestFailedEventArgs> ApiRequestFailed;
 
     public bool IsLoggedIn
     {
@@ -664,7 +664,7 @@
 
           if (completionHandle.StartsWith("-"))
           {
-            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedArgs(uri, remainingRetry, requestDelay, ApiResultCode.RequestFailedRetry, null));
+            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, remainingRetry, requestDelay, ApiResultCode.RequestFailedRetry, null));
 
             // Restart upload from the beginning
             Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
@@ -869,7 +869,7 @@
 
           if (apiCode != ApiResultCode.Ok)
           {
-            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedArgs(uri, this.options.ApiRequestAttempts - remainingRetry, requestDelay, apiCode, dataResult));
+            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, this.options.ApiRequestAttempts - remainingRetry, requestDelay, apiCode, dataResult));
           }
 
           if (apiCode == ApiResultCode.RequestFailedRetry)
@@ -1000,26 +1000,5 @@
 
     #endregion
 
-    public class ApiRequestFailedArgs : EventArgs
-    {
-      public ApiRequestFailedArgs(Uri url, int attemptNum, int delayMilliseconds, ApiResultCode apiResult, string responseJson)
-      {
-        this.ApiUrl = url;
-        this.AttemptNum = attemptNum;
-        this.DelayMilliseconds = delayMilliseconds;
-        this.ApiResult = apiResult;
-        this.ResponseJson = responseJson;
-      }
-
-      public Uri ApiUrl { get; private set; }
-
-      public ApiResultCode ApiResult { get; private set; }
-
-      public string ResponseJson { get; private set; }
-
-      public int AttemptNum { get; private set; }
-
-      public int DelayMilliseconds { get; private set; }
-    }
   }
 }

@@ -67,6 +67,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\MegaApiClient\ApiRequestFailedEventArgs.cs">
+      <Link>ApiRequestFailedEventArgs.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\CancellableStream.cs">
       <Link>CancellableStream.cs</Link>
     </Compile>

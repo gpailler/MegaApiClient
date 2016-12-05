@@ -135,6 +135,8 @@ namespace CG.Web.MegaApiClient.Tests
       {
         this.Client.Logout();
       }
+
+      (this.Client as IDisposable)?.Dispose();
     }
 
     protected string PermanentFile

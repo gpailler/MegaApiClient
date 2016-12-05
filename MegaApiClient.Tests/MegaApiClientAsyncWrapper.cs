@@ -12,14 +12,22 @@ namespace CG.Web.MegaApiClient.Tests
   using System.Threading;
   using System.Threading.Tasks;
 
-  public class MegaApiClientAsyncWrapper : IMegaApiClient
+  public class MegaApiClientAsyncWrapper : IMegaApiClient, IDisposable
   {
     private readonly IMegaApiClient client;
 
     public MegaApiClientAsyncWrapper(IMegaApiClient client)
     {
       this.client = client;
+      this.client.ApiRequestFailed += this.OnApiRequestFailed;
     }
+
+    public void Dispose()
+    {
+      this.client.ApiRequestFailed -= this.OnApiRequestFailed;
+    }
+
+    public event EventHandler<ApiRequestFailedEventArgs> ApiRequestFailed;
 
     public bool IsLoggedIn
     {
@@ -242,6 +250,11 @@ namespace CG.Web.MegaApiClient.Tests
           action();
           return true;
         });
+    }
+
+    private void OnApiRequestFailed(object sender, ApiRequestFailedEventArgs e)
+    {
+      this.ApiRequestFailed?.Invoke(sender, e);
     }
   }
 }
