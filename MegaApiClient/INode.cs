@@ -9,6 +9,8 @@ namespace CG.Web.MegaApiClient
     string Name { get; }
 
     DateTime? ModificationDate { get; }
+
+    Attributes Attributes { get; }
   }
 
   public interface INode : INodePublic, IEquatable<INode>

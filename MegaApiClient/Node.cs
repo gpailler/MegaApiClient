@@ -126,12 +126,7 @@
             this.Key = this.FullKey;
           }
 
-          Attributes attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
-          this.Name = attributes.Name;
-          if (this.Type == NodeType.File)
-          {
-            this.ModificationDate = attributes.ModificationDate;
-          }
+          this.Attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
         }
       }
     }
@@ -162,9 +157,7 @@
   {
     public NodePublic(DownloadUrlResponse downloadResponse, byte[] fileKey)
     {
-      Attributes attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), fileKey);
-      this.Name = attributes.Name;
-      this.ModificationDate = attributes.ModificationDate;
+      this.Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), fileKey);
       this.Size = downloadResponse.Size;
       this.Type = NodeType.File;
     }
@@ -174,7 +167,10 @@
     }
 
     [JsonIgnore]
-    public string Name { get; protected set; }
+    public string Name
+    {
+      get { return this.Attributes.Name; }
+    }
 
     [JsonProperty("s")]
     public long Size { get; protected set; }
@@ -183,6 +179,12 @@
     public NodeType Type { get; protected set; }
 
     [JsonIgnore]
-    public DateTime? ModificationDate { get; protected set; }
+    public DateTime? ModificationDate
+    {
+      get { return this.Attributes.ModificationDate; }
+    }
+
+    [JsonIgnore]
+    public Attributes Attributes { get; protected set; }
   }
 }

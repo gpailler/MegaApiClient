@@ -439,7 +439,7 @@
 
   #region Attributes
 
-  internal class Attributes
+  public class Attributes
   {
     private const int CrcArrayLength = 4;
     private const int CrcSize = sizeof(uint) * CrcArrayLength;
@@ -455,6 +455,12 @@
     public Attributes(string name)
     {
       this.Name = name;
+    }
+
+    public Attributes(string name, Attributes originalAttributes)
+    {
+      this.Name = name;
+      this.SerializedFingerprint = originalAttributes.SerializedFingerprint;
     }
 
     public Attributes(string name, Stream stream, DateTime? modificationDate = null)
@@ -481,7 +487,7 @@
     public string Name { get; set; }
 
     [JsonProperty("c", DefaultValueHandling = DefaultValueHandling.Ignore)]
-    public string SerializedFingerprint { get; private set; }
+    private string SerializedFingerprint { get; set; }
  
     [JsonIgnore]
     public DateTime? ModificationDate

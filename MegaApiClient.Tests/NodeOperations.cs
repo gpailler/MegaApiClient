@@ -225,6 +225,7 @@ namespace CG.Web.MegaApiClient.Tests
         {
             var parentNode = this.GetNode(NodeType.Root);
             INode createdNode;
+            DateTime modificationDate = new DateTime(2000, 01, 02, 03, 04, 05);
             switch (nodeType)
             {
                 case NodeType.Directory:
@@ -237,7 +238,7 @@ namespace CG.Web.MegaApiClient.Tests
 
                     using (MemoryStream stream = new MemoryStream(data))
                     {
-                        createdNode = this.Client.Upload(stream, "Data", parentNode);
+                        createdNode = this.Client.Upload(stream, "Data", parentNode, modificationDate);
                     }
                     break;
 
@@ -250,8 +251,18 @@ namespace CG.Web.MegaApiClient.Tests
                   Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
                   .And.Exactly(1).EqualTo(createdNode));
 
+            if (nodeType == NodeType.File)
+            {
+              Assert.That(createdNode.ModificationDate, Is.EqualTo(modificationDate));
+            }
+
             var renamedNode = this.Client.Rename(createdNode, "Data2");
             Assert.That(renamedNode.Name, Is.EqualTo("Data2"));
+
+            if (nodeType == NodeType.File)
+            {
+              Assert.That(createdNode.ModificationDate, Is.EqualTo(modificationDate));
+            }
 
             Assert.That(
                   this.Client.GetNodes(parentNode).ToArray(),
