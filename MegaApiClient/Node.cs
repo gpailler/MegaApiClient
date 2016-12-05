@@ -169,7 +169,7 @@
     [JsonIgnore]
     public string Name
     {
-      get { return this.Attributes.Name; }
+      get { return this.Attributes?.Name; }
     }
 
     [JsonProperty("s")]
@@ -181,7 +181,7 @@
     [JsonIgnore]
     public DateTime? ModificationDate
     {
-      get { return this.Attributes.ModificationDate; }
+      get { return this.Attributes?.ModificationDate; }
     }
 
     [JsonIgnore]
