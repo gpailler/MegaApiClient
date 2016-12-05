@@ -122,7 +122,7 @@ namespace CG.Web.MegaApiClient.Tests
     public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      return this.UnwrapException(() => this.client.UploadAsync(stream, name, parent, progress).Result);
+      return this.UnwrapException(() => this.client.UploadAsync(stream, name, parent, progress, modificationDate).Result);
     }
 
     public INode Move(INode node, INode destinationParentNode)
