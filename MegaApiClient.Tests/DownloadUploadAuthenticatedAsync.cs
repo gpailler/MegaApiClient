@@ -74,8 +74,19 @@ namespace CG.Web.MegaApiClient.Tests
 
             using (Stream stream = new MemoryStream(data))
             {
+                double previousProgression = 0;
                 EventTester<double> eventTester = new EventTester<double>();
-                Progress<double> progress = new Progress<double>(eventTester.OnRaised);
+                Progress<double> progress = new Progress<double>(x => 
+                {
+                    if (previousProgression > x)
+                    {
+                        // Reset eventTester (because upload was restarted)
+                        eventTester.Reset();
+                    }
+
+                    previousProgression = x;
+                    eventTester.OnRaised(x);
+                });
 
                 // Act
                 Task<INode> task = this.Client.UploadAsync(stream, "test", parent, progress);

@@ -1,13 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using Polly;
-
-namespace CG.Web.MegaApiClient.Tests
+﻿namespace CG.Web.MegaApiClient.Tests
 {
+  using System;
+  using System.IO;
+  using System.Net;
+  using System.Net.Sockets;
+  using Polly;
+
   internal class TestWebClient : IWebClient
   {
     private readonly IWebClient _webClient;
@@ -29,7 +27,7 @@ namespace CG.Web.MegaApiClient.Tests
       GetRequestRaw
     }
 
-    public event Action<CallType> OnCalled;
+    public event Action<CallType, Uri> OnCalled;
 
     public int BufferSize
     {
@@ -41,7 +39,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
       return this._policy.Execute(() =>
       {
-        this.OnCalled?.Invoke(CallType.PostRequestJson);
+        this.OnCalled?.Invoke(CallType.PostRequestJson, url);
         return this._webClient.PostRequestJson(url, jsonData);
       });
     }
@@ -50,7 +48,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
       return this._policy.Execute(() =>
       {
-        this.OnCalled?.Invoke(CallType.PostRequestRaw);
+        this.OnCalled?.Invoke(CallType.PostRequestRaw, url);
 
         // Create a copy of the stream because webClient can dispose it
         // It's useful in case of retries
@@ -64,7 +62,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
       return this._policy.Execute(() =>
       {
-        this.OnCalled?.Invoke(CallType.GetRequestRaw);
+        this.OnCalled?.Invoke(CallType.GetRequestRaw, url);
         return this._webClient.GetRequestRaw(url);
       });
     }

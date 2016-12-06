@@ -67,7 +67,21 @@ namespace CG.Web.MegaApiClient.Tests
             using (Stream stream = new MemoryStream(uploadedData))
             {
                 int uploadCalls = 0;
-                Action<TestWebClient.CallType> onCall = callType => uploadCalls += callType == TestWebClient.CallType.PostRequestRaw ? 1 : 0;
+                Action<TestWebClient.CallType, Uri> onCall = (callType, url) =>
+                {
+                    if (callType == TestWebClient.CallType.PostRequestRaw)
+                    {
+                        if (url.AbsolutePath.EndsWith("/0"))
+                        {
+                            // Reset counter when it's the first chunk (to avoid error when Upload is restarted from start)
+                            uploadCalls = 1;
+                        }
+                        else
+                        {
+                            uploadCalls++;
+                        }
+                    }
+                };
                 ((TestWebClient) this.WebClient).OnCalled += onCall;
 
                 this.ClientOptions.ChunksPackSize = chunksPackSize;
