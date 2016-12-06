@@ -1121,6 +1121,23 @@
 
     #endregion
 
+      public LogonSessionToken LogonSession
+    {
+          get
+        {
+            if (!IsLoggedIn)
+                return null;
+            return new LogonSessionToken(this.sessionId, this.masterKey);
+        }
+    }
+
+      public void Login(LogonSessionToken logonSession)
+      {
+          EnsureLoggedOut();
+
+          this.sessionId = logonSession.SessionId;
+          this.masterKey = logonSession.MasterKey;
+      }
 
     public bool IsLoggedIn
     {

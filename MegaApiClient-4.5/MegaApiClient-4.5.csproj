@@ -103,6 +103,9 @@
     <Compile Include="..\MegaApiClient\JsonSerialization.cs">
       <Link>JsonSerialization.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\LogonSessionToken.cs">
+      <Link>LogonSessionToken.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\MegaAesCtrStream.cs">
       <Link>MegaAesCtrStream.cs</Link>
     </Compile>

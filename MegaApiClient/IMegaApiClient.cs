@@ -1,9 +1,10 @@
 namespace CG.Web.MegaApiClient
 {
-  using System;
-  using System.Collections.Generic;
-  using System.IO;
-using System.Threading;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Security;
+    using System.Threading;
 
   public partial interface IMegaApiClient
   {
@@ -13,9 +14,12 @@ using System.Threading;
 
     bool IsLoggedIn { get; }
 
+    LogonSessionToken LogonSession { get; }
+
     void Login(string email, string password);
 
     void Login(MegaApiClient.AuthInfos authInfos);
+    void Login(LogonSessionToken logonSession);
 
     void LoginAnonymous();
 
