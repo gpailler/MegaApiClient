@@ -74,6 +74,13 @@
     public string TemporarySession { get; set; }
   }
 
+    internal class LogoutRequest : RequestBase
+    {
+        public LogoutRequest()
+            : base("sml")
+        { }
+    }
+
   #endregion
 
   #region AccountInformation
@@ -102,6 +109,9 @@
 
     [JsonProperty("cstrg")]
     public long UsedQuota { get; private set; }
+
+    [JsonProperty("cstrgn")]
+    public Dictionary<string, int[]> StorageMetrics {get; private set;}
   }
 
   #endregion

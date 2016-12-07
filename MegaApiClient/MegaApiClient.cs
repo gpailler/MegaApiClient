@@ -295,6 +295,8 @@
     {
       this.EnsureLoggedIn();
 
+      string logoutResponseStr = this.Request(new LogoutRequest());
+
       // Reset values retrieved by Login methods
       this.masterKey = null;
       this.sessionId = null;
@@ -988,10 +990,10 @@
               ?(MegaApiResultCode)Enum.ToObject(typeof(MegaApiResultCode), jsonData)
               : (MegaApiResultCode)((JArray)jsonData)[0].Value<int>();
 
-            if (ApiRequestFailed != null) ApiRequestFailed(this, new ApiRequestFailedArgs(uri.AbsoluteUri, currentAttempt, requestDelay, apiResult: apiCode, responseJson: dataResult));
-
           if (apiCode == MegaApiResultCode.RequestFailedRetry)
-          {   
+          {
+              if (ApiRequestFailed != null) ApiRequestFailed(this, new ApiRequestFailedArgs(uri.AbsoluteUri, currentAttempt, requestDelay, apiResult: apiCode, responseJson: dataResult));
+
             if (currentAttempt < ApiRequestAttempts)
             {
                 Thread.Sleep(requestDelay = (int)(Math.Round((float)requestDelay * _apiRequestDelayExponentialFactor)));
@@ -1002,6 +1004,7 @@
 
           if (apiCode != MegaApiResultCode.Ok)
           {
+              if (ApiRequestFailed != null) ApiRequestFailed(this, new ApiRequestFailedArgs(uri.AbsoluteUri, currentAttempt, requestDelay, apiResult: apiCode, responseJson: dataResult));
             throw new MegaApiException(apiCode);
           }
         }

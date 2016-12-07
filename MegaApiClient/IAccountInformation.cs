@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 namespace CG.Web.MegaApiClient
 {
   public interface IAccountInformation
@@ -5,5 +6,7 @@ namespace CG.Web.MegaApiClient
     long TotalQuota { get; }
 
     long UsedQuota { get; }
+
+    Dictionary<string, int[]> StorageMetrics { get; }
   }
 }
