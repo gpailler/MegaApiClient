@@ -45,14 +45,14 @@ namespace CG.Web.MegaApiClient.Tests
                 .Or.With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("password"));
         }
 
-        [TestCase("username", "password", ApiResultCode.BadArguments)]
-        [TestCase("username@example.com", "password", ApiResultCode.ResourceNotExists)]
-        public void Login_InvalidCredentials_Throws(string email, string password, ApiResultCode expectedErrorCode)
+        [TestCase("username", "password", MegaApiResultCode.BadArguments)]
+        [TestCase("username@example.com", "password", MegaApiResultCode.ResourceNotExists)]
+        public void Login_InvalidCredentials_Throws(string email, string password, MegaApiResultCode expectedErrorCode)
         {
             Assert.That(
                 () => this.Client.Login(email, password),
-                Throws.TypeOf<ApiException>()
-                .With.Property<ApiException>(x => x.ApiResultCode).EqualTo(expectedErrorCode));
+                Throws.TypeOf<MegaApiException>()
+                .With.Property<MegaApiException>(x => x.ApiResultCode).EqualTo(expectedErrorCode));
         }
 
         [TestCaseSource(typeof(TestsBase), nameof(GetCredentials))]

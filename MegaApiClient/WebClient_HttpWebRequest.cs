@@ -14,16 +14,16 @@
     private readonly int responseTimeout;
     private readonly string userAgent;
 
-    public WebClient()
-        : this(DefaultResponseTimeout)
+    public WebClient(string userAgent = null)
+        : this(DefaultResponseTimeout, userAgent)
     {
       this.BufferSize = MegaApiClient.DefaultBufferSize;
     }
 
-    internal WebClient(int responseTimeout)
+    internal WebClient(int responseTimeout, string userAgent = null)
     {
       this.responseTimeout = responseTimeout;
-      this.userAgent = this.GenerateUserAgent();
+      this.userAgent = userAgent ?? this.GenerateUserAgent();
     }
 
     public int BufferSize { get; set; }
@@ -79,7 +79,7 @@
       HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
       request.Timeout = this.responseTimeout;
       request.UserAgent = this.userAgent;
-
+        
       return request;
     }
 

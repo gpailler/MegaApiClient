@@ -13,16 +13,47 @@
 
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
+    using DamienG.Security.Cryptography;
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    private const int ApiRequestAttempts = 60;
-    private const int ApiRequestDelay = 500;
+
+      private static readonly DateTime OriginalDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+
+    public const int DefaultApiRequestAttempts = 60;
+    public const int DefaultApiRequestDelay = 500;
+      public const float DefaultApiRequestDelayExponentialFactor = 1.5f;
+
+    private int _apiRequestAttempts = DefaultApiRequestAttempts;
+    private int _apiRequestDelay = DefaultApiRequestDelay;
+    private float _apiRequestDelayExponentialFactor;
+
+    private readonly Object _apiRequestLocker = new Object();
+      
+    private bool _synchronizeApiRequests;
+
+      protected int ApiRequestAttempts
+    {
+        get
+        {
+            return _apiRequestAttempts;
+        }
+    }
+
+      protected int ApiRequestDelay
+      {
+          get
+          {
+              return _apiRequestDelay;
+          }
+      }
 
     internal const int DefaultBufferSize = 8192;
-    private const int DefaultChunksPackSize = 1024 * 1024;
+    public const int DefaultChunksPackSize = 1024 * 1024;
 
-    private const string ApplicationKey = "axhQiYyQ";
+    private readonly string _appKey;
+
+    private const string DefaultApplicationKey = "axhQiYyQ";
     private static readonly Uri BaseApiUri = new Uri("https://g.api.mega.co.nz/cs");
     private static readonly Uri BaseUri = new Uri("https://mega.nz");
 
@@ -34,33 +65,72 @@
     private uint sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
     private int bufferSize;
 
+    public event EventHandler<ApiRequestFailedArgs> ApiRequestFailed;
+
+      public class ApiRequestFailedArgs : EventArgs
+      {
+          public ApiRequestFailedArgs(string url, int attemptNum, int delayMilliseconds, MegaApiResultCode apiResult = MegaApiResultCode.Ok, string responseJson = null)
+          {
+              AttemptNum = attemptNum;
+              DelayMilliseconds = delayMilliseconds;
+              ApiUrl = url;
+
+              ApiResult = apiResult;
+              ResponseJson = responseJson;
+          }
+
+          public MegaApiResultCode ApiResult { get; private set; }
+          public string ResponseJson { get; private set; }
+          public int AttemptNum { get; private set; }
+          public int DelayMilliseconds { get; private set; }
+          public string ApiUrl { get; private set; }
+      }
+
     #region Constructors
 
-    /// <summary>
+      /// <summary>
     /// Instantiate a new <see cref="MegaApiClient" /> object
-    /// </summary>
-    public MegaApiClient()
-        : this(new WebClient())
+      /// </summary>
+      /// <param name="appKey"></param>
+      /// <param name="apiRequestAttempts"></param>
+      /// <param name="apiRequestDelay"></param>
+      /// <param name="chunksPackSize"></param>
+      /// <param name="apiRequestDelayExponentialFactor"></param>
+    /// <param name="synchronizeApiRequests">Because Mega api url contains session-unique number incremented with each request it needs to be synchronized in multi threading apps.</param>
+      /// <param name="webClient"></param>
+    public MegaApiClient(string appKey, 
+        int apiRequestAttempts = DefaultApiRequestAttempts, 
+        int apiRequestDelay = DefaultApiRequestDelay,
+        int chunksPackSize = DefaultChunksPackSize,
+        float apiRequestDelayExponentialFactor = DefaultApiRequestDelayExponentialFactor,
+        bool synchronizeApiRequests = true,
+        IWebClient webClient = null)
     {
+        _synchronizeApiRequests = synchronizeApiRequests;
+        _apiRequestDelayExponentialFactor = apiRequestDelayExponentialFactor;
+        _apiRequestAttempts = apiRequestAttempts;
+        _apiRequestDelay = apiRequestDelay;
+        _appKey = appKey;
+        ChunksPackSize = chunksPackSize;
+
+        this.webClient = webClient ?? new WebClient();
+
+#if NET45
+      this.ReportProgressChunkSize = DefaultReportProgressChunkSize;
+#endif
     }
 
     /// <summary>
     /// Instantiate a new <see cref="MegaApiClient" /> object with the provided <see cref="IWebClient" />
     /// </summary>
     public MegaApiClient(IWebClient webClient)
+        : this(DefaultApplicationKey, webClient: webClient)
     {
-      if (webClient == null)
-      {
-        throw new ArgumentNullException("webClient");
-      }
+        if (webClient == null)
+        {
+            throw new ArgumentNullException("webClient");
+        }
 
-      this.webClient = webClient;
-      this.BufferSize = DefaultBufferSize;
-      this.ChunksPackSize = DefaultChunksPackSize;
-
-#if NET45
-      this.ReportProgressChunkSize = DefaultReportProgressChunkSize;
-#endif
     }
 
     #endregion
@@ -132,7 +202,7 @@
     /// </summary>
     /// <param name="email">email</param>
     /// <param name="password">password</param>
-    /// <exception cref="ApiException">Service is not available or credentials are invalid</exception>
+    /// <exception cref="MegaApiException">Service is not available or credentials are invalid</exception>
     /// <exception cref="ArgumentNullException">email or password is null</exception>
     /// <exception cref="NotSupportedException">Already logged in</exception>
     public void Login(string email, string password)
@@ -144,7 +214,7 @@
     /// Login to Mega.co.nz service using hashed credentials
     /// </summary>
     /// <param name="authInfos">Authentication informations generated by <see cref="GenerateAuthInfos"/> method</param>
-    /// <exception cref="ApiException">Service is not available or authInfos is invalid</exception>
+    /// <exception cref="MegaApiException">Service is not available or authInfos is invalid</exception>
     /// <exception cref="ArgumentNullException">authInfos is null</exception>
     /// <exception cref="NotSupportedException">Already logged in</exception>
     public void Login(AuthInfos authInfos)
@@ -179,7 +249,7 @@
     /// <summary>
     /// Login anonymously to Mega.co.nz service
     /// </summary>
-    /// <exception cref="ApiException">Throws if service is not available</exception>
+    /// <exception cref="MegaApiException">Throws if service is not available</exception>
     public void LoginAnonymous()
     {
       this.EnsureLoggedOut();
@@ -225,6 +295,8 @@
     {
       this.EnsureLoggedIn();
 
+      string logoutResponseStr = this.Request(new LogoutRequest());
+
       // Reset values retrieved by Login methods
       this.masterKey = null;
       this.sessionId = null;
@@ -235,7 +307,7 @@
     /// </summary>
     /// <returns>An object containing account information</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     public IAccountInformation GetAccountInformation()
     {
       this.EnsureLoggedIn();
@@ -249,7 +321,7 @@
     /// </summary>
     /// <returns>Flat representation of all the filesystem nodes</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     public IEnumerable<INode> GetNodes()
     {
       this.EnsureLoggedIn();
@@ -271,7 +343,7 @@
     /// </summary>
     /// <returns>Flat representation of children nodes</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">Parent node is null</exception>
     public IEnumerable<INode> GetNodes(INode parent)
     {
@@ -292,7 +364,7 @@
     /// <param name="node">Node to delete</param>
     /// <param name="moveToTrash">Moved to trash if true, Permanently deleted if false</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">node is null</exception>
     /// <exception cref="ArgumentException">node is not a directory or a file</exception>
     public void Delete(INode node, bool moveToTrash = true)
@@ -325,7 +397,7 @@
     /// <param name="name">Folder name</param>
     /// <param name="parent">Parent node to attach created folder</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">name or parent is null</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types are allowed expect <see cref="NodeType.File" />)</exception>
     public INode CreateFolder(string name, INode parent)
@@ -362,7 +434,7 @@
     /// <param name="node">Node to retrieve the download link (only <see cref="NodeType.File" /> or <see cref="NodeType.Directory" /> can be downloaded)</param>
     /// <returns>Download link to retrieve the node with associated key</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">node is null</exception>
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> or <see cref="NodeType.Directory" /> can be downloaded)</exception>
     public Uri GetDownloadLink(INode node)
@@ -409,7 +481,7 @@
     /// <param name="node">Node to download (only <see cref="NodeType.File" /> can be downloaded)</param>
     /// <param name="outputFile">File to save the node to</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
@@ -437,7 +509,7 @@
     /// <param name="uri">Uri to download</param>
     /// <param name="outputFile">File to save the Uri to</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">uri or outputFile is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
@@ -464,7 +536,7 @@
     /// </summary>
     /// <param name="node">Node to download (only <see cref="NodeType.File" /> can be downloaded)</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
@@ -491,6 +563,7 @@
       // Retrieve download URL
       DownloadUrlRequest downloadRequest = new DownloadUrlRequest(node);
       DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
+        
 
       Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
       return new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
@@ -501,7 +574,7 @@
     /// </summary>
     /// <param name="uri">Uri to download</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">uri is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
@@ -531,7 +604,7 @@
     /// </summary>
     /// <param name="uri">Uri to retrive properties</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">uri is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
     public INodePublic GetNodeFromLink(Uri uri)
@@ -561,7 +634,7 @@
     /// <param name="parent">Node to attach the uploaded file (all types except <see cref="NodeType.File" /> are supported)</param>
     /// <returns>Created node</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">filename or parent is null</exception>
     /// <exception cref="FileNotFoundException">filename is not found</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
@@ -584,9 +657,10 @@
 
       this.EnsureLoggedIn();
 
+      DateTime lastModifiedDate = File.GetLastWriteTimeUtc(filename);
       using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
       {
-        return this.Upload(fileStream, Path.GetFileName(filename), parent);
+          return this.Upload(fileStream, Path.GetFileName(filename), parent, lastModifiedDate: lastModifiedDate);
       }
     }
 
@@ -598,10 +672,15 @@
     /// <param name="parent">Node to attach the uploaded file (all types except <see cref="NodeType.File" /> are supported)</param>
     /// <returns>Created node</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">stream or name or parent is null</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
-    public INode Upload(Stream stream, string name, INode parent)
+    /// 
+#if NET35
+    public INode Upload(Stream stream, string name, INode parent, DateTime? lastModifiedDate = null)
+#else
+    public INode Upload(Stream stream, string name, INode parent, DateTime? lastModifiedDate = null, CancellationToken? cancellationToken = null)
+#endif
     {
       if (stream == null)
       {
@@ -625,58 +704,118 @@
 
       this.EnsureLoggedIn();
 
-      string completionHandle = "-";
+      FileFingerprint fileFingerprint = default(FileFingerprint);
+      bool fingerprintCreated = fileFingerprint.GetFingerprint(stream, lastModifiedDate);
+      stream.Seek(0, SeekOrigin.Begin);
+
+      // Retrieve upload URL
+      UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
+      UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
+
+#if NET35
+#else
+      if (cancellationToken.HasValue) cancellationToken.Value.ThrowIfCancellationRequested();
+#endif
+
+        string lastUrl = String.Empty;
+      int requestDelay = _apiRequestDelay;
+      string completionHandle = String.Empty;
       int remainingRetry = ApiRequestAttempts;
       while (remainingRetry-- > 0)
       {
-        // Retrieve upload URL
-        UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
-        UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
+          
+#if NET35
+#else
+          if (cancellationToken.HasValue) cancellationToken.Value.ThrowIfCancellationRequested();
+#endif
+
+          MegaApiResultCode apiResult = MegaApiResultCode.Ok;
 
         using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
         {
-          var chunkStartPosition = 0;
-          var chunksSizesToUpload = this.ComputeChunksSizesToUpload(encryptedStream.ChunksPositions, encryptedStream.Length).ToArray();
-          for (int i = 0; i < chunksSizesToUpload.Length; i++)
-          {
-            int chunkSize = chunksSizesToUpload[i];
-            byte[] chunkBuffer = new byte[chunkSize];
-            encryptedStream.Read(chunkBuffer, 0, chunkSize);
-
-            using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
-            {
-              Uri uri = new Uri(uploadResponse.Url + "/" + chunkStartPosition);
-              chunkStartPosition += chunkSize;
-              try
-              {
-                completionHandle = this.webClient.PostRequestRaw(uri, chunkStream);
-
-                if (completionHandle.StartsWith("-"))
+                var chunkStartPosition = 0;
+                var chunksSizesToUpload = this.ComputeChunksSizesToUpload(encryptedStream.ChunksPositions, encryptedStream.Length).ToArray();
+                for (int i = 0; i < chunksSizesToUpload.Length; i++)
                 {
-                  break;
+                    completionHandle = String.Empty;
+#if NET35
+#else
+                    if (cancellationToken.HasValue) cancellationToken.Value.ThrowIfCancellationRequested();
+#endif
+
+                    int chunkSize = chunksSizesToUpload[i];
+                    byte[] chunkBuffer = new byte[chunkSize];
+
+                    encryptedStream.Read(chunkBuffer, 0, chunkSize);
+
+                    using (MemoryStream chunkStream = new MemoryStream(chunkBuffer))
+                    {
+                        lastUrl = uploadResponse.Url + "/" + chunkStartPosition;
+                        Uri uri = new Uri(uploadResponse.Url + "/" + chunkStartPosition);
+                        chunkStartPosition += chunkSize;
+                        try
+                        {
+                            completionHandle = this.webClient.PostRequestRaw(uri, chunkStream);
+
+                            if (String.IsNullOrEmpty(completionHandle))
+                            {
+                                apiResult = MegaApiResultCode.InternalError;
+                                break;
+                            }
+
+                            if (Enum.TryParse(completionHandle, out apiResult))
+                            {
+                                break;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            apiResult = MegaApiResultCode.InternalError;
+                            Console.WriteLine(ex);
+                            break;
+                        }
+                    }
                 }
-              }
-              catch (Exception ex)
-              {
-                Console.WriteLine(ex);
-                break;
-              }
+
+
+
+            if (apiResult != MegaApiResultCode.Ok)
+            {
+                if (ApiRequestFailed != null) ApiRequestFailed(this, new ApiRequestFailedArgs(lastUrl, remainingRetry, requestDelay, apiResult: apiResult, responseJson: completionHandle));
+
+                if (apiResult == MegaApiResultCode.RequestFailedRetry || apiResult == MegaApiResultCode.RequestFailedPermanetly || apiResult == MegaApiResultCode.TooManyRequests)
+                {
+                    // Restart upload from the beginning
+                    Thread.Sleep(requestDelay = (int)(Math.Round((float)requestDelay * _apiRequestDelayExponentialFactor)));
+
+                    // Reset steam position
+                    stream.Position = 0;
+
+                    continue;
+                }
+
+                throw new MegaApiException(apiResult);
             }
-          }
 
-          if (completionHandle.StartsWith("-"))
+          long? lastModifiedDateSeconds = null;
+          if (lastModifiedDate.HasValue)
           {
-            // Restart upload from the beginning
-            Thread.Sleep(ApiRequestDelay);
-
-            // Reset steam position
-            stream.Position = 0;
-
-            continue;
+              lastModifiedDateSeconds = (long)lastModifiedDate.Value.ToUniversalTime().Subtract(OriginalDateTime).TotalSeconds;
           }
+
+          Attributes attributes = null;
+            if (fingerprintCreated)
+            {
+                attributes = new Attributes(name, fileFingerprint.CRC, lastModifiedDate);
+                attributes.SetFingerprint(ref fileFingerprint);
+            }
+            else
+            {
+                attributes = new Attributes(name);
+            }
 
           // Encrypt attributes
-          byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name), encryptedStream.FileKey);
+          byte[] cryptedAttributes = Crypto.EncryptAttributes(attributes, encryptedStream.FileKey);
 
           // Compute the file key
           byte[] fileKey = new byte[32];
@@ -694,7 +833,9 @@
 
           byte[] encryptedKey = Crypto.EncryptKey(fileKey, this.masterKey);
 
-          CreateNodeRequest createNodeRequest = CreateNodeRequest.CreateFileNodeRequest(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), fileKey, completionHandle);
+
+            CreateNodeRequest createNodeRequest = CreateNodeRequest.CreateFileNodeRequest(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), fileKey, completionHandle, lastModifiedDateSeconds);
+            
           GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest, this.masterKey);
           return createNodeResponse.Nodes[0];
         }
@@ -710,7 +851,7 @@
     /// <param name="destinationParentNode">New parent</param>
     /// <returns>Moved node</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
-    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="MegaApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">node or destinationParentNode is null</exception>
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.Directory" /> and <see cref="NodeType.File" /> are supported)</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
@@ -827,42 +968,60 @@
     {
       return this.Request<string>(request);
     }
-
+      
     private TResponse Request<TResponse>(RequestBase request, object context = null)
+        where TResponse : class
+    {
+        if (_synchronizeApiRequests)
+        {
+            lock (_apiRequestLocker)
+            {
+                return RequestCore<TResponse>(request, context);
+            }
+        }
+        else
+        {
+            return RequestCore<TResponse>(request, context);
+        }
+    }
+
+    private TResponse RequestCore<TResponse>(RequestBase request, object context = null)
         where TResponse : class
     {
       string dataRequest = JsonConvert.SerializeObject(new object[] { request });
       Uri uri = this.GenerateUrl();
       object jsonData = null;
       int currentAttempt = 0;
+      int requestDelay = _apiRequestDelay;
       while (true)
       {
         string dataResult = this.webClient.PostRequestJson(uri, dataRequest);
 
-        jsonData = JsonConvert.DeserializeObject(dataResult);
-        if (jsonData == null || jsonData is long || (jsonData is JArray && ((JArray)jsonData)[0].Type == JTokenType.Integer))
+        if (String.IsNullOrEmpty(dataResult) || 
+            (jsonData = JsonConvert.DeserializeObject(dataResult)) == null || jsonData is long || (jsonData is JArray && ((JArray)jsonData)[0].Type == JTokenType.Integer))
         {
-          ApiResultCode apiCode = jsonData == null
-            ? ApiResultCode.RequestFailedRetry
+          MegaApiResultCode apiCode = jsonData == null
+            ? MegaApiResultCode.RequestFailedRetry
             : jsonData is long
-              ?(ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
-              : (ApiResultCode)((JArray)jsonData)[0].Value<int>();
+              ?(MegaApiResultCode)Enum.ToObject(typeof(MegaApiResultCode), jsonData)
+              : (MegaApiResultCode)((JArray)jsonData)[0].Value<int>();
 
-          if (apiCode == ApiResultCode.RequestFailedRetry)
+          if (apiCode == MegaApiResultCode.RequestFailedRetry)
           {
-            if (currentAttempt == ApiRequestAttempts)
-            {
-              throw new NotSupportedException("Api not available");
-            }
+              if (ApiRequestFailed != null) ApiRequestFailed(this, new ApiRequestFailedArgs(uri.AbsoluteUri, currentAttempt, requestDelay, apiResult: apiCode, responseJson: dataResult));
 
-            Thread.Sleep(ApiRequestDelay);
-            currentAttempt++;
-            continue;
+            if (currentAttempt < ApiRequestAttempts)
+            {
+                Thread.Sleep(requestDelay = (int)(Math.Round((float)requestDelay * _apiRequestDelayExponentialFactor)));
+                currentAttempt++;
+                continue;
+            }
           }
 
-          if (apiCode != ApiResultCode.Ok)
+          if (apiCode != MegaApiResultCode.Ok)
           {
-            throw new ApiException(apiCode);
+              if (ApiRequestFailed != null) ApiRequestFailed(this, new ApiRequestFailedArgs(uri.AbsoluteUri, currentAttempt, requestDelay, apiResult: apiCode, responseJson: dataResult));
+            throw new MegaApiException(apiCode);
           }
         }
 
@@ -881,13 +1040,12 @@
       UriBuilder builder = new UriBuilder(BaseApiUri);
       NameValueCollection query = HttpUtility.ParseQueryString(builder.Query);
       query["id"] = (this.sequenceIndex++ % uint.MaxValue).ToString(CultureInfo.InvariantCulture);
-      query["ak"] = ApplicationKey;
+      query["ak"] = _appKey;
 
       if (!string.IsNullOrEmpty(this.sessionId))
       {
         query["sid"] = this.sessionId;
       }
-
       builder.Query = query.ToString();
       return builder.Uri;
     }
@@ -981,5 +1139,38 @@
     }
 
     #endregion
+
+      public LogonSessionToken LogonSession
+    {
+          get
+        {
+            if (!IsLoggedIn)
+                return null;
+            return new LogonSessionToken(this.sessionId, this.masterKey);
+        }
+    }
+
+      public void Login(LogonSessionToken logonSession)
+      {
+          EnsureLoggedOut();
+
+          this.sessionId = logonSession.SessionId;
+          this.masterKey = logonSession.MasterKey;
+      }
+
+    public bool IsLoggedIn
+    {
+        get { 
+            try
+            {
+                EnsureLoggedIn();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
   }
 }

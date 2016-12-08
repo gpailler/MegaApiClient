@@ -113,7 +113,7 @@ namespace CG.Web.MegaApiClient.Tests
       if (this._options.HasFlag(Options.Clean))
       {
         Policy
-          .Handle<ApiException>(ex => ex.ApiResultCode == ApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
+          .Handle<MegaApiException>(ex => ex.ApiResultCode == MegaApiResultCode.BadSessionId && this._options.HasFlag(Options.LoginAuthenticated))
           .Or<NotSupportedException>(ex => this._options.HasFlag(Options.LoginAuthenticated))
           .WaitAndRetry(MaxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), this.ReconnectOnException)
           .Execute(this.SanitizeStorage);
@@ -199,10 +199,10 @@ namespace CG.Web.MegaApiClient.Tests
         {
           this.Client.Delete(node, false);
         }
-        catch (ApiException ex)
+        catch (MegaApiException ex)
         {
           // Don't throw if node is already removed
-          if (ex.ApiResultCode != ApiResultCode.AccessDenied)
+          if (ex.ApiResultCode != MegaApiResultCode.AccessDenied)
           {
             throw;
           }

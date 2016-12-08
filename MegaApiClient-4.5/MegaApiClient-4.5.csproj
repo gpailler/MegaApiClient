@@ -70,6 +70,9 @@
     <Compile Include="..\MegaApiClient\BigInteger.cs">
       <Link>BigInteger.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\Crc32.cs">
+      <Link>Crc32.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\Crypto.cs">
       <Link>Crypto.cs</Link>
     </Compile>
@@ -78,6 +81,9 @@
     </Compile>
     <Compile Include="..\MegaApiClient\Extensions.cs">
       <Link>Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\FileFingerprint.cs">
+      <Link>FileFingerprint.cs</Link>
     </Compile>
     <Compile Include="..\MegaApiClient\IAccountInformation.cs">
       <Link>IAccountInformation.cs</Link>
@@ -97,6 +103,9 @@
     <Compile Include="..\MegaApiClient\JsonSerialization.cs">
       <Link>JsonSerialization.cs</Link>
     </Compile>
+    <Compile Include="..\MegaApiClient\LogonSessionToken.cs">
+      <Link>LogonSessionToken.cs</Link>
+    </Compile>
     <Compile Include="..\MegaApiClient\MegaAesCtrStream.cs">
       <Link>MegaAesCtrStream.cs</Link>
     </Compile>
@@ -114,6 +123,9 @@
     </Compile>
     <Compile Include="..\MegaApiClient\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\MegaApiClient\Serialize64.cs">
+      <Link>Serialize64.cs</Link>
     </Compile>
     <Compile Include="..\MegaApiClient\WebClient_HttpClient.cs">
       <Link>WebClient_HttpClient.cs</Link>

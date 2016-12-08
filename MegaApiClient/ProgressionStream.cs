@@ -54,13 +54,13 @@ namespace CG.Web.MegaApiClient
       this.baseStream.SetLength(value);
     }
 
-    public override bool CanRead => this.baseStream.CanRead;
+    public override bool CanRead {get {return this.baseStream.CanRead;}}
 
-    public override bool CanSeek => this.baseStream.CanSeek;
+    public override bool CanSeek {get {return  this.baseStream.CanSeek;}}
 
-    public override bool CanWrite => this.baseStream.CanWrite;
+    public override bool CanWrite {get {return  this.baseStream.CanWrite;}}
 
-    public override long Length => this.baseStream.Length;
+    public override long Length { get { return this.baseStream.Length; } }
 
     public override long Position
     {
