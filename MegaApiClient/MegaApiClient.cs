@@ -708,25 +708,28 @@
       bool fingerprintCreated = fileFingerprint.GetFingerprint(stream, lastModifiedDate);
       stream.Seek(0, SeekOrigin.Begin);
 
-        string lastUrl = String.Empty;
-      int requestDelay = _apiRequestDelay;
-      string completionHandle = "-";
-      int remainingRetry = ApiRequestAttempts;
-      while (remainingRetry-- > 0)
-      {
-#if NET35
-#else
-          if (cancellationToken.HasValue) cancellationToken.Value.ThrowIfCancellationRequested();
-#endif
-          
-        // Retrieve upload URL
-        UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
-        UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
+      // Retrieve upload URL
+      UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
+      UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
 
 #if NET35
 #else
+      if (cancellationToken.HasValue) cancellationToken.Value.ThrowIfCancellationRequested();
+#endif
+
+        string lastUrl = String.Empty;
+      int requestDelay = _apiRequestDelay;
+      string completionHandle = String.Empty;
+      int remainingRetry = ApiRequestAttempts;
+      while (remainingRetry-- > 0)
+      {
+          
+#if NET35
+#else
           if (cancellationToken.HasValue) cancellationToken.Value.ThrowIfCancellationRequested();
 #endif
+
+          MegaApiResultCode apiResult = MegaApiResultCode.Ok;
 
         using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
         {
@@ -734,7 +737,7 @@
                 var chunksSizesToUpload = this.ComputeChunksSizesToUpload(encryptedStream.ChunksPositions, encryptedStream.Length).ToArray();
                 for (int i = 0; i < chunksSizesToUpload.Length; i++)
                 {
-                    completionHandle = "-";
+                    completionHandle = String.Empty;
 #if NET35
 #else
                     if (cancellationToken.HasValue) cancellationToken.Value.ThrowIfCancellationRequested();
@@ -754,13 +757,20 @@
                         {
                             completionHandle = this.webClient.PostRequestRaw(uri, chunkStream);
 
-                            if (completionHandle.StartsWith("-"))
+                            if (String.IsNullOrEmpty(completionHandle))
+                            {
+                                apiResult = MegaApiResultCode.InternalError;
+                                break;
+                            }
+
+                            if (Enum.TryParse(completionHandle, out apiResult))
                             {
                                 break;
                             }
                         }
                         catch (Exception ex)
                         {
+                            apiResult = MegaApiResultCode.InternalError;
                             Console.WriteLine(ex);
                             break;
                         }
@@ -768,18 +778,24 @@
                 }
 
 
-          if (completionHandle.StartsWith("-"))
-          {
-              if (ApiRequestFailed != null) ApiRequestFailed(this, new ApiRequestFailedArgs(lastUrl, remainingRetry, requestDelay));
 
-            // Restart upload from the beginning
-              Thread.Sleep(requestDelay = (int)(Math.Round((float)requestDelay * _apiRequestDelayExponentialFactor)));
+            if (apiResult != MegaApiResultCode.Ok)
+            {
+                if (ApiRequestFailed != null) ApiRequestFailed(this, new ApiRequestFailedArgs(lastUrl, remainingRetry, requestDelay, apiResult: apiResult, responseJson: completionHandle));
 
-            // Reset steam position
-            stream.Position = 0;
+                if (apiResult == MegaApiResultCode.RequestFailedRetry || apiResult == MegaApiResultCode.RequestFailedPermanetly || apiResult == MegaApiResultCode.TooManyRequests)
+                {
+                    // Restart upload from the beginning
+                    Thread.Sleep(requestDelay = (int)(Math.Round((float)requestDelay * _apiRequestDelayExponentialFactor)));
 
-            continue;
-          }
+                    // Reset steam position
+                    stream.Position = 0;
+
+                    continue;
+                }
+
+                throw new MegaApiException(apiResult);
+            }
 
           long? lastModifiedDateSeconds = null;
           if (lastModifiedDate.HasValue)
