@@ -77,6 +77,7 @@
         outputStream.Write(buffer, 0, read);
       }
     }
+
     public static DateTime ToDateTime(this long seconds)
     {
       return EpochStart.AddSeconds(seconds).ToLocalTime();
@@ -122,6 +123,20 @@
       Array.Resize(ref result, result[0] + 1);
 
       return result;
+    }
+
+    public static bool TryParseToApiResultCode(this string value, out ApiResultCode result)
+    {
+      try
+      {
+        result = (ApiResultCode) Enum.Parse(typeof(ApiResultCode), value);
+        return true;
+      }
+      catch (Exception)
+      {
+        result = ApiResultCode.Ok;
+        return false;
+      }
     }
   }
 }

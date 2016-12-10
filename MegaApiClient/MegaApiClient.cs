@@ -677,7 +677,7 @@
       }
 #endif
 
-      string completionHandle = "-";
+      string completionHandle = string.Empty;
       int requestDelay = this.options.ApiRequestDelay;
       int remainingRetry = this.options.ApiRequestAttempts;
       while (remainingRetry-- > 0)
@@ -686,6 +686,7 @@
         UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
         UploadUrlResponse uploadResponse = this.Request<UploadUrlResponse>(uploadRequest);
 
+        ApiResultCode apiResult = ApiResultCode.Ok;
         using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
         {
           var chunkStartPosition = 0;
@@ -693,7 +694,7 @@
           Uri uri = null;
           for (int i = 0; i < chunksSizesToUpload.Length; i++)
           {
-            completionHandle = "-";
+            completionHandle = string.Empty;
 
             int chunkSize = chunksSizesToUpload[i];
             byte[] chunkBuffer = new byte[chunkSize];
@@ -706,31 +707,41 @@
               try
               {
                 completionHandle = this.webClient.PostRequestRaw(uri, chunkStream);
+                if (string.IsNullOrEmpty(completionHandle))
+                {
+                  apiResult = ApiResultCode.Ok;
+                  continue;
+                }
 
-                if (completionHandle.StartsWith("-"))
+                if (completionHandle.TryParseToApiResultCode(out apiResult))
                 {
                   break;
                 }
               }
-              catch (Exception ex)
+              catch (Exception)
               {
-                Console.WriteLine(ex);
+                apiResult = ApiResultCode.InternalError;
                 break;
               }
             }
           }
 
-          if (completionHandle.StartsWith("-"))
+          if (apiResult != ApiResultCode.Ok)
           {
             this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, remainingRetry, requestDelay, ApiResultCode.RequestFailedRetry, null));
 
-            // Restart upload from the beginning
-            Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
+            if (apiResult == ApiResultCode.RequestFailedRetry || apiResult == ApiResultCode.RequestFailedPermanetly || apiResult == ApiResultCode.TooManyRequests)
+            {
+              // Restart upload from the beginning
+              Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
 
-            // Reset steam position
-            stream.Seek(0, SeekOrigin.Begin);
+              // Reset steam position
+              stream.Seek(0, SeekOrigin.Begin);
 
-            continue;
+              continue;
+            }
+
+            throw new ApiException(apiResult);
           }
 
           // Encrypt attributes
