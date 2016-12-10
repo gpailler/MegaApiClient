@@ -10,14 +10,19 @@
   {
     #region Public async methods
 
-    public Task LoginAsync(string email, string password)
+    public Task<LogonSessionToken> LoginAsync(string email, string password)
     {
       return Task.Run(() => this.Login(email, password));
     }
 
-    public Task LoginAsync(AuthInfos authInfos)
+    public Task<LogonSessionToken> LoginAsync(AuthInfos authInfos)
     {
       return Task.Run(() => this.Login(authInfos));
+    }
+
+    public Task LoginAsync(LogonSessionToken logonSessionToken)
+    {
+      return Task.Run(() => this.Login(logonSessionToken));
     }
 
     public Task LoginAnonymousAsync()

@@ -34,14 +34,19 @@ namespace CG.Web.MegaApiClient.Tests
       get { return this.client.IsLoggedIn; }
     }
 
-    public void Login(string email, string password)
+    public MegaApiClient.LogonSessionToken Login(string email, string password)
     {
-      this.UnwrapException(() => this.client.LoginAsync(email, password).Wait());
+      return this.UnwrapException(() => this.client.LoginAsync(email, password).Result);
     }
 
-    public void Login(MegaApiClient.AuthInfos authInfos)
+    public MegaApiClient.LogonSessionToken Login(MegaApiClient.AuthInfos authInfos)
     {
-      this.UnwrapException(() => this.client.LoginAsync(authInfos).Wait());
+      return this.UnwrapException(() => this.client.LoginAsync(authInfos).Result);
+    }
+
+    public void Login(MegaApiClient.LogonSessionToken logonSessionToken)
+    {
+      this.UnwrapException(() => this.client.LoginAsync(logonSessionToken).Wait());
     }
 
     public void LoginAnonymous()
@@ -135,12 +140,17 @@ namespace CG.Web.MegaApiClient.Tests
       return this.UnwrapException(() => this.client.RenameAsync(node, newName).Result);
     }
 
-    public Task LoginAsync(string email, string password)
+    public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password)
     {
       throw new NotImplementedException();
     }
 
-    public Task LoginAsync(MegaApiClient.AuthInfos authInfos)
+    public Task<MegaApiClient.LogonSessionToken> LoginAsync(MegaApiClient.AuthInfos authInfos)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task LoginAsync(MegaApiClient.LogonSessionToken authInfos)
     {
       throw new NotImplementedException();
     }

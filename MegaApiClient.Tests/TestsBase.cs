@@ -15,6 +15,8 @@ namespace CG.Web.MegaApiClient.Tests
     private const int WebTimeout = 30000;
     private const int MaxRetry = 3;
 
+    private static MegaApiClient.LogonSessionToken logonSessionToken;
+
     /*
     Storage layout
 
@@ -105,7 +107,14 @@ namespace CG.Web.MegaApiClient.Tests
 
       if (this._options.HasFlag(Options.LoginAuthenticated))
       {
-        this.Client.Login(Username, Password);
+        if (logonSessionToken == null)
+        {
+          logonSessionToken = this.Client.Login(Username, Password);
+        }
+        else
+        {
+          this.Client.Login(logonSessionToken);
+        }
       }
 
       if (this._options.HasFlag(Options.LoginAnonymous))
@@ -133,7 +142,7 @@ namespace CG.Web.MegaApiClient.Tests
 
       if (this._options.HasFlag(Options.Login))
       {
-        this.Client.Logout();
+        //this.Client.Logout();
       }
 
       (this.Client as IDisposable)?.Dispose();

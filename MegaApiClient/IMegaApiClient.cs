@@ -13,9 +13,11 @@ namespace CG.Web.MegaApiClient
 
     bool IsLoggedIn { get; }
 
-    void Login(string email, string password);
+    MegaApiClient.LogonSessionToken Login(string email, string password);
 
-    void Login(MegaApiClient.AuthInfos authInfos);
+    MegaApiClient.LogonSessionToken Login(MegaApiClient.AuthInfos authInfos);
+
+    void Login(MegaApiClient.LogonSessionToken logonSessionToken);
 
     void LoginAnonymous();
 

@@ -8,9 +8,11 @@ namespace CG.Web.MegaApiClient
 
   public partial interface IMegaApiClient
   {
-    Task LoginAsync(string email, string password);
+    Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password);
 
-    Task LoginAsync(MegaApiClient.AuthInfos authInfos);
+    Task<MegaApiClient.LogonSessionToken> LoginAsync(MegaApiClient.AuthInfos authInfos);
+
+    Task LoginAsync(MegaApiClient.LogonSessionToken logonSessionToken);
 
     Task LoginAnonymousAsync();
 

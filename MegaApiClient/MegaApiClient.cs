@@ -125,9 +125,9 @@
     /// <exception cref="ApiException">Service is not available or credentials are invalid</exception>
     /// <exception cref="ArgumentNullException">email or password is null</exception>
     /// <exception cref="NotSupportedException">Already logged in</exception>
-    public void Login(string email, string password)
+    public LogonSessionToken Login(string email, string password)
     {
-      this.Login(GenerateAuthInfos(email, password));
+      return this.Login(GenerateAuthInfos(email, password));
     }
 
     /// <summary>
@@ -137,7 +137,7 @@
     /// <exception cref="ApiException">Service is not available or authInfos is invalid</exception>
     /// <exception cref="ArgumentNullException">authInfos is null</exception>
     /// <exception cref="NotSupportedException">Already logged in</exception>
-    public void Login(AuthInfos authInfos)
+    public LogonSessionToken Login(AuthInfos authInfos)
     {
       if (authInfos == null)
       {
@@ -164,6 +164,16 @@
 
       // Session id contains only the first 58 base64 characters
       this.sessionId = sid.ToBase64().Substring(0, 58);
+
+      return new LogonSessionToken(this.sessionId, this.masterKey);
+    }
+
+    public void Login(LogonSessionToken logonSessionToken)
+    {
+      this.EnsureLoggedOut();
+
+      this.sessionId = logonSessionToken.SessionId;
+      this.masterKey = logonSessionToken.MasterKey;
     }
 
     /// <summary>
@@ -1065,6 +1075,45 @@
 
       [JsonProperty]
       public byte[] PasswordAesKey { get; private set; }
+    }
+
+    public class LogonSessionToken : IEquatable<LogonSessionToken>
+    {
+      [JsonProperty]
+      public string SessionId { get; }
+
+      [JsonProperty]
+      public byte[] MasterKey { get; }
+
+      private LogonSessionToken()
+      {
+      }
+
+      public LogonSessionToken(string sessionId, byte[] masterKey)
+      {
+        this.SessionId = sessionId;
+        this.MasterKey = masterKey;
+      }
+
+      public bool Equals(LogonSessionToken other)
+      {
+        if (other == null)
+        {
+          return false;
+        }
+
+        if (this.SessionId == null || other.SessionId == null || string.Compare(this.SessionId, other.SessionId) != 0)
+        {
+            return false;
+        }
+
+        if (this.MasterKey == null || other.MasterKey == null || !Enumerable.SequenceEqual(MasterKey, other.MasterKey))
+        {
+            return false;
+        }
+
+        return true;
+      }
     }
 
 #endregion
