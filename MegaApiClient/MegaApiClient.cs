@@ -215,6 +215,8 @@
     {
       this.EnsureLoggedIn();
 
+      this.Request(new LogoutRequest());
+
       // Reset values retrieved by Login methods
       this.masterKey = null;
       this.sessionId = null;

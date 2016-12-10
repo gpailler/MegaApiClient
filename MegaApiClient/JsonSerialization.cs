@@ -77,6 +77,14 @@
     public string TemporarySession { get; set; }
   }
 
+  internal class LogoutRequest : RequestBase
+  {
+    public LogoutRequest()
+      : base("sml")
+    {
+    }
+  }
+
   #endregion
 
   #region AccountInformation
