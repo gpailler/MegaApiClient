@@ -14,16 +14,11 @@
     private readonly int responseTimeout;
     private readonly string userAgent;
 
-    public WebClient()
-        : this(DefaultResponseTimeout)
+    public WebClient(int responseTimeout = DefaultResponseTimeout, string userAgent = null)
     {
       this.BufferSize = Options.DefaultBufferSize;
-    }
-
-    internal WebClient(int responseTimeout)
-    {
       this.responseTimeout = responseTimeout;
-      this.userAgent = this.GenerateUserAgent();
+      this.userAgent = userAgent ?? this.GenerateUserAgent();
     }
 
     public int BufferSize { get; set; }

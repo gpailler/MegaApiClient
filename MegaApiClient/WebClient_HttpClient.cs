@@ -15,16 +15,11 @@
 
     private readonly HttpClient httpClient = new HttpClient();
 
-    public WebClient()
-        : this(DefaultResponseTimeout)
+    public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null)
     {
       this.BufferSize = Options.DefaultBufferSize;
-    }
-
-    internal WebClient(int responseTimeout)
-    {
       this.httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
-      this.httpClient.DefaultRequestHeaders.UserAgent.Add(this.GenerateUserAgent());
+      this.httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent ?? this.GenerateUserAgent());
     }
 
     public int BufferSize { get; set; }
