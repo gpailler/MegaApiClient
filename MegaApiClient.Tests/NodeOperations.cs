@@ -2,336 +2,294 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using NUnit.Framework.Interfaces;
+using Xunit;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-    public abstract class NodeOperations : TestsBase
+  public abstract class NodeOperations : TestsBase
+  {
+    private const string DefaultNodeName = "NodeName";
+
+    protected NodeOperations(ITestContext context)
+      : base(context)
     {
-        private const string DefaultNodeName = "NodeName";
-
-        protected NodeOperations(Options options)
-            : base(options)
-        {
-        }
-
-        [TestCase(NodeType.Root)]
-        [TestCase(NodeType.Inbox)]
-        [TestCase(NodeType.Trash)]
-        public void Validate_DefaultNodes_Succeeds(NodeType nodeType)
-        {
-            var nodes = this.Client.GetNodes().ToArray();
-
-            Assert.That(nodes, Has.Length.EqualTo(this.SystemNodesCount + this.PermanentNodesCount));
-            Assert.That(nodes, Has.Exactly(1)
-                .Matches<INode>(x => x.Type == nodeType)
-                .And.Property<INode>(x => x.ParentId).Empty
-                .And.Property<INode>(x => x.Name).Null
-                .And.Property<INode>(x => x.Size).EqualTo(0));
-        }
-
-        [TestCase(NodeType.Root)]
-        [TestCase(NodeType.Inbox)]
-        [TestCase(NodeType.Trash)]
-        public void CreateFolder_Succeeds(NodeType parentNodeType)
-        {
-            var parentNode = this.GetNode(parentNodeType);
-            var createdNode = this.CreateFolderNode(parentNode);
-
-            Assert.That(createdNode, Is.Not.Null
-                .And.Property<INode>(x => x.Name).EqualTo(DefaultNodeName)
-                .And.Property<INode>(x => x.Type).EqualTo(NodeType.Directory)
-                .And.Property<INode>(x => x.Size).EqualTo(0)
-                .And.Property<INode>(x => x.ParentId).Not.Null
-                .And.Property<INode>(x => x.ParentId).EqualTo(parentNode.Id));
-
-            var nodes = this.Client.GetNodes();
-            Assert.That(nodes, Has.Exactly(1)
-                .Matches<INode>(x => x.Name == DefaultNodeName));
-        }
-
-        [TestCaseSource(typeof(NodeOperations), nameof(GetInvalidCreateFolderParameters))]
-        public void CreateFolder_InvalidParameters_Throws(string name, INode parentNode, IResolveConstraint constraint)
-        {
-            Assert.That(
-                () => this.Client.CreateFolder(name, parentNode),
-                constraint);
-        }
-
-        [TestCase("name", "name")]
-        [TestCase("name", "NAME")]
-        public void CreateFolder_SameName_Succeeds(string nodeName1, string nodeName2)
-        {
-            var parentNode = this.GetNode(NodeType.Root);
-            var node1 = this.CreateFolderNode(parentNode, name: nodeName1);
-
-            INode node2 = null;
-            Assert.That(
-                () => node2 = this.CreateFolderNode(parentNode, name: nodeName2),
-                Throws.Nothing);
-
-            Assert.That(node1, Is.Not.EqualTo(node2));
-        }
-
-        [Test]
-        public void GetNodes_Succeeds()
-        {
-            var parentNode = this.GetNode(NodeType.Root);
-            var createdNode = this.CreateFolderNode(parentNode);
-
-            Assert.That(
-                this.Client.GetNodes().ToArray(),
-                Has.Length.EqualTo(this.SystemNodesCount + this.PermanentNodesCount + 1));
-
-            Assert.That(
-                this.Client.GetNodes(parentNode).ToArray(), 
-                Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
-                .And.Exactly(1).EqualTo(createdNode));
-        }
-
-        [Test]
-        public void GetNodes_NullParentNode_Throws()
-        {
-            Assert.That(
-                () => this.Client.GetNodes(null),
-                Throws.TypeOf<ArgumentNullException>()
-                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("parent"));
-        }
-
-        [TestCase(null)]
-        [TestCase(false)]
-        [TestCase(true)]
-        public void Delete_Succeeds(bool? moveToTrash)
-        {
-            var parentNode = this.GetNode(NodeType.Root);
-            var trashNode = this.GetNode(NodeType.Trash);
-            var createdNode = this.CreateFolderNode(parentNode);
-
-            Assert.That(
-                this.Client.GetNodes(parentNode).ToArray(),
-                Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
-                .And.Exactly(1).EqualTo(createdNode));
-
-            Assert.That(
-                this.Client.GetNodes(trashNode),
-                Is.Empty);
-
-            if (moveToTrash == null)
-            {
-                this.Client.Delete(createdNode);
-            }
-            else
-            {
-
-                this.Client.Delete(createdNode, moveToTrash.Value);
-            }
-
-            Assert.That(
-                this.Client.GetNodes(parentNode).ToArray(),
-                Has.Length.EqualTo(this.PermanentFoldersRootNodesCount));
-
-            if (moveToTrash.GetValueOrDefault(true))
-            {
-                Assert.That(
-                    this.Client.GetNodes(trashNode).ToArray(),
-                    Has.Length.EqualTo(1)
-                    .And.Exactly(1).EqualTo(createdNode));
-            }
-            else
-            {
-                Assert.That(
-                    this.Client.GetNodes(trashNode),
-                    Is.Empty);
-            }
-        }
-
-        [Test]
-        public void Delete_NullNode_Throws()
-        {
-            Assert.That(
-                () => this.Client.Delete(null),
-                Throws.TypeOf<ArgumentNullException>());
-        }
-
-        [TestCase(NodeType.Root)]
-        [TestCase(NodeType.Inbox)]
-        [TestCase(NodeType.Trash)]
-        public void Delete_InvalidNode_Throws(NodeType nodeType)
-        {
-            var node = this.GetNode(nodeType);
-
-            Assert.That(
-                () => this.Client.Delete(node),
-                Throws.TypeOf<ArgumentException>()
-                .And.Message.EqualTo("Invalid node type"));
-        }
-
-        [TestCase(NodeType.Root)]
-        [TestCase(NodeType.Trash)]
-        [TestCase(NodeType.Inbox)]
-        public void SameNode_Equality_Succeeds(NodeType nodeType)
-        {
-            var node1 = this.Client.GetNodes().First(x => x.Type == nodeType);
-            var node2 = this.Client.GetNodes().First(x => x.Type == nodeType);
-            
-            Assert.That(node1,
-                Is.EqualTo(node2)
-                .And.Matches<INode>(x => x.GetHashCode() == node2.GetHashCode())
-                .And.Not.SameAs(node2));
-        }
-
-        [TestCaseSource(typeof(NodeOperations), nameof(GetInvalidMoveParameters))]
-        public void Move_InvalidParameters_Throws(INode node, INode destinationParentNode, IResolveConstraint constraint)
-        {
-            Assert.That(
-                () => this.Client.Move(node, destinationParentNode),
-                constraint);
-        }
-
-        [TestCase(NodeType.Root, IgnoreReason = "Cannot move on itself")]
-        [TestCase(NodeType.Inbox)]
-        [TestCase(NodeType.Trash)]
-        public void Move_Succeeds(NodeType destinationParentNodeType)
-        {
-            var parentNode = this.GetNode(NodeType.Root);
-            var destinationParentNode = this.GetNode(destinationParentNodeType);
-            var node = this.CreateFolderNode(parentNode);
-
-            Assert.That(
-                this.Client.GetNodes(parentNode),
-                Has.Exactly(1).EqualTo(node));
-
-            Assert.That(
-                this.Client.GetNodes(destinationParentNode),
-                Is.Empty);
-
-            var movedNode = this.Client.Move(node, destinationParentNode);
-
-            Assert.That(
-                this.Client.GetNodes(parentNode),
-                Has.Exactly(0).EqualTo(node));
-
-            Assert.That(
-                this.Client.GetNodes(destinationParentNode),
-                Has.Exactly(1).EqualTo(movedNode));
-        }
-
-        [TestCase(NodeType.Directory)]
-        [TestCase(NodeType.File)]
-        public void Rename_Succeeds(NodeType nodeType)
-        {
-            var parentNode = this.GetNode(NodeType.Root);
-            INode createdNode;
-            DateTime modificationDate = new DateTime(2000, 01, 02, 03, 04, 05);
-            switch (nodeType)
-            {
-                case NodeType.Directory:
-                    createdNode = this.Client.CreateFolder("Data", parentNode);
-                    break;
-
-                case NodeType.File:
-                    byte[] data = new byte[123];
-                    new Random().NextBytes(data);
-
-                    using (MemoryStream stream = new MemoryStream(data))
-                    {
-                        createdNode = this.Client.Upload(stream, "Data", parentNode, modificationDate);
-                    }
-                    break;
-
-                default:
-                    throw new NotSupportedException();
-            }
-
-            Assert.That(
-                  this.Client.GetNodes(parentNode).ToArray(),
-                  Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
-                  .And.Exactly(1).EqualTo(createdNode));
-
-            if (nodeType == NodeType.File)
-            {
-              Assert.That(createdNode.ModificationDate, Is.EqualTo(modificationDate));
-            }
-
-            var renamedNode = this.Client.Rename(createdNode, "Data2");
-            Assert.That(renamedNode.Name, Is.EqualTo("Data2"));
-
-            if (nodeType == NodeType.File)
-            {
-              Assert.That(createdNode.ModificationDate, Is.EqualTo(modificationDate));
-            }
-
-            Assert.That(
-                  this.Client.GetNodes(parentNode).ToArray(),
-                  Has.Length.EqualTo(this.PermanentFoldersRootNodesCount + 1)
-                  .And.Exactly(1).EqualTo(renamedNode));
-        }
-
-        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
-        public void GetNodeFromLink_Succeeds(string link)
-        {
-            INodePublic publicNode = this.Client.GetNodeFromLink(new Uri(link));
-
-            Assert.That(publicNode, Is.Not.Null
-                .And.Property<INodePublic>(x => x.Name).EqualTo("SharedFile.jpg")
-                .And.Property<INodePublic>(x => x.Size).EqualTo(523265));
-        }
-
-        private static IEnumerable<ITestCaseData> GetInvalidCreateFolderParameters()
-        {
-            yield return new TestCaseData(null, null, 
-                Throws.TypeOf<ArgumentNullException>()
-                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("name"));
-
-            yield return new TestCaseData("", null,
-                Throws.TypeOf<ArgumentNullException>()
-                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("name"));
-
-            yield return new TestCaseData("name", null,
-                Throws.TypeOf<ArgumentNullException>()
-                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("parent"));
-
-            yield return new TestCaseData(null, Mock.Of<INode>(x => x.Type == NodeType.File),
-                Throws.TypeOf<ArgumentNullException>()
-                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("name"));
-
-            yield return new TestCaseData("name", Mock.Of<INode>(x => x.Type == NodeType.File),
-                Throws.TypeOf<ArgumentException>()
-                .With.Message.EqualTo("Invalid parent node"));
-        }
-
-        private static IEnumerable<ITestCaseData> GetInvalidMoveParameters()
-        {
-            yield return new TestCaseData(null, null, 
-                Throws.TypeOf<ArgumentNullException>()
-                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("node"));
-
-            yield return new TestCaseData(null, Mock.Of<INode>(),
-                Throws.TypeOf<ArgumentNullException>()
-                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("node"));
-
-            yield return new TestCaseData(Mock.Of<INode>(), null,
-                Throws.TypeOf<ArgumentNullException>()
-                .With.Property<ArgumentNullException>(x => x.ParamName).EqualTo("destinationParentNode"));
-
-            yield return new TestCaseData(Mock.Of<INode>(x => x.Type == NodeType.Root), Mock.Of<INode>(),
-                Throws.TypeOf<ArgumentException>()
-                    .With.Message.EqualTo("Invalid node type"));
-
-            yield return new TestCaseData(Mock.Of<INode>(x => x.Type == NodeType.Inbox), Mock.Of<INode>(),
-                Throws.TypeOf<ArgumentException>()
-                    .With.Message.EqualTo("Invalid node type"));
-
-            yield return new TestCaseData(Mock.Of<INode>(x => x.Type == NodeType.Trash), Mock.Of<INode>(),
-                Throws.TypeOf<ArgumentException>()
-                    .With.Message.EqualTo("Invalid node type"));
-
-            yield return new TestCaseData(Mock.Of<INode>(x => x.Type == NodeType.File), Mock.Of<INode>(x => x.Type == NodeType.File),
-                Throws.TypeOf<ArgumentException>()
-                .With.Message.EqualTo("Invalid destination parent node"));
-        }
     }
+
+    [Theory]
+    [InlineData(NodeType.Root)]
+    [InlineData(NodeType.Inbox)]
+    [InlineData(NodeType.Trash)]
+    public void Validate_DefaultNodes_Succeeds(NodeType nodeType)
+    {
+      // Arrange + Act
+      var nodes = this.context.Client.GetNodes().ToArray();
+
+      // Assert
+      Assert.Equal(this.context.ProtectedNodes.Count(), nodes.Length);
+      var node = Assert.Single(nodes, x => x.Type == nodeType);
+      Assert.Empty(node.ParentId);
+      Assert.Null(node.Name);
+      Assert.Equal(0, node.Size);
+    }
+
+    [Theory]
+    [InlineData(NodeType.Root)]
+    [InlineData(NodeType.Inbox)]
+    [InlineData(NodeType.Trash)]
+    public void CreateFolder_Succeeds(NodeType parentNodeType)
+    {
+      // Arrange
+      var parentNode = this.GetNode(parentNodeType);
+
+      // Act
+      var createdNode = this.CreateFolderNode(parentNode);
+
+      // Assert
+      Assert.NotNull(createdNode);
+      Assert.Equal(DefaultNodeName, createdNode.Name);
+      Assert.Equal(NodeType.Directory, createdNode.Type);
+      Assert.Equal(0, createdNode.Size);
+      Assert.NotNull(createdNode.ParentId);
+      Assert.Equal(parentNode.Id, createdNode.ParentId);
+      Assert.Single(this.context.Client.GetNodes(), x => x.Name == DefaultNodeName);
+    }
+
+    [Theory, MemberData(nameof(InvalidCreateFolderParameters))]
+    public void CreateFolder_InvalidParameters_Throws(string name, INode parentNode, Type expectedExceptionType, string expectedMessage)
+    {
+      var exception = Assert.Throws(expectedExceptionType, () => this.context.Client.CreateFolder(name, parentNode));
+      Assert.Equal(expectedMessage, exception.GetType() == typeof(ArgumentNullException) ? ((ArgumentNullException)exception).ParamName : exception.Message);
+    }
+
+    public static IEnumerable<object[]> InvalidCreateFolderParameters
+    {
+      get
+      {
+        yield return new object[] { null, null, typeof(ArgumentNullException), "name" };
+        yield return new object[] { "", null, typeof(ArgumentNullException), "name" };
+        yield return new object[] { "name", null, typeof(ArgumentNullException), "parent" };
+        yield return new object[] { null, Mock.Of<INode>(x => x.Type == NodeType.File), typeof(ArgumentNullException), "name" };
+        yield return new object[] { "name", Mock.Of<INode>(x => x.Type == NodeType.File), typeof(ArgumentException), "Invalid parent node" };
+      }
+    }
+
+    [Theory]
+    [InlineData("name", "name")]
+    [InlineData("name", "NAME")]
+    public void CreateFolder_SameName_Succeeds(string nodeName1, string nodeName2)
+    {
+      // Arrange
+      var parentNode = this.GetNode(NodeType.Root);
+
+      // Act
+      var node1 = this.CreateFolderNode(parentNode, nodeName1);
+      var node2 = this.CreateFolderNode(parentNode, nodeName2);
+
+      // Assert
+      Assert.NotEqual(node1, node2);
+      Assert.NotSame(node1, node2);
+    }
+
+    [Fact]
+    public void GetNodes_Succeeds()
+    {
+      // Arrange
+      var parentNode = this.GetNode(NodeType.Root);
+
+      // Act
+      var createdNode = this.CreateFolderNode(parentNode);
+
+      // Assert
+      Assert.Equal(this.context.ProtectedNodes.Count() + 1, this.context.Client.GetNodes().Count());
+      Assert.Single(this.context.Client.GetNodes(parentNode), x => x.Equals(createdNode));
+    }
+
+    [Fact]
+    public void GetNodes_NullParentNode_Throws()
+    {
+      Assert.Throws<ArgumentNullException>("parent", () => this.context.Client.GetNodes(null));
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Delete_Succeeds(bool? moveToTrash)
+    {
+      // Arrange
+      var parentNode = this.GetNode(NodeType.Root);
+      var trashNode = this.GetNode(NodeType.Trash);
+      var createdNode = this.CreateFolderNode(parentNode);
+
+      // Assert
+      var nodes = this.context.Client.GetNodes(parentNode).ToArray();
+      Assert.Equal(this.context.PermanentRootNodes.Count() + 1, nodes.Length);
+      Assert.Single(nodes, x => x.Equals(createdNode));
+      Assert.Empty(this.context.Client.GetNodes(trashNode));
+
+      // Act
+      if (moveToTrash == null)
+      {
+        this.context.Client.Delete(createdNode);
+      }
+      else
+      {
+
+        this.context.Client.Delete(createdNode, moveToTrash.Value);
+      }
+
+      // Assert
+      Assert.Equal(this.context.PermanentRootNodes.Count(), this.context.Client.GetNodes(parentNode).Count());
+
+      if (moveToTrash.GetValueOrDefault(true))
+      {
+        Assert.Single(this.context.Client.GetNodes(trashNode), x => x.Equals(createdNode));
+      }
+      else
+      {
+        Assert.Empty(this.context.Client.GetNodes(trashNode));
+      }
+    }
+
+    [Fact]
+    public void Delete_NullNode_Throws()
+    {
+      Assert.Throws<ArgumentNullException>(() => this.context.Client.Delete(null));
+    }
+
+    [Theory]
+    [InlineData(NodeType.Root)]
+    [InlineData(NodeType.Inbox)]
+    [InlineData(NodeType.Trash)]
+    public void Delete_InvalidNode_Throws(NodeType nodeType)
+    {
+      var node = this.GetNode(nodeType);
+
+      var exception = Assert.Throws<ArgumentException>(() => this.context.Client.Delete(node));
+      Assert.Equal("Invalid node type", exception.Message);
+    }
+
+    [Theory]
+    [InlineData(NodeType.Root)]
+    [InlineData(NodeType.Trash)]
+    [InlineData(NodeType.Inbox)]
+    public void SameNode_Equality_Succeeds(NodeType nodeType)
+    {
+      var node1 = this.GetNode(nodeType);
+      var node2 = this.GetNode(nodeType);
+
+      Assert.Equal(node1, node2);
+      Assert.Equal(node1.GetHashCode(), node2.GetHashCode());
+      Assert.NotSame(node1, node2);
+    }
+
+    [Theory, MemberData(nameof(InvalidMoveParameters))]
+    public void Move_InvalidParameters_Throws(INode node, INode destinationParentNode, Type expectedExceptionType, string expectedMessage)
+    {
+      var exception = Assert.Throws(expectedExceptionType, () => this.context.Client.Move(node, destinationParentNode));
+      Assert.Equal(expectedMessage, exception.GetType() == typeof(ArgumentNullException) ? ((ArgumentNullException)exception).ParamName : exception.Message);
+    }
+
+    public static IEnumerable<object[]> InvalidMoveParameters
+    {
+      get
+      {
+        yield return new object[] { null, null, typeof(ArgumentNullException), "node" };
+        yield return new object[] { null, Mock.Of<INode>(), typeof(ArgumentNullException), "node" };
+        yield return new object[] { Mock.Of<INode>(), null, typeof(ArgumentNullException), "destinationParentNode" };
+        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.Root), Mock.Of<INode>(), typeof(ArgumentException), "Invalid node type" };
+        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.Inbox), Mock.Of<INode>(), typeof(ArgumentException), "Invalid node type" };
+        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.Trash), Mock.Of<INode>(), typeof(ArgumentException), "Invalid node type" };
+        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.File), Mock.Of<INode>(x => x.Type == NodeType.File), typeof(ArgumentException), "Invalid destination parent node" };
+      }
+    }
+
+    [Theory]
+    [InlineData(NodeType.Inbox)]
+    [InlineData(NodeType.Trash)]
+    public void Move_Succeeds(NodeType destinationParentNodeType)
+    {
+      // Arrange
+      var parentNode = this.GetNode(NodeType.Root);
+      var destinationParentNode = this.GetNode(destinationParentNodeType);
+      var node = this.CreateFolderNode(parentNode);
+
+      // Assert
+      Assert.Single(this.context.Client.GetNodes(parentNode), x => x.Equals(node));
+      Assert.Empty(this.context.Client.GetNodes(destinationParentNode));
+
+      // Act
+      var movedNode = this.context.Client.Move(node, destinationParentNode);
+
+      // Assert
+      Assert.Empty(this.context.Client.GetNodes(parentNode));
+      Assert.Single(this.context.Client.GetNodes(destinationParentNode), x => x.Equals(movedNode));
+    }
+
+    [Theory]
+    [InlineData(NodeType.Directory)]
+    [InlineData(NodeType.File)]
+    public void Rename_Succeeds(NodeType nodeType)
+    {
+      // Arrange
+      var parentNode = this.GetNode(NodeType.Root);
+      INode createdNode;
+      DateTime modificationDate = new DateTime(2000, 01, 02, 03, 04, 05);
+      switch (nodeType)
+      {
+        case NodeType.Directory:
+          createdNode = this.context.Client.CreateFolder("Data", parentNode);
+          break;
+
+        case NodeType.File:
+          byte[] data = new byte[123];
+          new Random().NextBytes(data);
+
+          using (MemoryStream stream = new MemoryStream(data))
+          {
+            createdNode = this.context.Client.Upload(stream, "Data", parentNode, modificationDate);
+          }
+          break;
+
+        default:
+          throw new NotSupportedException();
+      }
+
+      // Assert
+      var nodes = this.context.Client.GetNodes(parentNode).ToArray();
+      Assert.Equal(this.context.PermanentRootNodes.Count() + 1, nodes.Length);
+      Assert.Single(nodes, x => x.Equals(createdNode));
+      if (nodeType == NodeType.File)
+      {
+        Assert.Equal(modificationDate, createdNode.ModificationDate);
+      }
+
+      // Act
+      var renamedNode = this.context.Client.Rename(createdNode, "Data2");
+
+      // Assert
+      Assert.Equal("Data2", renamedNode.Name);
+      nodes = this.context.Client.GetNodes(parentNode).ToArray();
+      Assert.Equal(this.context.PermanentRootNodes.Count() + 1, nodes.Length);
+      Assert.Single(nodes, x => x.Equals(createdNode));
+      if (nodeType == NodeType.File)
+      {
+        Assert.Equal(modificationDate, renamedNode.ModificationDate);
+      }
+    }
+
+    [Fact]
+    public void GetNodeFromLink_Succeeds()
+    {
+      string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
+      INodePublic publicNode = this.context.Client.GetNodeFromLink(new Uri(link));
+
+      Assert.NotNull(publicNode);
+      Assert.Equal("SharedFile.jpg", publicNode.Name);
+      Assert.Equal(523265, publicNode.Size);
+      Assert.Equal(DateTime.Parse("2015-07-14T14:04:51.0000000+08:00"), publicNode.ModificationDate);
+    }
+  }
 }

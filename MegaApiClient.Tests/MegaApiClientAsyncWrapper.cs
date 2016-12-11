@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MegaApiClientAsyncWrapper.cs" company="DxO Labs">
-//   Copyright DxO Labs 2016 - All Rights Reserved
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace CG.Web.MegaApiClient.Tests
+﻿namespace CG.Web.MegaApiClient.Tests
 {
   using System;
   using System.Collections.Generic;

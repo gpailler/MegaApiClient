@@ -1,13 +1,14 @@
-﻿using NUnit.Framework;
+﻿using CG.Web.MegaApiClient.Tests.Context;
+using Xunit;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-    [TestFixture]
-    public class NodeOperationsAuthenticatedAsync : NodeOperationsAuthenticated
+  [Collection("AuthenticatedLoginAsyncTests")]
+  public class NodeOperationsAuthenticatedAsync : NodeOperationsAuthenticated
+  {
+    public NodeOperationsAuthenticatedAsync(AuthenticatedAsyncTestContext context)
+      : base(context)
     {
-        public NodeOperationsAuthenticatedAsync()
-            : base(Options.AsyncWrapper)
-        {
-        }
     }
+  }
 }

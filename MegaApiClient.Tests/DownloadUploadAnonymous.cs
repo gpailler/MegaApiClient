@@ -1,13 +1,14 @@
-﻿using NUnit.Framework;
+﻿using CG.Web.MegaApiClient.Tests.Context;
+using Xunit;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-    [TestFixture]
-    public class DownloadUploadAnonymous : DownloadUpload
+  [Collection("AnonymousLoginTests")]
+  public class DownloadUploadAnonymous : DownloadUpload
+  {
+    public DownloadUploadAnonymous(AnonymousTestContext context)
+      : base(context)
     {
-        public DownloadUploadAnonymous()
-            : base(Options.LoginAnonymous)
-        {
-        }
     }
+  }
 }
