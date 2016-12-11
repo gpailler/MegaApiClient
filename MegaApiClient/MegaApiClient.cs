@@ -28,6 +28,7 @@
     private string sessionId;
     private byte[] masterKey;
     private uint sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
+    private bool authenticatedLogin;
 
     #region Constructors
 
@@ -145,6 +146,7 @@
       }
 
       this.EnsureLoggedOut();
+      this.authenticatedLogin = true;
 
       // Request Mega Api
       LoginRequest request = new LoginRequest(authInfos.Email, authInfos.Hash);
@@ -171,6 +173,7 @@
     public void Login(LogonSessionToken logonSessionToken)
     {
       this.EnsureLoggedOut();
+      this.authenticatedLogin = true;
 
       this.sessionId = logonSessionToken.SessionId;
       this.masterKey = logonSessionToken.MasterKey;
@@ -183,6 +186,7 @@
     public void LoginAnonymous()
     {
       this.EnsureLoggedOut();
+      this.authenticatedLogin = false;
 
       Random random = new Random();
 
@@ -225,7 +229,10 @@
     {
       this.EnsureLoggedIn();
 
-      this.Request(new LogoutRequest());
+      if (this.authenticatedLogin == true)
+      {
+        this.Request(new LogoutRequest());
+      }
 
       // Reset values retrieved by Login methods
       this.masterKey = null;
