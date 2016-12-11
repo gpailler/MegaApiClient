@@ -31,7 +31,7 @@ after_build:
 - nuget pack MegaApiClient.nuspec
 
 test_script:
-  - ps: packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -targetdir:MegaApiClient.Tests -target:..\packages\xunit.runner.console.2.1.0\tools\xunit.console.exe "-targetargs:""bin\$env:CONFIGURATION\MegaApiClient.Tests.dll"" -appveyor" -returntargetcode "-filter:+[*]CG.Web.MegaApiClient* -[MegaApiClient.Tests]*" -output:opencoverCoverage.xml
+  - ps: packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -targetdir:MegaApiClient.Tests -target:..\packages\xunit.runner.console.2.1.0\tools\xunit.console.exe "-targetargs:""bin\$env:CONFIGURATION\MegaApiClient.Tests.dll"" -noshadow -appveyor -parallel none" -returntargetcode "-filter:+[*]CG.Web.MegaApiClient* -[MegaApiClient.Tests]*" -output:opencoverCoverage.xml
   - ps: |
       if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER)
       {
