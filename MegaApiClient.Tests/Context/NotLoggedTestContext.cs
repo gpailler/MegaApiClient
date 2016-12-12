@@ -8,5 +8,8 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
   public class NotLoggedTestContext : TestContext
   {
+    protected override void ConnectClient(IMegaApiClient client)
+    {
+    }
   }
 }

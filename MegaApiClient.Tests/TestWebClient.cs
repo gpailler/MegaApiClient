@@ -4,6 +4,7 @@
   using System.IO;
   using System.Net;
   using System.Net.Sockets;
+  using System.Threading.Tasks;
   using Polly;
 
   internal class TestWebClient : IWebClient
@@ -17,6 +18,7 @@
       this._policy = Policy
         .Handle<WebException>()
         .Or<SocketException>()
+        .Or<TaskCanceledException>()
         .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => Console.WriteLine(ts.TotalSeconds + " " + ex.Message));
     }
 

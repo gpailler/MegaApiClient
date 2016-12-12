@@ -10,13 +10,16 @@ namespace CG.Web.MegaApiClient.Tests.Context
   {
     public AnonymousTestContext()
     {
-      this.Client.LoginAnonymous();
-
       this.ProtectedNodes = this.Client.GetNodes()
           .Where(x => x.Type == NodeType.Inbox || x.Type == NodeType.Root || x.Type == NodeType.Trash)
           .Select(x => x.Id)
           .ToArray();
       this.PermanentRootNodes = Enumerable.Empty<string>();
+    }
+
+    protected override void ConnectClient(IMegaApiClient client)
+    {
+      client.LoginAnonymous();
     }
   }
 }

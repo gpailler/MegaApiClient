@@ -1,20 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CG.Web.MegaApiClient.Tests.Context
 {
   public abstract class TestContext : ITestContext
   {
-    private const int WebTimeout = 30000;
+    private const int WebTimeout = 60000;
     private const int MaxRetry = 3;
+
+    private readonly Lazy<IMegaApiClient> lazyClient;
 
     protected TestContext()
     {
       this.Options = new Options();
       this.WebClient = new TestWebClient(new WebClient(WebTimeout), MaxRetry);
-      this.Client = this.CreateClient();
+      this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
     }
 
-    public virtual IMegaApiClient Client { get; }
+    public IMegaApiClient Client
+    {
+      get { return this.lazyClient.Value; }
+    }
 
     public IWebClient WebClient { get; }
 
@@ -27,6 +34,22 @@ namespace CG.Web.MegaApiClient.Tests.Context
     protected virtual IMegaApiClient CreateClient()
     {
       return new MegaApiClient(this.Options, this.WebClient);
+    }
+
+    protected abstract void ConnectClient(IMegaApiClient client);
+
+    private IMegaApiClient InitializeClient()
+    {
+      var client = this.CreateClient();
+      client.ApiRequestFailed += this.OnApiRequestFailed;
+      this.ConnectClient(client);
+
+      return client;
+    }
+
+    private void OnApiRequestFailed(object sender, ApiRequestFailedEventArgs e)
+    {
+      Trace.WriteLine(e.ApiResult.ToString());
     }
   }
 }
