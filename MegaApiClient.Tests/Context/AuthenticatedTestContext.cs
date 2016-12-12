@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -12,6 +11,8 @@ namespace CG.Web.MegaApiClient.Tests.Context
   {
     internal const string Username = "megaapiclient@yopmail.com";
     internal const string Password = "megaapiclient";
+
+    private readonly Lazy<IMegaApiClient> lazyClient;
 
     /*
     Storage layout
@@ -68,7 +69,11 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     public AuthenticatedTestContext()
     {
-      this.Client.Login(Username, Password);
+      this.lazyClient = new Lazy<IMegaApiClient>(() =>
+      {
+        base.Client.Login(Username, Password);
+        return base.Client;
+      });
 
       this.ProtectedNodes = this.systemNodes
         .Concat(this.permanentFoldersRootNodes)
@@ -79,6 +84,11 @@ namespace CG.Web.MegaApiClient.Tests.Context
         .ToArray();
 
       this.PermanentRootNodes = this.permanentFoldersRootNodes;
+    }
+
+    public override IMegaApiClient Client
+    {
+      get { return this.lazyClient.Value; }
     }
 
     public string PermanentFilesNode

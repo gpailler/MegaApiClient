@@ -9,13 +9,11 @@ using Xunit;
 namespace CG.Web.MegaApiClient.Tests
 {
   [Collection("NotLoggedTests")]
-  public class Login : IDisposable
+  public class Login : TestsBase, IDisposable
   {
-    private readonly ITestContext context;
-
     public Login(NotLoggedTestContext context)
+      : base(context)
     {
-      this.context = context;
     }
 
     public void Dispose()
@@ -211,6 +209,10 @@ namespace CG.Web.MegaApiClient.Tests
     public void GetAccountInformation_AuthenticatedUser_Succeeds(string email, string password)
     {
       this.context.Client.Login(email, password);
+
+      var authenticatedTestContext = new AuthenticatedTestContext();
+      var protectedNodes = authenticatedTestContext.ProtectedNodes;
+      this.SanitizeStorage(protectedNodes);
 
       IAccountInformation accountInformation = this.context.Client.GetAccountInformation();
 

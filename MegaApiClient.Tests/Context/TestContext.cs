@@ -14,7 +14,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
       this.Client = this.CreateClient();
     }
 
-    public IMegaApiClient Client { get; }
+    public virtual IMegaApiClient Client { get; }
 
     public IWebClient WebClient { get; }
 

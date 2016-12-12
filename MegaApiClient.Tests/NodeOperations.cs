@@ -224,7 +224,7 @@ namespace CG.Web.MegaApiClient.Tests
       var movedNode = this.context.Client.Move(node, destinationParentNode);
 
       // Assert
-      Assert.Empty(this.context.Client.GetNodes(parentNode));
+      Assert.Empty(this.context.Client.GetNodes(parentNode).Where(x => x.Equals(node)));
       Assert.Single(this.context.Client.GetNodes(destinationParentNode), x => x.Equals(movedNode));
     }
 

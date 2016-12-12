@@ -12,7 +12,11 @@ namespace CG.Web.MegaApiClient.Tests
     protected TestsBase(ITestContext context)
     {
       this.context = context;
-      this.SanitizeStorage();
+
+      if (this.context.Client.IsLoggedIn)
+      {
+        this.SanitizeStorage();
+      }
     }
 
     protected INode GetNode(NodeType nodeType)
@@ -36,11 +40,11 @@ namespace CG.Web.MegaApiClient.Tests
       return this.context.Client.CreateFolder(name, parentNode);
     }
 
-    private void SanitizeStorage()
+    protected void SanitizeStorage(IEnumerable<string> protectedNodes = null)
     {
       IEnumerable<INode> nodes = this.context.Client.GetNodes().ToArray();
 
-      IEnumerable<INode> nodesToRemove = nodes.Where(x => this.IsProtectedNode(x) == false);
+      IEnumerable<INode> nodesToRemove = nodes.Where(x => this.IsProtectedNode(protectedNodes ?? this.context.ProtectedNodes, x) == false);
       foreach (INode node in nodesToRemove)
       {
         try
@@ -57,20 +61,15 @@ namespace CG.Web.MegaApiClient.Tests
         }
       }
 
-      Assert.Equal(this.context.ProtectedNodes.Count(), this.context.Client.GetNodes().Count());
+      Assert.Equal((protectedNodes ?? this.context.ProtectedNodes).Count(), this.context.Client.GetNodes().Count());
     }
 
-    private bool IsProtectedNode(INode node)
+    private bool IsProtectedNode(IEnumerable<string> protectedNodes, INode node)
     {
       return node.Type == NodeType.Inbox
         || node.Type == NodeType.Root
         || node.Type == NodeType.Trash
-        || this.context.ProtectedNodes.Any(x => x == node.Id);
+        || protectedNodes.Any(x => x == node.Id);
     }
-
-    //protected string GetAbsoluteFilePath(string relativeFilePath)
-    //{
-    //  return Path.Combine(NUnit.Framework.TestContext.CurrentContext.TestDirectory, relativeFilePath);
-    //}
   }
 }
