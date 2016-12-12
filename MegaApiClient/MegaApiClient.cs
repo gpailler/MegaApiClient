@@ -730,14 +730,17 @@
                   continue;
                 }
 
-                if (completionHandle.TryParseToApiResultCode(out apiResult))
+                long retCode;
+                if (completionHandle.FromBase64().Length != 27 && long.TryParse(completionHandle, out retCode))
                 {
+                  apiResult = (ApiResultCode)retCode;
                   break;
                 }
               }
-              catch (Exception)
+              catch (Exception ex)
               {
-                apiResult = ApiResultCode.InternalError;
+                Console.WriteLine("Upload failed: {0}", ex);
+                apiResult = ApiResultCode.RequestFailedRetry;
                 break;
               }
             }
