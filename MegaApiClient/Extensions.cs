@@ -124,19 +124,5 @@
 
       return result;
     }
-
-    public static bool TryParseToApiResultCode(this string value, out ApiResultCode result)
-    {
-      try
-      {
-        result = (ApiResultCode) Enum.Parse(typeof(ApiResultCode), value);
-        return true;
-      }
-      catch (Exception)
-      {
-        result = ApiResultCode.Ok;
-        return false;
-      }
-    }
   }
 }

@@ -19,7 +19,7 @@ namespace CG.Web.MegaApiClient.Tests
       this.savedChunksPackSize = this.context.Options.ChunksPackSize;
     }
 
-    public void Dispose()
+    public virtual void Dispose()
     {
       this.context.Options.ChunksPackSize = this.savedChunksPackSize;
     }
