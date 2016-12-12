@@ -856,7 +856,7 @@
 
       this.EnsureLoggedIn();
 
-      byte[] encryptedAttributes = Crypto.EncryptAttributes(new Attributes(newName, node.Attributes), nodeCrypto.Key);
+      byte[] encryptedAttributes = Crypto.EncryptAttributes(new Attributes(newName, ((NodePublic)node).Attributes), nodeCrypto.Key);
       this.Request(new RenameRequest(node, encryptedAttributes.ToBase64()));
       return this.GetNodes().First(n => n.Equals(node));
     }
