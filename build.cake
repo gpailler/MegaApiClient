@@ -23,7 +23,6 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(artifactsDirectory);
-    CreateDirectory(artifactsDirectory);
 });
 
 
@@ -71,6 +70,7 @@ Task("Build")
 
 
 Task("Test")
+    .IsDependentOn("Clean")
     .IsDependentOn("Build")
     .Does(() =>
 {
@@ -98,6 +98,7 @@ Task("Test")
 
 
 Task("Pack")
+    .IsDependentOn("Clean")
     .IsDependentOn("Build")
     .Does(() =>
 {
