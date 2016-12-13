@@ -22,10 +22,13 @@
     <files>
         <file src="MegaApiClient-3.5\bin\Release\MegaApiClient.dll" target="lib\net35\MegaApiClient.dll" />
         <file src="MegaApiClient-3.5\bin\Release\MegaApiClient.xml" target="lib\net35\MegaApiClient.xml" />
+        <file src="MegaApiClient-3.5\bin\Release\MegaApiClient.pdb" target="lib\net35\MegaApiClient.pdb" />
         <file src="MegaApiClient-4.0\bin\Release\MegaApiClient.dll" target="lib\net40\MegaApiClient.dll" />
         <file src="MegaApiClient-4.0\bin\Release\MegaApiClient.xml" target="lib\net40\MegaApiClient.xml" />
+        <file src="MegaApiClient-4.0\bin\Release\MegaApiClient.pdb" target="lib\net40\MegaApiClient.pdb" />
         <file src="MegaApiClient-4.5\bin\Release\MegaApiClient.dll" target="lib\net45\MegaApiClient.dll" />
         <file src="MegaApiClient-4.5\bin\Release\MegaApiClient.xml" target="lib\net45\MegaApiClient.xml" />
+        <file src="MegaApiClient-4.5\bin\Release\MegaApiClient.pdb" target="lib\net45\MegaApiClient.pdb" />
         <file src="LICENSE" target="lib\LICENSE" />
     </files>
 </package>
