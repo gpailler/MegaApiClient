@@ -739,8 +739,9 @@
               }
               catch (Exception ex)
               {
-                Console.WriteLine("Upload failed: {0}", ex);
                 apiResult = ApiResultCode.RequestFailedRetry;
+                this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, remainingRetry, requestDelay, apiResult, ex));
+
                 break;
               }
             }
@@ -748,7 +749,7 @@
 
           if (apiResult != ApiResultCode.Ok)
           {
-            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, remainingRetry, requestDelay, ApiResultCode.RequestFailedRetry, null));
+            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, remainingRetry, requestDelay, apiResult, completionHandle));
 
             if (apiResult == ApiResultCode.RequestFailedRetry || apiResult == ApiResultCode.RequestFailedPermanetly || apiResult == ApiResultCode.TooManyRequests)
             {
