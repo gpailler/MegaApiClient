@@ -22,8 +22,8 @@ var generatedSuffix = "";
 Task("Clean")
     .Does(() =>
 {
-    CreateDirectory(artifactsDirectory);
     CleanDirectory(artifactsDirectory);
+    CreateDirectory(artifactsDirectory);
 });
 
 
