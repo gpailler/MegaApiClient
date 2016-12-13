@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests.Context
 {
@@ -13,5 +14,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     IEnumerable<string> ProtectedNodes { get; }
 
     IEnumerable<string> PermanentRootNodes { get; }
+
+    void AssignLogger(ITestOutputHelper testOutputHelper);
   }
 }

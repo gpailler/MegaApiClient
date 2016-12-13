@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using CG.Web.MegaApiClient.Tests.Context;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -13,8 +14,8 @@ namespace CG.Web.MegaApiClient.Tests
 
     private readonly long savedReportProgressChunkSize;
 
-    public DownloadUploadAuthenticatedAsync(AuthenticatedAsyncTestContext context)
-      : base(context)
+    public DownloadUploadAuthenticatedAsync(AuthenticatedAsyncTestContext context, ITestOutputHelper testOutputHelper)
+      : base(context, testOutputHelper)
     {
       this.savedReportProgressChunkSize = this.context.Options.ReportProgressChunkSize;
     }

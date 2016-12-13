@@ -5,6 +5,7 @@ using System.Linq;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -12,8 +13,8 @@ namespace CG.Web.MegaApiClient.Tests
   {
     private const string DefaultNodeName = "NodeName";
 
-    protected NodeOperations(ITestContext context)
-      : base(context)
+    protected NodeOperations(ITestContext context, ITestOutputHelper testOutputHelper)
+      : base(context, testOutputHelper)
     {
     }
 

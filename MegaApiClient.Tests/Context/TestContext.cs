@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests.Context
 {
@@ -10,11 +10,10 @@ namespace CG.Web.MegaApiClient.Tests.Context
     private const int MaxRetry = 3;
 
     private readonly Lazy<IMegaApiClient> lazyClient;
+    private ITestOutputHelper testOutputHelper;
 
     protected TestContext()
     {
-      this.Options = new Options();
-      this.WebClient = new TestWebClient(new WebClient(WebTimeout), MaxRetry);
       this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
     }
 
@@ -23,16 +22,24 @@ namespace CG.Web.MegaApiClient.Tests.Context
       get { return this.lazyClient.Value; }
     }
 
-    public IWebClient WebClient { get; }
+    public IWebClient WebClient { get; private set; }
 
-    public Options Options { get; }
+    public Options Options { get; private set; }
 
     public IEnumerable<string> ProtectedNodes { get; protected set; }
 
     public IEnumerable<string> PermanentRootNodes { get; protected set; }
 
+    public void AssignLogger(ITestOutputHelper testOutputHelper)
+    {
+      this.testOutputHelper = testOutputHelper;
+    }
+
     protected virtual IMegaApiClient CreateClient()
     {
+      this.Options = new Options();
+      this.WebClient = new TestWebClient(new WebClient(WebTimeout), MaxRetry, this.testOutputHelper);
+
       return new MegaApiClient(this.Options, this.WebClient);
     }
 
@@ -49,7 +56,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     private void OnApiRequestFailed(object sender, ApiRequestFailedEventArgs e)
     {
-      Trace.WriteLine(e.ApiResult.ToString());
+      this.testOutputHelper.WriteLine($"ApiRequestFailed: {e.ApiResult}, {e.ApiUrl}, {e.AttemptNum}, {e.DelayMilliseconds}ms, {e.ResponseJson}, {e.Exception} {e.Exception?.Message}");
     }
   }
 }

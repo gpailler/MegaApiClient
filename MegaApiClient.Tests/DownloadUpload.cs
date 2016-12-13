@@ -4,6 +4,7 @@ using System.IO;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -13,8 +14,8 @@ namespace CG.Web.MegaApiClient.Tests
 
     private readonly int savedChunksPackSize;
 
-    protected DownloadUpload(ITestContext context)
-      : base(context)
+    protected DownloadUpload(ITestContext context, ITestOutputHelper testOutputHelper)
+      : base(context, testOutputHelper)
     {
       this.savedChunksPackSize = this.context.Options.ChunksPackSize;
     }

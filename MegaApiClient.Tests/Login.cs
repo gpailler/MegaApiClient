@@ -5,14 +5,15 @@ using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Newtonsoft.Json;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
   [Collection("NotLoggedTests")]
   public class Login : TestsBase, IDisposable
   {
-    public Login(NotLoggedTestContext context)
-      : base(context)
+    public Login(NotLoggedTestContext context, ITestOutputHelper testOutputHelper)
+      : base(context, testOutputHelper)
     {
     }
 

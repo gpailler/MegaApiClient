@@ -1,14 +1,15 @@
 ﻿using System;
 using CG.Web.MegaApiClient.Tests.Context;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
   [Collection("AuthenticatedLoginTests")]
   public class NodeOperationsAuthenticated : NodeOperations
   {
-    public NodeOperationsAuthenticated(AuthenticatedTestContext context)
-        : base(context)
+    public NodeOperationsAuthenticated(AuthenticatedTestContext context, ITestOutputHelper testOutputHelper)
+        : base(context, testOutputHelper)
     {
     }
 

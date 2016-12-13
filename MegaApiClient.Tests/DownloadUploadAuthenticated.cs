@@ -5,14 +5,15 @@ using System.Linq;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
   [Collection("AuthenticatedLoginTests")]
   public class DownloadUploadAuthenticated : DownloadUpload
   {
-    public DownloadUploadAuthenticated(AuthenticatedTestContext context)
-      : base(context)
+    public DownloadUploadAuthenticated(AuthenticatedTestContext context, ITestOutputHelper testOutputHelper)
+      : base(context, testOutputHelper)
     {
     }
 

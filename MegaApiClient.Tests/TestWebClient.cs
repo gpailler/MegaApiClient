@@ -1,4 +1,6 @@
-﻿namespace CG.Web.MegaApiClient.Tests
+﻿using Xunit.Abstractions;
+
+namespace CG.Web.MegaApiClient.Tests
 {
   using System;
   using System.IO;
@@ -12,14 +14,14 @@
     private readonly IWebClient _webClient;
     private readonly Policy _policy;
 
-    public TestWebClient(IWebClient webClient, int maxRetry)
+    public TestWebClient(IWebClient webClient, int maxRetry, ITestOutputHelper testOutputHelper)
     {
       this._webClient = webClient;
       this._policy = Policy
         .Handle<WebException>()
         .Or<SocketException>()
         .Or<TaskCanceledException>()
-        .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => Console.WriteLine(ts.TotalSeconds + " " + ex.Message));
+        .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => testOutputHelper.WriteLine($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}"));
     }
 
     public enum CallType

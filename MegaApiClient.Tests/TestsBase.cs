@@ -2,6 +2,7 @@
 using System.Linq;
 using CG.Web.MegaApiClient.Tests.Context;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -9,9 +10,10 @@ namespace CG.Web.MegaApiClient.Tests
   {
     protected readonly ITestContext context;
 
-    protected TestsBase(ITestContext context)
+    protected TestsBase(ITestContext context, ITestOutputHelper testOutputHelper)
     {
       this.context = context;
+      this.context.AssignLogger(testOutputHelper);
 
       if (this.context.Client.IsLoggedIn)
       {
