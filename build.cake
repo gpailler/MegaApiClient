@@ -83,7 +83,7 @@ Task("Test")
                     });
         },
         coverage,
-        new OpenCoverSettings()
+        new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
             .WithFilter("+[*]CG.Web.MegaApiClient*")
             .WithFilter("-[MegaApiClient.Tests]*"));
 
