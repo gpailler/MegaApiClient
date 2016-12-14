@@ -78,7 +78,6 @@ Task("Test")
         tool.XUnit2("./MegaApiClient.Tests/bin/*/MegaApiClient.Tests.dll",
                     new XUnit2Settings {
                         ShadowCopy = false,
-                        Parallelism = ParallelismOption.None,
                         ArgumentCustomization = args => args.Append("-appveyor")
                     });
         },
