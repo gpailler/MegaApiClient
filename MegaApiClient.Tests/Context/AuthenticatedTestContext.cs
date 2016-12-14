@@ -83,14 +83,14 @@ namespace CG.Web.MegaApiClient.Tests.Context
       get { return this.permanentFilesNodes[0]; }
     }
 
-    protected override void ConnectClient(IMegaApiClient client)
-    {
-      client.Login(Username, Password);
-    }
-
     public virtual void Dispose()
     {
       this.Client.Logout();
+    }
+
+    protected override void ConnectClient(IMegaApiClient client)
+    {
+      client.Login(Username, Password);
     }
   }
 }

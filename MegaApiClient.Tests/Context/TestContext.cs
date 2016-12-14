@@ -51,6 +51,8 @@ namespace CG.Web.MegaApiClient.Tests.Context
       client.ApiRequestFailed += this.OnApiRequestFailed;
       this.ConnectClient(client);
 
+      this.testOutputHelper.WriteLine("Client created for context {0}", this.GetType().Name);
+
       return client;
     }
 
