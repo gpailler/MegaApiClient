@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace CG.Web.MegaApiClient.Tests.Context
@@ -6,20 +7,24 @@ namespace CG.Web.MegaApiClient.Tests.Context
   [CollectionDefinition("AnonymousLoginTests")]
   public class AnonymousLoginTestsCollection : ICollectionFixture<AnonymousTestContext> { }
 
-  public class AnonymousTestContext : TestContext
+  public class 
+    AnonymousTestContext : TestContext
   {
-    public AnonymousTestContext()
-    {
-      this.ProtectedNodes = this.Client.GetNodes()
-          .Where(x => x.Type == NodeType.Inbox || x.Type == NodeType.Root || x.Type == NodeType.Trash)
-          .Select(x => x.Id)
-          .ToArray();
-      this.PermanentRootNodes = Enumerable.Empty<string>();
-    }
-
     protected override void ConnectClient(IMegaApiClient client)
     {
       client.LoginAnonymous();
+    }
+
+    protected override IEnumerable<string> GetProtectedNodes()
+    {
+      return this.Client.GetNodes()
+          .Where(x => x.Type == NodeType.Inbox || x.Type == NodeType.Root || x.Type == NodeType.Trash)
+          .Select(x => x.Id);
+    }
+
+    protected override IEnumerable<string> GetPermanentNodes()
+    {
+      return Enumerable.Empty<string>();
     }
   }
 }

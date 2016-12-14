@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests.Context
@@ -10,11 +11,15 @@ namespace CG.Web.MegaApiClient.Tests.Context
     private const int MaxRetry = 3;
 
     private readonly Lazy<IMegaApiClient> lazyClient;
+    private readonly Lazy<IEnumerable<string>> lazyProtectedNodes;
+    private readonly Lazy<IEnumerable<string>> lazyPermanentNodes;
     private ITestOutputHelper testOutputHelper;
 
     protected TestContext()
     {
       this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
+      this.lazyProtectedNodes = new Lazy<IEnumerable<string>>(() => this.GetProtectedNodes().ToArray());
+      this.lazyPermanentNodes = new Lazy<IEnumerable<string>>(() => this.GetPermanentNodes().ToArray());
     }
 
     public IMegaApiClient Client
@@ -26,9 +31,15 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     public Options Options { get; private set; }
 
-    public IEnumerable<string> ProtectedNodes { get; protected set; }
+    public IEnumerable<string> ProtectedNodes
+    {
+      get { return this.lazyProtectedNodes.Value; }
+    }
 
-    public IEnumerable<string> PermanentRootNodes { get; protected set; }
+    public IEnumerable<string> PermanentRootNodes
+    {
+      get { return this.lazyPermanentNodes.Value; }
+    }
 
     public void AssignLogger(ITestOutputHelper testOutputHelper)
     {
@@ -42,6 +53,10 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
       return new MegaApiClient(this.Options, this.WebClient);
     }
+
+    protected abstract IEnumerable<string> GetProtectedNodes();
+
+    protected abstract IEnumerable<string> GetPermanentNodes();
 
     protected abstract void ConnectClient(IMegaApiClient client);
 

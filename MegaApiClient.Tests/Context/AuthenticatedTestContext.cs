@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -65,19 +66,6 @@ namespace CG.Web.MegaApiClient.Tests.Context
       "HtonzYYY", // SharedRemoteSubFile.jpg
     };
 
-    public AuthenticatedTestContext()
-    {
-      this.ProtectedNodes = this.systemNodes
-        .Concat(this.permanentFoldersRootNodes)
-        .Concat(this.permanentFoldersNodes)
-        .Concat(this.permanentFilesNodes)
-        .Concat(this.permanentRemoteFoldersNodes)
-        .Concat(this.permanentRemoteFilesNodes)
-        .ToArray();
-
-      this.PermanentRootNodes = this.permanentFoldersRootNodes;
-    }
-
     public string PermanentFilesNode
     {
       get { return this.permanentFilesNodes[0]; }
@@ -91,6 +79,21 @@ namespace CG.Web.MegaApiClient.Tests.Context
     protected override void ConnectClient(IMegaApiClient client)
     {
       client.Login(Username, Password);
+    }
+
+    protected override IEnumerable<string> GetProtectedNodes()
+    {
+      return this.systemNodes
+        .Concat(this.permanentFoldersRootNodes)
+        .Concat(this.permanentFoldersNodes)
+        .Concat(this.permanentFilesNodes)
+        .Concat(this.permanentRemoteFoldersNodes)
+        .Concat(this.permanentRemoteFilesNodes);
+    }
+
+    protected override IEnumerable<string> GetPermanentNodes()
+    {
+      return this.permanentFoldersRootNodes;
     }
   }
 }
