@@ -40,7 +40,7 @@ Task("Generate-Versionning")
     Information("Generated version '{0}'", generatedVersion);
 
     var branch = (AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Repository.Branch : GitBranchCurrent(".").FriendlyName).Replace('/', '-');
-    generatedSuffix = (branch == "master" && revision > 0) ? "" : "." + revision + "-" + branch.Substring(0, Math.Min(10, branch.Length));
+    generatedSuffix = (branch == "master" && revision > 0) ? "" : "-" + branch.Substring(0, Math.Min(10, branch.Length)) + "-" + revision;
     Information("Generated suffix '{0}'", generatedSuffix);
 });
 

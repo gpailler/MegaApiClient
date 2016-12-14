@@ -4,6 +4,7 @@ MegaApiClient
 [![Build status](https://ci.appveyor.com/api/projects/status/a87jre98xr1wiryt/branch/develop?svg=true)](https://ci.appveyor.com/project/gpailler/megaapiclient/branch/develop)
 [![Coverage Status](https://coveralls.io/repos/gpailler/MegaApiClient/badge.svg?branch=develop)](https://coveralls.io/r/gpailler/MegaApiClient?branch=develop)
 [![NuGet version](https://badge.fury.io/nu/MegaApiClient.svg)](https://badge.fury.io/nu/MegaApiClient)
+[![MyGet Pre Release](https://img.shields.io/myget/megaapiclient/vpre/MegaApiClient.svg)](https://www.myget.org/feed/megaapiclient/package/nuget/MegaApiClient)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gpailler/MegaApiClient/blob/develop/LICENSE)
 
 C# library to access http://mega.co.nz API
@@ -13,7 +14,8 @@ Installation:
 ---
 MegaApiClient is available on [NuGet](https://www.nuget.org/packages/MegaApiClient)
 or from the [releases](https://github.com/gpailler/MegaApiClient/releases) section
-(NewtonSoft.Json 6.0.8 or higher is required)
+(NewtonSoft.Json 9.0.1 or higher is required).
+Pre Release versions are available on [MyGet](https://www.myget.org/feed/megaapiclient/package/nuget/MegaApiClient).
 
 
 Usage example:
