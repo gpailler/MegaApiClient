@@ -7,17 +7,92 @@
 
   using Newtonsoft.Json;
 
-  [DebuggerDisplay("Type: {Type} - Name: {Name} - Id: {Id}")]
-  internal class Node : NodePublic, INode, INodeCrypto
+  [DebuggerDisplay("DownloadNode - Type: {Type} - Name: {Name} - Id: {Id}")]
+  internal class DownloadNode : IDownloadNode, INodeCrypto
+  {
+    protected DownloadNode()
+    {
+    }
+
+    internal DownloadNode(DownloadUrlResponse downloadResponse, string id, byte[] key, byte[] iv, byte[] metaMac)
+    {
+      this.Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), key);
+      this.Size = downloadResponse.Size;
+      this.Id = id;
+      this.Type = NodeType.File;
+      this.Key = key;
+      this.Iv = iv;
+      this.MetaMac = metaMac;
+    }
+
+    [JsonIgnore]
+    public string Name
+    {
+      get { return this.Attributes?.Name; }
+    }
+
+    [JsonProperty("s")]
+    public long Size { get; protected set; }
+
+    [JsonProperty("t")]
+    public NodeType Type { get; protected set; }
+
+    [JsonProperty("h")]
+    public string Id { get; private set; }
+
+    [JsonIgnore]
+    public DateTime? ModificationDate
+    {
+      get { return this.Attributes?.ModificationDate; }
+    }
+
+    [JsonIgnore]
+    public Attributes Attributes { get; protected set; }
+
+    [JsonIgnore]
+    public byte[] Key { get; protected set; }
+
+    [JsonIgnore]
+    public byte[] FullKey { get; protected set; }
+
+    [JsonIgnore]
+    public byte[] SharedKey { get; protected set; }
+
+    [JsonIgnore]
+    public byte[] Iv { get; protected set; }
+
+    [JsonIgnore]
+    public byte[] MetaMac { get; protected set; }
+
+
+    #region Equality
+
+    public bool Equals(INode other)
+    {
+      return other != null && this.Id == other.Id;
+    }
+
+    public override int GetHashCode()
+    {
+      return this.Id.GetHashCode();
+    }
+
+    public override bool Equals(object obj)
+    {
+      return this.Equals(obj as INode);
+    }
+
+    #endregion
+  }
+
+  [DebuggerDisplay("Node - Type: {Type} - Name: {Name} - Id: {Id}")]
+  internal class Node : DownloadNode, INode, INodeCrypto
   {
     private Node()
     {
     }
 
     #region Public properties
-
-    [JsonProperty("h")]
-    public string Id { get; private set; }
 
     [JsonProperty("p")]
     public string ParentId { get; private set; }
@@ -26,28 +101,13 @@
     public string Owner { get; private set; }
 
     [JsonProperty("su")]
-    private string SharingId { get; set; }
+    public string SharingId { get; set; }
 
     [JsonProperty("sk")]
-    private string SharingKey { get; set; }
+    public string SharingKey { get; set; }
 
     [JsonIgnore]
     public DateTime CreationDate { get; private set; }
-
-    [JsonIgnore]
-    public byte[] Key { get; private set; }
-
-    [JsonIgnore]
-    public byte[] FullKey { get; private set; }
-
-    [JsonIgnore]
-    public byte[] SharedKey { get; private set; }
-
-    [JsonIgnore]
-    public byte[] Iv { get; private set; }
-
-    [JsonIgnore]
-    public byte[] MetaMac { get; private set; }
 
     #endregion
 
@@ -132,59 +192,43 @@
     }
 
     #endregion
+  }
 
-    #region Equality
+  [DebuggerDisplay("PublicNode - Type: {Type} - Name: {Name} - Id: {Id}")]
+  internal class PublicNode : INode, INodeCrypto
+  {
+    private readonly Node node;
+
+    internal PublicNode(Node node, string shareId)
+    {
+      this.node = node;
+      this.ShareId = shareId;
+    }
+
+    public string ShareId { get; }
 
     public bool Equals(INode other)
     {
-      return other != null && this.Id == other.Id;
+      return this.node.Equals(other) && this.ShareId == (other as PublicNode)?.ShareId;
     }
 
-    public override int GetHashCode()
-    {
-      return this.Id.GetHashCode();
-    }
+    #region Forward
 
-    public override bool Equals(object obj)
-    {
-      return this.Equals(obj as INode);
-    }
+    public long Size { get { return this.node.Size; } }
+    public string Name { get { return this.node.Name; } }
+    public DateTime? ModificationDate { get { return this.node.ModificationDate; } }
+    public string Id { get { return this.node.Id; } }
+    public string ParentId { get { return this.node.ParentId; } }
+    public string Owner { get { return this.node.Owner; } }
+    public NodeType Type { get { return this.node.Type; } }
+    public DateTime CreationDate { get { return this.node.CreationDate; } }
+
+    public byte[] Key { get { return this.node.Key; } }
+    public byte[] SharedKey { get { return this.node.SharedKey; } }
+    public byte[] Iv { get { return this.node.Iv; } }
+    public byte[] MetaMac { get { return this.node.MetaMac; } }
+    public byte[] FullKey { get { return this.node.FullKey; } }
 
     #endregion
-  }
-
-  internal class NodePublic : INodePublic
-  {
-    public NodePublic(DownloadUrlResponse downloadResponse, byte[] fileKey)
-    {
-      this.Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), fileKey);
-      this.Size = downloadResponse.Size;
-      this.Type = NodeType.File;
-    }
-
-    protected NodePublic()
-    {
-    }
-
-    [JsonIgnore]
-    public string Name
-    {
-      get { return this.Attributes?.Name; }
-    }
-
-    [JsonProperty("s")]
-    public long Size { get; protected set; }
-
-    [JsonProperty("t")]
-    public NodeType Type { get; protected set; }
-
-    [JsonIgnore]
-    public DateTime? ModificationDate
-    {
-      get { return this.Attributes?.ModificationDate; }
-    }
-
-    [JsonIgnore]
-    public Attributes Attributes { get; protected set; }
   }
 }

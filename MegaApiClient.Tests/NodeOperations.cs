@@ -282,15 +282,39 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Fact]
-    public void GetNodeFromLink_Succeeds()
+    public void GetNodeFromLink_Browse_Succeeds()
     {
-      string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
-      INodePublic publicNode = this.context.Client.GetNodeFromLink(new Uri(link));
+      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
+      var node = this.context.Client.GetNodeFromLink(new Uri(link));
 
-      Assert.NotNull(publicNode);
-      Assert.Equal("SharedFile.jpg", publicNode.Name);
-      Assert.Equal(523265, publicNode.Size);
-      Assert.Equal(DateTime.Parse("2015-07-14T14:04:51.0000000+08:00"), publicNode.ModificationDate);
+      Assert.NotNull(node);
+      Assert.Equal("SharedFile.jpg", node.Name);
+      Assert.Equal(523265, node.Size);
+      Assert.Equal(DateTime.Parse("2015-07-14T14:04:51.0000000+08:00"), node.ModificationDate);
+    }
+
+    [Fact]
+    public void GetNodesFromLink_Succeeds()
+    {
+      const string folderLink = "https://mega.nz/#F!6kgE3YIQ!W_8GYHXH-COtmfWxOkMCFQ";
+      var nodes = this.context.Client.GetNodesFromLink(new Uri(folderLink));
+
+      Assert.Equal(3, nodes.Count());
+      INode node;
+      node = Assert.Single(nodes, x => x.Name == "SharedFile.jpg");
+      Assert.Equal(523265, node.Size);
+      Assert.Equal(DateTime.Parse("2015-07-14T14:04:51.0000000+08:00"), node.ModificationDate);
+      Assert.Equal(DateTime.Parse("2016-04-15T16:42:56.0000000+02:00"), node.CreationDate);
+
+      node = Assert.Single(nodes, x => x.Name == "SharedFolder");
+      Assert.Equal(0, node.Size);
+      Assert.Equal(DateTime.Parse("2016-04-15 22:41:35.0000000+08:00"), node.CreationDate);
+      Assert.Equal(null, node.ModificationDate);
+
+      node = Assert.Single(nodes, x => x.Name == "SharedSubFolder");
+      Assert.Equal(0, node.Size);
+      Assert.Equal(DateTime.Parse("2016-04-15 22:41:48.0000000+08:00"), node.CreationDate);
+      Assert.Equal(null, node.ModificationDate);
     }
   }
 }

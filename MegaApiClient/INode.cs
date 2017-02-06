@@ -2,24 +2,24 @@ namespace CG.Web.MegaApiClient
 {
   using System;
 
-  public interface INodePublic
+  public interface IDownloadNode : IEquatable<INode>
   {
     long Size { get; }
 
     string Name { get; }
 
     DateTime? ModificationDate { get; }
-  }
 
-  public interface INode : INodePublic, IEquatable<INode>
-  {
     string Id { get; }
 
+    NodeType Type { get; }
+  }
+
+  public interface INode : IDownloadNode
+  {
     string ParentId { get; }
 
     string Owner { get; }
-
-    NodeType Type { get; }
 
     DateTime CreationDate { get; }
   }

@@ -48,9 +48,9 @@ namespace CG.Web.MegaApiClient
 #endif
 
 #if NET35
-    Stream Download(INode node);
+    Stream Download(IDownloadNode node);
 #else
-    Stream Download(INode node, CancellationToken? cancellationToken = null);
+    Stream Download(IDownloadNode node, CancellationToken? cancellationToken = null);
 #endif
 
 #if NET35
@@ -59,7 +59,9 @@ namespace CG.Web.MegaApiClient
     Stream Download(Uri uri, CancellationToken? cancellationToken = null);
 #endif
 
-    INodePublic GetNodeFromLink(Uri uri);
+    IDownloadNode GetNodeFromLink(Uri uri);
+
+    IEnumerable<INode> GetNodesFromLink(Uri uri);
 
 #if NET35
     INode UploadFile(string filename, INode parent);

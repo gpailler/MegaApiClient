@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Xunit;
@@ -203,6 +204,33 @@ namespace CG.Web.MegaApiClient.Tests
       this.context.Client.DownloadFile(new Uri(link), outFile);
 
       Assert.Equal(File.ReadAllBytes(this.GetAbsoluteFilePath(expectedResultFile)), File.ReadAllBytes(outFile));
+    }
+
+    [Fact]
+    public void GetNodeFromLink_Download_Succeeds()
+    {
+      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
+      const string expectedResultFile = "Data/SampleFile.jpg";
+      var node = this.context.Client.GetNodeFromLink(new Uri(link));
+     
+      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
+      {
+        this.AreStreamsEquivalent(this.context.Client.Download(node), stream);
+      }
+    }
+
+    [Fact]
+    public void GetNodesFromLink_Download_Succeeds()
+    {
+      const string folderLink = "https://mega.nz/#F!6kgE3YIQ!W_8GYHXH-COtmfWxOkMCFQ";
+      const string expectedResultFile = "Data/SampleFile.jpg";
+      var nodes = this.context.Client.GetNodesFromLink(new Uri(folderLink));
+      var node = nodes.Single(x => x.Name == "SharedFile.jpg");
+
+      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
+      {
+        this.AreStreamsEquivalent(this.context.Client.Download(node), stream);
+      }
     }
 
     protected void AreStreamsEquivalent(Stream stream1, Stream stream2)

@@ -75,7 +75,7 @@
       return Task.Run(() => this.GetDownloadLink(node));
     }
 
-    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    public Task<Stream> DownloadAsync(IDownloadNode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
@@ -146,9 +146,14 @@
       }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
+    public Task<IDownloadNode> GetNodeFromLinkAsync(Uri uri)
     {
       return Task.Run(() => this.GetNodeFromLink(uri));
+    }
+
+    public Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri)
+    {
+      return Task.Run(() => this.GetNodesFromLink(uri));
     }
 
     #endregion

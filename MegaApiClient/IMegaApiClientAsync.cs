@@ -34,7 +34,7 @@ namespace CG.Web.MegaApiClient
 
     Task<Uri> GetDownloadLinkAsync(INode node);
 
-    Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null);
+    Task<Stream> DownloadAsync(IDownloadNode node, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
     Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
@@ -46,6 +46,8 @@ namespace CG.Web.MegaApiClient
 
     Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
-    Task<INodePublic> GetNodeFromLinkAsync(Uri uri);
+    Task<IDownloadNode> GetNodeFromLinkAsync(Uri uri);
+
+    Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri);
   }
 }
