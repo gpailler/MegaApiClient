@@ -494,9 +494,9 @@
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
 #if NET35
-    public Stream Download(IDownloadNode node)
+    public Stream Download(INode node)
 #else
-    public Stream Download(IDownloadNode node, CancellationToken? cancellationToken = null)
+    public Stream Download(INode node, CancellationToken? cancellationToken = null)
 #endif
     {
       if (node == null)
@@ -583,7 +583,7 @@
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">uri is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
-    public IDownloadNode GetNodeFromLink(Uri uri)
+    public INodeInfo GetNodeFromLink(Uri uri)
     {
       if (uri == null)
       {
@@ -600,7 +600,7 @@
       DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
       DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
 
-      return new DownloadNode(downloadResponse, id, key, iv, metaMac);
+      return new NodeInfo(id, downloadResponse, key);
     }
 
 

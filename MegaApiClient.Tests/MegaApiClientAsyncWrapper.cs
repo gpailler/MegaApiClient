@@ -95,7 +95,7 @@
       this.UnwrapException(() => this.client.DownloadFileAsync(uri, outputFile, progress, cancellationToken).Wait());
     }
 
-    public Stream Download(IDownloadNode node, CancellationToken? cancellationToken = null)
+    public Stream Download(INode node, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
       return this.UnwrapException(() => this.client.DownloadAsync(node, progress, cancellationToken).Result);
@@ -107,7 +107,7 @@
       return this.UnwrapException(() => this.client.DownloadAsync(uri, progress, cancellationToken).Result);
     }
 
-    public IDownloadNode GetNodeFromLink(Uri uri)
+    public INodeInfo GetNodeFromLink(Uri uri)
     {
       return this.UnwrapException(() => this.client.GetNodeFromLinkAsync(uri).Result);
     }
@@ -204,7 +204,7 @@
       throw new NotImplementedException();
     }
 
-    public Task<Stream> DownloadAsync(IDownloadNode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       throw new NotImplementedException();
     }
@@ -234,7 +234,7 @@
       return this.client.UploadAsync(stream, name, parent, progress, modificationDate, cancellationToken);
     }
 
-    public Task<IDownloadNode> GetNodeFromLinkAsync(Uri uri)
+    public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
     {
       throw new NotImplementedException();
     }

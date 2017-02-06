@@ -7,22 +7,19 @@
 
   using Newtonsoft.Json;
 
-  [DebuggerDisplay("DownloadNode - Type: {Type} - Name: {Name} - Id: {Id}")]
-  internal class DownloadNode : IDownloadNode, INodeCrypto
+  [DebuggerDisplay("NodeInfo - Type: {Type} - Name: {Name} - Id: {Id}")]
+  internal class NodeInfo : INodeInfo
   {
-    protected DownloadNode()
+    protected NodeInfo()
     {
     }
 
-    internal DownloadNode(DownloadUrlResponse downloadResponse, string id, byte[] key, byte[] iv, byte[] metaMac)
+    internal NodeInfo(string id, DownloadUrlResponse downloadResponse, byte[] key)
     {
+      this.Id = id;
       this.Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), key);
       this.Size = downloadResponse.Size;
-      this.Id = id;
       this.Type = NodeType.File;
-      this.Key = key;
-      this.Iv = iv;
-      this.MetaMac = metaMac;
     }
 
     [JsonIgnore]
@@ -49,25 +46,9 @@
     [JsonIgnore]
     public Attributes Attributes { get; protected set; }
 
-    [JsonIgnore]
-    public byte[] Key { get; protected set; }
-
-    [JsonIgnore]
-    public byte[] FullKey { get; protected set; }
-
-    [JsonIgnore]
-    public byte[] SharedKey { get; protected set; }
-
-    [JsonIgnore]
-    public byte[] Iv { get; protected set; }
-
-    [JsonIgnore]
-    public byte[] MetaMac { get; protected set; }
-
-
     #region Equality
 
-    public bool Equals(INode other)
+    public bool Equals(INodeInfo other)
     {
       return other != null && this.Id == other.Id;
     }
@@ -79,14 +60,14 @@
 
     public override bool Equals(object obj)
     {
-      return this.Equals(obj as INode);
+      return this.Equals(obj as INodeInfo);
     }
 
     #endregion
   }
 
   [DebuggerDisplay("Node - Type: {Type} - Name: {Name} - Id: {Id}")]
-  internal class Node : DownloadNode, INode, INodeCrypto
+  internal class Node : NodeInfo, INode, INodeCrypto
   {
     private Node()
     {
@@ -108,6 +89,21 @@
 
     [JsonIgnore]
     public DateTime CreationDate { get; private set; }
+
+    [JsonIgnore]
+    public byte[] Key { get; private set; }
+
+    [JsonIgnore]
+    public byte[] FullKey { get; private set; }
+
+    [JsonIgnore]
+    public byte[] SharedKey { get; private set; }
+
+    [JsonIgnore]
+    public byte[] Iv { get; private set; }
+
+    [JsonIgnore]
+    public byte[] MetaMac { get; private set; }
 
     #endregion
 
@@ -207,7 +203,7 @@
 
     public string ShareId { get; }
 
-    public bool Equals(INode other)
+    public bool Equals(INodeInfo other)
     {
       return this.node.Equals(other) && this.ShareId == (other as PublicNode)?.ShareId;
     }

@@ -207,19 +207,6 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Fact]
-    public void GetNodeFromLink_Download_Succeeds()
-    {
-      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
-      const string expectedResultFile = "Data/SampleFile.jpg";
-      var node = this.context.Client.GetNodeFromLink(new Uri(link));
-     
-      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
-      {
-        this.AreStreamsEquivalent(this.context.Client.Download(node), stream);
-      }
-    }
-
-    [Fact]
     public void GetNodesFromLink_Download_Succeeds()
     {
       const string folderLink = "https://mega.nz/#F!6kgE3YIQ!W_8GYHXH-COtmfWxOkMCFQ";

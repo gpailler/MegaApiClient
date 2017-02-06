@@ -404,7 +404,7 @@
 
   internal class DownloadUrlRequest : RequestBase
   {
-    public DownloadUrlRequest(IDownloadNode node)
+    public DownloadUrlRequest(INode node)
       : base("g")
     {
       this.Id = node.Id;
