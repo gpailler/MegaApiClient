@@ -59,7 +59,8 @@ INode CreateFolder(string name, INode parent)
 void Delete(INode node, bool moveToTrash = true)
 INode Move(INode node, INode destinationParentNode)
 INode Rename(INode node, string newName)
-INodePublic GetNodeFromLink(Uri uri)
+INodeInfo GetNodeFromLink(Uri uri)
+IEnumerable<INode> GetNodesFromLink(Uri uri)
 
 // Download
 Uri GetDownloadLink(INode node)
