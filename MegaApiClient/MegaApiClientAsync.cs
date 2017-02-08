@@ -146,9 +146,14 @@
       }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
+    public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
     {
       return Task.Run(() => this.GetNodeFromLink(uri));
+    }
+
+    public Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri)
+    {
+      return Task.Run(() => this.GetNodesFromLink(uri));
     }
 
     #endregion

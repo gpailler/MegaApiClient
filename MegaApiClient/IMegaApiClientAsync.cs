@@ -46,6 +46,8 @@ namespace CG.Web.MegaApiClient
 
     Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
-    Task<INodePublic> GetNodeFromLinkAsync(Uri uri);
+    Task<INodeInfo> GetNodeFromLinkAsync(Uri uri);
+
+    Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri);
   }
 }

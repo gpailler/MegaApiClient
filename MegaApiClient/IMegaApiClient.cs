@@ -59,7 +59,9 @@ namespace CG.Web.MegaApiClient
     Stream Download(Uri uri, CancellationToken? cancellationToken = null);
 #endif
 
-    INodePublic GetNodeFromLink(Uri uri);
+    INodeInfo GetNodeFromLink(Uri uri);
+
+    IEnumerable<INode> GetNodesFromLink(Uri uri);
 
 #if NET35
     INode UploadFile(string filename, INode parent);

@@ -2,6 +2,7 @@
 {
   using System;
   using System.Collections.Generic;
+  using System.Collections.Specialized;
   using System.Diagnostics;
   using System.Linq;
   using System.IO;
@@ -19,10 +20,14 @@
     protected RequestBase(string action)
     {
       this.Action = action;
+      this.QueryArguments = new NameValueCollection();
     }
 
     [JsonProperty("a")]
     public string Action { get; private set; }
+
+    [JsonIgnore]
+    public NameValueCollection QueryArguments { get; }
   }
 
   #endregion
@@ -153,10 +158,15 @@
 
   internal class GetNodesRequest : RequestBase
   {
-    public GetNodesRequest()
+    public GetNodesRequest(string shareId = null)
       : base("f")
     {
       this.c = 1;
+
+      if (shareId != null)
+      {
+        this.QueryArguments["n"] = shareId;
+      }
     }
 
     public int c { get; private set; }
@@ -398,6 +408,12 @@
       : base("g")
     {
       this.Id = node.Id;
+
+      PublicNode publicNode = node as PublicNode;
+      if (publicNode != null)
+      {
+        this.QueryArguments["n"] = publicNode.ShareId;
+      }
     }
 
     public int g { get { return 1; } }

@@ -107,9 +107,14 @@
       return this.UnwrapException(() => this.client.DownloadAsync(uri, progress, cancellationToken).Result);
     }
 
-    public INodePublic GetNodeFromLink(Uri uri)
+    public INodeInfo GetNodeFromLink(Uri uri)
     {
       return this.UnwrapException(() => this.client.GetNodeFromLinkAsync(uri).Result);
+    }
+
+    public IEnumerable<INode> GetNodesFromLink(Uri uri)
+    {
+      return this.UnwrapException(() => this.client.GetNodesFromLinkAsync(uri).Result);
     }
 
     public INode UploadFile(string filename, INode parent, CancellationToken? cancellationToken = null)
@@ -229,7 +234,12 @@
       return this.client.UploadAsync(stream, name, parent, progress, modificationDate, cancellationToken);
     }
 
-    public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
+    public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri)
     {
       throw new NotImplementedException();
     }

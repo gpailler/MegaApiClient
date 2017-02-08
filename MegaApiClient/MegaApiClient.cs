@@ -272,7 +272,7 @@
         this.trashNode = nodes.First(n => n.Type == NodeType.Trash);
       }
 
-      return nodes.Distinct().Cast<INode>();
+      return nodes.Distinct().OfType<INode>();
     }
 
     /// <summary>
@@ -556,8 +556,8 @@
       this.EnsureLoggedIn();
 
       string id;
-      byte[] iv, metaMac, fileKey;
-      this.GetPartsFromUri(uri, out id, out iv, out metaMac, out fileKey);
+      byte[] iv, metaMac, key;
+      this.GetPartsFromUri(uri, out id, out iv, out metaMac, out key);
 
       // Retrieve download URL
       DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
@@ -565,7 +565,7 @@
 
       Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
 
-      Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, fileKey, iv, metaMac);
+      Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, key, iv, metaMac);
 #if !NET35
       if (cancellationToken.HasValue)
       {
@@ -583,7 +583,7 @@
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">uri is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
-    public INodePublic GetNodeFromLink(Uri uri)
+    public INodeInfo GetNodeFromLink(Uri uri)
     {
       if (uri == null)
       {
@@ -593,14 +593,43 @@
       this.EnsureLoggedIn();
 
       string id;
-      byte[] iv, metaMac, fileKey;
-      this.GetPartsFromUri(uri, out id, out iv, out metaMac, out fileKey);
+      byte[] iv, metaMac, key;
+      this.GetPartsFromUri(uri, out id, out iv, out metaMac, out key);
 
       // Retrieve attributes
       DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
       DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
 
-      return new NodePublic(downloadResponse, fileKey);
+      return new NodeInfo(id, downloadResponse, key);
+    }
+
+
+    /// <summary>
+    /// Retrieve list of nodes from a specified Uri
+    /// </summary>
+    /// <param name="uri">Uri</param>
+    /// <exception cref="NotSupportedException">Not logged in</exception>
+    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="ArgumentNullException">uri is null</exception>
+    /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
+    public IEnumerable<INode> GetNodesFromLink(Uri uri)
+    {
+      if (uri == null)
+      {
+        throw new ArgumentNullException("uri");
+      }
+
+      this.EnsureLoggedIn();
+
+      string shareId;
+      byte[] iv, metaMac, key;
+      this.GetPartsFromUri(uri, out shareId, out iv, out metaMac, out key);
+
+      // Retrieve attributes
+      GetNodesRequest getNodesRequest = new GetNodesRequest(shareId);
+      GetNodesResponse getNodesResponse = this.Request<GetNodesResponse>(getNodesRequest, key);
+
+      return getNodesResponse.Nodes.Select(x => new PublicNode(x, shareId)).OfType<INode>();
     }
 
     /// <summary>
@@ -857,7 +886,7 @@
 
       this.EnsureLoggedIn();
 
-      byte[] encryptedAttributes = Crypto.EncryptAttributes(new Attributes(newName, ((NodePublic)node).Attributes), nodeCrypto.Key);
+      byte[] encryptedAttributes = Crypto.EncryptAttributes(new Attributes(newName, ((Node)node).Attributes), nodeCrypto.Key);
       this.Request(new RenameRequest(node, encryptedAttributes.ToBase64()));
       return this.GetNodes().First(n => n.Equals(node));
     }
@@ -938,7 +967,7 @@
         where TResponse : class
     {
       string dataRequest = JsonConvert.SerializeObject(new object[] { request });
-      Uri uri = this.GenerateUrl();
+      Uri uri = this.GenerateUrl(request.QueryArguments);
       object jsonData = null;
       int requestDelay = this.options.ApiRequestDelay;
       int remainingRetry = this.options.ApiRequestAttempts;
@@ -984,7 +1013,7 @@
       return (typeof(TResponse) == typeof(string)) ? data as TResponse : JsonConvert.DeserializeObject<TResponse>(data, settings);
     }
 
-    private Uri GenerateUrl()
+    private Uri GenerateUrl(NameValueCollection queryArguments)
     {
       UriBuilder builder = new UriBuilder(BaseApiUri);
       NameValueCollection query = HttpUtility.ParseQueryString(builder.Query);
@@ -995,6 +1024,8 @@
       {
         query["sid"] = this.sessionId;
       }
+
+      query.Add(queryArguments);
 
       builder.Query = query.ToString();
       return builder.Uri;
@@ -1028,9 +1059,9 @@
       }
     }
 
-    private void GetPartsFromUri(Uri uri, out string id, out byte[] iv, out byte[] metaMac, out byte[] fileKey)
+    private void GetPartsFromUri(Uri uri, out string id, out byte[] iv, out byte[] metaMac, out byte[] key)
     {
-      Regex uriRegex = new Regex("#!(?<id>.+)!(?<key>.+)");
+      Regex uriRegex = new Regex("#(?<type>F?)!(?<id>.+)!(?<key>.+)");
       Match match = uriRegex.Match(uri.Fragment);
       if (match.Success == false)
       {
@@ -1039,8 +1070,18 @@
 
       id = match.Groups["id"].Value;
       byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
-
-      Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out fileKey);
+      var isFolder = match.Groups["type"].Value == "F";
+      
+      if (isFolder)
+      {
+        iv = null;
+        metaMac = null;
+        key = decryptedKey;
+      }
+      else
+      {
+        Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out key);
+      }
     }
 
     private IEnumerable<int> ComputeChunksSizesToUpload(long[] chunksPositions, long streamLength)
