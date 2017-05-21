@@ -3,24 +3,26 @@
   using System;
   using System.Collections.Generic;
   using System.IO;
+  using System.Threading;
   using System.Threading.Tasks;
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    private const long DefaultReportProgressChunkSize = 1024 * 50;
-
-    public long ReportProgressChunkSize { get; set; }
-
     #region Public async methods
 
-    public Task LoginAsync(string email, string password)
+    public Task<LogonSessionToken> LoginAsync(string email, string password)
     {
       return Task.Run(() => this.Login(email, password));
     }
 
-    public Task LoginAsync(AuthInfos authInfos)
+    public Task<LogonSessionToken> LoginAsync(AuthInfos authInfos)
     {
       return Task.Run(() => this.Login(authInfos));
+    }
+
+    public Task LoginAsync(LogonSessionToken logonSessionToken)
+    {
+      return Task.Run(() => this.Login(logonSessionToken));
     }
 
     public Task LoginAnonymousAsync()
@@ -73,34 +75,34 @@
       return Task.Run(() => this.GetDownloadLink(node));
     }
 
-    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress)
+    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
-        return (Stream)new ProgressionStream(this.Download(node), progress, this.ReportProgressChunkSize);
-      });
+        return (Stream)new ProgressionStream(this.Download(node, cancellationToken), progress, this.options.ReportProgressChunkSize);
+      }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress)
+    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
-        return (Stream)new ProgressionStream(this.Download(uri), progress, this.ReportProgressChunkSize);
-      });
+        return (Stream)new ProgressionStream(this.Download(uri, cancellationToken), progress, this.options.ReportProgressChunkSize);
+      }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress)
+    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
-        using (Stream stream = new ProgressionStream(this.Download(node), progress, this.ReportProgressChunkSize))
+        using (Stream stream = new ProgressionStream(this.Download(node, cancellationToken), progress, this.options.ReportProgressChunkSize))
         {
           this.SaveStream(stream, outputFile);
         }
-      });
+      }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress)
+    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
@@ -109,14 +111,14 @@
           throw new ArgumentNullException("outputFile");
         }
 
-        using (Stream stream = new ProgressionStream(this.Download(uri), progress, this.ReportProgressChunkSize))
+        using (Stream stream = new ProgressionStream(this.Download(uri, cancellationToken), progress, this.options.ReportProgressChunkSize))
         {
           this.SaveStream(stream, outputFile);
         }
-      });
+      }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress)
+    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
@@ -125,27 +127,33 @@
           throw new ArgumentNullException("stream");
         }
 
-        using (Stream progressionStream = new ProgressionStream(stream, progress, this.ReportProgressChunkSize))
+        using (Stream progressionStream = new ProgressionStream(stream, progress, this.options.ReportProgressChunkSize))
         {
-          return this.Upload(progressionStream, name, parent);
+          return this.Upload(progressionStream, name, parent, modificationDate, cancellationToken);
         }
-      });
+      }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress)
+    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
-        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress, this.ReportProgressChunkSize))
+        DateTime modificationDate = File.GetLastWriteTime(filename);
+        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress, this.options.ReportProgressChunkSize))
         {
-          return this.Upload(stream, Path.GetFileName(filename), parent);
+          return this.Upload(stream, Path.GetFileName(filename), parent, modificationDate, cancellationToken);
         }
-      });
+      }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
+    public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
     {
       return Task.Run(() => this.GetNodeFromLink(uri));
+    }
+
+    public Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri)
+    {
+      return Task.Run(() => this.GetNodesFromLink(uri));
     }
 
     #endregion

@@ -6,6 +6,8 @@
 
   internal static class Extensions
   {
+    private static readonly DateTime EpochStart = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+
     public static string ToBase64(this byte[] data)
     {
       StringBuilder sb = new StringBuilder();
@@ -74,6 +76,53 @@
       {
         outputStream.Write(buffer, 0, read);
       }
+    }
+
+    public static DateTime ToDateTime(this long seconds)
+    {
+      return EpochStart.AddSeconds(seconds).ToLocalTime();
+    }
+
+    public static long ToEpoch(this DateTime datetime)
+    {
+      return (long)datetime.ToUniversalTime().Subtract(EpochStart).TotalSeconds;
+    }
+
+    public static long DeserializeToLong(this byte[] data, int index, int length)
+    {
+      byte p = data[index];
+
+      long result = 0;
+
+      if ((p > sizeof(UInt64)) || (p >= length))
+      {
+        throw new ArgumentException("Invalid value");
+      }
+
+
+      while (p > 0)
+      {
+        result = (result << 8) + data[index + p--];
+      }
+
+      return result;
+    }
+
+    public static byte[] SerializeToBytes(this long data)
+    {
+      byte[] result = new byte[sizeof(long) + 1];
+
+      byte p = 0;
+      while (data != 0)
+      {
+        result[++p] = (byte)data;
+        data >>= 8;
+      }
+
+      result[0] = p;
+      Array.Resize(ref result, result[0] + 1);
+
+      return result;
     }
   }
 }

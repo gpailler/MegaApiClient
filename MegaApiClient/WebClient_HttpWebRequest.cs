@@ -14,16 +14,11 @@
     private readonly int responseTimeout;
     private readonly string userAgent;
 
-    public WebClient()
-        : this(DefaultResponseTimeout)
+    public WebClient(int responseTimeout = DefaultResponseTimeout, string userAgent = null)
     {
-      this.BufferSize = MegaApiClient.DefaultBufferSize;
-    }
-
-    internal WebClient(int responseTimeout)
-    {
+      this.BufferSize = Options.DefaultBufferSize;
       this.responseTimeout = responseTimeout;
-      this.userAgent = this.GenerateUserAgent();
+      this.userAgent = userAgent ?? this.GenerateUserAgent();
     }
 
     public int BufferSize { get; set; }

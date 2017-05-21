@@ -25,6 +25,11 @@ namespace CG.Web.MegaApiClient.Tests
             this.callback?.Invoke(value);
         }
 
+        public void Reset()
+        {
+            Interlocked.Exchange(ref this.counter, 0);
+        }
+
         public bool Raised
         {
             get { return this.Calls > 0; }

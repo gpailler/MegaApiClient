@@ -3,16 +3,21 @@ namespace CG.Web.MegaApiClient
   using System;
   using System.Collections.Generic;
   using System.IO;
+#if !NET35
+  using System.Threading;
+#endif
 
   public partial interface IMegaApiClient
   {
-    int BufferSize { get; set; }
+    event EventHandler<ApiRequestFailedEventArgs> ApiRequestFailed;
 
-    int ChunksPackSize { get; set; }
+    bool IsLoggedIn { get; }
 
-    void Login(string email, string password);
+    MegaApiClient.LogonSessionToken Login(string email, string password);
 
-    void Login(MegaApiClient.AuthInfos authInfos);
+    MegaApiClient.LogonSessionToken Login(MegaApiClient.AuthInfos authInfos);
+
+    void Login(MegaApiClient.LogonSessionToken logonSessionToken);
 
     void LoginAnonymous();
 
@@ -30,19 +35,45 @@ namespace CG.Web.MegaApiClient
 
     Uri GetDownloadLink(INode node);
 
+#if NET35
     void DownloadFile(INode node, string outputFile);
+#else
+    void DownloadFile(INode node, string outputFile, CancellationToken? cancellationToken = null);
+#endif
 
+#if NET35
     void DownloadFile(Uri uri, string outputFile);
+#else
+    void DownloadFile(Uri uri, string outputFile, CancellationToken? cancellationToken = null);
+#endif
 
+#if NET35
     Stream Download(INode node);
+#else
+    Stream Download(INode node, CancellationToken? cancellationToken = null);
+#endif
 
+#if NET35
     Stream Download(Uri uri);
+#else
+    Stream Download(Uri uri, CancellationToken? cancellationToken = null);
+#endif
 
-    INodePublic GetNodeFromLink(Uri uri);
+    INodeInfo GetNodeFromLink(Uri uri);
 
+    IEnumerable<INode> GetNodesFromLink(Uri uri);
+
+#if NET35
     INode UploadFile(string filename, INode parent);
+#else
+    INode UploadFile(string filename, INode parent, CancellationToken? cancellationToken = null);
+#endif
 
-    INode Upload(Stream stream, string name, INode parent);
+#if NET35
+    INode Upload(Stream stream, string name, INode parent, DateTime? lastModifiedDate = null);
+#else
+    INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null, CancellationToken? cancellationToken = null);
+#endif
 
     INode Move(INode node, INode destinationParentNode);
 

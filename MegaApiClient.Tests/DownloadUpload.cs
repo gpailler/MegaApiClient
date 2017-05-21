@@ -2,207 +2,255 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
-using NUnit.Framework.Interfaces;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-    public abstract class DownloadUpload : TestsBase
+  public abstract class DownloadUpload : TestsBase, IDisposable
+  {
+    protected readonly Random random = new Random();
+
+    private readonly int savedChunksPackSize;
+
+    protected DownloadUpload(ITestContext context, ITestOutputHelper testOutputHelper)
+      : base(context, testOutputHelper)
     {
-        protected readonly Random random = new Random();
-
-        protected DownloadUpload(Options options)
-            : base(options)
-        {
-        }
-
-        [TestCaseSource(typeof(DownloadUpload), nameof(GetInvalidUploadStreamParameters))]
-        public void UploadStream_InvalidParameters_Throws(Stream stream, string name, INode parent, IResolveConstraint constraint)
-        {
-            Assert.That(
-                () => this.Client.Upload(stream, name, parent),
-                constraint);
-        }
-
-        [TestCase(NodeType.Root)]
-        [TestCase(NodeType.Inbox)]
-        [TestCase(NodeType.Trash)]
-        public void UploadStream_DifferentParent_Succeeds(NodeType parentType)
-        {
-            byte[] data = new byte[123];
-            this.random.NextBytes(data);
-
-            INode parent = this.GetNode(parentType);
-
-            INode node;
-            using (Stream stream = new MemoryStream(data))
-            {
-                node = this.Client.Upload(stream, "test", parent);
-            }
-
-            Assert.That(node, Is.Not.Null);
-            Assert.That(node.Type, Is.EqualTo(NodeType.File));
-            Assert.That(node.ParentId, Is.EqualTo(parent.Id));
-            Assert.That(node.Name, Is.EqualTo("test"));
-            Assert.That(node.Size, Is.EqualTo(data.Length));
-            Assert.That(node, Is.EqualTo(this.Client.GetNodes().Single(x => x.Id == node.Id)));
-        }
-
-        [TestCase(20000, 128 * 1024, 1)]
-        [TestCase(200000, 128 * 1024, 2)]
-        [TestCase(2000000, 128 * 1024, 6)]
-        [TestCase(20000, 1024 * 1024, 1)]
-        [TestCase(200000, 1024 * 1024, 1)]
-        [TestCase(2000000, 1024 * 1024, 2)]
-        [TestCase(2000000, -1, 1)]
-        public void UploadStream_ValidateContent_Succeeds(int dataSize, int chunksPackSize, int expectedUploadCalls)
-        {
-            byte[] uploadedData = new byte[dataSize];
-            this.random.NextBytes(uploadedData);
-
-            INode parent = this.GetNode(NodeType.Root);
-
-            using (Stream stream = new MemoryStream(uploadedData))
-            {
-                int uploadCalls = 0;
-                Action<TestWebClient.CallType> onCall = callType => uploadCalls += callType == TestWebClient.CallType.PostRequestRaw ? 1 : 0;
-                ((TestWebClient) this.WebClient).OnCalled += onCall;
-
-                this.Client.ChunksPackSize = chunksPackSize;
-                var node = this.Client.Upload(stream, "test", parent);
-
-                stream.Position = 0;
-                this.AreStreamsEquivalent(this.Client.Download(node), stream);
-                Assert.That(uploadCalls, Is.EqualTo(expectedUploadCalls));
-            }
-        }
-
-        [TestCaseSource(typeof(DownloadUpload), nameof(GetDownloadLinkInvalidParameter))]
-        public void DownloadLink_ToStream_InvalidParameter_Throws(Uri uri, IResolveConstraint constraint)
-        {
-            Assert.That(
-                () => this.Client.Download(uri),
-                constraint);
-        }
-
-        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
-        public void DownloadLink_ToStream_Succeeds(string link, string expectedResultFile)
-        {
-            using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
-            {
-                this.AreStreamsEquivalent(this.Client.Download(new Uri(link)), stream);
-            }
-        }
-
-        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
-        public void Download_ValidateStream_Succeeds(string link)
-        {
-            using (Stream stream = this.Client.Download(new Uri(link)))
-            {
-                Assert.That(
-                    stream,
-                    Is.Not.Null
-                    .And.Property<Stream>(x => x.Length).EqualTo(523265)
-                    .And.Property<Stream>(x => x.CanRead).True
-                    .And.Property<Stream>(x => x.CanSeek).False
-                    .And.Property<Stream>(x => x.CanTimeout).False
-                    .And.Property<Stream>(x => x.CanWrite).False
-                    .And.Property<Stream>(x => x.Position).EqualTo(0)
-                    );
-            }
-        }
-
-        [TestCaseSource(typeof(DownloadUpload), nameof(GetDownloadLinkToFileInvalidParameter))]
-        public void DownloadLink_ToFile_InvalidParameter_Throws(Uri uri, string outFile, IResolveConstraint constraint)
-        {
-            Assert.That(
-                () => this.Client.DownloadFile(uri, outFile),
-                constraint);
-        }
-
-        [TestCase("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20", "Data/SampleFile.jpg")]
-        public void DownloadLink_ToFile_Succeeds(string link, string expectedResultFile)
-        {
-            string outFile = Path.GetTempFileName();
-            File.Delete(outFile);
-            this.Client.DownloadFile(new Uri(link), outFile);
-
-            Assert.That(
-                File.ReadAllBytes(outFile),
-                Is.EqualTo(File.ReadAllBytes(this.GetAbsoluteFilePath(expectedResultFile))));
-        }
-
-        protected void AreStreamsEquivalent(Stream stream1, Stream stream2)
-        {
-            byte[] stream1data = new byte[stream1.Length];
-            byte[] stream2data = new byte[stream2.Length];
-
-            int readStream1 = stream1.Read(stream1data, 0, stream1data.Length);
-            Assert.That(readStream1, Is.EqualTo(stream1data.Length));
-
-            int readStream2 = stream2.Read(stream2data, 0, stream2data.Length);
-            Assert.That(readStream2, Is.EqualTo(stream2data.Length));
-
-            Assert.That(stream1data, Is.EqualTo(stream2data));
-        }
-
-        protected void AreFileEquivalent(string file1, string file2)
-        {
-            using (Stream stream1 = new FileStream(file1, FileMode.Open))
-            {
-                using (Stream stream2 = new FileStream(file2, FileMode.Open))
-                {
-                    this.AreStreamsEquivalent(stream1, stream2);
-                }
-            }
-        }
-
-        private static IEnumerable<TestCaseData> GetInvalidUploadStreamParameters()
-        {
-            INode nodeDirectory = Mock.Of<INode>(x => x.Type == NodeType.Directory);
-            INode nodeFile = Mock.Of<INode>(x => x.Type == NodeType.File);
-            Stream stream = new MemoryStream();
-
-            yield return new TestCaseData(null, null, null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, null, nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, "", null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, "", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, "name", null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, "name", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, null, null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, null, nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, "", null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, "", nodeDirectory, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, "name", null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(stream, "name", nodeFile, Throws.TypeOf<ArgumentException>());
-        }
-
-        private static IEnumerable<ITestCaseData> GetDownloadLinkInvalidParameter()
-        {
-            yield return new TestCaseData(null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("http://www.example.com"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL"), Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!axYS1TLL!"), Throws.TypeOf<ArgumentException>());
-        }
-
-        private static IEnumerable<ITestCaseData> GetDownloadLinkToFileInvalidParameter()
-        {
-            string outFile = Path.GetTempFileName();
-
-            yield return new TestCaseData(null, null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(null, outFile, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("http://www.example.com"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!38JjRYIA"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!ulISSQIb!"), outFile, Throws.TypeOf<ArgumentException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), null, Throws.TypeOf<ArgumentNullException>());
-            yield return new TestCaseData(new Uri("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), string.Empty, Throws.TypeOf<ArgumentNullException>());
-
-
-            yield return new TestCaseData(new Uri("https://mega.co.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), outFile, Throws.TypeOf<IOException>());
-        }
+      this.savedChunksPackSize = this.context.Options.ChunksPackSize;
     }
+
+    public virtual void Dispose()
+    {
+      this.context.Options.ChunksPackSize = this.savedChunksPackSize;
+    }
+
+    [Theory, MemberData(nameof(InvalidUploadStreamParameters))]
+    public void UploadStream_InvalidParameters_Throws(Stream stream, string name, INode parent, Type expectedExceptionType)
+    {
+      Assert.Throws(expectedExceptionType, () => this.context.Client.Upload(stream, name, parent));
+    }
+
+    public static IEnumerable<object[]> InvalidUploadStreamParameters
+    {
+      get
+      {
+        INode nodeDirectory = Mock.Of<INode>(x => x.Type == NodeType.Directory);
+        INode nodeFile = Mock.Of<INode>(x => x.Type == NodeType.File);
+        Stream stream = new MemoryStream();
+
+        yield return new object[] {null, null, null, typeof(ArgumentNullException)};
+        yield return new object[] {null, null, nodeDirectory, typeof(ArgumentNullException)};
+        yield return new object[] {null, "", null, typeof(ArgumentNullException)};
+        yield return new object[] {null, "", nodeDirectory, typeof(ArgumentNullException)};
+        yield return new object[] {null, "name", null, typeof(ArgumentNullException)};
+        yield return new object[] {null, "name", nodeDirectory, typeof(ArgumentNullException)};
+        yield return new object[] {stream, null, null, typeof(ArgumentNullException)};
+        yield return new object[] {stream, null, nodeDirectory, typeof(ArgumentNullException)};
+        yield return new object[] {stream, "", null, typeof(ArgumentNullException)};
+        yield return new object[] {stream, "", nodeDirectory, typeof(ArgumentNullException)};
+        yield return new object[] {stream, "name", null, typeof(ArgumentNullException)};
+        yield return new object[] {stream, "name", nodeFile, typeof(ArgumentException)};
+      }
+    }
+
+    [Theory]
+    [InlineData(NodeType.Root)]
+    [InlineData(NodeType.Inbox)]
+    [InlineData(NodeType.Trash)]
+    public void UploadStream_DifferentParent_Succeeds(NodeType parentType)
+    {
+      byte[] data = new byte[123];
+      this.random.NextBytes(data);
+
+      INode parent = this.GetNode(parentType);
+
+      INode node;
+      using (Stream stream = new MemoryStream(data))
+      {
+        node = this.context.Client.Upload(stream, "test", parent);
+      }
+
+      Assert.NotNull(node);
+      Assert.Equal(NodeType.File, node.Type);
+      Assert.Equal(parent.Id, node.ParentId);
+      Assert.Equal("test", node.Name);
+      Assert.Equal(data.Length, node.Size);
+      Assert.Single(this.context.Client.GetNodes(), x => x.Id == node.Id);
+    }
+
+    [Theory]
+    [InlineData(20000, 128*1024, 1)]
+    [InlineData(200000, 128*1024, 2)]
+    [InlineData(2000000, 128*1024, 6)]
+    [InlineData(20000, 1024*1024, 1)]
+    [InlineData(200000, 1024*1024, 1)]
+    [InlineData(2000000, 1024*1024, 2)]
+    [InlineData(2000000, -1, 1)]
+    public void UploadStream_ValidateContent_Succeeds(int dataSize, int chunksPackSize, int expectedUploadCalls)
+    {
+      byte[] uploadedData = new byte[dataSize];
+      this.random.NextBytes(uploadedData);
+
+      INode parent = this.GetNode(NodeType.Root);
+
+      using (Stream stream = new MemoryStream(uploadedData))
+      {
+        int uploadCalls = 0;
+        Action<TestWebClient.CallType, Uri> onCall = (callType, url) =>
+        {
+          if (callType == TestWebClient.CallType.PostRequestRaw)
+          {
+            if (url.AbsolutePath.EndsWith("/0"))
+            {
+              // Reset counter when it's the first chunk (to avoid error when Upload is restarted from start)
+              uploadCalls = 1;
+            }
+            else
+            {
+              uploadCalls++;
+            }
+          }
+        };
+
+        ((TestWebClient)this.context.WebClient).OnCalled += onCall;
+
+        this.context.Options.ChunksPackSize = chunksPackSize;
+        var node = this.context.Client.Upload(stream, "test", parent);
+
+        stream.Position = 0;
+        this.AreStreamsEquivalent(this.context.Client.Download(node), stream);
+        Assert.Equal(expectedUploadCalls, uploadCalls);
+      }
+    }
+
+    [Theory, MemberData(nameof(DownloadLinkInvalidParameter))]
+    public void DownloadLink_ToStream_InvalidParameter_Throws(Uri uri, Type expectedExceptionType)
+    {
+      Assert.Throws(expectedExceptionType, () => this.context.Client.Download(uri));
+    }
+
+    public static IEnumerable<object[]> DownloadLinkInvalidParameter()
+    {
+      yield return new object[] { null, typeof(ArgumentNullException) };
+      yield return new object[] { new Uri("http://www.example.com"), typeof(ArgumentException) };
+      yield return new object[] { new Uri("https://mega.nz"), typeof(ArgumentException) };
+      yield return new object[] { new Uri("https://mega.nz/#!axYS1TLL"), typeof(ArgumentException) };
+      yield return new object[] { new Uri("https://mega.nz/#!axYS1TLL!"), typeof(ArgumentException) };
+    }
+
+    [Fact]
+    public void DownloadLink_ToStream_Succeeds()
+    {
+      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
+      const string expectedResultFile = "Data/SampleFile.jpg";
+
+      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
+      {
+        this.AreStreamsEquivalent(this.context.Client.Download(new Uri(link)), stream);
+      }
+    }
+
+    [Fact]
+    public void Download_ValidateStream_Succeeds()
+    {
+      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
+
+      using (Stream stream = this.context.Client.Download(new Uri(link)))
+      {
+        Assert.NotNull(stream);
+        Assert.Equal(523265, stream.Length);
+        Assert.Equal(true, stream.CanRead);
+        Assert.Equal(false, stream.CanSeek);
+        Assert.Equal(false, stream.CanTimeout);
+        Assert.Equal(false, stream.CanWrite);
+        Assert.Equal(0, stream.Position);
+      }
+    }
+
+    [Theory, MemberData(nameof(DownloadLinkToFileInvalidParameter))]
+    public void DownloadLink_ToFile_InvalidParameter_Throws(Uri uri, string outFile, Type expectedExceptionType)
+    {
+      Assert.Throws(expectedExceptionType, () => this.context.Client.DownloadFile(uri, outFile));
+    }
+
+    public static IEnumerable<object[]> DownloadLinkToFileInvalidParameter
+    {
+      get
+      {
+        string outFile = Path.GetTempFileName();
+
+        yield return new object[] { null, null, typeof(ArgumentNullException) };
+        yield return new object[] { null, outFile, typeof(ArgumentNullException) };
+        yield return new object[] { new Uri("http://www.example.com"), outFile, typeof(ArgumentException) };
+        yield return new object[] { new Uri("https://mega.nz"), outFile, typeof(ArgumentException) };
+        yield return new object[] { new Uri("https://mega.nz/#!38JjRYIA"), outFile, typeof(ArgumentException) };
+        yield return new object[] { new Uri("https://mega.nz/#!ulISSQIb!"), outFile, typeof(ArgumentException) };
+        yield return new object[] { new Uri("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), null, typeof(ArgumentNullException) };
+        yield return new object[] { new Uri("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), string.Empty, typeof(ArgumentNullException) };
+        yield return new object[] { new Uri("https://mega.co.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), outFile, typeof(IOException) };
+      }
+    }
+
+    [Fact]
+    public void DownloadLink_ToFile_Succeeds()
+    {
+      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
+      const string expectedResultFile = "Data/SampleFile.jpg";
+
+      string outFile = Path.GetTempFileName();
+      File.Delete(outFile);
+      this.context.Client.DownloadFile(new Uri(link), outFile);
+
+      Assert.Equal(File.ReadAllBytes(this.GetAbsoluteFilePath(expectedResultFile)), File.ReadAllBytes(outFile));
+    }
+
+    [Fact]
+    public void GetNodesFromLink_Download_Succeeds()
+    {
+      const string folderLink = "https://mega.nz/#F!6kgE3YIQ!W_8GYHXH-COtmfWxOkMCFQ";
+      const string expectedResultFile = "Data/SampleFile.jpg";
+      var nodes = this.context.Client.GetNodesFromLink(new Uri(folderLink));
+      var node = nodes.Single(x => x.Name == "SharedFile.jpg");
+
+      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
+      {
+        this.AreStreamsEquivalent(this.context.Client.Download(node), stream);
+      }
+    }
+
+    protected void AreStreamsEquivalent(Stream stream1, Stream stream2)
+    {
+      byte[] stream1data = new byte[stream1.Length];
+      byte[] stream2data = new byte[stream2.Length];
+
+      int readStream1 = stream1.Read(stream1data, 0, stream1data.Length);
+      Assert.Equal(stream1data.Length, readStream1);
+
+      int readStream2 = stream2.Read(stream2data, 0, stream2data.Length);
+      Assert.Equal(stream2data.Length, readStream2);
+
+      Assert.Equal(stream1data, stream2data);
+    }
+
+    protected void AreFileEquivalent(string file1, string file2)
+    {
+      using (Stream stream1 = new FileStream(file1, FileMode.Open))
+      {
+        using (Stream stream2 = new FileStream(file2, FileMode.Open))
+        {
+          this.AreStreamsEquivalent(stream1, stream2);
+        }
+      }
+    }
+
+    protected string GetAbsoluteFilePath(string relativeFilePath)
+    {
+      var currentAssembly = this.GetType().Assembly.Location;
+      var assemblyDirectory = Path.GetDirectoryName(currentAssembly);
+
+      return Path.Combine(assemblyDirectory, relativeFilePath);
+    }
+  }
 }

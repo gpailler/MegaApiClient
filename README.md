@@ -4,6 +4,7 @@ MegaApiClient
 [![Build status](https://ci.appveyor.com/api/projects/status/a87jre98xr1wiryt/branch/master?svg=true)](https://ci.appveyor.com/project/gpailler/megaapiclient/branch/master)
 [![Coverage Status](https://coveralls.io/repos/gpailler/MegaApiClient/badge.svg?branch=master)](https://coveralls.io/r/gpailler/MegaApiClient?branch=master)
 [![NuGet version](https://badge.fury.io/nu/MegaApiClient.svg)](https://badge.fury.io/nu/MegaApiClient)
+[![MyGet Pre Release](https://img.shields.io/myget/megaapiclient/vpre/MegaApiClient.svg)](https://www.myget.org/feed/megaapiclient/package/nuget/MegaApiClient)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gpailler/MegaApiClient/blob/master/LICENSE)
 
 C# library to access http://mega.co.nz API
@@ -13,7 +14,9 @@ Installation:
 ---
 MegaApiClient is available on [NuGet](https://www.nuget.org/packages/MegaApiClient)
 or from the [releases](https://github.com/gpailler/MegaApiClient/releases) section
-(NewtonSoft.Json 6.0.8 or higher is required)
+(NewtonSoft.Json 9.0.1 or higher is required).
+
+Pre Release versions are available on [MyGet](https://www.myget.org/feed/megaapiclient/package/nuget/MegaApiClient).
 
 
 Usage example:
@@ -57,7 +60,8 @@ INode CreateFolder(string name, INode parent)
 void Delete(INode node, bool moveToTrash = true)
 INode Move(INode node, INode destinationParentNode)
 INode Rename(INode node, string newName)
-INodePublic GetNodeFromLink(Uri uri)
+INodeInfo GetNodeFromLink(Uri uri)
+IEnumerable<INode> GetNodesFromLink(Uri uri)
 
 // Download
 Uri GetDownloadLink(INode node)

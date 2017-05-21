@@ -1,48 +1,32 @@
-version: 1.3.1.{build}
-branches:
-  only:
-  - develop
-  - master
-  - /feature-.*/
-  - /bug-.*/
-skip_tags: true
-configuration: Release
-platform: Any CPU
+version: 1.5.0.{build}
+image: Visual Studio 2015
 
-assembly_info:
-  patch: true
-  file: '**\AssemblyInfo.*'
-  assembly_version: '{version}'
-  assembly_file_version: '{version}'
-  assembly_informational_version: '{version}'
+pull_requests:
+  do_not_increment_build_number: true
+
+nuget:
+  disable_publish_on_pr: true
+
+skip_branch_with_pr: true
 
 environment:
   COVERALLS_REPO_TOKEN:
     secure: uJvwK/1oZXprkJ46fkTLEPBCGmHO15dUd1NxeUJl8P1l/TeaOhvlRoyjvZkAfLUT
 
-before_build:
-- nuget restore
+build_script:
+- ps: .\build.ps1
 
-build:
-  project: MegaApiClient.sln
-  verbosity: minimal
-
-after_build:
-- nuget pack MegaApiClient.nuspec
-
-test_script:
-  - ps: packages\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -targetdir:MegaApiClient.Tests -target:nunit3-console.exe "-targetargs:""bin\$env:CONFIGURATION\MegaApiClient.Tests.dll"" --result=""$env:APPVEYOR_BUILD_FOLDER\myresults.xml;format=AppVeyor"" --workers=1" -returntargetcode "-filter:+[*]CG.Web.MegaApiClient* -[MegaApiClient.Tests]*" -output:opencoverCoverage.xml
-  - ps: |
-      if(-not $env:APPVEYOR_PULL_REQUEST_NUMBER)
-      {
-        packages\coveralls.net.0.7.0\tools\csmacnz.Coveralls.exe --opencover -i opencoverCoverage.xml --repoToken $env:COVERALLS_REPO_TOKEN --commitId $env:APPVEYOR_REPO_COMMIT --commitBranch $env:APPVEYOR_REPO_BRANCH --commitAuthor $env:APPVEYOR_REPO_COMMIT_AUTHOR --commitEmail $env:APPVEYOR_REPO_COMMIT_AUTHOR_EMAIL --commitMessage $env:APPVEYOR_REPO_COMMIT_MESSAGE --jobId $env:APPVEYOR_JOB_ID
-      }
-
-on_finish:
-  - appveyor PushArtifact myresults.xml -DeploymentName "NUnit results"
+test: off
 
 artifacts:
-- path: MegaApiClient.*.nupkg
-  name: MegaApiClient package
+- path: '.\artifacts\**\*.nupkg'
+  name: Nuget packages
 
-deploy: off
+deploy:
+- provider: NuGet
+  server: https://www.myget.org/F/megaapiclient/api/v2
+  api_key:
+    secure: Fh+ZkfvseLY9z8DWLEFf1AlaJZQgzXCkWlIhHc1t4HLNo+w9+urXd2EyBLCTKzDv
+  # Deploy symbol package too
+  skip_symbols: false
+  symbol_server: https://www.myget.org/F/megaapiclient/symbols/api/v2/package

@@ -1,18 +1,15 @@
-﻿using NUnit.Framework;
+﻿using CG.Web.MegaApiClient.Tests.Context;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-    [TestFixture]
-    public class NodeOperationsAnonymous : NodeOperations
+  [Collection("AnonymousLoginTests")]
+  public class NodeOperationsAnonymous : NodeOperations
+  {
+    public NodeOperationsAnonymous(AnonymousTestContext context, ITestOutputHelper testOutputHelper)
+      : base(context, testOutputHelper)
     {
-        public NodeOperationsAnonymous()
-            : this(null)
-        {
-        }
-
-        protected NodeOperationsAnonymous(Options? options)
-            : base(Options.LoginAnonymous | options.GetValueOrDefault())
-        {
-        }
     }
+  }
 }

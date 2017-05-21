@@ -1,51 +1,46 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MegaApiClientAsyncWrapper.cs" company="DxO Labs">
-//   Copyright DxO Labs 2016 - All Rights Reserved
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace CG.Web.MegaApiClient.Tests
+﻿namespace CG.Web.MegaApiClient.Tests
 {
   using System;
   using System.Collections.Generic;
   using System.IO;
+  using System.Threading;
   using System.Threading.Tasks;
 
-  public class MegaApiClientAsyncWrapper : IMegaApiClient
+  public class MegaApiClientAsyncWrapper : IMegaApiClient, IDisposable
   {
     private readonly IMegaApiClient client;
 
     public MegaApiClientAsyncWrapper(IMegaApiClient client)
     {
       this.client = client;
+      this.client.ApiRequestFailed += this.OnApiRequestFailed;
     }
 
-    public int BufferSize
+    public void Dispose()
     {
-      get { return this.client.BufferSize; }
-      set { this.client.BufferSize = value; }
+      this.client.ApiRequestFailed -= this.OnApiRequestFailed;
     }
 
-    public int ChunksPackSize
+    public event EventHandler<ApiRequestFailedEventArgs> ApiRequestFailed;
+
+    public bool IsLoggedIn
     {
-      get { return this.client.ChunksPackSize; }
-      set { this.client.ChunksPackSize = value; }
+      get { return this.client.IsLoggedIn; }
     }
 
-    public long ReportProgressChunkSize
+    public MegaApiClient.LogonSessionToken Login(string email, string password)
     {
-      get { return this.client.ReportProgressChunkSize; }
-      set { this.client.ReportProgressChunkSize = value; }
+      return this.UnwrapException(() => this.client.LoginAsync(email, password).Result);
     }
 
-    public void Login(string email, string password)
+    public MegaApiClient.LogonSessionToken Login(MegaApiClient.AuthInfos authInfos)
     {
-      this.UnwrapException(() => this.client.LoginAsync(email, password).Wait());
+      return this.UnwrapException(() => this.client.LoginAsync(authInfos).Result);
     }
 
-    public void Login(MegaApiClient.AuthInfos authInfos)
+    public void Login(MegaApiClient.LogonSessionToken logonSessionToken)
     {
-      this.UnwrapException(() => this.client.LoginAsync(authInfos).Wait());
+      this.UnwrapException(() => this.client.LoginAsync(logonSessionToken).Wait());
     }
 
     public void LoginAnonymous()
@@ -88,45 +83,50 @@ namespace CG.Web.MegaApiClient.Tests
       return this.UnwrapException(() => this.client.GetDownloadLinkAsync(node).Result);
     }
 
-    public void DownloadFile(INode node, string outputFile)
+    public void DownloadFile(INode node, string outputFile, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      this.UnwrapException(() => this.client.DownloadFileAsync(node, outputFile, progress).Wait());
+      this.UnwrapException(() => this.client.DownloadFileAsync(node, outputFile, progress, cancellationToken).Wait());
     }
 
-    public void DownloadFile(Uri uri, string outputFile)
+    public void DownloadFile(Uri uri, string outputFile, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      this.UnwrapException(() => this.client.DownloadFileAsync(uri, outputFile, progress).Wait());
+      this.UnwrapException(() => this.client.DownloadFileAsync(uri, outputFile, progress, cancellationToken).Wait());
     }
 
-    public Stream Download(INode node)
+    public Stream Download(INode node, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      return this.UnwrapException(() => this.client.DownloadAsync(node, progress).Result);
+      return this.UnwrapException(() => this.client.DownloadAsync(node, progress, cancellationToken).Result);
     }
 
-    public Stream Download(Uri uri)
+    public Stream Download(Uri uri, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      return this.UnwrapException(() => this.client.DownloadAsync(uri, progress).Result);
+      return this.UnwrapException(() => this.client.DownloadAsync(uri, progress, cancellationToken).Result);
     }
 
-    public INodePublic GetNodeFromLink(Uri uri)
+    public INodeInfo GetNodeFromLink(Uri uri)
     {
       return this.UnwrapException(() => this.client.GetNodeFromLinkAsync(uri).Result);
     }
 
-    public INode UploadFile(string filename, INode parent)
+    public IEnumerable<INode> GetNodesFromLink(Uri uri)
     {
-      Progress<double> progress = new Progress<double>();
-      return this.UnwrapException(() => this.client.UploadFileAsync(filename, parent, progress).Result);
+      return this.UnwrapException(() => this.client.GetNodesFromLinkAsync(uri).Result);
     }
 
-    public INode Upload(Stream stream, string name, INode parent)
+    public INode UploadFile(string filename, INode parent, CancellationToken? cancellationToken = null)
     {
       Progress<double> progress = new Progress<double>();
-      return this.UnwrapException(() => this.client.UploadAsync(stream, name, parent, progress).Result);
+      return this.UnwrapException(() => this.client.UploadFileAsync(filename, parent, progress, cancellationToken).Result);
+    }
+
+    public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
+    {
+      Progress<double> progress = new Progress<double>();
+      return this.UnwrapException(() => this.client.UploadAsync(stream, name, parent, progress, modificationDate).Result);
     }
 
     public INode Move(INode node, INode destinationParentNode)
@@ -139,12 +139,17 @@ namespace CG.Web.MegaApiClient.Tests
       return this.UnwrapException(() => this.client.RenameAsync(node, newName).Result);
     }
 
-    public Task LoginAsync(string email, string password)
+    public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password)
     {
       throw new NotImplementedException();
     }
 
-    public Task LoginAsync(MegaApiClient.AuthInfos authInfos)
+    public Task<MegaApiClient.LogonSessionToken> LoginAsync(MegaApiClient.AuthInfos authInfos)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task LoginAsync(MegaApiClient.LogonSessionToken authInfos)
     {
       throw new NotImplementedException();
     }
@@ -199,37 +204,42 @@ namespace CG.Web.MegaApiClient.Tests
       throw new NotImplementedException();
     }
 
-    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress)
+    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       throw new NotImplementedException();
     }
 
-    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress)
+    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
       throw new NotImplementedException();
     }
 
-    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress)
+    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
-      return this.client.DownloadFileAsync(node, outputFile, progress);
+      return this.client.DownloadFileAsync(node, outputFile, progress, cancellationToken);
     }
 
-    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress)
+    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
-      return this.client.DownloadFileAsync(uri, outputFile, progress);
+      return this.client.DownloadFileAsync(uri, outputFile, progress, cancellationToken);
     }
 
-    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress)
+    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
-      return this.client.UploadFileAsync(filename, parent, progress);
+      return this.client.UploadFileAsync(filename, parent, progress, cancellationToken);
     }
 
-    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress)
+    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
     {
-      return this.client.UploadAsync(stream, name, parent, progress);
+      return this.client.UploadAsync(stream, name, parent, progress, modificationDate, cancellationToken);
     }
 
-    public Task<INodePublic> GetNodeFromLinkAsync(Uri uri)
+    public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri)
     {
       throw new NotImplementedException();
     }
@@ -254,6 +264,11 @@ namespace CG.Web.MegaApiClient.Tests
           action();
           return true;
         });
+    }
+
+    private void OnApiRequestFailed(object sender, ApiRequestFailedEventArgs e)
+    {
+      this.ApiRequestFailed?.Invoke(sender, e);
     }
   }
 }
