@@ -11,6 +11,8 @@
   using System.Threading;
   using System.Web;
 
+  using CG.Web.MegaApiClient.Serialization;
+
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
 

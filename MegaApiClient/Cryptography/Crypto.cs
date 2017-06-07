@@ -3,6 +3,8 @@
   using System;
   using System.Security.Cryptography;
 
+  using CG.Web.MegaApiClient.Serialization;
+
   using Newtonsoft.Json;
 
   internal class Crypto

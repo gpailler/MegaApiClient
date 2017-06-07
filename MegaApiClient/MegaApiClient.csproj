@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>MegaApiClient library gives full access to Mega.co.nz API. You can manage filesystem and download/upload files.</Description>
+    <Copyright>Copyright ©  2017</Copyright>
+    <AssemblyTitle>Mega.co.nz client library</AssemblyTitle>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <VersionPrefix>1.5.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Title>Mega.co.nz client library</Title>
+    <Authors>Gregoire Pailler</Authors>
+    <AssemblyName>MegaApiClient</AssemblyName>
+    <PackageProjectUrl>https://github.com/gpailler/MegaApiClient</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/gpailler/MegaApiClient/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>mega;mega.co.nz;api</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/gpailler/MegaApiClient</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyTitleAttribute>true</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>true</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>true</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>true</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>true</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>true</GenerateAssemblyCopyrightAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!--<TargetFrameworks>net45;netstandard1.6;netstandard1.3</TargetFrameworks>-->
+    <TargetFrameworks>net45</TargetFrameworks>
+    <RootNamespace>CG.Web.MegaApiClient</RootNamespace>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="WebClient_HttpWebRequest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="System.Net.Http" Version="4.3.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+</Project>

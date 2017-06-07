@@ -5,6 +5,8 @@
   using System.Linq;
   using System.Runtime.Serialization;
 
+  using CG.Web.MegaApiClient.Serialization;
+
   using Newtonsoft.Json;
 
   [DebuggerDisplay("NodeInfo - Type: {Type} - Name: {Name} - Id: {Id}")]
