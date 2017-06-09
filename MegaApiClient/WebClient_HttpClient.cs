@@ -1,4 +1,5 @@
-﻿namespace CG.Web.MegaApiClient
+﻿#if !NET40
+namespace CG.Web.MegaApiClient
 {
   using System;
   using System.IO;
@@ -67,3 +68,4 @@
     }
   }
 }
+#endif

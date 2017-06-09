@@ -111,9 +111,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MegaApiClient-4.5\MegaApiClient-4.5.csproj">
-      <Project>{19D28272-9DDB-4868-93E7-D98DCFAE08E9}</Project>
-      <Name>MegaApiClient-4.5</Name>
+    <ProjectReference Include="..\MegaApiClient\MegaApiClient.csproj">
+      <Project>{f9a241e2-4e26-493d-b07e-48ab86066c05}</Project>
+      <Name>MegaApiClient</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

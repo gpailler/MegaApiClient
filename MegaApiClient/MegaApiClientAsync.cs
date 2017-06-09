@@ -1,4 +1,5 @@
-﻿namespace CG.Web.MegaApiClient
+﻿#if ASYNC
+namespace CG.Web.MegaApiClient
 {
   using System;
   using System.Collections.Generic;
@@ -159,3 +160,4 @@
     #endregion
   }
 }
+#endif
