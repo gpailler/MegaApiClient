@@ -63,7 +63,7 @@ namespace CG.Web.MegaApiClient
 
     private ProductInfoHeaderValue GenerateUserAgent()
     {
-      AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+      AssemblyName assemblyName = this.GetType().GetTypeInfo().Assembly.GetName();
       return new ProductInfoHeaderValue(assemblyName.Name, assemblyName.Version.ToString(2));
     }
   }

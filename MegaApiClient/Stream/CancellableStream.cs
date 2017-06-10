@@ -101,12 +101,14 @@ namespace CG.Web.MegaApiClient
       this.stream.Write(buffer, offset, count);
     }
 
+#if !NETCORE
     public override void Close()
     {
       this.stream?.Close();
 
       base.Close();
     }
+#endif
 
     protected override void Dispose(bool disposing)
     {

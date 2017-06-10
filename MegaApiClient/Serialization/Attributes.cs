@@ -103,9 +103,13 @@
 
           using (var crc32Hasher = new Crc32(CryptoPPCRC32Polynomial, Crc32.DefaultSeed))
           {
+#if NETCORE
+            var crcValBytes = crc32Hasher.ComputeHash(fileBuffer);
+#else
             crc32Hasher.TransformBlock(fileBuffer, begin, end - begin, null, 0);
             crc32Hasher.TransformFinalBlock(fileBuffer, 0, 0);
             var crcValBytes = crc32Hasher.Hash;
+#endif
             crcVal = BitConverter.ToUInt32(crcValBytes, 0);
           }
           crc[i] = crcVal;
@@ -128,14 +132,22 @@
 
               stream.Seek(offset - current, SeekOrigin.Current);
               current += (offset - current);
-
+#if NETCORE
+              int blockWritten = stream.Read(block, (int)current, block.Length);
+              current += blockWritten;
+#else
               int blockWritten = stream.Read(block, 0, block.Length);
               current += blockWritten;
               crc32Hasher.TransformBlock(block, 0, blockWritten, null, 0);
+#endif
             }
 
+#if NETCORE
+            var crc32ValBytes = crc32Hasher.ComputeHash(block);
+#else
             crc32Hasher.TransformFinalBlock(block, 0, 0);
             var crc32ValBytes = crc32Hasher.Hash;
+#endif
             crcVal = BitConverter.ToUInt32(crc32ValBytes, 0);
 
           }

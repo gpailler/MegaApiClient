@@ -23,26 +23,34 @@
 
   internal class GetNodesResponse
   {
+    private readonly byte[] masterKey;
+    private List<SharedKey> sharedKeys;
+
+    public GetNodesResponse(byte[] masterKey)
+    {
+      this.masterKey = masterKey;
+    }
+
     public Node[] Nodes { get; private set; }
 
     [JsonProperty("f")]
     public JRaw NodesSerialized { get; private set; }
 
     [JsonProperty("ok")]
-    public List<SharedKey> SharedKeys { get; private set; }
+    public List<SharedKey> SharedKeys
+    {
+      get { return this.sharedKeys; }
+      private set { this.sharedKeys = value; }
+    }
 
     [OnDeserialized]
+#if NETCORE
+    public void OnDeserialized()
+#else
     public void OnDeserialized(StreamingContext ctx)
+#endif
     {
-      JsonSerializerSettings settings = new JsonSerializerSettings();
-
-      // First Nodes deserialization to retrieve all shared keys
-      settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this });
-      JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
-
-      // Deserialize nodes
-      settings.Context = new StreamingContext(StreamingContextStates.All, new[] { this, ctx.Context });
-      this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), settings);
+      this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), new NodeConverter(this.masterKey, ref this.sharedKeys));
     }
   }
 }
