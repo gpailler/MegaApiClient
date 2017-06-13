@@ -162,10 +162,10 @@ namespace CG.Web.MegaApiClient.Tests
       {
         Assert.NotNull(stream);
         Assert.Equal(523265, stream.Length);
-        Assert.Equal(true, stream.CanRead);
-        Assert.Equal(false, stream.CanSeek);
-        Assert.Equal(false, stream.CanTimeout);
-        Assert.Equal(false, stream.CanWrite);
+        Assert.True(stream.CanRead);
+        Assert.False(stream.CanSeek);
+        Assert.False(stream.CanTimeout);
+        Assert.False(stream.CanWrite);
         Assert.Equal(0, stream.Position);
       }
     }

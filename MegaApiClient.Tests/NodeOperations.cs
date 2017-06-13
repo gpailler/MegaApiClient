@@ -309,12 +309,12 @@ namespace CG.Web.MegaApiClient.Tests
       node = Assert.Single(nodes, x => x.Name == "SharedFolder");
       Assert.Equal(0, node.Size);
       Assert.Equal(DateTime.Parse("2016-04-15 22:41:35.0000000+08:00"), node.CreationDate);
-      Assert.Equal(null, node.ModificationDate);
+      Assert.Null(node.ModificationDate);
 
       node = Assert.Single(nodes, x => x.Name == "SharedSubFolder");
       Assert.Equal(0, node.Size);
       Assert.Equal(DateTime.Parse("2016-04-15 22:41:48.0000000+08:00"), node.CreationDate);
-      Assert.Equal(null, node.ModificationDate);
+      Assert.Null(node.ModificationDate);
     }
   }
 }
