@@ -104,10 +104,9 @@
           using (var crc32Hasher = new Crc32(CryptoPPCRC32Polynomial, Crc32.DefaultSeed))
           {
 #if NETCORE
-            var crcValBytes = crc32Hasher.ComputeHash(fileBuffer);
+            var crcValBytes = crc32Hasher.ComputeHash(fileBuffer, begin, end - begin);
 #else
-            crc32Hasher.TransformBlock(fileBuffer, begin, end - begin, null, 0);
-            crc32Hasher.TransformFinalBlock(fileBuffer, 0, 0);
+            crc32Hasher.TransformFinalBlock(fileBuffer, begin, end - begin);
             var crcValBytes = crc32Hasher.Hash;
 #endif
             crcVal = BitConverter.ToUInt32(crcValBytes, 0);
@@ -124,33 +123,40 @@
 
         for (uint i = 0; i < CrcArrayLength; i++)
         {
-          using (var crc32Hasher = new Crc32(CryptoPPCRC32Polynomial, Crc32.DefaultSeed))
+          byte[] crc32ValBytes = null;
+
+          uint seed = Crc32.DefaultSeed;
+          for (uint j = 0; j < blocks; j++)
           {
-            for (uint j = 0; j < blocks; j++)
+            long offset = (stream.Length - block.Length) * (i * blocks + j) / (CrcArrayLength * blocks - 1);
+
+            stream.Seek(offset - current, SeekOrigin.Current);
+            current += (offset - current);
+
+            int blockWritten = stream.Read(block, 0, block.Length);
+            current += blockWritten;
+
+            using (var crc32Hasher = new Crc32(CryptoPPCRC32Polynomial, seed))
             {
-              long offset = (stream.Length - block.Length) * (i * blocks + j) / (CrcArrayLength * blocks - 1);
-
-              stream.Seek(offset - current, SeekOrigin.Current);
-              current += (offset - current);
 #if NETCORE
-              int blockWritten = stream.Read(block, (int)current, block.Length);
-              current += blockWritten;
+              crc32ValBytes = crc32Hasher.ComputeHash(block, 0, blockWritten);
 #else
-              int blockWritten = stream.Read(block, 0, block.Length);
-              current += blockWritten;
-              crc32Hasher.TransformBlock(block, 0, blockWritten, null, 0);
+              crc32Hasher.TransformFinalBlock(block, 0, blockWritten);
+              crc32ValBytes = crc32Hasher.Hash;
 #endif
+              var seedBytes = new byte[crc32ValBytes.Length];
+              crc32ValBytes.CopyTo(seedBytes, 0);
+              if (BitConverter.IsLittleEndian)
+                Array.Reverse(seedBytes);
+
+              seed = BitConverter.ToUInt32(seedBytes, 0);
+              seed = ~seed;
             }
-
-#if NETCORE
-            var crc32ValBytes = crc32Hasher.ComputeHash(block);
-#else
-            crc32Hasher.TransformFinalBlock(block, 0, 0);
-            var crc32ValBytes = crc32Hasher.Hash;
-#endif
-            crcVal = BitConverter.ToUInt32(crc32ValBytes, 0);
-
           }
+
+          crcVal = BitConverter.ToUInt32(crc32ValBytes, 0);
+
+
           crc[i] = crcVal;
         }
       }

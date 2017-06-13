@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Xunit;
@@ -247,7 +248,7 @@ namespace CG.Web.MegaApiClient.Tests
 
     protected string GetAbsoluteFilePath(string relativeFilePath)
     {
-      var currentAssembly = this.GetType().Assembly.Location;
+      var currentAssembly = this.GetType().GetTypeInfo().Assembly.Location;
       var assemblyDirectory = Path.GetDirectoryName(currentAssembly);
 
       return Path.Combine(assemblyDirectory, relativeFilePath);

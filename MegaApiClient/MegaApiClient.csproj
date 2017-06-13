@@ -39,7 +39,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
-    <DefineConstants>NETCORE</DefineConstants>
+    <DefineConstants>NETCORE;ASYNC</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'net40' ">

@@ -127,11 +127,7 @@
     private string SerializedKey { get; set; }
 
     [OnDeserialized]
-#if NETCORE
-    public void OnDeserialized()
-#else
     public void OnDeserialized(StreamingContext ctx)
-#endif
     {
       // Add key from incoming sharing.
       if (this.SharingKey != null && this.sharedKeys.Any(x => x.Id == this.Id) == false)

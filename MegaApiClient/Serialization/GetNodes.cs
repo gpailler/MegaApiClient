@@ -44,11 +44,7 @@
     }
 
     [OnDeserialized]
-#if NETCORE
-    public void OnDeserialized()
-#else
     public void OnDeserialized(StreamingContext ctx)
-#endif
     {
       this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), new NodeConverter(this.masterKey, ref this.sharedKeys));
     }
