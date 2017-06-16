@@ -1,6 +1,5 @@
 #addin nuget:?package=Cake.Git
 #tool "nuget:?package=OpenCover"
-#tool "nuget:?package=xunit.runner.console"
 #tool coveralls.io
 #addin Cake.Coveralls
 
@@ -29,7 +28,7 @@ Task("Clean")
 Task("Restore-Packages")
     .Does(() =>
 {
-   NuGetRestore(solution);
+   DotNetCoreRestore(solution);
 });
 
 
@@ -40,7 +39,7 @@ Task("Generate-Versionning")
     Information("Generated version '{0}'", generatedVersion);
 
     var branch = (AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Repository.Branch : GitBranchCurrent(".").FriendlyName).Replace('/', '-');
-    generatedSuffix = (branch == "master" && revision > 0) ? "" : "-" + branch.Substring(0, Math.Min(10, branch.Length)) + "-" + revision;
+    generatedSuffix = (branch == "master" && revision > 0) ? "" : branch.Substring(0, Math.Min(10, branch.Length)) + "-" + revision;
     Information("Generated suffix '{0}'", generatedSuffix);
 });
 
@@ -51,7 +50,7 @@ Task("Patch-GlobalAssemblyVersions")
 {
     CreateAssemblyInfo(globalAssemblyInfo, new AssemblyInfoSettings {
         FileVersion = generatedVersion,
-        InformationalVersion = version + generatedSuffix,
+        InformationalVersion = version + "-" + generatedSuffix,
         Version = generatedVersion
         }
     );
@@ -63,7 +62,7 @@ Task("Build")
     .IsDependentOn("Patch-GlobalAssemblyVersions")
     .Does(() =>
 {
-   MSBuild(solution, new MSBuildSettings {
+   DotNetCoreBuild(solution, new DotNetCoreBuildSettings {
       Configuration = configuration
     });
 });
@@ -74,25 +73,13 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    OpenCover(tool => {
-        tool.XUnit2("./MegaApiClient.Tests/bin/*/MegaApiClient.Tests.dll",
-                    new XUnit2Settings {
-                        ShadowCopy = false,
-                        ArgumentCustomization = args => args.Append("-appveyor")
-                    });
-        },
-        coverage,
-        new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
-            .WithFilter("+[*]CG.Web.MegaApiClient*")
-            .WithFilter("-[MegaApiClient.Tests]*"));
-
-    if (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.PullRequest != null)
-    {
-        CoverallsIo(coverage, new CoverallsIoSettings()
+    DotNetCoreTest(
+        "./MegaApiClient.Tests/MegaApiClient.Tests.csproj",
+        new DotNetCoreTestSettings
         {
-            RepoToken = EnvironmentVariable("COVERALLS_REPO_TOKEN")
+            Configuration = configuration,
+            Framework = "net46"
         });
-    }
 });
 
 
@@ -101,12 +88,22 @@ Task("Pack")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    NuGetPack(nuspec, new  NuGetPackSettings {
-        Version = version + generatedSuffix,
-        Symbols = (AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Branch == "master" && revision > 0) == false,
-        OutputDirectory = artifactsDirectory
-    });
+    DotNetCorePack(
+        "./MegaApiClient/MegaApiClient.csproj",
+        new DotNetCorePackSettings
+        {
+            VersionSuffix = generatedSuffix,
+            OutputDirectory = artifactsDirectory,
+            ArgumentCustomization = args =>
+            {
+                if ((AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Branch == "master" && revision > 0) == false)
+                {
+                    args.Append("--include-symbols");
+                }
 
+                return args;
+            }
+        });
 });
 
 
