@@ -77,8 +77,7 @@ Task("Test")
         "./MegaApiClient.Tests/MegaApiClient.Tests.csproj",
         new DotNetCoreTestSettings
         {
-            Configuration = configuration,
-            Framework = "net46"
+            Configuration = configuration
         });
 });
 
