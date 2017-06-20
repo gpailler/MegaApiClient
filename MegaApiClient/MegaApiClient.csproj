@@ -27,8 +27,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <!--<TargetFrameworks>net45;netstandard1.6;netstandard1.3</TargetFrameworks>-->
-    <TargetFrameworks>net40;net45;net46;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard1.6</TargetFrameworks>
     <RootNamespace>CG.Web.MegaApiClient</RootNamespace>
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>../key.snk</AssemblyOriginatorKeyFile>
@@ -38,7 +37,7 @@
     <DefineConstants>ASYNC</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard1.6' ">
     <DefineConstants>NETCORE;ASYNC</DefineConstants>
   </PropertyGroup>
 
@@ -51,7 +50,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard1.6' ">
     <Compile Remove="Properties\AssemblyInfo.cs" />
     <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.2" />
