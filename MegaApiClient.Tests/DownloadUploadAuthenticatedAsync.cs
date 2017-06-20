@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using CG.Web.MegaApiClient.Tests.Context;
 using Xunit;
@@ -36,7 +37,7 @@ namespace CG.Web.MegaApiClient.Tests
       var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
 
       EventTester<double> eventTester = new EventTester<double>();
-      Progress<double> progress = new Progress<double>(eventTester.OnRaised);
+      IProgress<double> progress = new SyncProgress<double>(eventTester.OnRaised);
 
       string outputFile = Path.GetTempFileName();
       File.Delete(outputFile);
@@ -60,7 +61,7 @@ namespace CG.Web.MegaApiClient.Tests
       const string expectedResultFile = "Data/SampleFile.jpg";
 
       EventTester<double> eventTester = new EventTester<double>();
-      Progress<double> progress = new Progress<double>(eventTester.OnRaised);
+      IProgress<double> progress = new SyncProgress<double>(eventTester.OnRaised);
 
       string outputFile = Path.GetTempFileName();
       File.Delete(outputFile);
@@ -88,7 +89,7 @@ namespace CG.Web.MegaApiClient.Tests
       {
         double previousProgression = 0;
         EventTester<double> eventTester = new EventTester<double>();
-        Progress<double> progress = new Progress<double>(x =>
+        IProgress<double> progress = new SyncProgress<double>(x =>
         {
           if (previousProgression > x)
           {
