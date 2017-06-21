@@ -64,7 +64,7 @@ namespace CG.Web.MegaApiClient.Tests
 
     [Theory]
     [InlineData("username", "password", ApiResultCode.BadArguments)]
-    [InlineData("username@example.com", "password", ApiResultCode.ResourceNotExists)]
+    [InlineData("username@example.com", "password", ApiResultCode.RequestIncomplete)]
     public void Login_InvalidCredentials_Throws(string email, string password, ApiResultCode expectedErrorCode)
     {
       var exception = Assert.Throws<ApiException>(() => this.context.Client.Login(email, password));
