@@ -7,8 +7,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
   [CollectionDefinition("AnonymousLoginTests")]
   public class AnonymousLoginTestsCollection : ICollectionFixture<AnonymousTestContext> { }
 
-  public class 
-    AnonymousTestContext : TestContext
+  public class AnonymousTestContext : TestContext
   {
     protected override void ConnectClient(IMegaApiClient client)
     {
