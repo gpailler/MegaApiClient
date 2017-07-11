@@ -12,6 +12,8 @@ skip_branch_with_pr: true
 environment:
   COVERALLS_REPO_TOKEN:
     secure: uJvwK/1oZXprkJ46fkTLEPBCGmHO15dUd1NxeUJl8P1l/TeaOhvlRoyjvZkAfLUT
+  MEGAAPICLIENT_PASSWORD:
+    secure: eRPOeRV2gdaN2nXPWl+YDA==
 
 build_script:
 - ps: .\build.ps1
