@@ -7,7 +7,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 {
   public abstract class TestContext : ITestContext
   {
-    private const int WebTimeout = 60000;
+    private const int WebTimeout = 10000;
     private const int MaxRetry = 3;
 
     private readonly Lazy<IMegaApiClient> lazyClient;
