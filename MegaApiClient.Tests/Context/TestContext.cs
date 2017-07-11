@@ -16,7 +16,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     protected TestContext()
     {
-      this.WebTimeout = 90000;
+      this.WebTimeout = 60000;
       this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
       this.lazyProtectedNodes = new Lazy<IEnumerable<string>>(() => this.GetProtectedNodes().ToArray());
       this.lazyPermanentNodes = new Lazy<IEnumerable<string>>(() => this.GetPermanentNodes().ToArray());
