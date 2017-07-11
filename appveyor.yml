@@ -13,7 +13,7 @@ environment:
   COVERALLS_REPO_TOKEN:
     secure: uJvwK/1oZXprkJ46fkTLEPBCGmHO15dUd1NxeUJl8P1l/TeaOhvlRoyjvZkAfLUT
   MEGAAPICLIENT_PASSWORD:
-    secure: eRPOeRV2gdaN2nXPWl+YDA==
+    secure: HUJCtfxA4rpGiewvhXzH3A==
 
 build_script:
 - ps: .\build.ps1
