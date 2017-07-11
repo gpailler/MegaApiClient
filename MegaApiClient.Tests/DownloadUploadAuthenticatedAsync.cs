@@ -11,8 +11,6 @@ namespace CG.Web.MegaApiClient.Tests
   [Collection("AuthenticatedLoginAsyncTests")]
   public class DownloadUploadAuthenticatedAsync : DownloadUploadAuthenticated
   {
-    private const int Timeout = 20000;
-
     private readonly long savedReportProgressChunkSize;
 
     public DownloadUploadAuthenticatedAsync(AuthenticatedAsyncTestContext context, ITestOutputHelper testOutputHelper)
@@ -44,7 +42,7 @@ namespace CG.Web.MegaApiClient.Tests
 
       // Act
       Task task = this.context.Client.DownloadFileAsync(node, outputFile, progress);
-      bool result = task.Wait(Timeout);
+      bool result = task.Wait(this.Timeout);
 
       // Assert
       Assert.True(result);
@@ -67,7 +65,7 @@ namespace CG.Web.MegaApiClient.Tests
 
       // Act
       Task task = this.context.Client.DownloadFileAsync(new Uri(AuthenticatedTestContext.FileLink), outputFile, progress);
-      bool result = task.Wait(Timeout);
+      bool result = task.Wait(this.Timeout);
 
       // Assert
       Assert.True(result);
@@ -102,7 +100,7 @@ namespace CG.Web.MegaApiClient.Tests
 
         // Act
         Task<INode> task = this.context.Client.UploadAsync(stream, "test", parent, progress);
-        bool result = task.Wait(Timeout);
+        bool result = task.Wait(this.Timeout);
 
         // Assert
         Assert.True(result);
@@ -112,6 +110,14 @@ namespace CG.Web.MegaApiClient.Tests
         Uri uri = this.context.Client.GetDownloadLink(task.Result);
         stream.Position = 0;
         this.AreStreamsEquivalent(this.context.Client.Download(uri), stream);
+      }
+    }
+
+    private int Timeout
+    {
+      get
+      {
+        return this.context.WebTimeout - 10000;
       }
     }
   }
