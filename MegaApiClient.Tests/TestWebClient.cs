@@ -92,6 +92,12 @@ namespace CG.Web.MegaApiClient.Tests
       {
         this._testOutputHelper.WriteLine("AggregateException...");
         ex = aEx.InnerException;
+
+        if (ex is TaskCanceledException tEx)
+        {
+          this._testOutputHelper.WriteLine("TaskCanceledException...");
+          ex = tEx.InnerException;
+        }
       }
 
       this._testOutputHelper.WriteLine($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
