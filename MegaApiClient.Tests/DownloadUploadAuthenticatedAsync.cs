@@ -57,7 +57,6 @@ namespace CG.Web.MegaApiClient.Tests
     public void DownloadFileAsync_FromLink_Succeeds()
     {
       // Arrange
-      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
       const string expectedResultFile = "Data/SampleFile.jpg";
 
       EventTester<double> eventTester = new EventTester<double>();
@@ -67,7 +66,7 @@ namespace CG.Web.MegaApiClient.Tests
       File.Delete(outputFile);
 
       // Act
-      Task task = this.context.Client.DownloadFileAsync(new Uri(link), outputFile, progress);
+      Task task = this.context.Client.DownloadFileAsync(new Uri(AuthenticatedTestContext.FileLink), outputFile, progress);
       bool result = task.Wait(Timeout);
 
       // Assert

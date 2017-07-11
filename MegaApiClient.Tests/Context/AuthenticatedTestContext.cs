@@ -11,23 +11,29 @@ namespace CG.Web.MegaApiClient.Tests.Context
   public class AuthenticatedTestContext : TestContext, IDisposable
   {
     internal const string Username = "megaapiclient@yopmail.com";
-    internal const string Password = "megaapiclient";
+    internal static readonly string Password = Environment.GetEnvironmentVariable("MEGAAPICLIENT_PASSWORD");
+
+    internal const string FileLink = "https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk";
+    internal const string FolderLink = "https://mega.nz/#F!e1ogxQ7T!ee4Q_ocD1bSLmNeg9B6kBw";
+    internal const string FileId = "P8BBzaTS";
+    internal const string FolderId = "e5IjHLLJ";
+    internal const string SubFolderId = "CghQlTCa";
 
     /*
     Storage layout
 
-    +-Root                                      (bsxVBKLL)
-    |   +-SharedFolder                          (KoRAhTbQ) (Outgoing Share)
-    |       |-SharedFile.jpg                    (eooj3IwY)
-    |       +-SharedSubFolder                   (nxxWXJAb) (Outgoing Share)
-    +-Trash                                     (j0wEGbTZ)
-    +-Inbox                                     (zhITTbIJ)
-    +-Contacts
-        +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
-            |-SharedRemoteFile.jpg              (e5wjkSJB)
-            +-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
-                |-SharedRemoteSubFile.jpg       (HtonzYYY)
-                +-SharedRemoteSubSubFolder      (z1YCibCT)
+		+-Root                                      (bsxVBKLL)
+		|   +-SharedFolder                          (e5IjHLLJ) (Outgoing Share)
+		|       |-SharedFile.jpg                    (P8BBzaTS)
+		|       +-SharedSubFolder                   (CghQlTCa) (Outgoing Share)
+		+-Trash                                     (j0wEGbTZ)
+		+-Inbox                                     (zhITTbIJ)
+		+-Contacts
+			+-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
+				|-SharedRemoteFile.jpg              (e5wjkSJB)
+				+-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
+					|-SharedRemoteSubFile.jpg       (HtonzYYY)
+					+-SharedRemoteSubSubFolder      (z1YCibCT)
 
     */
 
@@ -40,12 +46,12 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     private readonly string[] permanentFoldersRootNodes =
     {
-      "KoRAhTbQ" // SharedFolder
+      FolderId // SharedFolder
     };
 
     private readonly string[] permanentFoldersNodes =
     {
-      "nxxWXJAb", // SharedSubFolder
+      SubFolderId, // SharedSubFolder
     };
 
     private readonly string[] permanentRemoteFoldersNodes =
@@ -57,7 +63,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     private readonly string[] permanentFilesNodes =
     {
-      "eooj3IwY", // SharedFile.jpg
+      FileId, // SharedFile.jpg
     };
 
     private readonly string[] permanentRemoteFilesNodes =
@@ -78,6 +84,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     protected override void ConnectClient(IMegaApiClient client)
     {
+      Assert.NotEmpty(Password);
       client.Login(Username, Password);
     }
 

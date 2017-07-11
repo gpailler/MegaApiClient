@@ -14,9 +14,9 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData("KoRAhTbQ", "bsxVBKLL", NodeType.Directory, "SharedFolder", 0, "2016-04-15 22:41:35.0000000+08:00", null)]
-    [InlineData("nxxWXJAb", "KoRAhTbQ", NodeType.Directory, "SharedSubFolder", 0, "2016-04-15 22:41:48.0000000+08:00", null)]
-    [InlineData("eooj3IwY", "KoRAhTbQ", NodeType.File, "SharedFile.jpg", 523265, "2016-04-15 22:42:56.0000000+08:00", "2015-07-14T14:04:51.0000000+08:00")]
+    [InlineData(AuthenticatedTestContext.FolderId, "bsxVBKLL", NodeType.Directory, "SharedFolder", 0, "2017-07-11T10:48:00.0000000+07:00", null)]
+    [InlineData(AuthenticatedTestContext.SubFolderId, AuthenticatedTestContext.FolderId, NodeType.Directory, "SharedSubFolder", 0, "2017-07-11T10:48:01.0000000+07:00", null)]
+    [InlineData(AuthenticatedTestContext.FileId, AuthenticatedTestContext.FolderId, NodeType.File, "SharedFile.jpg", 523265, "2017-07-11T10:48:10.0000000+07:00", "2015-07-14T14:04:51.0000000+08:00")]
     [InlineData("b0I0QDhA", "u4IgDb5K", NodeType.Directory, "SharedRemoteFolder", 0, "2015-05-21T02:35:22.0000000+08:00", null)]
     [InlineData("e5wjkSJB", "b0I0QDhA", NodeType.File, "SharedRemoteFile.jpg", 523265, "2015-05-21T02:36:06.0000000+08:00", "2015-05-19T09:39:50.0000000+08:00")]
     [InlineData("KhZSWI7C", "b0I0QDhA", NodeType.Directory, "SharedRemoteSubFolder", 0, "2015-07-14T17:05:03.0000000+08:00", null)]

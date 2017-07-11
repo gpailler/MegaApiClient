@@ -284,8 +284,7 @@ namespace CG.Web.MegaApiClient.Tests
     [Fact]
     public void GetNodeFromLink_Browse_Succeeds()
     {
-      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
-      var node = this.context.Client.GetNodeFromLink(new Uri(link));
+      var node = this.context.Client.GetNodeFromLink(new Uri(AuthenticatedTestContext.FileLink));
 
       Assert.NotNull(node);
       Assert.Equal("SharedFile.jpg", node.Name);
@@ -296,24 +295,23 @@ namespace CG.Web.MegaApiClient.Tests
     [Fact]
     public void GetNodesFromLink_Succeeds()
     {
-      const string folderLink = "https://mega.nz/#F!6kgE3YIQ!W_8GYHXH-COtmfWxOkMCFQ";
-      var nodes = this.context.Client.GetNodesFromLink(new Uri(folderLink));
+      var nodes = this.context.Client.GetNodesFromLink(new Uri(AuthenticatedTestContext.FolderLink));
 
       Assert.Equal(3, nodes.Count());
       INode node;
       node = Assert.Single(nodes, x => x.Name == "SharedFile.jpg");
       Assert.Equal(523265, node.Size);
       Assert.Equal(DateTime.Parse("2015-07-14T14:04:51.0000000+08:00"), node.ModificationDate);
-      Assert.Equal(DateTime.Parse("2016-04-15T16:42:56.0000000+02:00"), node.CreationDate);
+      Assert.Equal(DateTime.Parse("2017-07-11T10:48:10.0000000+07:00"), node.CreationDate);
 
       node = Assert.Single(nodes, x => x.Name == "SharedFolder");
       Assert.Equal(0, node.Size);
-      Assert.Equal(DateTime.Parse("2016-04-15 22:41:35.0000000+08:00"), node.CreationDate);
+      Assert.Equal(DateTime.Parse("2017-07-11T10:48:00.0000000+07:00"), node.CreationDate);
       Assert.Null(node.ModificationDate);
 
       node = Assert.Single(nodes, x => x.Name == "SharedSubFolder");
       Assert.Equal(0, node.Size);
-      Assert.Equal(DateTime.Parse("2016-04-15 22:41:48.0000000+08:00"), node.CreationDate);
+      Assert.Equal(DateTime.Parse("2017-07-11T10:48:01.0000000+07:00"), node.CreationDate);
       Assert.Null(node.ModificationDate);
     }
   }
