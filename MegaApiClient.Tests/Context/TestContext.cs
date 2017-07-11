@@ -9,9 +9,9 @@ namespace CG.Web.MegaApiClient.Tests.Context
   {
     private const int MaxRetry = 3;
 
-    private readonly Lazy<IMegaApiClient> lazyClient;
     private readonly Lazy<IEnumerable<string>> lazyProtectedNodes;
     private readonly Lazy<IEnumerable<string>> lazyPermanentNodes;
+    private Lazy<IMegaApiClient> lazyClient;
     private ITestOutputHelper testOutputHelper;
 
     protected TestContext()
@@ -46,6 +46,11 @@ namespace CG.Web.MegaApiClient.Tests.Context
     public void AssignLogger(ITestOutputHelper testOutputHelper)
     {
       this.testOutputHelper = testOutputHelper;
+    }
+
+    public void ResetClient()
+    {
+      this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
     }
 
     protected virtual IMegaApiClient CreateClient()

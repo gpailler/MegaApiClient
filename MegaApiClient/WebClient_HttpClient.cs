@@ -40,17 +40,7 @@ namespace CG.Web.MegaApiClient
 
     public Stream GetRequestRaw(Uri url)
     {
-      return this.httpClient.GetStreamAsync(url).ContinueWith(t =>
-      {
-        if (t.IsCompleted)
-        {
-          return t.Result;
-        }
-        else
-        {
-          throw t.Exception?.InnerException ?? t.Exception;
-        }
-      }).Result;
+      return this.httpClient.GetStreamAsync(url).Result;
     }
 
     private string PostRequest(Uri url, Stream dataStream, string contentType)

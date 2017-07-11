@@ -144,6 +144,12 @@ namespace CG.Web.MegaApiClient.Tests
     [Fact]
     public void DownloadLink_ToStream_Succeeds()
     {
+      if (this.context is AnonymousTestContext anonymousContext)
+      {
+        anonymousContext.Client.Logout();
+        anonymousContext.ResetClient();
+      }
+
       const string expectedResultFile = "Data/SampleFile.jpg";
 
       using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
