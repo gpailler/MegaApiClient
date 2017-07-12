@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests.Context
@@ -9,9 +12,9 @@ namespace CG.Web.MegaApiClient.Tests.Context
   {
     private const int MaxRetry = 3;
 
+    private Lazy<IMegaApiClient> lazyClient;
     private readonly Lazy<IEnumerable<string>> lazyProtectedNodes;
     private readonly Lazy<IEnumerable<string>> lazyPermanentNodes;
-    private Lazy<IMegaApiClient> lazyClient;
     private ITestOutputHelper testOutputHelper;
 
     protected TestContext()
@@ -48,15 +51,10 @@ namespace CG.Web.MegaApiClient.Tests.Context
       this.testOutputHelper = testOutputHelper;
     }
 
-    public void ResetClient()
-    {
-      this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
-    }
-
     protected virtual IMegaApiClient CreateClient()
     {
       this.Options = new Options();
-      this.WebClient = new TestWebClient(new WebClient(this.WebTimeout), MaxRetry, this.testOutputHelper);
+      this.WebClient = new TestWebClient(new WebClient(this.WebTimeout, null, new TestMessageHandler(this.testOutputHelper)), MaxRetry, this.testOutputHelper);
 
       return new MegaApiClient(this.Options, this.WebClient);
     }
@@ -81,6 +79,34 @@ namespace CG.Web.MegaApiClient.Tests.Context
     private void OnApiRequestFailed(object sender, ApiRequestFailedEventArgs e)
     {
       this.testOutputHelper.WriteLine($"ApiRequestFailed: {e.ApiResult}, {e.ApiUrl}, {e.AttemptNum}, {e.DelayMilliseconds}ms, {e.ResponseJson}, {e.Exception} {e.Exception?.Message}");
+    }
+
+    private class TestMessageHandler : DelegatingHandler
+    {
+      private readonly ITestOutputHelper testOutputHelper;
+
+      public TestMessageHandler(ITestOutputHelper testOutputHelper)
+      {
+        this.testOutputHelper = testOutputHelper;
+        this.InnerHandler = new HttpClientHandler();
+      }
+
+      protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+      {
+        this.testOutputHelper.WriteLine("Request: {0}", request);
+
+        try
+        {
+          var response = await base.SendAsync(request, cancellationToken);
+          this.testOutputHelper.WriteLine("Response: {0}", response);
+          return response;
+        }
+        catch (Exception ex)
+        {
+          this.testOutputHelper.WriteLine("Exception: {0}-{1}", ex, ex.Message);
+          throw;
+        }
+      }
     }
   }
 }
