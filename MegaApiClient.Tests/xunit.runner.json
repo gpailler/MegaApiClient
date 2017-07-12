@@ -1,4 +1,6 @@
 {
   "shadowCopy": false,
-  "parallelizeTestCollections":  false
+  "parallelizeTestCollections": false,
+  "diagnosticMessages": true,
+  "maxParallelThreads": 1
 }

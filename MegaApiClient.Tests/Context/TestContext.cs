@@ -97,7 +97,6 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
         try
         {
-          Thread.Sleep(500);
           var response = await base.SendAsync(request, cancellationToken);
           this.testOutputHelper.WriteLine("Response: {0}", response);
           return response;
