@@ -88,22 +88,30 @@ namespace CG.Web.MegaApiClient.Tests
 
     private void OnRetry(Exception ex, TimeSpan ts)
     {
-      if (ex is AggregateException aEx)
+      try
       {
-        this._testOutputHelper.WriteLine("AggregateException...");
-        ex = aEx.InnerException;
-
-        if (ex is TaskCanceledException tEx)
+        if (ex is AggregateException aEx)
         {
-          this._testOutputHelper.WriteLine("TaskCanceledException...");
-          if (tEx.InnerException != null)
+          this._testOutputHelper.WriteLine("AggregateException...");
+          ex = aEx.InnerException;
+
+          if (ex is TaskCanceledException tEx)
           {
-            ex = tEx.InnerException;
+            this._testOutputHelper.WriteLine("TaskCanceledException...");
+            if (tEx.InnerException != null)
+            {
+              ex = tEx.InnerException;
+            }
           }
         }
-      }
 
-      this._testOutputHelper.WriteLine($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
+        this._testOutputHelper.WriteLine($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
+      }
+      catch (InvalidOperationException ex2)
+      {
+        // We're out of a test so logger is not working
+        Console.WriteLine("Retry out of a test: {0}", ex2.Message);
+      }
     }
   }
 }
