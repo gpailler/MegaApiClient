@@ -12,7 +12,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
   {
     private const int MaxRetry = 3;
 
-    private Lazy<IMegaApiClient> lazyClient;
+    private readonly Lazy<IMegaApiClient> lazyClient;
     private readonly Lazy<IEnumerable<string>> lazyProtectedNodes;
     private readonly Lazy<IEnumerable<string>> lazyPermanentNodes;
     private ITestOutputHelper testOutputHelper;
@@ -53,8 +53,12 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     protected virtual IMegaApiClient CreateClient()
     {
-      this.Options = new Options();
+      this.Options = new Options(applicationKey: "ewZQFBBC");
       this.WebClient = new TestWebClient(new WebClient(this.WebTimeout, null, new TestMessageHandler(this.testOutputHelper)), MaxRetry, this.testOutputHelper);
+
+      // Add some delay before any call
+      Random r = new Random();
+      ((TestWebClient)this.WebClient).OnCalled += (arg1, arg2) => Thread.Sleep((int)r.Next(250, 750));
 
       return new MegaApiClient(this.Options, this.WebClient);
     }
@@ -81,14 +85,13 @@ namespace CG.Web.MegaApiClient.Tests.Context
       this.testOutputHelper.WriteLine($"ApiRequestFailed: {e.ApiResult}, {e.ApiUrl}, {e.AttemptNum}, {e.DelayMilliseconds}ms, {e.ResponseJson}, {e.Exception} {e.Exception?.Message}");
     }
 
-    private class TestMessageHandler : DelegatingHandler
+    private class TestMessageHandler : HttpClientHandler
     {
       private readonly ITestOutputHelper testOutputHelper;
 
       public TestMessageHandler(ITestOutputHelper testOutputHelper)
       {
         this.testOutputHelper = testOutputHelper;
-        this.InnerHandler = new HttpClientHandler();
       }
 
       protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
