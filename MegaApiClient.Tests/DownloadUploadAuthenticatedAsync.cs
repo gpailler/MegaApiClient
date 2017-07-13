@@ -28,7 +28,7 @@ namespace CG.Web.MegaApiClient.Tests
     [Theory]
     [InlineData(null, 10L)]
     [InlineData(10L, 65L)]
-    public long DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize, long expectedResult)
+    public void DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize, long expectedResult)
     {
       // Arrange
       this.context.Options.ReportProgressChunkSize = reportProgressChunkSize.GetValueOrDefault(this.context.Options.ReportProgressChunkSize);
@@ -48,7 +48,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.True(result);
       this.AreFileEquivalent(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), outputFile);
 
-      return eventTester.Calls;
+      Assert.Equal(expectedResult, eventTester.Calls);
     }
 
     [Fact]
@@ -117,7 +117,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
       get
       {
-        return this.context.WebTimeout - 10000;
+        return (int)(this.context.WebTimeout * 0.9);
       }
     }
   }
