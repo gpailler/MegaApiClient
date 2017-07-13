@@ -22,18 +22,18 @@ namespace CG.Web.MegaApiClient.Tests.Context
     /*
     Storage layout
 
-		+-Root                                      (bsxVBKLL)
-		|   +-SharedFolder                          (e5IjHLLJ) (Outgoing Share)
-		|       |-SharedFile.jpg                    (P8BBzaTS)
-		|       +-SharedSubFolder                   (CghQlTCa) (Outgoing Share)
-		+-Trash                                     (j0wEGbTZ)
-		+-Inbox                                     (zhITTbIJ)
-		+-Contacts
-			+-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
-				|-SharedRemoteFile.jpg              (e5wjkSJB)
-				+-SharedRemoteSubFolder             (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
-					|-SharedRemoteSubFile.jpg       (HtonzYYY)
-					+-SharedRemoteSubSubFolder      (z1YCibCT)
+    +-Root                                      (bsxVBKLL)
+    |   +-SharedFolder                          (e5IjHLLJ) (Outgoing Share)
+    |       |-SharedFile.jpg                    (P8BBzaTS)
+    |       +-SharedSubFolder                   (CghQlTCa) (Outgoing Share)
+    +-Trash                                     (j0wEGbTZ)
+    +-Inbox                                     (zhITTbIJ)
+    +-Contacts
+      +-SharedRemoteFolder                    (b0I0QDhA) (Incoming Share)
+        |-SharedRemoteFile.jpg                (e5wjkSJB)
+        +-SharedRemoteSubFolder               (KhZSWI7C) (Incoming Share / Subfolder of SharedRemoteFolder)
+          |-SharedRemoteSubFile.jpg           (HtonzYYY)
+          +-SharedRemoteSubSubFolder          (z1YCibCT)
 
     */
 
