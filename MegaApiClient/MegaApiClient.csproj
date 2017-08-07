@@ -78,7 +78,6 @@
 
   <ItemGroup Condition="$(NetCore) == True">
     <Compile Remove="Properties\AssemblyInfo.cs" />
-    <PackageReference Include="System.Threading.Thread" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.2" />
   </ItemGroup>
 

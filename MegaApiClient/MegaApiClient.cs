@@ -785,7 +785,7 @@
             if (apiResult == ApiResultCode.RequestFailedRetry || apiResult == ApiResultCode.RequestFailedPermanetly || apiResult == ApiResultCode.TooManyRequests)
             {
               // Restart upload from the beginning
-              Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
+              requestDelay = this.Wait(requestDelay);
 
               // Reset steam position
               stream.Seek(0, SeekOrigin.Begin);
@@ -995,7 +995,7 @@
 
           if (apiCode == ApiResultCode.RequestFailedRetry)
           {
-            Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
+            requestDelay = this.Wait(requestDelay);
             continue;
           }
 
@@ -1010,6 +1010,20 @@
 
       string data = ((JArray)jsonData)[0].ToString();
       return (typeof(TResponse) == typeof(string)) ? data as TResponse : JsonConvert.DeserializeObject<TResponse>(data, new GetNodesResponseConverter(key));
+    }
+
+    private int Wait(int requestDelay)
+    {
+      requestDelay = (int) Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor);
+#if NET40
+      Thread.Sleep(requestDelay);
+#else
+      Task
+        .Delay(requestDelay)
+        .Wait();
+#endif
+
+      return requestDelay;
     }
 
     private Uri GenerateUrl(Dictionary<string, string> queryArguments)
