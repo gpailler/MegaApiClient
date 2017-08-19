@@ -56,10 +56,6 @@ namespace CG.Web.MegaApiClient.Tests.Context
       this.Options = new Options(applicationKey: "ewZQFBBC");
       this.WebClient = new TestWebClient(new WebClient(this.WebTimeout, null, new TestMessageHandler(this.testOutputHelper)), MaxRetry, this.testOutputHelper);
 
-      // Add some delay before any call
-      Random r = new Random();
-      ((TestWebClient)this.WebClient).OnCalled += (arg1, arg2) => Thread.Sleep((int)r.Next(250, 750));
-
       return new MegaApiClient(this.Options, this.WebClient);
     }
 
@@ -96,27 +92,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
       protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
       {
-        try
-        {
-          this.testOutputHelper.WriteLine("Request: {0}", request);
-
-          try
-          {
-            var response = await base.SendAsync(request, cancellationToken);
-            this.testOutputHelper.WriteLine("Response: {0}", response);
-            return response;
-          }
-          catch (Exception ex)
-          {
-            this.testOutputHelper.WriteLine("Exception: {0}-{1}", ex, ex.Message);
-            throw;
-          }
-        }
-        catch (InvalidOperationException e)
-        {
-          Console.WriteLine("Call outside a test: {0}", e.Message);
-          return await base.SendAsync(request, cancellationToken);
-        }
+        return await base.SendAsync(request, cancellationToken);
       }
     }
   }
