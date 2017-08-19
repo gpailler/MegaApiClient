@@ -1,9 +1,9 @@
-using System;
-using System.IO;
-using System.Threading;
-
 namespace CG.Web.MegaApiClient
 {
+  using System;
+  using System.IO;
+  using System.Threading;
+
   public class CancellableStream : Stream
   {
     private Stream stream;
@@ -101,12 +101,14 @@ namespace CG.Web.MegaApiClient
       this.stream.Write(buffer, offset, count);
     }
 
+#if !NETCORE
     public override void Close()
     {
       this.stream?.Close();
 
       base.Close();
     }
+#endif
 
     protected override void Dispose(bool disposing)
     {

@@ -1,0 +1,89 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>MegaApiClient library gives full access to Mega.co.nz API. You can manage filesystem and download/upload files.</Description>
+    <Copyright>Copyright ©  2017</Copyright>
+    <AssemblyTitle>Mega.co.nz client library</AssemblyTitle>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <VersionPrefix>1.6.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <Title>Mega.co.nz client library</Title>
+    <Authors>Gregoire Pailler</Authors>
+    <AssemblyName>MegaApiClient</AssemblyName>
+    <PackageProjectUrl>https://github.com/gpailler/MegaApiClient</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/gpailler/MegaApiClient/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>mega;mega.co.nz;api</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/gpailler/MegaApiClient</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyTitleAttribute>true</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>true</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>true</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>true</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>true</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>true</GenerateAssemblyCopyrightAttribute>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard1.6</TargetFrameworks>
+    <RootNamespace>CG.Web.MegaApiClient</RootNamespace>
+    <SignAssembly>False</SignAssembly>
+    <DocumentationFile>bin\docs\MegaApiClient.xml</DocumentationFile>
+  </PropertyGroup>
+
+
+
+  <PropertyGroup>
+    <NetFramework>True</NetFramework>
+    <NetCore>False</NetCore>
+    <AsyncSupport>True</AsyncSupport>
+    <UseHttpClient>True</UseHttpClient>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard1.6'">
+    <NetFramework>False</NetFramework>
+    <NetCore>True</NetCore>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
+    <AsyncSupport>False</AsyncSupport>
+    <UseHttpClient>False</UseHttpClient>
+  </PropertyGroup>
+
+
+
+  <PropertyGroup Condition="$(AsyncSupport) == True">
+    <DefineConstants>ASYNC</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(AsyncSupport) == True And $(NetCore) == True">
+    <DefineConstants>ASYNC;NETCORE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(NetFramework) == True">
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(UseHttpClient) == True">
+    <PackageReference Include="System.Net.Http" Version="4.3.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(NetFramework) == True">
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(NetCore) == True">
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+  </ItemGroup>
+
+</Project>

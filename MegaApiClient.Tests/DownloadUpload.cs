@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Xunit;
@@ -102,7 +103,7 @@ namespace CG.Web.MegaApiClient.Tests
         {
           if (callType == TestWebClient.CallType.PostRequestRaw)
           {
-            if (url.AbsolutePath.EndsWith("/0"))
+            if (url.AbsolutePath.EndsWith("/0", StringComparison.Ordinal))
             {
               // Reset counter when it's the first chunk (to avoid error when Upload is restarted from start)
               uploadCalls = 1;
@@ -143,28 +144,25 @@ namespace CG.Web.MegaApiClient.Tests
     [Fact]
     public void DownloadLink_ToStream_Succeeds()
     {
-      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
       const string expectedResultFile = "Data/SampleFile.jpg";
 
       using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
       {
-        this.AreStreamsEquivalent(this.context.Client.Download(new Uri(link)), stream);
+        this.AreStreamsEquivalent(this.context.Client.Download(new Uri(AuthenticatedTestContext.FileLink)), stream);
       }
     }
 
     [Fact]
     public void Download_ValidateStream_Succeeds()
     {
-      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
-
-      using (Stream stream = this.context.Client.Download(new Uri(link)))
+      using (Stream stream = this.context.Client.Download(new Uri(AuthenticatedTestContext.FileLink)))
       {
         Assert.NotNull(stream);
         Assert.Equal(523265, stream.Length);
-        Assert.Equal(true, stream.CanRead);
-        Assert.Equal(false, stream.CanSeek);
-        Assert.Equal(false, stream.CanTimeout);
-        Assert.Equal(false, stream.CanWrite);
+        Assert.True(stream.CanRead);
+        Assert.False(stream.CanSeek);
+        Assert.False(stream.CanTimeout);
+        Assert.False(stream.CanWrite);
         Assert.Equal(0, stream.Position);
       }
     }
@@ -187,21 +185,20 @@ namespace CG.Web.MegaApiClient.Tests
         yield return new object[] { new Uri("https://mega.nz"), outFile, typeof(ArgumentException) };
         yield return new object[] { new Uri("https://mega.nz/#!38JjRYIA"), outFile, typeof(ArgumentException) };
         yield return new object[] { new Uri("https://mega.nz/#!ulISSQIb!"), outFile, typeof(ArgumentException) };
-        yield return new object[] { new Uri("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), null, typeof(ArgumentNullException) };
-        yield return new object[] { new Uri("https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), string.Empty, typeof(ArgumentNullException) };
-        yield return new object[] { new Uri("https://mega.co.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20"), outFile, typeof(IOException) };
+        yield return new object[] { new Uri(AuthenticatedTestContext.FileLink), null, typeof(ArgumentNullException) };
+        yield return new object[] { new Uri(AuthenticatedTestContext.FileLink), string.Empty, typeof(ArgumentNullException) };
+        yield return new object[] { new Uri(AuthenticatedTestContext.FileLink), outFile, typeof(IOException) };
       }
     }
 
     [Fact]
     public void DownloadLink_ToFile_Succeeds()
     {
-      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
       const string expectedResultFile = "Data/SampleFile.jpg";
 
       string outFile = Path.GetTempFileName();
       File.Delete(outFile);
-      this.context.Client.DownloadFile(new Uri(link), outFile);
+      this.context.Client.DownloadFile(new Uri(AuthenticatedTestContext.FileLink), outFile);
 
       Assert.Equal(File.ReadAllBytes(this.GetAbsoluteFilePath(expectedResultFile)), File.ReadAllBytes(outFile));
     }
@@ -209,9 +206,8 @@ namespace CG.Web.MegaApiClient.Tests
     [Fact]
     public void GetNodesFromLink_Download_Succeeds()
     {
-      const string folderLink = "https://mega.nz/#F!6kgE3YIQ!W_8GYHXH-COtmfWxOkMCFQ";
       const string expectedResultFile = "Data/SampleFile.jpg";
-      var nodes = this.context.Client.GetNodesFromLink(new Uri(folderLink));
+      var nodes = this.context.Client.GetNodesFromLink(new Uri(AuthenticatedTestContext.FolderLink));
       var node = nodes.Single(x => x.Name == "SharedFile.jpg");
 
       using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
@@ -247,7 +243,7 @@ namespace CG.Web.MegaApiClient.Tests
 
     protected string GetAbsoluteFilePath(string relativeFilePath)
     {
-      var currentAssembly = this.GetType().Assembly.Location;
+      var currentAssembly = this.GetType().GetTypeInfo().Assembly.Location;
       var assemblyDirectory = Path.GetDirectoryName(currentAssembly);
 
       return Path.Combine(assemblyDirectory, relativeFilePath);

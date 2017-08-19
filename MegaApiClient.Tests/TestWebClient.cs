@@ -13,6 +13,7 @@ namespace CG.Web.MegaApiClient.Tests
   {
     private readonly IWebClient _webClient;
     private readonly Policy _policy;
+    private readonly ITestOutputHelper _testOutputHelper;
 
     public TestWebClient(IWebClient webClient, int maxRetry, ITestOutputHelper testOutputHelper)
     {
@@ -21,7 +22,9 @@ namespace CG.Web.MegaApiClient.Tests
         .Handle<WebException>()
         .Or<SocketException>()
         .Or<TaskCanceledException>()
-        .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), (ex, ts) => testOutputHelper.WriteLine($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}"));
+        .Or<AggregateException>()
+        .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), this.OnRetry);
+      this._testOutputHelper = testOutputHelper;
     }
 
     public enum CallType
@@ -81,6 +84,34 @@ namespace CG.Web.MegaApiClient.Tests
       cloneStream.Position = 0;
 
       return cloneStream;
+    }
+
+    private void OnRetry(Exception ex, TimeSpan ts)
+    {
+      try
+      {
+        if (ex is AggregateException aEx)
+        {
+          this._testOutputHelper.WriteLine("AggregateException...");
+          ex = aEx.InnerException;
+
+          if (ex is TaskCanceledException tEx)
+          {
+            this._testOutputHelper.WriteLine("TaskCanceledException...");
+            if (tEx.InnerException != null)
+            {
+              ex = tEx.InnerException;
+            }
+          }
+        }
+
+        this._testOutputHelper.WriteLine($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
+      }
+      catch (InvalidOperationException ex2)
+      {
+        // We're out of a test so logger is not working
+        Console.WriteLine("Retry out of a test: {0}", ex2.Message);
+      }
     }
   }
 }

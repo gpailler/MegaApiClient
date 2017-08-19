@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using CG.Web.MegaApiClient.Tests.Context;
 using Xunit;
@@ -10,8 +11,6 @@ namespace CG.Web.MegaApiClient.Tests
   [Collection("AuthenticatedLoginAsyncTests")]
   public class DownloadUploadAuthenticatedAsync : DownloadUploadAuthenticated
   {
-    private const int Timeout = 20000;
-
     private readonly long savedReportProgressChunkSize;
 
     public DownloadUploadAuthenticatedAsync(AuthenticatedAsyncTestContext context, ITestOutputHelper testOutputHelper)
@@ -29,45 +28,44 @@ namespace CG.Web.MegaApiClient.Tests
     [Theory]
     [InlineData(null, 10L)]
     [InlineData(10L, 65L)]
-    public long DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize, long expectedResult)
+    public void DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize, long expectedResult)
     {
       // Arrange
       this.context.Options.ReportProgressChunkSize = reportProgressChunkSize.GetValueOrDefault(this.context.Options.ReportProgressChunkSize);
       var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
 
       EventTester<double> eventTester = new EventTester<double>();
-      Progress<double> progress = new Progress<double>(eventTester.OnRaised);
+      IProgress<double> progress = new SyncProgress<double>(eventTester.OnRaised);
 
       string outputFile = Path.GetTempFileName();
       File.Delete(outputFile);
 
       // Act
       Task task = this.context.Client.DownloadFileAsync(node, outputFile, progress);
-      bool result = task.Wait(Timeout);
+      bool result = task.Wait(this.Timeout);
 
       // Assert
       Assert.True(result);
       this.AreFileEquivalent(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), outputFile);
 
-      return eventTester.Calls;
+      Assert.Equal(expectedResult, eventTester.Calls);
     }
 
     [Fact]
     public void DownloadFileAsync_FromLink_Succeeds()
     {
       // Arrange
-      const string link = "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20";
       const string expectedResultFile = "Data/SampleFile.jpg";
 
       EventTester<double> eventTester = new EventTester<double>();
-      Progress<double> progress = new Progress<double>(eventTester.OnRaised);
+      IProgress<double> progress = new SyncProgress<double>(eventTester.OnRaised);
 
       string outputFile = Path.GetTempFileName();
       File.Delete(outputFile);
 
       // Act
-      Task task = this.context.Client.DownloadFileAsync(new Uri(link), outputFile, progress);
-      bool result = task.Wait(Timeout);
+      Task task = this.context.Client.DownloadFileAsync(new Uri(AuthenticatedTestContext.FileLink), outputFile, progress);
+      bool result = task.Wait(this.Timeout);
 
       // Assert
       Assert.True(result);
@@ -88,7 +86,7 @@ namespace CG.Web.MegaApiClient.Tests
       {
         double previousProgression = 0;
         EventTester<double> eventTester = new EventTester<double>();
-        Progress<double> progress = new Progress<double>(x =>
+        IProgress<double> progress = new SyncProgress<double>(x =>
         {
           if (previousProgression > x)
           {
@@ -102,7 +100,7 @@ namespace CG.Web.MegaApiClient.Tests
 
         // Act
         Task<INode> task = this.context.Client.UploadAsync(stream, "test", parent, progress);
-        bool result = task.Wait(Timeout);
+        bool result = task.Wait(this.Timeout);
 
         // Assert
         Assert.True(result);
@@ -112,6 +110,14 @@ namespace CG.Web.MegaApiClient.Tests
         Uri uri = this.context.Client.GetDownloadLink(task.Result);
         stream.Position = 0;
         this.AreStreamsEquivalent(this.context.Client.Download(uri), stream);
+      }
+    }
+
+    private int Timeout
+    {
+      get
+      {
+        return (int)(this.context.WebTimeout * 0.9);
       }
     }
   }

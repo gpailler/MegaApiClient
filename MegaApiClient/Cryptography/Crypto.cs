@@ -3,18 +3,20 @@
   using System;
   using System.Security.Cryptography;
 
+  using CG.Web.MegaApiClient.Serialization;
+
   using Newtonsoft.Json;
 
   internal class Crypto
   {
-    private static readonly Rijndael RijndaelCbc;
+    private static readonly Aes AesCbc;
     private static readonly byte[] DefaultIv = new byte[16];
 
     static Crypto()
     {
-      RijndaelCbc = Rijndael.Create();
-      RijndaelCbc.Padding = PaddingMode.None;
-      RijndaelCbc.Mode = CipherMode.CBC;
+      AesCbc = Aes.Create();
+      AesCbc.Padding = PaddingMode.None;
+      AesCbc.Mode = CipherMode.CBC;
     }
 
     #region Key
@@ -69,7 +71,7 @@
 
     public static byte[] DecryptAes(byte[] data, byte[] key)
     {
-      using (ICryptoTransform decryptor = RijndaelCbc.CreateDecryptor(key, DefaultIv))
+      using (ICryptoTransform decryptor = AesCbc.CreateDecryptor(key, DefaultIv))
       {
         return decryptor.TransformFinalBlock(data, 0, data.Length);
       }
@@ -77,7 +79,7 @@
 
     public static byte[] EncryptAes(byte[] data, byte[] key)
     {
-      using (ICryptoTransform encryptor = RijndaelCbc.CreateEncryptor(key, DefaultIv))
+      using (ICryptoTransform encryptor = AesCbc.CreateEncryptor(key, DefaultIv))
       {
         return encryptor.TransformFinalBlock(data, 0, data.Length);
       }
@@ -85,13 +87,13 @@
 
     public static byte[] CreateAesKey()
     {
-      using (Rijndael rijndael = Rijndael.Create())
+      using (Aes aes = Aes.Create())
       {
-        rijndael.Mode = CipherMode.CBC;
-        rijndael.KeySize = 128;
-        rijndael.Padding = PaddingMode.None;
-        rijndael.GenerateKey();
-        return rijndael.Key;
+        aes.Mode = CipherMode.CBC;
+        aes.KeySize = 128;
+        aes.Padding = PaddingMode.None;
+        aes.GenerateKey();
+        return aes.Key;
       }
     }
 

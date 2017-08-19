@@ -12,7 +12,7 @@ namespace CG.Web.MegaApiClient
     public const int DefaultBufferSize = 8192;
     public const int DefaultChunksPackSize = 1024 * 1024;
 
-#if NET45
+#if ASYNC
     public const long DefaultReportProgressChunkSize = 1024 * 50;
 #endif
 
@@ -24,7 +24,7 @@ namespace CG.Web.MegaApiClient
       float apiRequestDelayExponentialFactor = DefaultApiRequestDelayExponentialFactor,
       int bufferSize = DefaultBufferSize,
       int chunksPackSize = DefaultChunksPackSize
-#if NET45
+#if ASYNC
       ,
       long reportProgressChunkSize = DefaultReportProgressChunkSize
 #endif
@@ -40,7 +40,7 @@ namespace CG.Web.MegaApiClient
       this.BufferSize = bufferSize;
       this.ChunksPackSize = chunksPackSize;
 
-#if NET45
+#if ASYNC
       this.ReportProgressChunkSize = reportProgressChunkSize;
 #endif
     }
@@ -72,7 +72,7 @@ namespace CG.Web.MegaApiClient
     /// </summary>
     public int ChunksPackSize { get; internal set; }
 
-#if NET45
+#if ASYNC
     public long ReportProgressChunkSize { get; internal set;}
 #endif
   }

@@ -1,9 +1,12 @@
 ﻿namespace CG.Web.MegaApiClient
 {
   using System;
+  using System.Collections.Generic;
   using System.Diagnostics;
   using System.Linq;
   using System.Runtime.Serialization;
+
+  using CG.Web.MegaApiClient.Serialization;
 
   using Newtonsoft.Json;
 
@@ -69,8 +72,13 @@
   [DebuggerDisplay("Node - Type: {Type} - Name: {Name} - Id: {Id}")]
   internal class Node : NodeInfo, INode, INodeCrypto
   {
-    private Node()
+    private byte[] masterKey;
+    private List<SharedKey> sharedKeys;
+
+    public Node(byte[] masterKey, ref List<SharedKey> sharedKeys)
     {
+      this.masterKey = masterKey;
+      this.sharedKeys = sharedKeys;
     }
 
     #region Public properties
@@ -121,69 +129,59 @@
     [OnDeserialized]
     public void OnDeserialized(StreamingContext ctx)
     {
-      object[] context = (object[])ctx.Context;
-      GetNodesResponse nodesResponse = (GetNodesResponse)context[0];
-      if (context.Length == 1)
+      // Add key from incoming sharing.
+      if (this.SharingKey != null && this.sharedKeys.Any(x => x.Id == this.Id) == false)
       {
-        // Add key from incoming sharing.
-        if (this.SharingKey != null && nodesResponse.SharedKeys.Any(x => x.Id == this.Id) == false)
-        {
-          nodesResponse.SharedKeys.Add(new SharedKey(this.Id, this.SharingKey));
-        }
-        return;
+        this.sharedKeys.Add(new SharedKey(this.Id, this.SharingKey));
       }
-      else
+
+      this.CreationDate = this.SerializedCreationDate.ToDateTime();
+
+      if (this.Type == NodeType.File || this.Type == NodeType.Directory)
       {
-        byte[] masterKey = (byte[])context[1];
+        // There are cases where the SerializedKey property contains multiple keys separated with /
+        // This can occur when a folder is shared and the parent is shared too.
+        // Both keys are working so we use the first one
+        string serializedKey = this.SerializedKey.Split('/')[0];
+        int splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
+        byte[] encryptedKey = serializedKey.Substring(splitPosition + 1).FromBase64();
 
-        this.CreationDate = this.SerializedCreationDate.ToDateTime();
-
-        if (this.Type == NodeType.File || this.Type == NodeType.Directory)
+        // If node is shared, we need to retrieve shared masterkey
+        if (this.sharedKeys != null)
         {
-          // There are cases where the SerializedKey property contains multiple keys separated with /
-          // This can occur when a folder is shared and the parent is shared too.
-          // Both keys are working so we use the first one
-          string serializedKey = this.SerializedKey.Split('/')[0];
-          int splitPosition = serializedKey.IndexOf(":", StringComparison.InvariantCulture);
-          byte[] encryptedKey = serializedKey.Substring(splitPosition + 1).FromBase64();
-
-          // If node is shared, we need to retrieve shared masterkey
-          if (nodesResponse.SharedKeys != null)
+          string handle = serializedKey.Substring(0, splitPosition);
+          SharedKey sharedKey = this.sharedKeys.FirstOrDefault(x => x.Id == handle);
+          if (sharedKey != null)
           {
-            string handle = serializedKey.Substring(0, splitPosition);
-            SharedKey sharedKey = nodesResponse.SharedKeys.FirstOrDefault(x => x.Id == handle);
-            if (sharedKey != null)
+            this.masterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), this.masterKey);
+            if (this.Type == NodeType.Directory)
             {
-              masterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), masterKey);
-              if (this.Type == NodeType.Directory)
-              {
-                this.SharedKey = masterKey;
-              }
-              else
-              {
-                this.SharedKey = Crypto.DecryptKey(encryptedKey, masterKey);
-              }
+              this.SharedKey = this.masterKey;
+            }
+            else
+            {
+              this.SharedKey = Crypto.DecryptKey(encryptedKey, this.masterKey);
             }
           }
-
-          this.FullKey = Crypto.DecryptKey(encryptedKey, masterKey);
-
-          if (this.Type == NodeType.File)
-          {
-            byte[] iv, metaMac, fileKey;
-            Crypto.GetPartsFromDecryptedKey(this.FullKey, out iv, out metaMac, out fileKey);
-
-            this.Iv = iv;
-            this.MetaMac = metaMac;
-            this.Key = fileKey;
-          }
-          else
-          {
-            this.Key = this.FullKey;
-          }
-
-          this.Attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
         }
+
+        this.FullKey = Crypto.DecryptKey(encryptedKey, this.masterKey);
+
+        if (this.Type == NodeType.File)
+        {
+          byte[] iv, metaMac, fileKey;
+          Crypto.GetPartsFromDecryptedKey(this.FullKey, out iv, out metaMac, out fileKey);
+
+          this.Iv = iv;
+          this.MetaMac = metaMac;
+          this.Key = fileKey;
+        }
+        else
+        {
+          this.Key = this.FullKey;
+        }
+
+        this.Attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
       }
     }
 

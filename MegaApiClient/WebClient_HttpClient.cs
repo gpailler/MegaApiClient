@@ -1,4 +1,5 @@
-﻿namespace CG.Web.MegaApiClient
+﻿#if !NET40
+namespace CG.Web.MegaApiClient
 {
   using System;
   using System.IO;
@@ -13,11 +14,12 @@
   {
     private const int DefaultResponseTimeout = Timeout.Infinite;
 
-    private readonly HttpClient httpClient = new HttpClient();
+    private readonly HttpClient httpClient;
 
-    public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null)
+    public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null, HttpMessageHandler messageHandler = null)
     {
       this.BufferSize = Options.DefaultBufferSize;
+      this.httpClient = messageHandler == null ? new HttpClient() : new HttpClient(messageHandler);
       this.httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
       this.httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent ?? this.GenerateUserAgent());
     }
@@ -62,8 +64,9 @@
 
     private ProductInfoHeaderValue GenerateUserAgent()
     {
-      AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+      AssemblyName assemblyName = this.GetType().GetTypeInfo().Assembly.GetName();
       return new ProductInfoHeaderValue(assemblyName.Name, assemblyName.Version.ToString(2));
     }
   }
 }
+#endif
