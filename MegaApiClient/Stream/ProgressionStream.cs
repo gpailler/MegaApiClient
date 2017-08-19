@@ -1,3 +1,4 @@
+#if ASYNC
 namespace CG.Web.MegaApiClient
 {
   using System.IO;
@@ -81,3 +82,4 @@ namespace CG.Web.MegaApiClient
     }
   }
 }
+#endif

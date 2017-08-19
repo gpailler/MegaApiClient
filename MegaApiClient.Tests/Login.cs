@@ -64,7 +64,7 @@ namespace CG.Web.MegaApiClient.Tests
 
     [Theory]
     [InlineData("username", "password", ApiResultCode.BadArguments)]
-    [InlineData("username@example.com", "password", ApiResultCode.ResourceNotExists)]
+    [InlineData("username@example.com", "password", ApiResultCode.RequestIncomplete)]
     public void Login_InvalidCredentials_Throws(string email, string password, ApiResultCode expectedErrorCode)
     {
       var exception = Assert.Throws<ApiException>(() => this.context.Client.Login(email, password));
@@ -80,7 +80,13 @@ namespace CG.Web.MegaApiClient.Tests
 
     public static IEnumerable<object[]> Credentials
     {
-      get { yield return new[] {AuthenticatedTestContext.Username, AuthenticatedTestContext.Password }; }
+      get
+      {
+        Assert.NotEmpty(AuthenticatedTestContext.Username);
+        Assert.NotEmpty(AuthenticatedTestContext.Password);
+
+        yield return new[] {AuthenticatedTestContext.Username, AuthenticatedTestContext.Password };
+      }
     }
 
     [Theory, MemberData(nameof(Credentials))]

@@ -76,8 +76,8 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData("eooj3IwY", "https://mega.nz/#!ulISSQIb!RSz1DoCSGANrpphQtkr__uACIUZsFkiPWEkldOHNO20")]
-    [InlineData("KoRAhTbQ", "https://mega.nz/#F!6kgE3YIQ!W_8GYHXH-COtmfWxOkMCFQ")]
+    [InlineData(AuthenticatedTestContext.FileId, AuthenticatedTestContext.FileLink)]
+    [InlineData(AuthenticatedTestContext.FolderId, AuthenticatedTestContext.FolderLink)]
     public void GetDownloadLink_ExistingLinks_Succeeds(string id, string expectedLink)
     {
       var node = this.GetNode(id);

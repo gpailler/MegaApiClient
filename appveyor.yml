@@ -1,5 +1,5 @@
-version: 1.5.0.{build}
-image: Visual Studio 2015
+version: 1.6.0.{build}
+image: Visual Studio 2017
 
 pull_requests:
   do_not_increment_build_number: true
@@ -12,6 +12,8 @@ skip_branch_with_pr: true
 environment:
   COVERALLS_REPO_TOKEN:
     secure: uJvwK/1oZXprkJ46fkTLEPBCGmHO15dUd1NxeUJl8P1l/TeaOhvlRoyjvZkAfLUT
+  MEGAAPICLIENT_PASSWORD:
+    secure: S0InrLOJHUAoGRCks4oKpQ==
 
 build_script:
 - ps: .\build.ps1

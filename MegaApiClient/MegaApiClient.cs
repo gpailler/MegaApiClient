@@ -9,7 +9,9 @@
   using System.Runtime.Serialization;
   using System.Text.RegularExpressions;
   using System.Threading;
-  using System.Web;
+  using System.Threading.Tasks;
+
+  using CG.Web.MegaApiClient.Serialization;
 
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
@@ -783,7 +785,7 @@
             if (apiResult == ApiResultCode.RequestFailedRetry || apiResult == ApiResultCode.RequestFailedPermanetly || apiResult == ApiResultCode.TooManyRequests)
             {
               // Restart upload from the beginning
-              Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
+              requestDelay = this.Wait(requestDelay);
 
               // Reset steam position
               stream.Seek(0, SeekOrigin.Begin);
@@ -947,23 +949,23 @@
       return this.Request<string>(request);
     }
 
-    private TResponse Request<TResponse>(RequestBase request, object context = null)
+    private TResponse Request<TResponse>(RequestBase request, byte[] key= null)
             where TResponse : class
     {
       if (this.options.SynchronizeApiRequests)
       {
         lock (this.apiRequestLocker)
         {
-          return this.RequestCore<TResponse>(request, context);
+          return this.RequestCore<TResponse>(request, key);
         }
       }
       else
       {
-        return this.RequestCore<TResponse>(request, context);
+        return this.RequestCore<TResponse>(request, key);
       }
     }
 
-    private TResponse RequestCore<TResponse>(RequestBase request, object context = null)
+    private TResponse RequestCore<TResponse>(RequestBase request, byte[] key)
         where TResponse : class
     {
       string dataRequest = JsonConvert.SerializeObject(new object[] { request });
@@ -993,7 +995,7 @@
 
           if (apiCode == ApiResultCode.RequestFailedRetry)
           {
-            Thread.Sleep(requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor));
+            requestDelay = this.Wait(requestDelay);
             continue;
           }
 
@@ -1006,17 +1008,27 @@
         break;
       }
 
-      JsonSerializerSettings settings = new JsonSerializerSettings();
-      settings.Context = new StreamingContext(StreamingContextStates.All, context);
-
       string data = ((JArray)jsonData)[0].ToString();
-      return (typeof(TResponse) == typeof(string)) ? data as TResponse : JsonConvert.DeserializeObject<TResponse>(data, settings);
+      return (typeof(TResponse) == typeof(string)) ? data as TResponse : JsonConvert.DeserializeObject<TResponse>(data, new GetNodesResponseConverter(key));
     }
 
-    private Uri GenerateUrl(NameValueCollection queryArguments)
+    private int Wait(int requestDelay)
     {
-      UriBuilder builder = new UriBuilder(BaseApiUri);
-      NameValueCollection query = HttpUtility.ParseQueryString(builder.Query);
+      requestDelay = (int) Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor);
+#if NET40
+      Thread.Sleep(requestDelay);
+#else
+      Task
+        .Delay(requestDelay)
+        .Wait();
+#endif
+
+      return requestDelay;
+    }
+
+    private Uri GenerateUrl(Dictionary<string, string> queryArguments)
+    {
+      var query = new Dictionary<string, string>(queryArguments);
       query["id"] = (this.sequenceIndex++ % uint.MaxValue).ToString(CultureInfo.InvariantCulture);
       query["ak"] = this.options.ApplicationKey;
 
@@ -1025,10 +1037,19 @@
         query["sid"] = this.sessionId;
       }
 
-      query.Add(queryArguments);
+#if NETCORE
+      return new Uri(Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(BaseApiUri.AbsoluteUri, query));
+#else
+      UriBuilder builder = new UriBuilder(BaseApiUri);
+      var arguments = System.Web.HttpUtility.ParseQueryString(builder.Query);
+      foreach (var item in query)
+      {
+        arguments.Add(item.Key, item.Value);
+      }
 
-      builder.Query = query.ToString();
+      builder.Query = arguments.ToString();
       return builder.Uri;
+#endif
     }
 
     private void SaveStream(Stream stream, string outputFile)

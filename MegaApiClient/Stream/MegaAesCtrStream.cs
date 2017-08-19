@@ -201,7 +201,7 @@
         }
 
         // Copy to buffer
-        Array.Copy(output, 0, buffer, offset + pos - this.position, Math.Min(output.Length, this.streamLength - pos));
+        Array.Copy(output, 0, buffer, (int)(offset + pos - this.position), (int)Math.Min(output.Length, this.streamLength - pos));
 
         // Crypt to current chunk mac
         this.currentChunkMac = Crypto.EncryptAes(this.currentChunkMac, this.fileKey);
