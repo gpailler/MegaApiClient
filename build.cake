@@ -12,7 +12,7 @@ var nuspec = File("./MegaApiClient.nuspec");
 var globalAssemblyInfo = File("./GlobalAssemblyInfo.cs");
 var coverage = File("./artifacts/opencoverCoverage.xml");
 var revision = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number : 0;
-var version = AppVeyor.IsRunningOnAppVeyor ? new Version(AppVeyor.Environment.Build.Version).ToString(3) : "1.0.0";
+var version = AppVeyor.IsRunningOnAppVeyor ? new Version(AppVeyor.Environment.Build.Version.Split('-')[0]).ToString(3) : "1.0.0";
 
 var generatedVersion = "";
 var generatedSuffix = "";
@@ -38,7 +38,13 @@ Task("Generate-Versionning")
     generatedVersion = version + "." + revision;
     Information("Generated version '{0}'", generatedVersion);
 
-    var branch = (AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Repository.Branch : GitBranchCurrent(".").FriendlyName).Replace('/', '-');
+    var branch = AppVeyor.IsRunningOnAppVeyor
+        ? AppVeyor.Environment.PullRequest.IsPullRequest
+            ? AppVeyor.Environment.Build.Version.Split('-')[1]
+            : AppVeyor.Environment.Repository.Branch
+        : GitBranchCurrent(".").FriendlyName;
+    branch = branch.Replace('/', '-');
+
     generatedSuffix = (branch == "master" && revision > 0) ? "" : branch.Substring(0, Math.Min(10, branch.Length)) + "-" + revision;
     Information("Generated suffix '{0}'", generatedSuffix);
 });
