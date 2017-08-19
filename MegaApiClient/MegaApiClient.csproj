@@ -31,6 +31,7 @@
     <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard1.6</TargetFrameworks>
     <RootNamespace>CG.Web.MegaApiClient</RootNamespace>
     <SignAssembly>False</SignAssembly>
+    <DocumentationFile>bin\docs\MegaApiClient.xml</DocumentationFile>
   </PropertyGroup>
 
 
