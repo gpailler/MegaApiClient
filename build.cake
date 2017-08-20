@@ -2,15 +2,16 @@
 #tool "nuget:?package=OpenCover"
 #tool coveralls.io
 #addin Cake.Coveralls
+#tool "nuget:?package=xunit.runner.console"
 
 var configuration = Argument("configuration", "Release");
 var target = Argument("target", "Default");
 
 var artifactsDirectory = Directory("./artifacts");
+var reportsDirectory = Directory("./reports");
 var solution = File("./MegaApiClient.sln");
-var nuspec = File("./MegaApiClient.nuspec");
 var globalAssemblyInfo = File("./GlobalAssemblyInfo.cs");
-var coverage = File("./artifacts/opencoverCoverage.xml");
+var coverageResult = File("./reports/opencover.xml");
 var revision = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number : 0;
 var version = AppVeyor.IsRunningOnAppVeyor ? new Version(AppVeyor.Environment.Build.Version.Split('-')[0]).ToString(3) : "1.0.0";
 
@@ -22,6 +23,7 @@ Task("Clean")
     .Does(() =>
 {
     CleanDirectory(artifactsDirectory);
+    CleanDirectory(reportsDirectory);
 });
 
 
@@ -79,12 +81,38 @@ Task("Test")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    DotNetCoreTest(
-        "./MegaApiClient.Tests/MegaApiClient.Tests.csproj",
-        new DotNetCoreTestSettings
-        {
-            Configuration = configuration
-        });
+    if (IsRunningOnWindows())
+    {
+        OpenCover(tool => {
+            tool.XUnit2("./MegaApiClient.Tests/bin/Release/net46/*.Tests.dll",
+            new XUnit2Settings {
+                HtmlReport = true,
+                XmlReport = true,
+                OutputDirectory = reportsDirectory
+            });
+        },
+        coverageResult,
+        new OpenCoverSettings { ReturnTargetCodeOffset = 0 }
+        .WithFilter("+[*]CG.Web.MegaApiClient*")
+        .WithFilter("-[MegaApiClient.Tests]*"));
+
+        DotNetCoreTest(
+            "./MegaApiClient.Tests/MegaApiClient.Tests.csproj",
+            new DotNetCoreTestSettings
+            {
+                Configuration = configuration,
+                Framework = "netcoreapp1.1"
+            });
+    }
+    else
+    {
+        DotNetCoreTest(
+            "./MegaApiClient.Tests/MegaApiClient.Tests.csproj",
+            new DotNetCoreTestSettings
+            {
+                Configuration = configuration
+            });
+    }
 });
 
 

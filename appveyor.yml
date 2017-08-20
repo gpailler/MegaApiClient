@@ -23,6 +23,8 @@ test: off
 artifacts:
 - path: '.\artifacts\**\*.nupkg'
   name: Nuget packages
+- path: '.\reports\**\*'
+  name: Reports
 
 deploy:
 - provider: NuGet
