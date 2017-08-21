@@ -94,6 +94,7 @@ Task("Pack")
         "./MegaApiClient/MegaApiClient.csproj",
         new DotNetCorePackSettings
         {
+            VersionPrefix = version,
             VersionSuffix = generatedSuffix,
             OutputDirectory = artifactsDirectory,
             ArgumentCustomization = args =>
