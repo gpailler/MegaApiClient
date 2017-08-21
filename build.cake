@@ -17,8 +17,7 @@ var isRCBuild = AppVeyor.IsRunningOnAppVeyor
     && revision > 0
     && AppVeyor.Environment.Repository.Tag.IsTag;
 var generatedVersion = "";
-var generatedSuffix = "";
-
+var generatedSemVersion = "";
 
 Task("Clean")
     .Does(() =>
@@ -47,10 +46,10 @@ Task("Generate-Versionning")
         : GitBranchCurrent(".").FriendlyName;
     branch = branch.Replace('/', '-');
 
-    generatedSuffix = isRCBuild
-        ? ""
-        : branch.Substring(0, Math.Min(10, branch.Length)) + "-" + revision;
-    Information("Generated suffix '{0}'", generatedSuffix);
+    generatedSemVersion = isRCBuild
+        ? version
+        : string.Join("-", version, branch.Substring(0, Math.Min(10, branch.Length)), revision);
+    Information("Generated semantic version '{0}'", generatedSemVersion);
 });
 
 
@@ -63,7 +62,7 @@ Task("Patch-GlobalAssemblyVersions")
         new AssemblyInfoSettings
         {
             FileVersion = generatedVersion,
-            InformationalVersion = version + "-" + generatedSuffix,
+            InformationalVersion = generatedSemVersion,
             Version = generatedVersion
         }
     );
@@ -79,7 +78,8 @@ Task("Build")
         solution,
         new DotNetCoreBuildSettings
         {
-            Configuration = "Release"
+            Configuration = "Release",
+            ArgumentCustomization = args => args.Append("/p:PackageVersion={0}", generatedSemVersion)
         }
     );
 });
@@ -94,11 +94,11 @@ Task("Pack")
         "./MegaApiClient/MegaApiClient.csproj",
         new DotNetCorePackSettings
         {
-            VersionPrefix = version,
-            VersionSuffix = generatedSuffix,
             OutputDirectory = artifactsDirectory,
             ArgumentCustomization = args =>
             {
+                args.Append("/p:PackageVersion={0}", generatedSemVersion);
+
                 if (isRCBuild == false)
                 {
                     args.Append("--include-symbols");
@@ -124,7 +124,8 @@ Task("Test")
         solution,
         new DotNetCoreBuildSettings
         {
-            Configuration = testConfiguration
+            Configuration = testConfiguration,
+            ArgumentCustomization = args => args.Append("/p:PackageVersion={0}", generatedSemVersion)
         }
     );
 
@@ -151,7 +152,8 @@ Task("Test")
             new DotNetCoreTestSettings
             {
                 Configuration = testConfiguration,
-                Framework = "netcoreapp1.1"
+                Framework = "netcoreapp1.1",
+                NoBuild = true
             }
         );
     }
@@ -161,7 +163,8 @@ Task("Test")
             "./MegaApiClient.Tests/MegaApiClient.Tests.csproj",
             new DotNetCoreTestSettings
             {
-                Configuration = testConfiguration
+                Configuration = testConfiguration,
+                NoBuild = true
             }
         );
     }
