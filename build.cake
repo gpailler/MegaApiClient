@@ -141,7 +141,7 @@ Task("Test")
                 ReturnTargetCodeOffset = 0,
                 Register = "user"
             }
-            .WithFilter("+[MegaApiClient]*")
+            .WithFilter("+[MegaApiClient]CG.Web.MegaApiClient*")
             .WithFilter("-[MegaApiClient.Tests]*")
         );
 
