@@ -142,7 +142,7 @@ Task("Test")
                 Register = "user"
             }
             .WithFilter("+[MegaApiClient]*")
-            .WithFilter("-[MegaApiClient.*]*")
+            .WithFilter("-[MegaApiClient.Tests]*")
         );
 
         Codecov(coverageResult);
