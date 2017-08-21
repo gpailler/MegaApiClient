@@ -12,7 +12,10 @@ var globalAssemblyInfo = File("./GlobalAssemblyInfo.cs");
 var coverageResult = File("./artifacts/opencover.xml");
 var revision = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number : 0;
 var version = AppVeyor.IsRunningOnAppVeyor ? new Version(AppVeyor.Environment.Build.Version.Split('-')[0]).ToString(3) : "1.0.0";
-
+var isRCBuild = AppVeyor.IsRunningOnAppVeyor
+    && AppVeyor.Environment.Repository.Branch == "master"
+    && revision > 0
+    && AppVeyor.Environment.Repository.Tag.IsTag;
 var generatedVersion = "";
 var generatedSuffix = "";
 
@@ -44,7 +47,9 @@ Task("Generate-Versionning")
         : GitBranchCurrent(".").FriendlyName;
     branch = branch.Replace('/', '-');
 
-    generatedSuffix = (branch == "master" && revision > 0) ? "" : branch.Substring(0, Math.Min(10, branch.Length)) + "-" + revision;
+    generatedSuffix = isRCBuild
+        ? ""
+        : branch.Substring(0, Math.Min(10, branch.Length)) + "-" + revision;
     Information("Generated suffix '{0}'", generatedSuffix);
 });
 
@@ -53,10 +58,13 @@ Task("Patch-GlobalAssemblyVersions")
     .IsDependentOn("Generate-Versionning")
     .Does(() =>
 {
-    CreateAssemblyInfo(globalAssemblyInfo, new AssemblyInfoSettings {
-        FileVersion = generatedVersion,
-        InformationalVersion = version + "-" + generatedSuffix,
-        Version = generatedVersion
+    CreateAssemblyInfo(
+        globalAssemblyInfo,
+        new AssemblyInfoSettings
+        {
+            FileVersion = generatedVersion,
+            InformationalVersion = version + "-" + generatedSuffix,
+            Version = generatedVersion
         }
     );
 });
@@ -67,9 +75,13 @@ Task("Build")
     .IsDependentOn("Patch-GlobalAssemblyVersions")
     .Does(() =>
 {
-   DotNetCoreBuild(solution, new DotNetCoreBuildSettings {
-      Configuration = "Release"
-    });
+    DotNetCoreBuild(
+        solution,
+        new DotNetCoreBuildSettings
+        {
+            Configuration = "Release"
+        }
+    );
 });
 
 
@@ -86,14 +98,15 @@ Task("Pack")
             OutputDirectory = artifactsDirectory,
             ArgumentCustomization = args =>
             {
-                if ((AppVeyor.IsRunningOnAppVeyor && AppVeyor.Environment.Repository.Branch == "master" && revision > 0) == false)
+                if (isRCBuild == false)
                 {
                     args.Append("--include-symbols");
                 }
 
                 return args;
             }
-        });
+        }
+    );
 });
 
 
@@ -111,22 +124,24 @@ Task("Test")
         new DotNetCoreBuildSettings
         {
             Configuration = testConfiguration
-        });
+        }
+    );
 
     if (AppVeyor.IsRunningOnAppVeyor)
     {
         OpenCover(tool =>
-        {
-            tool.XUnit2(string.Concat("./MegaApiClient.Tests/bin/", testConfiguration, "/net46/*.Tests.dll"));
-        },
-        coverageResult,
-        new OpenCoverSettings
-        {
-            ReturnTargetCodeOffset = 0,
-            Register = "user"
-        }
-        .WithFilter("+[*]CG.Web.MegaApiClient*")
-        .WithFilter("-[MegaApiClient.Tests]*"));
+            {
+                tool.XUnit2(string.Concat("./MegaApiClient.Tests/bin/", testConfiguration, "/net46/*.Tests.dll"));
+            },
+            coverageResult,
+            new OpenCoverSettings
+            {
+                ReturnTargetCodeOffset = 0,
+                Register = "user"
+            }
+            .WithFilter("+[MegaApiClient]*")
+            .WithFilter("-[MegaApiClient.*]*")
+        );
 
         Codecov(coverageResult);
 
@@ -136,7 +151,8 @@ Task("Test")
             {
                 Configuration = testConfiguration,
                 Framework = "netcoreapp1.1"
-            });
+            }
+        );
     }
     else
     {
@@ -145,7 +161,8 @@ Task("Test")
             new DotNetCoreTestSettings
             {
                 Configuration = testConfiguration
-            });
+            }
+        );
     }
 });
 
