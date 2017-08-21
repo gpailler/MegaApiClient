@@ -35,7 +35,10 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
 
-
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>
 
   <PropertyGroup>
     <NetFramework>True</NetFramework>
