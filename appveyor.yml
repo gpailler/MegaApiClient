@@ -10,8 +10,6 @@ nuget:
 skip_branch_with_pr: true
 
 environment:
-  COVERALLS_REPO_TOKEN:
-    secure: uJvwK/1oZXprkJ46fkTLEPBCGmHO15dUd1NxeUJl8P1l/TeaOhvlRoyjvZkAfLUT
   MEGAAPICLIENT_PASSWORD:
     secure: S0InrLOJHUAoGRCks4oKpQ==
 
@@ -23,8 +21,6 @@ test: off
 artifacts:
 - path: '.\artifacts\**\*.nupkg'
   name: Nuget packages
-- path: '.\reports\**\*'
-  name: Reports
 
 deploy:
 - provider: NuGet
