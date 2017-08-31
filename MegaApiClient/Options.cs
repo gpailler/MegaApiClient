@@ -1,5 +1,7 @@
 namespace CG.Web.MegaApiClient
 {
+  using System;
+
   public class Options
   {
     public const string DefaultApplicationKey = "axhQiYyQ";
@@ -13,7 +15,7 @@ namespace CG.Web.MegaApiClient
     public const int DefaultChunksPackSize = 1024 * 1024;
 
 #if ASYNC
-    public const long DefaultReportProgressChunkSize = 1024 * 50;
+    public const long DefaultReportProgressChunkSize = DefaultBufferSize;
 #endif
 
     public Options(
@@ -41,6 +43,12 @@ namespace CG.Web.MegaApiClient
       this.ChunksPackSize = chunksPackSize;
 
 #if ASYNC
+      if (reportProgressChunkSize < this.BufferSize)
+      {
+        throw new ArgumentException(
+          $"ReportProgressChunkSize ({reportProgressChunkSize}) cannot have a value lower than BufferSize ({bufferSize})",
+          nameof(reportProgressChunkSize));
+      }
       this.ReportProgressChunkSize = reportProgressChunkSize;
 #endif
     }
