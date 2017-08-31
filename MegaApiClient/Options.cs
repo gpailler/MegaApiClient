@@ -9,7 +9,7 @@ namespace CG.Web.MegaApiClient
     public const int DefaultApiRequestDelay = 500;
     public const float DefaultApiRequestDelayExponentialFactor = 1.5f;
 
-    public const int DefaultBufferSize = 8192;
+    public const int DefaultBufferSize = 1024 * 64;
     public const int DefaultChunksPackSize = 1024 * 1024;
 
 #if ASYNC
