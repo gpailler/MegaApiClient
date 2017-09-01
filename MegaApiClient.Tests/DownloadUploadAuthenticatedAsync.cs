@@ -26,8 +26,10 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData(null, 10L)]
-    [InlineData(10L, 65L)]
+    [InlineData(null, 8)]
+    [InlineData(1024 * 64, 8)]
+    [InlineData(100000, 4)]
+    [InlineData(200000, 2)]
     public void DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize, long expectedResult)
     {
       // Arrange
@@ -69,15 +71,16 @@ namespace CG.Web.MegaApiClient.Tests
 
       // Assert
       Assert.True(result);
-      Assert.Equal(10, eventTester.Calls);
+      Assert.Equal(8, eventTester.Calls);
       this.AreFileEquivalent(this.GetAbsoluteFilePath(expectedResultFile), outputFile);
     }
 
-    [Fact]
-    public void UploadStreamAsync_DownloadLink_Succeeds()
+    [Theory]
+    [InlineData(123456, 2)]
+    public void UploadStreamAsync_DownloadLink_Succeeds(int dataSize, int expectedProgressionCalls)
     {
       //Arrange
-      byte[] data = new byte[123456];
+      byte[] data = new byte[dataSize];
       this.random.NextBytes(data);
 
       INode parent = this.GetNode(NodeType.Root);
@@ -105,7 +108,7 @@ namespace CG.Web.MegaApiClient.Tests
         // Assert
         Assert.True(result);
         Assert.NotNull(task.Result);
-        Assert.Equal(3, eventTester.Calls);
+        Assert.Equal(expectedProgressionCalls, eventTester.Calls);
 
         Uri uri = this.context.Client.GetDownloadLink(task.Result);
         stream.Position = 0;

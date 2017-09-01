@@ -35,7 +35,12 @@ namespace CG.Web.MegaApiClient
     protected override void Dispose(bool disposing)
     {
       base.Dispose(disposing);
-      this.progress.Report(100);
+
+      // Report 100% progress only if it was not already sent
+      if (this.chunkSize != 0)
+      {
+        this.progress.Report(100);
+      }
     }
 
     #region Forwards
