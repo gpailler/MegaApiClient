@@ -4,6 +4,7 @@
   using System.Collections.Generic;
   using System.IO;
   using System.Linq;
+  using System.Security.Cryptography;
 
   internal class MegaAesCtrStreamCrypter : MegaAesCtrStream
   {
@@ -72,6 +73,7 @@
     private readonly Mode mode;
     private readonly HashSet<long> chunksPositionsCache;
     private readonly byte[] counter = new byte[8];
+    private readonly ICryptoTransform encryptor;
     private long currentCounter = 0;
     private byte[] currentChunkMac = new byte[16];
     private byte[] fileMac = new byte[16];
@@ -101,6 +103,14 @@
 
       this.ChunksPositions = this.GetChunksPositions(this.streamLength).ToArray();
       this.chunksPositionsCache = new HashSet<long>(this.ChunksPositions);
+
+      this.encryptor = Crypto.CreateAesEncryptor(this.fileKey);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+      base.Dispose(disposing);
+      this.encryptor.Dispose();
     }
 
     protected enum Mode
@@ -154,76 +164,79 @@
         return 0;
       }
 
-      for (long pos = this.position; pos < Math.Min(this.position + count, this.streamLength); pos += 16)
+      using (var encryptor = Crypto.CreateAesEncryptor(this.fileKey))
       {
-        // We are on a chunk bondary
-        if (this.chunksPositionsCache.Contains(pos))
+        for (long pos = this.position; pos < Math.Min(this.position + count, this.streamLength); pos += 16)
         {
-          if (pos != 0)
+          // We are on a chunk bondary
+          if (this.chunksPositionsCache.Contains(pos))
           {
-            // Compute the current chunk mac data on each chunk bondary
-            this.ComputeChunk();
+            if (pos != 0)
+            {
+              // Compute the current chunk mac data on each chunk bondary
+              this.ComputeChunk(encryptor);
+            }
+
+            // Init chunk mac with Iv values
+            for (int i = 0; i < 8; i++)
+            {
+              this.currentChunkMac[i] = this.iv[i];
+              this.currentChunkMac[i + 8] = this.iv[i];
+            }
           }
 
-          // Init chunk mac with Iv values
-          for (int i = 0; i < 8; i++)
+          this.IncrementCounter();
+
+          // Iterate each AES 16 bytes block
+          byte[] input = new byte[16];
+          byte[] output = new byte[input.Length];
+          int inputLength = this.stream.Read(input, 0, input.Length);
+          if (inputLength != input.Length)
           {
-            this.currentChunkMac[i] = this.iv[i];
-            this.currentChunkMac[i + 8] = this.iv[i];
+            // Sometimes, the stream is not finished but the read is not complete
+            inputLength += this.stream.Read(input, inputLength, input.Length - inputLength);
           }
+
+          // Merge Iv and counter
+          byte[] ivCounter = new byte[16];
+          Array.Copy(this.iv, ivCounter, 8);
+          Array.Copy(this.counter, 0, ivCounter, 8, 8);
+
+          byte[] encryptedIvCounter = Crypto.EncryptAes(ivCounter, encryptor);
+
+          for (int inputPos = 0; inputPos < inputLength; inputPos++)
+          {
+            output[inputPos] = (byte)(encryptedIvCounter[inputPos] ^ input[inputPos]);
+            this.currentChunkMac[inputPos] ^= (this.mode == Mode.Crypt) ? input[inputPos] : output[inputPos];
+          }
+
+          // Copy to buffer
+          Array.Copy(output, 0, buffer, (int)(offset + pos - this.position), (int)Math.Min(output.Length, this.streamLength - pos));
+
+          // Crypt to current chunk mac
+          this.currentChunkMac = Crypto.EncryptAes(this.currentChunkMac, encryptor);
         }
 
-        this.IncrementCounter();
+        long len = Math.Min(count, this.streamLength - this.position);
+        this.position += len;
 
-        // Iterate each AES 16 bytes block
-        byte[] input = new byte[16];
-        byte[] output = new byte[input.Length];
-        int inputLength = this.stream.Read(input, 0, input.Length);
-        if (inputLength != input.Length)
+        // When stream is fully processed, we compute the last chunk
+        if (this.position == this.streamLength)
         {
-          // Sometimes, the stream is not finished but the read is not complete
-          inputLength += this.stream.Read(input, inputLength, input.Length - inputLength);
+          this.ComputeChunk(encryptor);
+
+          // Compute Meta MAC
+          for (int i = 0; i < 4; i++)
+          {
+            this.metaMac[i] = (byte)(this.fileMac[i] ^ this.fileMac[i + 4]);
+            this.metaMac[i + 4] = (byte)(this.fileMac[i + 8] ^ this.fileMac[i + 12]);
+          }
+
+          this.OnStreamRead();
         }
 
-        // Merge Iv and counter
-        byte[] ivCounter = new byte[16];
-        Array.Copy(this.iv, ivCounter, 8);
-        Array.Copy(this.counter, 0, ivCounter, 8, 8);
-
-        byte[] encryptedIvCounter = Crypto.EncryptAes(ivCounter, this.fileKey);
-
-        for (int inputPos = 0; inputPos < inputLength; inputPos++)
-        {
-          output[inputPos] = (byte)(encryptedIvCounter[inputPos] ^ input[inputPos]);
-          this.currentChunkMac[inputPos] ^= (this.mode == Mode.Crypt) ? input[inputPos] : output[inputPos];
-        }
-
-        // Copy to buffer
-        Array.Copy(output, 0, buffer, (int)(offset + pos - this.position), (int)Math.Min(output.Length, this.streamLength - pos));
-
-        // Crypt to current chunk mac
-        this.currentChunkMac = Crypto.EncryptAes(this.currentChunkMac, this.fileKey);
+        return (int)len;
       }
-
-      long len = Math.Min(count, this.streamLength - this.position);
-      this.position += len;
-
-      // When stream is fully processed, we compute the last chunk
-      if (this.position == this.streamLength)
-      {
-        this.ComputeChunk();
-
-        // Compute Meta MAC
-        for (int i = 0; i < 4; i++)
-        {
-          this.metaMac[i] = (byte)(this.fileMac[i] ^ this.fileMac[i + 4]);
-          this.metaMac[i + 4] = (byte)(this.fileMac[i + 8] ^ this.fileMac[i + 12]);
-        }
-
-        this.OnStreamRead();
-      }
-
-      return (int)len;
     }
 
     public override void Flush()
@@ -261,14 +274,14 @@
       Array.Copy(counter, this.counter, 8);
     }
 
-    private void ComputeChunk()
+    private void ComputeChunk(ICryptoTransform encryptor)
     {
       for (int i = 0; i < 16; i++)
       {
         this.fileMac[i] ^= this.currentChunkMac[i];
       }
 
-      this.fileMac = Crypto.EncryptAes(this.fileMac, this.fileKey);
+      this.fileMac = Crypto.EncryptAes(this.fileMac, encryptor);
     }
 
     private IEnumerable<long> GetChunksPositions(long size)
