@@ -70,7 +70,7 @@
 
     private readonly Stream stream;
     private readonly Mode mode;
-    private readonly long[] chunksPositions;
+    private readonly HashSet<long> chunksPositionsCache;
     private readonly byte[] counter = new byte[8];
     private long currentCounter = 0;
     private byte[] currentChunkMac = new byte[16];
@@ -99,7 +99,8 @@
       this.fileKey = fileKey;
       this.iv = iv;
 
-      this.chunksPositions = this.GetChunksPositions(this.streamLength);
+      this.ChunksPositions = this.GetChunksPositions(this.streamLength).ToArray();
+      this.chunksPositionsCache = new HashSet<long>(this.ChunksPositions);
     }
 
     protected enum Mode
@@ -108,10 +109,7 @@
       Decrypt
     }
 
-    public long[] ChunksPositions
-    {
-      get { return this.chunksPositions; }
-    }
+    public long[] ChunksPositions { get; }
 
     public override bool CanRead
     {
@@ -159,7 +157,7 @@
       for (long pos = this.position; pos < Math.Min(this.position + count, this.streamLength); pos += 16)
       {
         // We are on a chunk bondary
-        if (this.chunksPositions.Any(chunk => chunk == pos))
+        if (this.chunksPositionsCache.Contains(pos))
         {
           if (pos != 0)
           {
@@ -273,25 +271,22 @@
       this.fileMac = Crypto.EncryptAes(this.fileMac, this.fileKey);
     }
 
-    private long[] GetChunksPositions(long size)
+    private IEnumerable<long> GetChunksPositions(long size)
     {
-      List<long> chunks = new List<long>();
-      chunks.Add(0);
+      yield return 0;
 
       long chunkStartPosition = 0;
       for (int idx = 1; (idx <= 8) && (chunkStartPosition < (size - (idx * 131072))); idx++)
       {
         chunkStartPosition += idx * 131072;
-        chunks.Add(chunkStartPosition);
+        yield return chunkStartPosition;
       }
 
       while ((chunkStartPosition + 1048576) < size)
       {
         chunkStartPosition += 1048576;
-        chunks.Add(chunkStartPosition);
+        yield return chunkStartPosition;
       }
-
-      return chunks.ToArray();
     }
   }
 }
