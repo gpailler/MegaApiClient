@@ -5,7 +5,7 @@
     <Copyright>Copyright ©  2017</Copyright>
     <AssemblyTitle>Mega.co.nz client library</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix></VersionPrefix>
+    <VersionPrefix>1.6.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Title>Mega.co.nz client library</Title>
     <Authors>Gregoire Pailler</Authors>
