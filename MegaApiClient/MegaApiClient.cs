@@ -909,9 +909,12 @@
       }
 
       // Encrypt hash using password key
-      for (int it = 0; it < 16384; it++)
+      using (var encryptor = Crypto.CreateAesEncryptor(passwordAesKey))
       {
-        hash = Crypto.EncryptAes(hash, passwordAesKey);
+        for (int it = 0; it < 16384; it++)
+        {
+          hash = Crypto.EncryptAes(hash, encryptor);
+        }
       }
 
       // Retrieve bytes 0-4 and 8-12 from the hash

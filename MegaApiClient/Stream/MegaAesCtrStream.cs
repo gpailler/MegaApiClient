@@ -4,6 +4,7 @@
   using System.Collections.Generic;
   using System.IO;
   using System.Linq;
+  using System.Security.Cryptography;
 
   internal class MegaAesCtrStreamCrypter : MegaAesCtrStream
   {
@@ -70,8 +71,9 @@
 
     private readonly Stream stream;
     private readonly Mode mode;
-    private readonly long[] chunksPositions;
+    private readonly HashSet<long> chunksPositionsCache;
     private readonly byte[] counter = new byte[8];
+    private readonly ICryptoTransform encryptor;
     private long currentCounter = 0;
     private byte[] currentChunkMac = new byte[16];
     private byte[] fileMac = new byte[16];
@@ -99,7 +101,16 @@
       this.fileKey = fileKey;
       this.iv = iv;
 
-      this.chunksPositions = this.GetChunksPositions(this.streamLength);
+      this.ChunksPositions = this.GetChunksPositions(this.streamLength).ToArray();
+      this.chunksPositionsCache = new HashSet<long>(this.ChunksPositions);
+
+      this.encryptor = Crypto.CreateAesEncryptor(this.fileKey);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+      base.Dispose(disposing);
+      this.encryptor.Dispose();
     }
 
     protected enum Mode
@@ -108,10 +119,7 @@
       Decrypt
     }
 
-    public long[] ChunksPositions
-    {
-      get { return this.chunksPositions; }
-    }
+    public long[] ChunksPositions { get; }
 
     public override bool CanRead
     {
@@ -159,12 +167,12 @@
       for (long pos = this.position; pos < Math.Min(this.position + count, this.streamLength); pos += 16)
       {
         // We are on a chunk bondary
-        if (this.chunksPositions.Any(chunk => chunk == pos))
+        if (this.chunksPositionsCache.Contains(pos))
         {
           if (pos != 0)
           {
             // Compute the current chunk mac data on each chunk bondary
-            this.ComputeChunk();
+            this.ComputeChunk(encryptor);
           }
 
           // Init chunk mac with Iv values
@@ -192,7 +200,7 @@
         Array.Copy(this.iv, ivCounter, 8);
         Array.Copy(this.counter, 0, ivCounter, 8, 8);
 
-        byte[] encryptedIvCounter = Crypto.EncryptAes(ivCounter, this.fileKey);
+        byte[] encryptedIvCounter = Crypto.EncryptAes(ivCounter, encryptor);
 
         for (int inputPos = 0; inputPos < inputLength; inputPos++)
         {
@@ -204,7 +212,7 @@
         Array.Copy(output, 0, buffer, (int)(offset + pos - this.position), (int)Math.Min(output.Length, this.streamLength - pos));
 
         // Crypt to current chunk mac
-        this.currentChunkMac = Crypto.EncryptAes(this.currentChunkMac, this.fileKey);
+        this.currentChunkMac = Crypto.EncryptAes(this.currentChunkMac, encryptor);
       }
 
       long len = Math.Min(count, this.streamLength - this.position);
@@ -213,7 +221,7 @@
       // When stream is fully processed, we compute the last chunk
       if (this.position == this.streamLength)
       {
-        this.ComputeChunk();
+        this.ComputeChunk(encryptor);
 
         // Compute Meta MAC
         for (int i = 0; i < 4; i++)
@@ -263,35 +271,32 @@
       Array.Copy(counter, this.counter, 8);
     }
 
-    private void ComputeChunk()
+    private void ComputeChunk(ICryptoTransform encryptor)
     {
       for (int i = 0; i < 16; i++)
       {
         this.fileMac[i] ^= this.currentChunkMac[i];
       }
 
-      this.fileMac = Crypto.EncryptAes(this.fileMac, this.fileKey);
+      this.fileMac = Crypto.EncryptAes(this.fileMac, encryptor);
     }
 
-    private long[] GetChunksPositions(long size)
+    private IEnumerable<long> GetChunksPositions(long size)
     {
-      List<long> chunks = new List<long>();
-      chunks.Add(0);
+      yield return 0;
 
       long chunkStartPosition = 0;
       for (int idx = 1; (idx <= 8) && (chunkStartPosition < (size - (idx * 131072))); idx++)
       {
         chunkStartPosition += idx * 131072;
-        chunks.Add(chunkStartPosition);
+        yield return chunkStartPosition;
       }
 
       while ((chunkStartPosition + 1048576) < size)
       {
         chunkStartPosition += 1048576;
-        chunks.Add(chunkStartPosition);
+        yield return chunkStartPosition;
       }
-
-      return chunks.ToArray();
     }
   }
 }

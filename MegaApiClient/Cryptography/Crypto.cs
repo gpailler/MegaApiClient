@@ -38,12 +38,14 @@
     public static byte[] EncryptKey(byte[] data, byte[] key)
     {
       byte[] result = new byte[data.Length];
-
-      for (int idx = 0; idx < data.Length; idx += 16)
+      using (var encryptor = CreateAesEncryptor(key))
       {
-        byte[] block = data.CopySubArray(16, idx);
-        byte[] encryptedBlock = EncryptAes(block, key);
-        Array.Copy(encryptedBlock, 0, result, idx, 16);
+        for (int idx = 0; idx < data.Length; idx += 16)
+        {
+          byte[] block = data.CopySubArray(16, idx);
+          byte[] encryptedBlock = EncryptAes(block, encryptor);
+          Array.Copy(encryptedBlock, 0, result, idx, 16);
+        }
       }
 
       return result;
@@ -77,9 +79,19 @@
       }
     }
 
+    public static ICryptoTransform CreateAesEncryptor(byte[] key)
+    {
+      return AesCbc.CreateEncryptor(key, DefaultIv);
+    }
+
+    public static byte[] EncryptAes(byte[] data, ICryptoTransform encryptor)
+    {
+      return encryptor.TransformFinalBlock(data, 0, data.Length);
+    }
+
     public static byte[] EncryptAes(byte[] data, byte[] key)
     {
-      using (ICryptoTransform encryptor = AesCbc.CreateEncryptor(key, DefaultIv))
+      using (ICryptoTransform encryptor = CreateAesEncryptor(key))
       {
         return encryptor.TransformFinalBlock(data, 0, data.Length);
       }
