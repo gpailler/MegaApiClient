@@ -230,4 +230,5 @@ _Pvt_Extensions
 .fake/
 
 # CakeBuild
-tools/
+tools/*
+!tools/packages.config
