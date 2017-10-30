@@ -3,6 +3,7 @@
   using System;
   using System.Security.Cryptography;
 
+  using CG.Web.MegaApiClient.Cryptography;
   using CG.Web.MegaApiClient.Serialization;
 
   using Newtonsoft.Json;
@@ -81,7 +82,7 @@
 
     public static ICryptoTransform CreateAesEncryptor(byte[] key)
     {
-      return AesCbc.CreateEncryptor(key, DefaultIv);
+      return new CachedCryptoTransform(() => AesCbc.CreateEncryptor(key, DefaultIv));
     }
 
     public static byte[] EncryptAes(byte[] data, ICryptoTransform encryptor)
