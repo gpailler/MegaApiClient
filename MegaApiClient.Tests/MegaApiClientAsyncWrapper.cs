@@ -141,77 +141,77 @@
 
     public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password)
     {
-      throw new NotImplementedException();
+      return this.client.LoginAsync(email, password);
     }
 
     public Task<MegaApiClient.LogonSessionToken> LoginAsync(MegaApiClient.AuthInfos authInfos)
     {
-      throw new NotImplementedException();
+      return this.client.LoginAsync(authInfos);
     }
 
     public Task LoginAsync(MegaApiClient.LogonSessionToken authInfos)
     {
-      throw new NotImplementedException();
+      return this.client.LoginAsync(authInfos);
     }
 
     public Task LoginAnonymousAsync()
     {
-      throw new NotImplementedException();
+      return this.client.LoginAnonymousAsync();
     }
 
     public Task LogoutAsync()
     {
-      throw new NotImplementedException();
+      return this.client.LogoutAsync();
     }
 
     public Task<IAccountInformation> GetAccountInformationAsync()
     {
-      throw new NotImplementedException();
+      return this.client.GetAccountInformationAsync();
     }
 
     public Task<IEnumerable<INode>> GetNodesAsync()
     {
-      throw new NotImplementedException();
+      return this.client.GetNodesAsync();
     }
 
     public Task<IEnumerable<INode>> GetNodesAsync(INode parent)
     {
-      throw new NotImplementedException();
+      return this.client.GetNodesAsync(parent);
     }
 
     public Task<INode> CreateFolderAsync(string name, INode parent)
     {
-      throw new NotImplementedException();
+      return this.client.CreateFolderAsync(name, parent);
     }
 
     public Task DeleteAsync(INode node, bool moveToTrash = true)
     {
-      throw new NotImplementedException();
+      return this.client.DeleteAsync(node, moveToTrash);
     }
 
     public Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode)
     {
-      throw new NotImplementedException();
+      return this.client.MoveAsync(sourceNode, destinationParentNode);
     }
 
     public Task<INode> RenameAsync(INode sourceNode, string newName)
     {
-      throw new NotImplementedException();
+      return this.client.RenameAsync(sourceNode, newName);
     }
 
     public Task<Uri> GetDownloadLinkAsync(INode node)
     {
-      throw new NotImplementedException();
+      return this.client.GetDownloadLinkAsync(node);
     }
 
     public Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
-      throw new NotImplementedException();
+      return this.client.DownloadAsync(node, progress, cancellationToken);
     }
 
     public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress, CancellationToken? cancellationToken = null)
     {
-      throw new NotImplementedException();
+      return this.client.DownloadAsync(uri, progress, cancellationToken);
     }
 
     public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
@@ -236,12 +236,12 @@
 
     public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
     {
-      throw new NotImplementedException();
+      return this.client.GetNodeFromLinkAsync(uri);
     }
 
     public Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri)
     {
-      throw new NotImplementedException();
+      return this.client.GetNodesFromLinkAsync(uri);
     }
 
     private T UnwrapException<T>(Func<T> action)

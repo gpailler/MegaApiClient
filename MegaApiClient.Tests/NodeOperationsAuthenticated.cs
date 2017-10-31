@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CG.Web.MegaApiClient.Tests.Context;
 using Xunit;
 using Xunit.Abstractions;
@@ -40,6 +41,43 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(expectedSize, node.Size);
       Assert.Equal(DateTime.Parse(expectedCreationDate), node.CreationDate);
       Assert.Equal(expectedModificationDate == null ? (DateTime?)null : DateTime.Parse(expectedModificationDate), node.ModificationDate);
+    }
+
+    [Theory]
+    [InlineData(NodeType.Root, 523265)]
+    [InlineData(NodeType.Inbox, 0)]
+    [InlineData(NodeType.Trash, 0)]
+    public void GetFoldersize_FromNodeType_Succeeds(NodeType nodeType, long expectedSize)
+    {
+      var node = this.GetNode(nodeType);
+      Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client));
+      Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client).Result);
+      Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client.GetNodes()));
+      Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client.GetNodes()).Result);
+    }
+
+    [Fact]
+    public void GetFoldersize_FromFile_Throws()
+    {
+      var node = this.context.Client.GetNodes().First(x => x.Type == NodeType.File);
+      Assert.Throws<InvalidOperationException>(() => node.GetFolderSize(this.context.Client));
+      var aggregateException = Assert.Throws<AggregateException>(() => node.GetFolderSizeAsync(this.context.Client).Result);
+      Assert.IsType<InvalidOperationException>(aggregateException.GetBaseException());
+      Assert.Throws<InvalidOperationException>(() => node.GetFolderSize(this.context.Client.GetNodes()));
+      aggregateException = Assert.Throws<AggregateException>(() => node.GetFolderSizeAsync(this.context.Client.GetNodes()).Result);
+      Assert.IsType<InvalidOperationException>(aggregateException.GetBaseException());
+    }
+
+    [Theory]
+    [InlineData(AuthenticatedTestContext.FolderId, 523265)]
+    [InlineData(AuthenticatedTestContext.SubFolderId, 0)]
+    public void GetFoldersize_FromDirectory_Succeeds(string nodeId, long expectedSize)
+    {
+      var node = this.GetNode(nodeId);
+      Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client));
+      Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client).Result);
+      Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client.GetNodes()));
+      Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client.GetNodes()).Result);
     }
   }
 }
