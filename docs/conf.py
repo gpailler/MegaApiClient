@@ -90,7 +90,7 @@ html_theme = 'sphinx_rtd_theme'
 # documentation.
 #
 html_theme_options = {
-    'analytics_id': '',
+    'analytics_id': 'UA-3481980-6',
     'display_version': False,
 }
 
