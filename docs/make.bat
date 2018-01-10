@@ -8,7 +8,7 @@ if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
 set SOURCEDIR=.
-set BUILDDIR=_build
+set BUILDDIR=..\artifacts\docs
 set SPHINXPROJ=MegaApiClient
 
 if "%1" == "" goto help

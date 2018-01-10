@@ -3,6 +3,7 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool nuget:?package=Codecov
 #addin nuget:?package=Cake.Codecov
+#addin "Cake.FileHelpers"
 
 var target = Argument("target", "Default");
 
@@ -171,9 +172,50 @@ Task("Test")
 });
 
 
+
+Task("Doc")
+    .IsDependentOn("Clean")
+    .IsDependentOn("Generate-Versionning")
+    .Does(() =>
+{
+    ReplaceInFile("docs/conf.py", "version = '(.+)'", string.Format("version = '{0}'", version));
+    ReplaceInFile("docs/conf.py", "release = '(.+)'", string.Format("release = '{0}'", generatedSemVersion));
+
+    var exitCode = StartProcess(
+        MakeAbsolute(File("docs/setup_and_make.bat")),
+        new ProcessSettings
+        {
+            WorkingDirectory = MakeAbsolute(Directory("docs"))
+        }
+    );
+
+    if (exitCode != 0)
+    {
+        throw new Exception(string.Format("Unexpected exit code {0}", exitCode));
+    }
+});
+
+
+
+void ReplaceInFile(string file, string searchText, string replaceText)
+{
+    var files = ReplaceRegexInFiles(
+        file,
+        searchText,
+        replaceText);
+
+    if (files.Length != 1)
+    {
+        throw new Exception(string.Format("Unable to find {0} in {1}", searchText, file));
+    }
+}
+
+
+
 Task("Default")
     .IsDependentOn("Pack")
-    .IsDependentOn("Test");
+    .IsDependentOn("Test")
+    .IsDependentOn("Doc");
 
 
 RunTarget(target);

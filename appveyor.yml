@@ -22,6 +22,9 @@ artifacts:
 - path: '.\artifacts\**\*.nupkg'
   name: Nuget packages
 
+- path: '.\artifacts\docs\html\**\*'
+  name: Documentation
+
 deploy:
 - provider: NuGet
   server: https://www.myget.org/F/megaapiclient/api/v2
