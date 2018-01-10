@@ -178,11 +178,11 @@ Task("Doc")
     .IsDependentOn("Generate-Versionning")
     .Does(() =>
 {
-    ReplaceInFile("docs/conf.py", "version = '(.+)'", string.Format("version = '{0}'", version));
-    ReplaceInFile("docs/conf.py", "release = '(.+)'", string.Format("release = '{0}'", generatedSemVersion));
+    ReplaceInFile("./docs/conf.py", "version = '(.+)'", string.Format("version = '{0}'", version));
+    ReplaceInFile("./docs/conf.py", "release = '(.+)'", string.Format("release = '{0}'", generatedSemVersion));
 
     var exitCode = StartProcess(
-        MakeAbsolute(File("docs/setup_and_make.bat")),
+        MakeAbsolute(File("./docs/setup_and_make.bat")),
         new ProcessSettings
         {
             WorkingDirectory = MakeAbsolute(Directory("docs"))
@@ -193,6 +193,10 @@ Task("Doc")
     {
         throw new Exception(string.Format("Unexpected exit code {0}", exitCode));
     }
+
+    var htmldoc_root = "./docs/_build/html";
+    var files = GetFiles(htmldoc_root + "/**/*");
+    Zip(htmldoc_root, "./artifacts/htmldoc.zip", files);
 });
 
 

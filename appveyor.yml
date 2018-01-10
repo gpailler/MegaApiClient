@@ -22,7 +22,7 @@ artifacts:
 - path: '.\artifacts\**\*.nupkg'
   name: Nuget packages
 
-- path: '.\artifacts\docs\html\**\*'
+- path: '.\artifacts\htmldoc.zip'
   name: Documentation
 
 deploy:
