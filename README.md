@@ -4,7 +4,6 @@ MegaApiClient
 [![Build status](https://ci.appveyor.com/api/projects/status/a87jre98xr1wiryt/branch/master?svg=true)](https://ci.appveyor.com/project/gpailler/megaapiclient/branch/master)
 [![Coverage Status](https://codecov.io/gh/gpailler/MegaApiClient/branch/master/graph/badge.svg)](https://codecov.io/gh/gpailler/MegaApiClient)
 [![NuGet version](https://badge.fury.io/nu/MegaApiClient.svg)](https://badge.fury.io/nu/MegaApiClient)
-[![MyGet Pre Release](https://img.shields.io/myget/megaapiclient/vpre/MegaApiClient.svg)](https://www.myget.org/feed/megaapiclient/package/nuget/MegaApiClient)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gpailler/MegaApiClient/blob/master/LICENSE)
 
 C# library to access http://mega.co.nz API

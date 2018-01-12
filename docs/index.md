@@ -5,9 +5,12 @@
 
 #### Documentation
 
-* Visit [Documentation](xref:installation) for installation, samples, faq.
+Getting started with MegaApiClient
+  * [Installation](xref:installation)
+  * [Code samples](xref:samples)
+  * [FAQ](xref:faq)
 
-* Visit [API](xref:CG.Web.MegaApiClient.MegaApiClient) section for all details about the library.
+Whole [API](xref:CG.Web.MegaApiClient.MegaApiClient) documentation
 
 
 #### Compatibility
@@ -26,6 +29,6 @@ The library supports .NET 4.0, .NET 4.5 and [.NET Standard 1.3](https://docs.mic
 | Universal Windows Platform | >= 10.0 |
 
 
-#### Source code
+---
 
-MegaApiClient source is available on [GitHub](https://github.com/gpailler/MegaApiClient).
+MegaApiClient source is available on [GitHub](https://github.com/gpailler/MegaApiClient) and is released under [MIT](https://choosealicense.com/licenses/mit/) license.
