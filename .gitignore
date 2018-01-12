@@ -232,7 +232,3 @@ _Pvt_Extensions
 # CakeBuild
 tools/*
 !tools/packages.config
-
-# Docs
-docs/venv
-docs/_build

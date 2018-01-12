@@ -3,7 +3,7 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool nuget:?package=Codecov
 #addin nuget:?package=Cake.Codecov
-#addin "Cake.FileHelpers"
+#addin nuget:?package=Cake.DocFx
 
 var target = Argument("target", "Default");
 
@@ -175,44 +175,15 @@ Task("Test")
 
 Task("Doc")
     .IsDependentOn("Clean")
-    .IsDependentOn("Generate-Versionning")
     .Does(() =>
 {
-    ReplaceInFile("./docs/conf.py", "version = '(.+)'", string.Format("version = '{0}'", version));
-    ReplaceInFile("./docs/conf.py", "release = '(.+)'", string.Format("release = '{0}'", generatedSemVersion));
+    DocFxMetadata("./docs/docfx.json");
+    DocFxBuild("./docs/docfx.json");
 
-    var exitCode = StartProcess(
-        MakeAbsolute(File("./docs/setup_and_make.bat")),
-        new ProcessSettings
-        {
-            WorkingDirectory = MakeAbsolute(Directory("docs"))
-        }
-    );
-
-    if (exitCode != 0)
-    {
-        throw new Exception(string.Format("Unexpected exit code {0}", exitCode));
-    }
-
-    var htmldoc_root = "./docs/_build/html";
+    var htmldoc_root = "./docs/_site";
     var files = GetFiles(htmldoc_root + "/**/*");
-    Zip(htmldoc_root, "./artifacts/htmldoc.zip", files);
+    Zip(htmldoc_root, "./artifacts/docfx.zip", files);
 });
-
-
-
-void ReplaceInFile(string file, string searchText, string replaceText)
-{
-    var files = ReplaceRegexInFiles(
-        file,
-        searchText,
-        replaceText);
-
-    if (files.Length != 1)
-    {
-        throw new Exception(string.Format("Unable to find {0} in {1}", searchText, file));
-    }
-}
 
 
 
