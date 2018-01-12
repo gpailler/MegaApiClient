@@ -12,7 +12,8 @@
       "disableGitFeatures": false,
       "properties": {
           "TargetFramework": "net46"
-      }
+      },
+      "filter": "apiRules.yml"
     }
   ],
   "build": {
@@ -68,7 +69,8 @@
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
-      "default"
+      "default",
+      "template_analytics"
     ],
     "postProcessors": [],
     "noLangKeyword": false,
