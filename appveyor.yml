@@ -32,9 +32,6 @@ artifacts:
   - path: '.\artifacts\docfx.zip'
     name: Documentation archive
 
-  - path: '.\docs\_site\**\*'
-    name: Documentation
-
 deploy:
   - provider: NuGet
     server: https://www.myget.org/F/megaapiclient/api/v2
