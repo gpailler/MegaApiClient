@@ -132,7 +132,7 @@ Task("Test")
     {
         OpenCover(tool =>
             {
-                tool.XUnit2(string.Concat("./MegaApiClient.Tests/bin/", testConfiguration, "/net45/*.Tests.dll"));
+                tool.XUnit2(string.Concat("./MegaApiClient.Tests/bin/", testConfiguration, "/net46/*.Tests.dll"));
             },
             coverageResult,
             new OpenCoverSettings

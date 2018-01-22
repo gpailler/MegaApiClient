@@ -11,7 +11,7 @@
       "dest": "api",
       "disableGitFeatures": false,
       "properties": {
-          "TargetFramework": "net45"
+          "TargetFramework": "net46"
       },
       "filter": "apiRules.yml"
     }
