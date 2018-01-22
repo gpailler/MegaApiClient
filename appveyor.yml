@@ -23,6 +23,9 @@ artifacts:
   name: Nuget packages
 
 - path: '.\artifacts\docfx.zip'
+  name: Documentation archive
+
+- path: '.\docs\_site\**\*'
   name: Documentation
 
 deploy:

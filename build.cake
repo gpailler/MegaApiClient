@@ -87,7 +87,6 @@ Task("Build")
 
 
 Task("Pack")
-    .IsDependentOn("Clean")
     .IsDependentOn("Build")
     .Does(() =>
 {
@@ -114,7 +113,6 @@ Task("Pack")
 
 
 Task("Test")
-    .IsDependentOn("Clean")
     .IsDependentOn("Restore-Packages")
     .IsDependentOn("Patch-GlobalAssemblyVersions")
     .Does(() =>
@@ -174,7 +172,6 @@ Task("Test")
 
 
 Task("Doc")
-    .IsDependentOn("Clean")
     .Does(() =>
 {
     DocFxMetadata("./docs/docfx.json");
@@ -188,6 +185,7 @@ Task("Doc")
 
 
 Task("Default")
+    .IsDependentOn("Clean")
     .IsDependentOn("Pack")
     .IsDependentOn("Test")
     .IsDependentOn("Doc");
