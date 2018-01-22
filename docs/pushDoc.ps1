@@ -9,6 +9,7 @@ if ($true)
   git config --global user.email $email
   git config --global user.name $username
   git config --global push.default matching
+  git config --global core.autocrlf true
 
   Write-Host "- Clone gh-pages branch...."
   cd "$($buildFolder)\..\"
@@ -30,11 +31,10 @@ if ($true)
     Write-host "- Committing changes to documentation..."
     git add --all
     git status
-    git commit -m "skip ci - static site regeneration"
+    git commit -m "[skip ci] - static site regeneration"
     git status
-    #Write-Host "- Push it...."
-    #git push --quiet
-    #Write-Host "- Pushed it good!"
+    Write-Host "- Push it...."
+    git push --quiet
   }
   else
   {
