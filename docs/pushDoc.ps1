@@ -2,14 +2,14 @@
 
 param([string]$buildFolder, [string]$email, [string]$username, [string]$personalAccessToken)
 
-#if ($true -Or $env:APPVEYOR_REPO_BRANCH -eq "master" -And $env:APPVEYOR_REPO_TAG -eq $true)
-if ($true)
+if ($env:APPVEYOR_REPO_BRANCH -eq "master" -And $env:APPVEYOR_REPO_TAG -eq $true)
 {
   Write-Host "- Set config settings...."
   git config --global user.email $email
   git config --global user.name $username
   git config --global push.default matching
   git config --global core.autocrlf true
+  git config --global core.safecrlf false
 
   Write-Host "- Clone gh-pages branch...."
   cd "$($buildFolder)\..\"
