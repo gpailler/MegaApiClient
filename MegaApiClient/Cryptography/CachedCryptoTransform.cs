@@ -3,7 +3,7 @@
   using System;
   using System.Security.Cryptography;
 
-  public class CachedCryptoTransform : ICryptoTransform
+  internal class CachedCryptoTransform : ICryptoTransform
   {
     private readonly Func<ICryptoTransform> factory;
     private ICryptoTransform cachedInstance;

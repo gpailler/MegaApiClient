@@ -3,6 +3,7 @@
 #tool "nuget:?package=xunit.runner.console"
 #tool nuget:?package=Codecov
 #addin nuget:?package=Cake.Codecov
+#addin nuget:?package=Cake.DocFx
 
 var target = Argument("target", "Default");
 
@@ -86,7 +87,6 @@ Task("Build")
 
 
 Task("Pack")
-    .IsDependentOn("Clean")
     .IsDependentOn("Build")
     .Does(() =>
 {
@@ -113,7 +113,6 @@ Task("Pack")
 
 
 Task("Test")
-    .IsDependentOn("Clean")
     .IsDependentOn("Restore-Packages")
     .IsDependentOn("Patch-GlobalAssemblyVersions")
     .Does(() =>
@@ -171,9 +170,25 @@ Task("Test")
 });
 
 
+
+Task("Doc")
+    .Does(() =>
+{
+    DocFxMetadata("./docs/docfx.json");
+    DocFxBuild("./docs/docfx.json");
+
+    var htmldoc_root = "./docs/_site";
+    var files = GetFiles(htmldoc_root + "/**/*");
+    Zip(htmldoc_root, "./artifacts/docfx.zip", files);
+});
+
+
+
 Task("Default")
+    .IsDependentOn("Clean")
     .IsDependentOn("Pack")
-    .IsDependentOn("Test");
+    .IsDependentOn("Test")
+    .IsDependentOn("Doc");
 
 
 RunTarget(target);

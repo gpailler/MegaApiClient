@@ -12,38 +12,51 @@ skip_branch_with_pr: true
 environment:
   MEGAAPICLIENT_PASSWORD:
     secure: S0InrLOJHUAoGRCks4oKpQ==
+  github_email: gregoire@pailler.fr
+  github_username: Gregoire Pailler (auto push)
+  github_auth_token:
+    secure: +346hyzBwuhGGVJJTgtAdGfoQ3ck26Q9zFx8mNSsWYkx8og19sJXjAlOYj8EnZv1
+
+install:
+  - choco install docfx -y
 
 build_script:
-- ps: .\build.ps1
+  - ps: .\build.ps1
 
 test: off
 
 artifacts:
-- path: '.\artifacts\**\*.nupkg'
-  name: Nuget packages
+  - path: '.\artifacts\**\*.nupkg'
+    name: Nuget packages
+
+  - path: '.\artifacts\docfx.zip'
+    name: Documentation archive
 
 deploy:
-- provider: NuGet
-  server: https://www.myget.org/F/megaapiclient/api/v2
-  api_key:
-    secure: Fh+ZkfvseLY9z8DWLEFf1AlaJZQgzXCkWlIhHc1t4HLNo+w9+urXd2EyBLCTKzDv
-  skip_symbols: false # Deploy symbol package too
-  symbol_server: https://www.myget.org/F/megaapiclient/symbols/api/v2/package
-  on:
-    appveyor_repo_tag: false
-- provider: NuGet
-  api_key:
-    secure: vRiGbIevyYj70e6bxkqbR1u+ixjw13pysqu8VcChwTEep6pxs7ehg2l8byXvQTUh
-  skip_symbols: true
-  on:
-    branch: master
-    appveyor_repo_tag: true
-- provider: GitHub
-  release: v$(appveyor_build_version)
-  description: 'Description'
-  auth_token:
-    secure: +346hyzBwuhGGVJJTgtAdGfoQ3ck26Q9zFx8mNSsWYkx8og19sJXjAlOYj8EnZv1
-  draft: true
-  on:
-    branch: master
-    appveyor_repo_tag: true
+  - provider: NuGet
+    server: https://www.myget.org/F/megaapiclient/api/v2
+    api_key:
+      secure: Fh+ZkfvseLY9z8DWLEFf1AlaJZQgzXCkWlIhHc1t4HLNo+w9+urXd2EyBLCTKzDv
+    skip_symbols: false # Deploy symbol package too
+    symbol_server: https://www.myget.org/F/megaapiclient/symbols/api/v2/package
+    on:
+      appveyor_repo_tag: false
+  - provider: NuGet
+    api_key:
+      secure: vRiGbIevyYj70e6bxkqbR1u+ixjw13pysqu8VcChwTEep6pxs7ehg2l8byXvQTUh
+    skip_symbols: true
+    on:
+      branch: master
+      appveyor_repo_tag: true
+  - provider: GitHub
+    release: v$(appveyor_build_version)
+    description: 'Description'
+    auth_token: $env:github_auth_token
+    draft: true
+    on:
+      branch: master
+      appveyor_repo_tag: true
+
+on_success:
+  - ps: ./docs/pushDoc.ps1 $env:APPVEYOR_BUILD_FOLDER $env:github_email $env:github_username $env:github_auth_token
+

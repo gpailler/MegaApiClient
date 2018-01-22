@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net46;netstandard1.3</TargetFrameworks>
     <RootNamespace>CG.Web.MegaApiClient</RootNamespace>
     <SignAssembly>False</SignAssembly>
     <DocumentationFile>bin\docs\MegaApiClient.xml</DocumentationFile>
@@ -50,7 +50,7 @@
     <UseHttpClient>True</UseHttpClient>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard1.6'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <NetFramework>False</NetFramework>
     <NetCore>True</NetCore>
   </PropertyGroup>
