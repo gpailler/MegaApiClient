@@ -6,7 +6,7 @@
   using DamienG.Security.Cryptography;
   using Newtonsoft.Json;
 
-  public class Attributes
+  internal class Attributes
   {
     private const int CrcArrayLength = 4;
     private const int CrcSize = sizeof(uint) * CrcArrayLength;
