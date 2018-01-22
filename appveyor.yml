@@ -51,7 +51,8 @@ deploy:
   - provider: GitHub
     release: v$(appveyor_build_version)
     description: 'Description'
-    auth_token: $env:github_auth_token
+    auth_token:
+      secure: +346hyzBwuhGGVJJTgtAdGfoQ3ck26Q9zFx8mNSsWYkx8og19sJXjAlOYj8EnZv1
     draft: true
     on:
       branch: master
