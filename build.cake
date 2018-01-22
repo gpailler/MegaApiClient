@@ -187,7 +187,7 @@ Task("Doc")
 Task("Default")
     .IsDependentOn("Clean")
     .IsDependentOn("Pack")
-    //.IsDependentOn("Test")
+    .IsDependentOn("Test")
     .IsDependentOn("Doc");
 
 
