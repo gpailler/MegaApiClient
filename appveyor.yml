@@ -12,6 +12,8 @@ skip_branch_with_pr: true
 environment:
   MEGAAPICLIENT_PASSWORD:
     secure: S0InrLOJHUAoGRCks4oKpQ==
+install:
+  - choco install docfx -y
 
 build_script:
 - ps: .\build.ps1
