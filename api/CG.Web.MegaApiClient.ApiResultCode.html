@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Enum ApiResultCode
+   | MegaApiClient's documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Enum ApiResultCode
+   | MegaApiClient's documentation ">
+    <meta name="generator" content="docfx 2.29.1.0">
+    
+    <link rel="shortcut icon" href="../images/mega_favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-3481980-6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+  
+      gtag('config', 'UA-3481980-6');
+    </script>
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/mega_logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CG.Web.MegaApiClient.ApiResultCode">
+  
+  
+  <h1 id="CG_Web_MegaApiClient_ApiResultCode" data-uid="CG.Web.MegaApiClient.ApiResultCode" class="text-break">Enum ApiResultCode
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CG.Web.MegaApiClient.html">CG.Web.MegaApiClient</a></h6>
+  <h6><strong>Assembly</strong>: MegaApiClient.dll</h6>
+  <h5 id="CG_Web_MegaApiClient_ApiResultCode_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public enum ApiResultCode</code></pre>
+  </div>
+  <h3 id="fields">Fields
+  </h3>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    <thead>
+    <tbody>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_AccessDenied">AccessDenied</td>
+        <td><p>API_EACCESS (-11): Access violation (e.g., trying to write to a read-only share)</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_BadArguments">BadArguments</td>
+        <td><p>API_EARGS (-2): You have passed invalid arguments to this command.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_BadSessionId">BadSessionId</td>
+        <td><p>API_ESID (-15): Invalid or expired user session, please relogin</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_CircularLinkage">CircularLinkage</td>
+        <td><p>API_ECIRCULAR (-10): Circular linkage attempted</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_CryptographicError">CryptographicError</td>
+        <td><p>API_EKEY (-14): A decryption operation failed (never returned by the API)</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_FileCouldNotBeReadFrom">FileCouldNotBeReadFrom</td>
+        <td><p>API_EREAD (-21): Read failed</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_FileCouldNotBeWrittenTo">FileCouldNotBeWrittenTo</td>
+        <td><p>API_EWRITE (-20): Write failed</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_InternalError">InternalError</td>
+        <td><p>API_EINTERNAL (-1): An internal error has occurred. Please submit a bug report, detailing the exact circumstances in which this error occurred.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_InvalidOrMissingApplicationKey">InvalidOrMissingApplicationKey</td>
+        <td><p>API_EAPPKEY (-22): Invalid application key; request not processed</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_Ok">Ok</td>
+        <td><p>API_OK (0): Success</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_QuotaExceeded">QuotaExceeded</td>
+        <td><p>API_EOVERQUOTA (-17): Request over quota</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_RequestFailedPermanetly">RequestFailedPermanetly</td>
+        <td><p>API_EFAILED (-5): The upload failed. Please restart it from scratch.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_RequestFailedRetry">RequestFailedRetry</td>
+        <td><p>API_EAGAIN (-3) (always at the request level): A temporary congestion or server malfunction prevented your request from being processed. No data was altered. Retry. Retries must be spaced with exponential backoff.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_RequestIncomplete">RequestIncomplete</td>
+        <td><p>API_EINCOMPLETE (-13): Trying to access an incomplete resource</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_ResourceAccessOutOfRange">ResourceAccessOutOfRange</td>
+        <td><p>API_ERANGE (-7): The upload file packet is out of range or not starting and ending on a chunk boundary.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_ResourceAdministrativelyBlocked">ResourceAdministrativelyBlocked</td>
+        <td><p>API_EBLOCKED (-16): User blocked</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_ResourceAlreadyExists">ResourceAlreadyExists</td>
+        <td><p>API_EEXIST (-12): Trying to create an object that already exists</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_ResourceExpired">ResourceExpired</td>
+        <td><p>API_EEXPIRED (-8): The upload target URL you are trying to access has expired. Please request a fresh one.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_ResourceNotExists">ResourceNotExists</td>
+        <td><p>API_EOENT (-9): Object (typically, node or user) not found</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_ResourceTemporarilyNotAvailable">ResourceTemporarilyNotAvailable</td>
+        <td><p>API_ETEMPUNAVAIL (-18): Resource temporarily not available, please try again later</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_ToManyRequestsForThisResource">ToManyRequestsForThisResource</td>
+        <td><p>API_ETOOMANY (-6): Too many concurrent IP addresses are accessing this upload target URL.</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_TooManyConnectionsOnThisResource">TooManyConnectionsOnThisResource</td>
+        <td><p>API_ETOOMANYCONNECTIONS (-19): Too many connections on this resource</p>
+</td>
+      </tr>
+      <tr>
+        <td id="CG_Web_MegaApiClient_ApiResultCode_TooManyRequests">TooManyRequests</td>
+        <td><p>API_ERATELIMIT (-4): You have exceeded your command weight per time quota. Please wait a few seconds, then try again (this should never happen in sane real-life applications).</p>
+</td>
+      </tr>
+    </tbody>
+  </thead></thead></table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/gpailler/MegaApiClient/new/67-docs/apiSpec/new?filename=CG_Web_MegaApiClient_ApiResultCode.md&amp;value=---%0Auid%3A%20CG.Web.MegaApiClient.ApiResultCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/gpailler/MegaApiClient/blob/67-docs/MegaApiClient/Exceptions.cs/#L36" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2013-2018 - Gregoire Pailler
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

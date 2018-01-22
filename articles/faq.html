@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>How can I download a file into a specific location? | MegaApiClient's documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="How can I download a file into a specific location? | MegaApiClient's documentation ">
+    <meta name="generator" content="docfx 2.29.1.0">
+    
+    <link rel="shortcut icon" href="../images/mega_favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-3481980-6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+  
+      gtag('config', 'UA-3481980-6');
+    </script>
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/mega_logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="faq">
+<h3 id="how-can-i-download-a-file-into-a-specific-location">How can I download a file into a specific location?</h3>
+
+<p>You can use a stream with the <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_">Download</a> method to control the destination of your download</p>
+<pre><code class="lang-csharp">var destination = @&quot;SubFolder\MyFile.jpg&quot;;
+using (var stream = client.Download(node))
+{
+  using (var fileStream = new FileStream(destination, FileMode.CreateNew))
+  {
+    stream.CopyTo(fileStream);
+  }
+}
+</code></pre><h3 id="how-can-i-retrieve-progression-during-downloadupload">How can I retrieve progression during download/upload?</h3>
+<p>You have several options:</p>
+<ul>
+<li>Use async methods like <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadAsync_">DownloadAsync</a> / <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadAsync_">UploadAsync</a></li>
+</ul>
+<pre><code class="lang-csharp">async void Main()
+{
+  var client = new MegaApiClient();
+  client.LoginAnonymous();
+
+  Uri fileLink = new Uri(&quot;https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk&quot;);
+  INodeInfo node = client.GetNodeFromLink(fileLink);
+
+  IProgress&lt;double&gt; progressHandler = new Progress&lt;double&gt;(x =&gt; Console.WriteLine(&quot;{0}%&quot;, x));
+  await client.DownloadFileAsync(fileLink, node.Name, progressHandler);
+
+  client.Logout();
+}
+</code></pre><ul>
+<li>Use the methods <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_">Download</a> / <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Upload_">Upload</a> with a custom stream implementation to retrieve progression</li>
+</ul>
+<pre><code class="lang-csharp">// Upload
+using (var fileStream = new FileStream(filepath, FileMode.Open))
+using (var progressionStream = new ProgressionStream(fileStream, x =&gt; Console.WriteLine(&quot;{0}%&quot;, x)))
+{
+  client.Upload(progressionStream, filename, parent);
+}
+
+// Download
+using (var downloadStream = client.Download(node))
+using (var progressionStream = new ProgressionStream(downloadStream, x =&gt; Console.WriteLine(&quot;{0}%&quot;, x)))
+using (var fileStream = new FileStream(filePath, FileMode.Create))
+{
+  progressionStream.CopyTo(fileStream);
+}
+
+public class ProgressionStream : Stream
+{
+  public delegate void ProgressionHandler(double progression);
+
+  private Stream _sourceStream;
+  private ProgressionHandler _progressionHandler;
+
+  public ProgressionStream(Stream sourceStream, ProgressionHandler progressionHandler)
+  {
+    this._sourceStream = sourceStream;
+    this._progressionHandler = progressionHandler;
+  }
+
+  public override int Read(byte[] array, int offset, int count)
+  {
+    this._progressionHandler(this.Position / (double)this.Length * 100);
+
+    return this._sourceStream.Read(array, offset, count);
+  }
+
+  public override bool CanRead
+  {
+    get { return this._sourceStream.CanRead; }
+  }
+
+  public override bool CanSeek
+  {
+    get { return this._sourceStream.CanSeek; }
+  }
+
+  public override bool CanWrite
+  {
+    get { return this._sourceStream.CanWrite; }
+  }
+
+  public override long Length
+  {
+    get { return this._sourceStream.Length; }
+  }
+
+  public override long Position
+  {
+    get { return this._sourceStream.Position; }
+    set { this._sourceStream.Position = value; }
+  }
+
+  public override void Flush()
+  {
+    this._sourceStream.Flush();
+  }
+
+  public override long Seek(long offset, SeekOrigin origin)
+  {
+    return this._sourceStream.Seek(offset, origin);
+  }
+
+  public override void SetLength(long value)
+  {
+    this._sourceStream.SetLength(value);
+  }
+
+  public override void Write(byte[] buffer, int offset, int count)
+  {
+    this._sourceStream.Write(buffer, offset, count);
+  }
+}
+</code></pre><h3 id="how-can-i-control-downloadupload-speed">How can I control download/upload speed?</h3>
+<p>You can use a custom Stream implementation with <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_">Download</a> / <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Upload_">Upload</a> methods.
+Take a look on <a href="https://github.com/duplicati/duplicati/blob/master/Duplicati/Library/Utility/ThrottledStream.cs">ThrottledStream</a> implementation from Duplicati project.</p>
+<h3 id="how-can-i-customize-megaapiclient-options-application-key-buffers">How can I customize MegaApiClient options (application key, buffers)?</h3>
+<p>When creating the MegaApiClient, you can pass a custom configuration class called <a class="xref" href="../api/CG.Web.MegaApiClient.Options.html">Options</a>.</p>
+<h3 id="how-can-i-fix-uwp-error-during-login-">How can I fix UWP error during login ?</h3>
+<p>UWP compiler has some restriction and you can face some unexpected exceptions during login.
+Take a look on <a href="https://github.com/gpailler/MegaApiClient/issues/69#issuecomment-326811805">GitHub issue #69</a> for details.</p>
+<h3 id="how-can-i-use-this-library-when-i-have-a-proxy-with-authentication">How can I use this library when I have a proxy with authentication?</h3>
+<p>You can add the following line to specify proxy credentials for the whole application.</p>
+<pre><code class="lang-csharp">WebRequest.DefaultWebProxy.Credentials = New NetworkCredentails(&quot;Username&quot;, &quot;Password&quot;)
+</code></pre><h3 id="what-is-509-error-code--megas-5gb-download-restriction">What is 509 error code / MEGA&#39;s 5GB download restriction?</h3>
+<p>Free accounts on Mega have a 5GB download restriction per day. If you want to download more than 5GB, you need a paid account.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/gpailler/MegaApiClient/blob/67-docs/docs/articles/faq.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2013-2018 - Gregoire Pailler
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

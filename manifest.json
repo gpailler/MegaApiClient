@@ -1,0 +1,396 @@
+{
+  "homepages": [],
+  "source_base_path": "C:/projects/megaapiclient/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.ApiException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.ApiException.html",
+          "hash": "n59RFYoo9hBaAoqmgPWwNQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html",
+          "hash": "d2zxD3HUhgaZ5zYtQb87eA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.ApiResultCode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.ApiResultCode.html",
+          "hash": "QpWQw4kRmKiLSSSjeHGpWQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.CancellableStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.CancellableStream.html",
+          "hash": "pWc5KzgcvQdRbp9JgAACMA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.DownloadException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.DownloadException.html",
+          "hash": "OWO9dgAR24KSxOAE0eIrfQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.IAccountInformation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.IAccountInformation.html",
+          "hash": "qeOg7eRQvgHPMOXhtE3Yaw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.IMegaApiClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.IMegaApiClient.html",
+          "hash": "Qo0vqk9S3nAMzmkAIuEfMA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.INode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.INode.html",
+          "hash": "2BQmAq9JZhgw+r8dUfjmvA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.INodeInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.INodeInfo.html",
+          "hash": "m0IKcRNGOrbkHXcx9VWH8g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.IStorageMetrics.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.IStorageMetrics.html",
+          "hash": "e5VcqZm2VxDov+/vGe3y4g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.IWebClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.IWebClient.html",
+          "hash": "FinEZcLzlhKmK7Byx1+9sw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html",
+          "hash": "e27ExR0y/4bwpYGDsSXspw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html",
+          "hash": "DSUZORauw10PTs1dB0rjRQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.html",
+          "hash": "10sJ+N/wk0+UMQI1c2KDWg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.NodeExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.NodeExtensions.html",
+          "hash": "0J2ymPuNAHOH5iVRByw1Cw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.NodeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.NodeType.html",
+          "hash": "rXbzDBc+y7OSkTUzqzUY8w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.Options.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.Options.html",
+          "hash": "Cm+MKNd1X3dZi9/xxd+DDw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.UploadException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.UploadException.html",
+          "hash": "fl7lMULly8uyHd04wvNavQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.WebClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.WebClient.html",
+          "hash": "+XQND32MVW0qPFAspGqkOw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CG.Web.MegaApiClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CG.Web.MegaApiClient.html",
+          "hash": "cL1nA7kK0MyyAuG8j9gQIA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "cMkrCoyqIRj1P9pVMOaJlA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/faq.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/faq.html",
+          "hash": "fZOtAb88Lcz5uZX4+Pox+A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/installation.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/installation.html",
+          "hash": "0JbecSgySOUTvXwo2GqqMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/samples.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/samples.html",
+          "hash": "VM/jHEsAHPQHqDkRr9stkw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "LKM8o3wRaMT5gJp7QmfgKw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/mega_favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "images/mega_favicon.ico"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/mega_logo.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/mega_logo.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "C7FYf7gO9JN3TFMqBRhCPQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "C1ltUZiWittRXkbQfycTrQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build"
+      },
+      "processors": {
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        },
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build"
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot suppport incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build"
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: last post processor info is null.",
+        "incrementalPhase": "postProcessing"
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

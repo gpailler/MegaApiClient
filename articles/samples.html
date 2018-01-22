@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>List all files / folders on your Mega account | MegaApiClient's documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="List all files / folders on your Mega account | MegaApiClient's documentation ">
+    <meta name="generator" content="docfx 2.29.1.0">
+    
+    <link rel="shortcut icon" href="../images/mega_favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-3481980-6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+  
+      gtag('config', 'UA-3481980-6');
+    </script>
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/mega_logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="samples">
+<h3 id="list-all-files--folders-on-your-mega-account">List all files / folders on your Mega account</h3>
+
+<pre><code class="lang-csharp">void Main()
+{
+  var client = new MegaApiClient();
+  client.Login(&quot;username@domain.com&quot;, &quot;passw0rd&quot;);
+
+  // GetNodes retrieves all files/folders metadata from Mega
+  // so this method can be time consuming
+  IEnumerable&lt;INode&gt; nodes = client.GetNodes();
+
+  INode parent = nodes.Single(n =&gt; n.Type == NodeType.Root);
+  DisplayNodesRecursive(nodes, parent);
+
+  client.Logout();
+}
+
+void DisplayNodesRecursive(IEnumerable&lt;INode&gt; nodes, INode parent, int level = 0)
+{
+  IEnumerable&lt;INode&gt; children = nodes.Where(x =&gt; x.ParentId == parent.Id);
+  foreach (INode child in children)
+  {
+    string infos = $&quot;- {child.Name} - {child.Size} bytes - {child.CreationDate}&quot;;
+    Console.WriteLine(infos.PadLeft(infos.Length + level, &#39;\t&#39;));
+    if (child.Type == NodeType.Directory)
+    {
+      DisplayNodesRecursive(nodes, child, level + 1);
+    }
+  }
+}
+</code></pre><h3 id="download-file-from-a-mega-link">Download file from a Mega link</h3>
+<pre><code class="lang-csharp">void Main()
+{
+  var client = new MegaApiClient();
+  client.LoginAnonymous();
+
+  Uri fileLink = new Uri(&quot;https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk&quot;);
+  INodeInfo node = client.GetNodeFromLink(fileLink);
+
+  Console.WriteLine($&quot;Downloading {node.Name}&quot;);
+  client.DownloadFile(fileLink, node.Name);
+
+  client.Logout();
+}
+</code></pre><h3 id="download-folder-content-from-a-mega-link">Download folder content from a Mega link</h3>
+<pre><code class="lang-csharp">void Main()
+{
+  var client = new MegaApiClient();
+  client.LoginAnonymous();
+
+  Uri folderLink = new Uri(&quot;https://mega.nz/#F!e1ogxQ7T!ee4Q_ocD1bSLmNeg9B6kBw&quot;);
+  IEnumerable&lt;INode&gt; nodes = client.GetNodesFromLink(folderLink);
+  foreach (INode node in nodes.Where(x =&gt; x.Type == NodeType.File))
+  {
+    Console.WriteLine($&quot;Downloading {node.Name}&quot;);
+    client.DownloadFile(node, node.Name);
+  }
+
+  client.Logout();
+}
+</code></pre><h3 id="upload-a-file-to-your-mega-account-and-retrieve-public-download-link">Upload a file to your Mega account and retrieve public download link</h3>
+<pre><code class="lang-csharp">void Main()
+{
+  var client = new MegaApiClient();
+  client.Login(&quot;username@domain.com&quot;, &quot;passw0rd&quot;);
+
+  IEnumerable&lt;INode&gt; nodes = client.GetNodes();
+
+  INode root = nodes.Single(x =&gt; x.Type == NodeType.Root);
+  INode myFolder = client.CreateFolder(&quot;Upload&quot;, root);
+
+  INode myFile = client.UploadFile(&quot;MyFile.ext&quot;, myFolder);
+  Uri downloadLink = client.GetDownloadLink(myFile);
+  Console.WriteLine(downloadLink);
+
+  client.Logout();
+}
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/gpailler/MegaApiClient/blob/67-docs/docs/articles/samples.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2013-2018 - Gregoire Pailler
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

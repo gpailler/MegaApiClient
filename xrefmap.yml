@@ -1,0 +1,2226 @@
+### YamlMime:XRefMap
+sorted: true
+references:
+- uid: CG.Web.MegaApiClient
+  name: CG.Web.MegaApiClient
+  href: api/CG.Web.MegaApiClient.html
+  commentId: N:CG.Web.MegaApiClient
+  fullName: CG.Web.MegaApiClient
+  nameWithType: CG.Web.MegaApiClient
+- uid: CG.Web.MegaApiClient.ApiException
+  name: ApiException
+  href: api/CG.Web.MegaApiClient.ApiException.html
+  commentId: T:CG.Web.MegaApiClient.ApiException
+  fullName: CG.Web.MegaApiClient.ApiException
+  nameWithType: ApiException
+- uid: CG.Web.MegaApiClient.ApiException.ApiResultCode
+  name: ApiResultCode
+  href: api/CG.Web.MegaApiClient.ApiException.html#CG_Web_MegaApiClient_ApiException_ApiResultCode
+  commentId: P:CG.Web.MegaApiClient.ApiException.ApiResultCode
+  fullName: CG.Web.MegaApiClient.ApiException.ApiResultCode
+  nameWithType: ApiException.ApiResultCode
+- uid: CG.Web.MegaApiClient.ApiException.ApiResultCode*
+  name: ApiResultCode
+  href: api/CG.Web.MegaApiClient.ApiException.html#CG_Web_MegaApiClient_ApiException_ApiResultCode_
+  commentId: Overload:CG.Web.MegaApiClient.ApiException.ApiResultCode
+  fullName: CG.Web.MegaApiClient.ApiException.ApiResultCode
+  nameWithType: ApiException.ApiResultCode
+- uid: CG.Web.MegaApiClient.ApiException.Message
+  name: Message
+  href: api/CG.Web.MegaApiClient.ApiException.html#CG_Web_MegaApiClient_ApiException_Message
+  commentId: P:CG.Web.MegaApiClient.ApiException.Message
+  fullName: CG.Web.MegaApiClient.ApiException.Message
+  nameWithType: ApiException.Message
+- uid: CG.Web.MegaApiClient.ApiException.Message*
+  name: Message
+  href: api/CG.Web.MegaApiClient.ApiException.html#CG_Web_MegaApiClient_ApiException_Message_
+  commentId: Overload:CG.Web.MegaApiClient.ApiException.Message
+  fullName: CG.Web.MegaApiClient.ApiException.Message
+  nameWithType: ApiException.Message
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs
+  name: ApiRequestFailedEventArgs
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html
+  commentId: T:CG.Web.MegaApiClient.ApiRequestFailedEventArgs
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs
+  nameWithType: ApiRequestFailedEventArgs
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.Int32,CG.Web.MegaApiClient.ApiResultCode,System.Exception)
+  name: ApiRequestFailedEventArgs(Uri, Int32, Int32, ApiResultCode, Exception)
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_System_Uri_System_Int32_System_Int32_CG_Web_MegaApiClient_ApiResultCode_System_Exception_
+  commentId: M:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.Int32,CG.Web.MegaApiClient.ApiResultCode,System.Exception)
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(System.Uri, System.Int32, System.Int32, CG.Web.MegaApiClient.ApiResultCode, System.Exception)
+  nameWithType: ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(Uri, Int32, Int32, ApiResultCode, Exception)
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.Int32,CG.Web.MegaApiClient.ApiResultCode,System.String)
+  name: ApiRequestFailedEventArgs(Uri, Int32, Int32, ApiResultCode, String)
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_System_Uri_System_Int32_System_Int32_CG_Web_MegaApiClient_ApiResultCode_System_String_
+  commentId: M:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.Int32,CG.Web.MegaApiClient.ApiResultCode,System.String)
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(System.Uri, System.Int32, System.Int32, CG.Web.MegaApiClient.ApiResultCode, System.String)
+  nameWithType: ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(Uri, Int32, Int32, ApiResultCode, String)
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor*
+  name: ApiRequestFailedEventArgs
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiRequestFailedEventArgs
+  nameWithType: ApiRequestFailedEventArgs.ApiRequestFailedEventArgs
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult
+  name: ApiResult
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ApiResult
+  commentId: P:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult
+  nameWithType: ApiRequestFailedEventArgs.ApiResult
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult*
+  name: ApiResult
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ApiResult_
+  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult
+  nameWithType: ApiRequestFailedEventArgs.ApiResult
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl
+  name: ApiUrl
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ApiUrl
+  commentId: P:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl
+  nameWithType: ApiRequestFailedEventArgs.ApiUrl
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl*
+  name: ApiUrl
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ApiUrl_
+  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl
+  nameWithType: ApiRequestFailedEventArgs.ApiUrl
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
+  name: AttemptNum
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_AttemptNum
+  commentId: P:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
+  nameWithType: ApiRequestFailedEventArgs.AttemptNum
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum*
+  name: AttemptNum
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_AttemptNum_
+  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
+  nameWithType: ApiRequestFailedEventArgs.AttemptNum
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
+  name: DelayMilliseconds
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_DelayMilliseconds
+  commentId: P:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
+  nameWithType: ApiRequestFailedEventArgs.DelayMilliseconds
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds*
+  name: DelayMilliseconds
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_DelayMilliseconds_
+  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
+  nameWithType: ApiRequestFailedEventArgs.DelayMilliseconds
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
+  name: Exception
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_Exception
+  commentId: P:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
+  nameWithType: ApiRequestFailedEventArgs.Exception
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception*
+  name: Exception
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_Exception_
+  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
+  nameWithType: ApiRequestFailedEventArgs.Exception
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
+  name: ResponseJson
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ResponseJson
+  commentId: P:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
+  nameWithType: ApiRequestFailedEventArgs.ResponseJson
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson*
+  name: ResponseJson
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ResponseJson_
+  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
+  nameWithType: ApiRequestFailedEventArgs.ResponseJson
+- uid: CG.Web.MegaApiClient.ApiResultCode
+  name: ApiResultCode
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html
+  commentId: T:CG.Web.MegaApiClient.ApiResultCode
+  fullName: CG.Web.MegaApiClient.ApiResultCode
+  nameWithType: ApiResultCode
+- uid: CG.Web.MegaApiClient.ApiResultCode.AccessDenied
+  name: AccessDenied
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_AccessDenied
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.AccessDenied
+  fullName: CG.Web.MegaApiClient.ApiResultCode.AccessDenied
+  nameWithType: ApiResultCode.AccessDenied
+- uid: CG.Web.MegaApiClient.ApiResultCode.BadArguments
+  name: BadArguments
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_BadArguments
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.BadArguments
+  fullName: CG.Web.MegaApiClient.ApiResultCode.BadArguments
+  nameWithType: ApiResultCode.BadArguments
+- uid: CG.Web.MegaApiClient.ApiResultCode.BadSessionId
+  name: BadSessionId
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_BadSessionId
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.BadSessionId
+  fullName: CG.Web.MegaApiClient.ApiResultCode.BadSessionId
+  nameWithType: ApiResultCode.BadSessionId
+- uid: CG.Web.MegaApiClient.ApiResultCode.CircularLinkage
+  name: CircularLinkage
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_CircularLinkage
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.CircularLinkage
+  fullName: CG.Web.MegaApiClient.ApiResultCode.CircularLinkage
+  nameWithType: ApiResultCode.CircularLinkage
+- uid: CG.Web.MegaApiClient.ApiResultCode.CryptographicError
+  name: CryptographicError
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_CryptographicError
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.CryptographicError
+  fullName: CG.Web.MegaApiClient.ApiResultCode.CryptographicError
+  nameWithType: ApiResultCode.CryptographicError
+- uid: CG.Web.MegaApiClient.ApiResultCode.FileCouldNotBeReadFrom
+  name: FileCouldNotBeReadFrom
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_FileCouldNotBeReadFrom
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.FileCouldNotBeReadFrom
+  fullName: CG.Web.MegaApiClient.ApiResultCode.FileCouldNotBeReadFrom
+  nameWithType: ApiResultCode.FileCouldNotBeReadFrom
+- uid: CG.Web.MegaApiClient.ApiResultCode.FileCouldNotBeWrittenTo
+  name: FileCouldNotBeWrittenTo
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_FileCouldNotBeWrittenTo
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.FileCouldNotBeWrittenTo
+  fullName: CG.Web.MegaApiClient.ApiResultCode.FileCouldNotBeWrittenTo
+  nameWithType: ApiResultCode.FileCouldNotBeWrittenTo
+- uid: CG.Web.MegaApiClient.ApiResultCode.InternalError
+  name: InternalError
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_InternalError
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.InternalError
+  fullName: CG.Web.MegaApiClient.ApiResultCode.InternalError
+  nameWithType: ApiResultCode.InternalError
+- uid: CG.Web.MegaApiClient.ApiResultCode.InvalidOrMissingApplicationKey
+  name: InvalidOrMissingApplicationKey
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_InvalidOrMissingApplicationKey
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.InvalidOrMissingApplicationKey
+  fullName: CG.Web.MegaApiClient.ApiResultCode.InvalidOrMissingApplicationKey
+  nameWithType: ApiResultCode.InvalidOrMissingApplicationKey
+- uid: CG.Web.MegaApiClient.ApiResultCode.Ok
+  name: Ok
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_Ok
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.Ok
+  fullName: CG.Web.MegaApiClient.ApiResultCode.Ok
+  nameWithType: ApiResultCode.Ok
+- uid: CG.Web.MegaApiClient.ApiResultCode.QuotaExceeded
+  name: QuotaExceeded
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_QuotaExceeded
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.QuotaExceeded
+  fullName: CG.Web.MegaApiClient.ApiResultCode.QuotaExceeded
+  nameWithType: ApiResultCode.QuotaExceeded
+- uid: CG.Web.MegaApiClient.ApiResultCode.RequestFailedPermanetly
+  name: RequestFailedPermanetly
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_RequestFailedPermanetly
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.RequestFailedPermanetly
+  fullName: CG.Web.MegaApiClient.ApiResultCode.RequestFailedPermanetly
+  nameWithType: ApiResultCode.RequestFailedPermanetly
+- uid: CG.Web.MegaApiClient.ApiResultCode.RequestFailedRetry
+  name: RequestFailedRetry
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_RequestFailedRetry
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.RequestFailedRetry
+  fullName: CG.Web.MegaApiClient.ApiResultCode.RequestFailedRetry
+  nameWithType: ApiResultCode.RequestFailedRetry
+- uid: CG.Web.MegaApiClient.ApiResultCode.RequestIncomplete
+  name: RequestIncomplete
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_RequestIncomplete
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.RequestIncomplete
+  fullName: CG.Web.MegaApiClient.ApiResultCode.RequestIncomplete
+  nameWithType: ApiResultCode.RequestIncomplete
+- uid: CG.Web.MegaApiClient.ApiResultCode.ResourceAccessOutOfRange
+  name: ResourceAccessOutOfRange
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_ResourceAccessOutOfRange
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.ResourceAccessOutOfRange
+  fullName: CG.Web.MegaApiClient.ApiResultCode.ResourceAccessOutOfRange
+  nameWithType: ApiResultCode.ResourceAccessOutOfRange
+- uid: CG.Web.MegaApiClient.ApiResultCode.ResourceAdministrativelyBlocked
+  name: ResourceAdministrativelyBlocked
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_ResourceAdministrativelyBlocked
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.ResourceAdministrativelyBlocked
+  fullName: CG.Web.MegaApiClient.ApiResultCode.ResourceAdministrativelyBlocked
+  nameWithType: ApiResultCode.ResourceAdministrativelyBlocked
+- uid: CG.Web.MegaApiClient.ApiResultCode.ResourceAlreadyExists
+  name: ResourceAlreadyExists
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_ResourceAlreadyExists
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.ResourceAlreadyExists
+  fullName: CG.Web.MegaApiClient.ApiResultCode.ResourceAlreadyExists
+  nameWithType: ApiResultCode.ResourceAlreadyExists
+- uid: CG.Web.MegaApiClient.ApiResultCode.ResourceExpired
+  name: ResourceExpired
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_ResourceExpired
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.ResourceExpired
+  fullName: CG.Web.MegaApiClient.ApiResultCode.ResourceExpired
+  nameWithType: ApiResultCode.ResourceExpired
+- uid: CG.Web.MegaApiClient.ApiResultCode.ResourceNotExists
+  name: ResourceNotExists
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_ResourceNotExists
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.ResourceNotExists
+  fullName: CG.Web.MegaApiClient.ApiResultCode.ResourceNotExists
+  nameWithType: ApiResultCode.ResourceNotExists
+- uid: CG.Web.MegaApiClient.ApiResultCode.ResourceTemporarilyNotAvailable
+  name: ResourceTemporarilyNotAvailable
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_ResourceTemporarilyNotAvailable
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.ResourceTemporarilyNotAvailable
+  fullName: CG.Web.MegaApiClient.ApiResultCode.ResourceTemporarilyNotAvailable
+  nameWithType: ApiResultCode.ResourceTemporarilyNotAvailable
+- uid: CG.Web.MegaApiClient.ApiResultCode.ToManyRequestsForThisResource
+  name: ToManyRequestsForThisResource
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_ToManyRequestsForThisResource
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.ToManyRequestsForThisResource
+  fullName: CG.Web.MegaApiClient.ApiResultCode.ToManyRequestsForThisResource
+  nameWithType: ApiResultCode.ToManyRequestsForThisResource
+- uid: CG.Web.MegaApiClient.ApiResultCode.TooManyConnectionsOnThisResource
+  name: TooManyConnectionsOnThisResource
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_TooManyConnectionsOnThisResource
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.TooManyConnectionsOnThisResource
+  fullName: CG.Web.MegaApiClient.ApiResultCode.TooManyConnectionsOnThisResource
+  nameWithType: ApiResultCode.TooManyConnectionsOnThisResource
+- uid: CG.Web.MegaApiClient.ApiResultCode.TooManyRequests
+  name: TooManyRequests
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_TooManyRequests
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.TooManyRequests
+  fullName: CG.Web.MegaApiClient.ApiResultCode.TooManyRequests
+  nameWithType: ApiResultCode.TooManyRequests
+- uid: CG.Web.MegaApiClient.CancellableStream
+  name: CancellableStream
+  href: api/CG.Web.MegaApiClient.CancellableStream.html
+  commentId: T:CG.Web.MegaApiClient.CancellableStream
+  fullName: CG.Web.MegaApiClient.CancellableStream
+  nameWithType: CancellableStream
+- uid: CG.Web.MegaApiClient.CancellableStream.#ctor(System.IO.Stream,System.Threading.CancellationToken)
+  name: CancellableStream(Stream, CancellationToken)
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream__ctor_System_IO_Stream_System_Threading_CancellationToken_
+  commentId: M:CG.Web.MegaApiClient.CancellableStream.#ctor(System.IO.Stream,System.Threading.CancellationToken)
+  fullName: CG.Web.MegaApiClient.CancellableStream.CancellableStream(System.IO.Stream, System.Threading.CancellationToken)
+  nameWithType: CancellableStream.CancellableStream(Stream, CancellationToken)
+- uid: CG.Web.MegaApiClient.CancellableStream.#ctor*
+  name: CancellableStream
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.#ctor
+  fullName: CG.Web.MegaApiClient.CancellableStream.CancellableStream
+  nameWithType: CancellableStream.CancellableStream
+- uid: CG.Web.MegaApiClient.CancellableStream.CanRead
+  name: CanRead
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanRead
+  commentId: P:CG.Web.MegaApiClient.CancellableStream.CanRead
+  fullName: CG.Web.MegaApiClient.CancellableStream.CanRead
+  nameWithType: CancellableStream.CanRead
+- uid: CG.Web.MegaApiClient.CancellableStream.CanRead*
+  name: CanRead
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanRead_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.CanRead
+  fullName: CG.Web.MegaApiClient.CancellableStream.CanRead
+  nameWithType: CancellableStream.CanRead
+- uid: CG.Web.MegaApiClient.CancellableStream.CanSeek
+  name: CanSeek
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanSeek
+  commentId: P:CG.Web.MegaApiClient.CancellableStream.CanSeek
+  fullName: CG.Web.MegaApiClient.CancellableStream.CanSeek
+  nameWithType: CancellableStream.CanSeek
+- uid: CG.Web.MegaApiClient.CancellableStream.CanSeek*
+  name: CanSeek
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanSeek_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.CanSeek
+  fullName: CG.Web.MegaApiClient.CancellableStream.CanSeek
+  nameWithType: CancellableStream.CanSeek
+- uid: CG.Web.MegaApiClient.CancellableStream.CanWrite
+  name: CanWrite
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanWrite
+  commentId: P:CG.Web.MegaApiClient.CancellableStream.CanWrite
+  fullName: CG.Web.MegaApiClient.CancellableStream.CanWrite
+  nameWithType: CancellableStream.CanWrite
+- uid: CG.Web.MegaApiClient.CancellableStream.CanWrite*
+  name: CanWrite
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanWrite_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.CanWrite
+  fullName: CG.Web.MegaApiClient.CancellableStream.CanWrite
+  nameWithType: CancellableStream.CanWrite
+- uid: CG.Web.MegaApiClient.CancellableStream.Close
+  name: Close()
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Close
+  commentId: M:CG.Web.MegaApiClient.CancellableStream.Close
+  fullName: CG.Web.MegaApiClient.CancellableStream.Close()
+  nameWithType: CancellableStream.Close()
+- uid: CG.Web.MegaApiClient.CancellableStream.Close*
+  name: Close
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Close_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Close
+  fullName: CG.Web.MegaApiClient.CancellableStream.Close
+  nameWithType: CancellableStream.Close
+- uid: CG.Web.MegaApiClient.CancellableStream.Dispose(System.Boolean)
+  name: Dispose(Boolean)
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Dispose_System_Boolean_
+  commentId: M:CG.Web.MegaApiClient.CancellableStream.Dispose(System.Boolean)
+  fullName: CG.Web.MegaApiClient.CancellableStream.Dispose(System.Boolean)
+  nameWithType: CancellableStream.Dispose(Boolean)
+- uid: CG.Web.MegaApiClient.CancellableStream.Dispose*
+  name: Dispose
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Dispose_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Dispose
+  fullName: CG.Web.MegaApiClient.CancellableStream.Dispose
+  nameWithType: CancellableStream.Dispose
+- uid: CG.Web.MegaApiClient.CancellableStream.Flush
+  name: Flush()
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Flush
+  commentId: M:CG.Web.MegaApiClient.CancellableStream.Flush
+  fullName: CG.Web.MegaApiClient.CancellableStream.Flush()
+  nameWithType: CancellableStream.Flush()
+- uid: CG.Web.MegaApiClient.CancellableStream.Flush*
+  name: Flush
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Flush_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Flush
+  fullName: CG.Web.MegaApiClient.CancellableStream.Flush
+  nameWithType: CancellableStream.Flush
+- uid: CG.Web.MegaApiClient.CancellableStream.Length
+  name: Length
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Length
+  commentId: P:CG.Web.MegaApiClient.CancellableStream.Length
+  fullName: CG.Web.MegaApiClient.CancellableStream.Length
+  nameWithType: CancellableStream.Length
+- uid: CG.Web.MegaApiClient.CancellableStream.Length*
+  name: Length
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Length_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Length
+  fullName: CG.Web.MegaApiClient.CancellableStream.Length
+  nameWithType: CancellableStream.Length
+- uid: CG.Web.MegaApiClient.CancellableStream.Position
+  name: Position
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Position
+  commentId: P:CG.Web.MegaApiClient.CancellableStream.Position
+  fullName: CG.Web.MegaApiClient.CancellableStream.Position
+  nameWithType: CancellableStream.Position
+- uid: CG.Web.MegaApiClient.CancellableStream.Position*
+  name: Position
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Position_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Position
+  fullName: CG.Web.MegaApiClient.CancellableStream.Position
+  nameWithType: CancellableStream.Position
+- uid: CG.Web.MegaApiClient.CancellableStream.Read(System.Byte[],System.Int32,System.Int32)
+  name: Read(Byte[], Int32, Int32)
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Read_System_Byte___System_Int32_System_Int32_
+  commentId: M:CG.Web.MegaApiClient.CancellableStream.Read(System.Byte[],System.Int32,System.Int32)
+  name.vb: Read(Byte(), Int32, Int32)
+  fullName: CG.Web.MegaApiClient.CancellableStream.Read(System.Byte[], System.Int32, System.Int32)
+  fullName.vb: CG.Web.MegaApiClient.CancellableStream.Read(System.Byte(), System.Int32, System.Int32)
+  nameWithType: CancellableStream.Read(Byte[], Int32, Int32)
+  nameWithType.vb: CancellableStream.Read(Byte(), Int32, Int32)
+- uid: CG.Web.MegaApiClient.CancellableStream.Read*
+  name: Read
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Read_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Read
+  fullName: CG.Web.MegaApiClient.CancellableStream.Read
+  nameWithType: CancellableStream.Read
+- uid: CG.Web.MegaApiClient.CancellableStream.Seek(System.Int64,System.IO.SeekOrigin)
+  name: Seek(Int64, SeekOrigin)
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Seek_System_Int64_System_IO_SeekOrigin_
+  commentId: M:CG.Web.MegaApiClient.CancellableStream.Seek(System.Int64,System.IO.SeekOrigin)
+  fullName: CG.Web.MegaApiClient.CancellableStream.Seek(System.Int64, System.IO.SeekOrigin)
+  nameWithType: CancellableStream.Seek(Int64, SeekOrigin)
+- uid: CG.Web.MegaApiClient.CancellableStream.Seek*
+  name: Seek
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Seek_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Seek
+  fullName: CG.Web.MegaApiClient.CancellableStream.Seek
+  nameWithType: CancellableStream.Seek
+- uid: CG.Web.MegaApiClient.CancellableStream.SetLength(System.Int64)
+  name: SetLength(Int64)
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_SetLength_System_Int64_
+  commentId: M:CG.Web.MegaApiClient.CancellableStream.SetLength(System.Int64)
+  fullName: CG.Web.MegaApiClient.CancellableStream.SetLength(System.Int64)
+  nameWithType: CancellableStream.SetLength(Int64)
+- uid: CG.Web.MegaApiClient.CancellableStream.SetLength*
+  name: SetLength
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_SetLength_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.SetLength
+  fullName: CG.Web.MegaApiClient.CancellableStream.SetLength
+  nameWithType: CancellableStream.SetLength
+- uid: CG.Web.MegaApiClient.CancellableStream.Write(System.Byte[],System.Int32,System.Int32)
+  name: Write(Byte[], Int32, Int32)
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Write_System_Byte___System_Int32_System_Int32_
+  commentId: M:CG.Web.MegaApiClient.CancellableStream.Write(System.Byte[],System.Int32,System.Int32)
+  name.vb: Write(Byte(), Int32, Int32)
+  fullName: CG.Web.MegaApiClient.CancellableStream.Write(System.Byte[], System.Int32, System.Int32)
+  fullName.vb: CG.Web.MegaApiClient.CancellableStream.Write(System.Byte(), System.Int32, System.Int32)
+  nameWithType: CancellableStream.Write(Byte[], Int32, Int32)
+  nameWithType.vb: CancellableStream.Write(Byte(), Int32, Int32)
+- uid: CG.Web.MegaApiClient.CancellableStream.Write*
+  name: Write
+  href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Write_
+  commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Write
+  fullName: CG.Web.MegaApiClient.CancellableStream.Write
+  nameWithType: CancellableStream.Write
+- uid: CG.Web.MegaApiClient.DownloadException
+  name: DownloadException
+  href: api/CG.Web.MegaApiClient.DownloadException.html
+  commentId: T:CG.Web.MegaApiClient.DownloadException
+  fullName: CG.Web.MegaApiClient.DownloadException
+  nameWithType: DownloadException
+- uid: CG.Web.MegaApiClient.DownloadException.#ctor
+  name: DownloadException()
+  href: api/CG.Web.MegaApiClient.DownloadException.html#CG_Web_MegaApiClient_DownloadException__ctor
+  commentId: M:CG.Web.MegaApiClient.DownloadException.#ctor
+  fullName: CG.Web.MegaApiClient.DownloadException.DownloadException()
+  nameWithType: DownloadException.DownloadException()
+- uid: CG.Web.MegaApiClient.DownloadException.#ctor*
+  name: DownloadException
+  href: api/CG.Web.MegaApiClient.DownloadException.html#CG_Web_MegaApiClient_DownloadException__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.DownloadException.#ctor
+  fullName: CG.Web.MegaApiClient.DownloadException.DownloadException
+  nameWithType: DownloadException.DownloadException
+- uid: CG.Web.MegaApiClient.IAccountInformation
+  name: IAccountInformation
+  href: api/CG.Web.MegaApiClient.IAccountInformation.html
+  commentId: T:CG.Web.MegaApiClient.IAccountInformation
+  fullName: CG.Web.MegaApiClient.IAccountInformation
+  nameWithType: IAccountInformation
+- uid: CG.Web.MegaApiClient.IAccountInformation.Metrics
+  name: Metrics
+  href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_Metrics
+  commentId: P:CG.Web.MegaApiClient.IAccountInformation.Metrics
+  fullName: CG.Web.MegaApiClient.IAccountInformation.Metrics
+  nameWithType: IAccountInformation.Metrics
+- uid: CG.Web.MegaApiClient.IAccountInformation.Metrics*
+  name: Metrics
+  href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_Metrics_
+  commentId: Overload:CG.Web.MegaApiClient.IAccountInformation.Metrics
+  fullName: CG.Web.MegaApiClient.IAccountInformation.Metrics
+  nameWithType: IAccountInformation.Metrics
+- uid: CG.Web.MegaApiClient.IAccountInformation.TotalQuota
+  name: TotalQuota
+  href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_TotalQuota
+  commentId: P:CG.Web.MegaApiClient.IAccountInformation.TotalQuota
+  fullName: CG.Web.MegaApiClient.IAccountInformation.TotalQuota
+  nameWithType: IAccountInformation.TotalQuota
+- uid: CG.Web.MegaApiClient.IAccountInformation.TotalQuota*
+  name: TotalQuota
+  href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_TotalQuota_
+  commentId: Overload:CG.Web.MegaApiClient.IAccountInformation.TotalQuota
+  fullName: CG.Web.MegaApiClient.IAccountInformation.TotalQuota
+  nameWithType: IAccountInformation.TotalQuota
+- uid: CG.Web.MegaApiClient.IAccountInformation.UsedQuota
+  name: UsedQuota
+  href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_UsedQuota
+  commentId: P:CG.Web.MegaApiClient.IAccountInformation.UsedQuota
+  fullName: CG.Web.MegaApiClient.IAccountInformation.UsedQuota
+  nameWithType: IAccountInformation.UsedQuota
+- uid: CG.Web.MegaApiClient.IAccountInformation.UsedQuota*
+  name: UsedQuota
+  href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_UsedQuota_
+  commentId: Overload:CG.Web.MegaApiClient.IAccountInformation.UsedQuota
+  fullName: CG.Web.MegaApiClient.IAccountInformation.UsedQuota
+  nameWithType: IAccountInformation.UsedQuota
+- uid: CG.Web.MegaApiClient.IMegaApiClient
+  name: IMegaApiClient
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html
+  commentId: T:CG.Web.MegaApiClient.IMegaApiClient
+  fullName: CG.Web.MegaApiClient.IMegaApiClient
+  nameWithType: IMegaApiClient
+- uid: CG.Web.MegaApiClient.IMegaApiClient.ApiRequestFailed
+  name: ApiRequestFailed
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_ApiRequestFailed
+  commentId: E:CG.Web.MegaApiClient.IMegaApiClient.ApiRequestFailed
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.ApiRequestFailed
+  nameWithType: IMegaApiClient.ApiRequestFailed
+- uid: CG.Web.MegaApiClient.IMegaApiClient.CreateFolder(System.String,CG.Web.MegaApiClient.INode)
+  name: CreateFolder(String, INode)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_CreateFolder_System_String_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.CreateFolder(System.String,CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.CreateFolder(System.String, CG.Web.MegaApiClient.INode)
+  nameWithType: IMegaApiClient.CreateFolder(String, INode)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.CreateFolder*
+  name: CreateFolder
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_CreateFolder_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.CreateFolder
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.CreateFolder
+  nameWithType: IMegaApiClient.CreateFolder
+- uid: CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync(System.String,CG.Web.MegaApiClient.INode)
+  name: CreateFolderAsync(String, INode)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_CreateFolderAsync_System_String_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync(System.String,CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync(System.String, CG.Web.MegaApiClient.INode)
+  nameWithType: IMegaApiClient.CreateFolderAsync(String, INode)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync*
+  name: CreateFolderAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_CreateFolderAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync
+  nameWithType: IMegaApiClient.CreateFolderAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Delete(CG.Web.MegaApiClient.INode,System.Boolean)
+  name: Delete(INode, Boolean)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Delete_CG_Web_MegaApiClient_INode_System_Boolean_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Delete(CG.Web.MegaApiClient.INode,System.Boolean)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Delete(CG.Web.MegaApiClient.INode, System.Boolean)
+  nameWithType: IMegaApiClient.Delete(INode, Boolean)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Delete*
+  name: Delete
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Delete_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Delete
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Delete
+  nameWithType: IMegaApiClient.Delete
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync(CG.Web.MegaApiClient.INode,System.Boolean)
+  name: DeleteAsync(INode, Boolean)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DeleteAsync_CG_Web_MegaApiClient_INode_System_Boolean_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync(CG.Web.MegaApiClient.INode,System.Boolean)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync(CG.Web.MegaApiClient.INode, System.Boolean)
+  nameWithType: IMegaApiClient.DeleteAsync(INode, Boolean)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync*
+  name: DeleteAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DeleteAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync
+  nameWithType: IMegaApiClient.DeleteAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Download(CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
+  name: Download(INode, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Download_CG_Web_MegaApiClient_INode_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Download(CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
+  name.vb: Download(INode, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Download(CG.Web.MegaApiClient.INode, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.Download(CG.Web.MegaApiClient.INode, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.Download(INode, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.Download(INode, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Download(System.Uri,System.Nullable{System.Threading.CancellationToken})
+  name: Download(Uri, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Download_System_Uri_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Download(System.Uri,System.Nullable{System.Threading.CancellationToken})
+  name.vb: Download(Uri, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Download(System.Uri, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.Download(System.Uri, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.Download(Uri, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.Download(Uri, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Download*
+  name: Download
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Download_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Download
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Download
+  nameWithType: IMegaApiClient.Download
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: DownloadAsync(INode, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadAsync_CG_Web_MegaApiClient_INode_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadAsync(INode, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.DownloadAsync(INode, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.DownloadAsync(INode, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(System.Uri,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: DownloadAsync(Uri, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadAsync_System_Uri_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(System.Uri,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadAsync(Uri, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(System.Uri, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(System.Uri, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.DownloadAsync(Uri, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.DownloadAsync(Uri, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync*
+  name: DownloadAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync
+  nameWithType: IMegaApiClient.DownloadAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode,System.String,System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFile(INode, String, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFile_CG_Web_MegaApiClient_INode_System_String_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode,System.String,System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFile(INode, String, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode, System.String, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode, System.String, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.DownloadFile(INode, String, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.DownloadFile(INode, String, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(System.Uri,System.String,System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFile(Uri, String, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFile_System_Uri_System_String_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(System.Uri,System.String,System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFile(Uri, String, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(System.Uri, System.String, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(System.Uri, System.String, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.DownloadFile(Uri, String, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.DownloadFile(Uri, String, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile*
+  name: DownloadFile
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFile_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DownloadFile
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile
+  nameWithType: IMegaApiClient.DownloadFile
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFileAsync(INode, String, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFileAsync_CG_Web_MegaApiClient_INode_System_String_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFileAsync(INode, String, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode, System.String, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode, System.String, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.DownloadFileAsync(INode, String, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.DownloadFileAsync(INode, String, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(System.Uri,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFileAsync(Uri, String, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFileAsync_System_Uri_System_String_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(System.Uri,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFileAsync(Uri, String, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(System.Uri, System.String, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(System.Uri, System.String, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.DownloadFileAsync(Uri, String, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.DownloadFileAsync(Uri, String, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync*
+  name: DownloadFileAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFileAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync
+  nameWithType: IMegaApiClient.DownloadFileAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation
+  name: GetAccountInformation()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetAccountInformation
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation()
+  nameWithType: IMegaApiClient.GetAccountInformation()
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation*
+  name: GetAccountInformation
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetAccountInformation_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation
+  nameWithType: IMegaApiClient.GetAccountInformation
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync
+  name: GetAccountInformationAsync()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetAccountInformationAsync
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync()
+  nameWithType: IMegaApiClient.GetAccountInformationAsync()
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync*
+  name: GetAccountInformationAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetAccountInformationAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync
+  nameWithType: IMegaApiClient.GetAccountInformationAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink(CG.Web.MegaApiClient.INode)
+  name: GetDownloadLink(INode)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetDownloadLink_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink(CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink(CG.Web.MegaApiClient.INode)
+  nameWithType: IMegaApiClient.GetDownloadLink(INode)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink*
+  name: GetDownloadLink
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetDownloadLink_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink
+  nameWithType: IMegaApiClient.GetDownloadLink
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync(CG.Web.MegaApiClient.INode)
+  name: GetDownloadLinkAsync(INode)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetDownloadLinkAsync_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync(CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync(CG.Web.MegaApiClient.INode)
+  nameWithType: IMegaApiClient.GetDownloadLinkAsync(INode)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync*
+  name: GetDownloadLinkAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetDownloadLinkAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync
+  nameWithType: IMegaApiClient.GetDownloadLinkAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink(System.Uri)
+  name: GetNodeFromLink(Uri)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodeFromLink_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink(System.Uri)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink(System.Uri)
+  nameWithType: IMegaApiClient.GetNodeFromLink(Uri)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink*
+  name: GetNodeFromLink
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodeFromLink_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink
+  nameWithType: IMegaApiClient.GetNodeFromLink
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync(System.Uri)
+  name: GetNodeFromLinkAsync(Uri)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodeFromLinkAsync_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync(System.Uri)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync(System.Uri)
+  nameWithType: IMegaApiClient.GetNodeFromLinkAsync(Uri)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync*
+  name: GetNodeFromLinkAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodeFromLinkAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync
+  nameWithType: IMegaApiClient.GetNodeFromLinkAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodes
+  name: GetNodes()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodes
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetNodes
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodes()
+  nameWithType: IMegaApiClient.GetNodes()
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodes(CG.Web.MegaApiClient.INode)
+  name: GetNodes(INode)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodes_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetNodes(CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodes(CG.Web.MegaApiClient.INode)
+  nameWithType: IMegaApiClient.GetNodes(INode)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodes*
+  name: GetNodes
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodes_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodes
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodes
+  nameWithType: IMegaApiClient.GetNodes
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync
+  name: GetNodesAsync()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesAsync
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync()
+  nameWithType: IMegaApiClient.GetNodesAsync()
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync(CG.Web.MegaApiClient.INode)
+  name: GetNodesAsync(INode)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesAsync_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync(CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync(CG.Web.MegaApiClient.INode)
+  nameWithType: IMegaApiClient.GetNodesAsync(INode)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync*
+  name: GetNodesAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync
+  nameWithType: IMegaApiClient.GetNodesAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink(System.Uri)
+  name: GetNodesFromLink(Uri)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesFromLink_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink(System.Uri)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink(System.Uri)
+  nameWithType: IMegaApiClient.GetNodesFromLink(Uri)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink*
+  name: GetNodesFromLink
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesFromLink_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink
+  nameWithType: IMegaApiClient.GetNodesFromLink
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync(System.Uri)
+  name: GetNodesFromLinkAsync(Uri)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesFromLinkAsync_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync(System.Uri)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync(System.Uri)
+  nameWithType: IMegaApiClient.GetNodesFromLinkAsync(Uri)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync*
+  name: GetNodesFromLinkAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesFromLinkAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync
+  nameWithType: IMegaApiClient.GetNodesFromLinkAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn
+  name: IsLoggedIn
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_IsLoggedIn
+  commentId: P:CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn
+  nameWithType: IMegaApiClient.IsLoggedIn
+- uid: CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn*
+  name: IsLoggedIn
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_IsLoggedIn_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn
+  nameWithType: IMegaApiClient.IsLoggedIn
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  name: Login(MegaApiClient.AuthInfos)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login_CG_Web_MegaApiClient_MegaApiClient_AuthInfos_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  nameWithType: IMegaApiClient.Login(MegaApiClient.AuthInfos)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  name: Login(MegaApiClient.LogonSessionToken)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login_CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  nameWithType: IMegaApiClient.Login(MegaApiClient.LogonSessionToken)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Login(System.String,System.String)
+  name: Login(String, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Login(System.String,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Login(System.String, System.String)
+  nameWithType: IMegaApiClient.Login(String, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Login*
+  name: Login
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Login
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Login
+  nameWithType: IMegaApiClient.Login
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous
+  name: LoginAnonymous()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAnonymous
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous()
+  nameWithType: IMegaApiClient.LoginAnonymous()
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous*
+  name: LoginAnonymous
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAnonymous_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous
+  nameWithType: IMegaApiClient.LoginAnonymous
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync
+  name: LoginAnonymousAsync()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAnonymousAsync
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync()
+  nameWithType: IMegaApiClient.LoginAnonymousAsync()
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync*
+  name: LoginAnonymousAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAnonymousAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync
+  nameWithType: IMegaApiClient.LoginAnonymousAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  name: LoginAsync(MegaApiClient.AuthInfos)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_CG_Web_MegaApiClient_MegaApiClient_AuthInfos_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  nameWithType: IMegaApiClient.LoginAsync(MegaApiClient.AuthInfos)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  name: LoginAsync(MegaApiClient.LogonSessionToken)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  nameWithType: IMegaApiClient.LoginAsync(MegaApiClient.LogonSessionToken)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String,System.String)
+  name: LoginAsync(String, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String, System.String)
+  nameWithType: IMegaApiClient.LoginAsync(String, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync*
+  name: LoginAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync
+  nameWithType: IMegaApiClient.LoginAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Logout
+  name: Logout()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Logout
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Logout
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Logout()
+  nameWithType: IMegaApiClient.Logout()
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Logout*
+  name: Logout
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Logout_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Logout
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Logout
+  nameWithType: IMegaApiClient.Logout
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync
+  name: LogoutAsync()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LogoutAsync
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync()
+  nameWithType: IMegaApiClient.LogoutAsync()
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync*
+  name: LogoutAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LogoutAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync
+  nameWithType: IMegaApiClient.LogoutAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Move(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
+  name: Move(INode, INode)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Move_CG_Web_MegaApiClient_INode_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Move(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Move(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.INode)
+  nameWithType: IMegaApiClient.Move(INode, INode)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Move*
+  name: Move
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Move_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Move
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Move
+  nameWithType: IMegaApiClient.Move
+- uid: CG.Web.MegaApiClient.IMegaApiClient.MoveAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
+  name: MoveAsync(INode, INode)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_MoveAsync_CG_Web_MegaApiClient_INode_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.MoveAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.MoveAsync(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.INode)
+  nameWithType: IMegaApiClient.MoveAsync(INode, INode)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.MoveAsync*
+  name: MoveAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_MoveAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.MoveAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.MoveAsync
+  nameWithType: IMegaApiClient.MoveAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Rename(CG.Web.MegaApiClient.INode,System.String)
+  name: Rename(INode, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Rename_CG_Web_MegaApiClient_INode_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Rename(CG.Web.MegaApiClient.INode,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Rename(CG.Web.MegaApiClient.INode, System.String)
+  nameWithType: IMegaApiClient.Rename(INode, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Rename*
+  name: Rename
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Rename_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Rename
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Rename
+  nameWithType: IMegaApiClient.Rename
+- uid: CG.Web.MegaApiClient.IMegaApiClient.RenameAsync(CG.Web.MegaApiClient.INode,System.String)
+  name: RenameAsync(INode, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_RenameAsync_CG_Web_MegaApiClient_INode_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.RenameAsync(CG.Web.MegaApiClient.INode,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.RenameAsync(CG.Web.MegaApiClient.INode, System.String)
+  nameWithType: IMegaApiClient.RenameAsync(INode, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.RenameAsync*
+  name: RenameAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_RenameAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.RenameAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.RenameAsync
+  nameWithType: IMegaApiClient.RenameAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Upload(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
+  name: Upload(Stream, String, INode, Nullable<DateTime>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Upload_System_IO_Stream_System_String_CG_Web_MegaApiClient_INode_System_Nullable_System_DateTime__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Upload(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
+  name.vb: Upload(Stream, String, INode, Nullable(Of DateTime), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Upload(System.IO.Stream, System.String, CG.Web.MegaApiClient.INode, System.Nullable<System.DateTime>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.Upload(System.IO.Stream, System.String, CG.Web.MegaApiClient.INode, System.Nullable(Of System.DateTime), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.Upload(Stream, String, INode, Nullable<DateTime>, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.Upload(Stream, String, INode, Nullable(Of DateTime), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Upload*
+  name: Upload
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Upload_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Upload
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Upload
+  nameWithType: IMegaApiClient.Upload
+- uid: CG.Web.MegaApiClient.IMegaApiClient.UploadAsync(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
+  name: UploadAsync(Stream, String, INode, IProgress<Double>, Nullable<DateTime>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadAsync_System_IO_Stream_System_String_CG_Web_MegaApiClient_INode_System_IProgress_System_Double__System_Nullable_System_DateTime__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.UploadAsync(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
+  name.vb: UploadAsync(Stream, String, INode, IProgress(Of Double), Nullable(Of DateTime), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadAsync(System.IO.Stream, System.String, CG.Web.MegaApiClient.INode, System.IProgress<System.Double>, System.Nullable<System.DateTime>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.UploadAsync(System.IO.Stream, System.String, CG.Web.MegaApiClient.INode, System.IProgress(Of System.Double), System.Nullable(Of System.DateTime), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.UploadAsync(Stream, String, INode, IProgress<Double>, Nullable<DateTime>, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.UploadAsync(Stream, String, INode, IProgress(Of Double), Nullable(Of DateTime), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.UploadAsync*
+  name: UploadAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.UploadAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadAsync
+  nameWithType: IMegaApiClient.UploadAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.UploadFile(System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
+  name: UploadFile(String, INode, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadFile_System_String_CG_Web_MegaApiClient_INode_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.UploadFile(System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
+  name.vb: UploadFile(String, INode, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadFile(System.String, CG.Web.MegaApiClient.INode, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.UploadFile(System.String, CG.Web.MegaApiClient.INode, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.UploadFile(String, INode, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.UploadFile(String, INode, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.UploadFile*
+  name: UploadFile
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadFile_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.UploadFile
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadFile
+  nameWithType: IMegaApiClient.UploadFile
+- uid: CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync(System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: UploadFileAsync(String, INode, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadFileAsync_System_String_CG_Web_MegaApiClient_INode_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync(System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: UploadFileAsync(String, INode, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync(System.String, CG.Web.MegaApiClient.INode, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync(System.String, CG.Web.MegaApiClient.INode, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.UploadFileAsync(String, INode, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.UploadFileAsync(String, INode, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync*
+  name: UploadFileAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadFileAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync
+  nameWithType: IMegaApiClient.UploadFileAsync
+- uid: CG.Web.MegaApiClient.INode
+  name: INode
+  href: api/CG.Web.MegaApiClient.INode.html
+  commentId: T:CG.Web.MegaApiClient.INode
+  fullName: CG.Web.MegaApiClient.INode
+  nameWithType: INode
+- uid: CG.Web.MegaApiClient.INode.CreationDate
+  name: CreationDate
+  href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_CreationDate
+  commentId: P:CG.Web.MegaApiClient.INode.CreationDate
+  fullName: CG.Web.MegaApiClient.INode.CreationDate
+  nameWithType: INode.CreationDate
+- uid: CG.Web.MegaApiClient.INode.CreationDate*
+  name: CreationDate
+  href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_CreationDate_
+  commentId: Overload:CG.Web.MegaApiClient.INode.CreationDate
+  fullName: CG.Web.MegaApiClient.INode.CreationDate
+  nameWithType: INode.CreationDate
+- uid: CG.Web.MegaApiClient.INode.Owner
+  name: Owner
+  href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_Owner
+  commentId: P:CG.Web.MegaApiClient.INode.Owner
+  fullName: CG.Web.MegaApiClient.INode.Owner
+  nameWithType: INode.Owner
+- uid: CG.Web.MegaApiClient.INode.Owner*
+  name: Owner
+  href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_Owner_
+  commentId: Overload:CG.Web.MegaApiClient.INode.Owner
+  fullName: CG.Web.MegaApiClient.INode.Owner
+  nameWithType: INode.Owner
+- uid: CG.Web.MegaApiClient.INode.ParentId
+  name: ParentId
+  href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_ParentId
+  commentId: P:CG.Web.MegaApiClient.INode.ParentId
+  fullName: CG.Web.MegaApiClient.INode.ParentId
+  nameWithType: INode.ParentId
+- uid: CG.Web.MegaApiClient.INode.ParentId*
+  name: ParentId
+  href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_ParentId_
+  commentId: Overload:CG.Web.MegaApiClient.INode.ParentId
+  fullName: CG.Web.MegaApiClient.INode.ParentId
+  nameWithType: INode.ParentId
+- uid: CG.Web.MegaApiClient.INodeInfo
+  name: INodeInfo
+  href: api/CG.Web.MegaApiClient.INodeInfo.html
+  commentId: T:CG.Web.MegaApiClient.INodeInfo
+  fullName: CG.Web.MegaApiClient.INodeInfo
+  nameWithType: INodeInfo
+- uid: CG.Web.MegaApiClient.INodeInfo.Id
+  name: Id
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Id
+  commentId: P:CG.Web.MegaApiClient.INodeInfo.Id
+  fullName: CG.Web.MegaApiClient.INodeInfo.Id
+  nameWithType: INodeInfo.Id
+- uid: CG.Web.MegaApiClient.INodeInfo.Id*
+  name: Id
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Id_
+  commentId: Overload:CG.Web.MegaApiClient.INodeInfo.Id
+  fullName: CG.Web.MegaApiClient.INodeInfo.Id
+  nameWithType: INodeInfo.Id
+- uid: CG.Web.MegaApiClient.INodeInfo.ModificationDate
+  name: ModificationDate
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_ModificationDate
+  commentId: P:CG.Web.MegaApiClient.INodeInfo.ModificationDate
+  fullName: CG.Web.MegaApiClient.INodeInfo.ModificationDate
+  nameWithType: INodeInfo.ModificationDate
+- uid: CG.Web.MegaApiClient.INodeInfo.ModificationDate*
+  name: ModificationDate
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_ModificationDate_
+  commentId: Overload:CG.Web.MegaApiClient.INodeInfo.ModificationDate
+  fullName: CG.Web.MegaApiClient.INodeInfo.ModificationDate
+  nameWithType: INodeInfo.ModificationDate
+- uid: CG.Web.MegaApiClient.INodeInfo.Name
+  name: Name
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Name
+  commentId: P:CG.Web.MegaApiClient.INodeInfo.Name
+  fullName: CG.Web.MegaApiClient.INodeInfo.Name
+  nameWithType: INodeInfo.Name
+- uid: CG.Web.MegaApiClient.INodeInfo.Name*
+  name: Name
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Name_
+  commentId: Overload:CG.Web.MegaApiClient.INodeInfo.Name
+  fullName: CG.Web.MegaApiClient.INodeInfo.Name
+  nameWithType: INodeInfo.Name
+- uid: CG.Web.MegaApiClient.INodeInfo.Size
+  name: Size
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Size
+  commentId: P:CG.Web.MegaApiClient.INodeInfo.Size
+  fullName: CG.Web.MegaApiClient.INodeInfo.Size
+  nameWithType: INodeInfo.Size
+- uid: CG.Web.MegaApiClient.INodeInfo.Size*
+  name: Size
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Size_
+  commentId: Overload:CG.Web.MegaApiClient.INodeInfo.Size
+  fullName: CG.Web.MegaApiClient.INodeInfo.Size
+  nameWithType: INodeInfo.Size
+- uid: CG.Web.MegaApiClient.INodeInfo.Type
+  name: Type
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Type
+  commentId: P:CG.Web.MegaApiClient.INodeInfo.Type
+  fullName: CG.Web.MegaApiClient.INodeInfo.Type
+  nameWithType: INodeInfo.Type
+- uid: CG.Web.MegaApiClient.INodeInfo.Type*
+  name: Type
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Type_
+  commentId: Overload:CG.Web.MegaApiClient.INodeInfo.Type
+  fullName: CG.Web.MegaApiClient.INodeInfo.Type
+  nameWithType: INodeInfo.Type
+- uid: CG.Web.MegaApiClient.IStorageMetrics
+  name: IStorageMetrics
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html
+  commentId: T:CG.Web.MegaApiClient.IStorageMetrics
+  fullName: CG.Web.MegaApiClient.IStorageMetrics
+  nameWithType: IStorageMetrics
+- uid: CG.Web.MegaApiClient.IStorageMetrics.BytesUsed
+  name: BytesUsed
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_BytesUsed
+  commentId: P:CG.Web.MegaApiClient.IStorageMetrics.BytesUsed
+  fullName: CG.Web.MegaApiClient.IStorageMetrics.BytesUsed
+  nameWithType: IStorageMetrics.BytesUsed
+- uid: CG.Web.MegaApiClient.IStorageMetrics.BytesUsed*
+  name: BytesUsed
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_BytesUsed_
+  commentId: Overload:CG.Web.MegaApiClient.IStorageMetrics.BytesUsed
+  fullName: CG.Web.MegaApiClient.IStorageMetrics.BytesUsed
+  nameWithType: IStorageMetrics.BytesUsed
+- uid: CG.Web.MegaApiClient.IStorageMetrics.FilesCount
+  name: FilesCount
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_FilesCount
+  commentId: P:CG.Web.MegaApiClient.IStorageMetrics.FilesCount
+  fullName: CG.Web.MegaApiClient.IStorageMetrics.FilesCount
+  nameWithType: IStorageMetrics.FilesCount
+- uid: CG.Web.MegaApiClient.IStorageMetrics.FilesCount*
+  name: FilesCount
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_FilesCount_
+  commentId: Overload:CG.Web.MegaApiClient.IStorageMetrics.FilesCount
+  fullName: CG.Web.MegaApiClient.IStorageMetrics.FilesCount
+  nameWithType: IStorageMetrics.FilesCount
+- uid: CG.Web.MegaApiClient.IStorageMetrics.FoldersCount
+  name: FoldersCount
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_FoldersCount
+  commentId: P:CG.Web.MegaApiClient.IStorageMetrics.FoldersCount
+  fullName: CG.Web.MegaApiClient.IStorageMetrics.FoldersCount
+  nameWithType: IStorageMetrics.FoldersCount
+- uid: CG.Web.MegaApiClient.IStorageMetrics.FoldersCount*
+  name: FoldersCount
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_FoldersCount_
+  commentId: Overload:CG.Web.MegaApiClient.IStorageMetrics.FoldersCount
+  fullName: CG.Web.MegaApiClient.IStorageMetrics.FoldersCount
+  nameWithType: IStorageMetrics.FoldersCount
+- uid: CG.Web.MegaApiClient.IStorageMetrics.NodeId
+  name: NodeId
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_NodeId
+  commentId: P:CG.Web.MegaApiClient.IStorageMetrics.NodeId
+  fullName: CG.Web.MegaApiClient.IStorageMetrics.NodeId
+  nameWithType: IStorageMetrics.NodeId
+- uid: CG.Web.MegaApiClient.IStorageMetrics.NodeId*
+  name: NodeId
+  href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_NodeId_
+  commentId: Overload:CG.Web.MegaApiClient.IStorageMetrics.NodeId
+  fullName: CG.Web.MegaApiClient.IStorageMetrics.NodeId
+  nameWithType: IStorageMetrics.NodeId
+- uid: CG.Web.MegaApiClient.IWebClient
+  name: IWebClient
+  href: api/CG.Web.MegaApiClient.IWebClient.html
+  commentId: T:CG.Web.MegaApiClient.IWebClient
+  fullName: CG.Web.MegaApiClient.IWebClient
+  nameWithType: IWebClient
+- uid: CG.Web.MegaApiClient.IWebClient.BufferSize
+  name: BufferSize
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_BufferSize
+  commentId: P:CG.Web.MegaApiClient.IWebClient.BufferSize
+  fullName: CG.Web.MegaApiClient.IWebClient.BufferSize
+  nameWithType: IWebClient.BufferSize
+- uid: CG.Web.MegaApiClient.IWebClient.BufferSize*
+  name: BufferSize
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_BufferSize_
+  commentId: Overload:CG.Web.MegaApiClient.IWebClient.BufferSize
+  fullName: CG.Web.MegaApiClient.IWebClient.BufferSize
+  nameWithType: IWebClient.BufferSize
+- uid: CG.Web.MegaApiClient.IWebClient.GetRequestRaw(System.Uri)
+  name: GetRequestRaw(Uri)
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_GetRequestRaw_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.IWebClient.GetRequestRaw(System.Uri)
+  fullName: CG.Web.MegaApiClient.IWebClient.GetRequestRaw(System.Uri)
+  nameWithType: IWebClient.GetRequestRaw(Uri)
+- uid: CG.Web.MegaApiClient.IWebClient.GetRequestRaw*
+  name: GetRequestRaw
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_GetRequestRaw_
+  commentId: Overload:CG.Web.MegaApiClient.IWebClient.GetRequestRaw
+  fullName: CG.Web.MegaApiClient.IWebClient.GetRequestRaw
+  nameWithType: IWebClient.GetRequestRaw
+- uid: CG.Web.MegaApiClient.IWebClient.PostRequestJson(System.Uri,System.String)
+  name: PostRequestJson(Uri, String)
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_PostRequestJson_System_Uri_System_String_
+  commentId: M:CG.Web.MegaApiClient.IWebClient.PostRequestJson(System.Uri,System.String)
+  fullName: CG.Web.MegaApiClient.IWebClient.PostRequestJson(System.Uri, System.String)
+  nameWithType: IWebClient.PostRequestJson(Uri, String)
+- uid: CG.Web.MegaApiClient.IWebClient.PostRequestJson*
+  name: PostRequestJson
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_PostRequestJson_
+  commentId: Overload:CG.Web.MegaApiClient.IWebClient.PostRequestJson
+  fullName: CG.Web.MegaApiClient.IWebClient.PostRequestJson
+  nameWithType: IWebClient.PostRequestJson
+- uid: CG.Web.MegaApiClient.IWebClient.PostRequestRaw(System.Uri,System.IO.Stream)
+  name: PostRequestRaw(Uri, Stream)
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_PostRequestRaw_System_Uri_System_IO_Stream_
+  commentId: M:CG.Web.MegaApiClient.IWebClient.PostRequestRaw(System.Uri,System.IO.Stream)
+  fullName: CG.Web.MegaApiClient.IWebClient.PostRequestRaw(System.Uri, System.IO.Stream)
+  nameWithType: IWebClient.PostRequestRaw(Uri, Stream)
+- uid: CG.Web.MegaApiClient.IWebClient.PostRequestRaw*
+  name: PostRequestRaw
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_PostRequestRaw_
+  commentId: Overload:CG.Web.MegaApiClient.IWebClient.PostRequestRaw
+  fullName: CG.Web.MegaApiClient.IWebClient.PostRequestRaw
+  nameWithType: IWebClient.PostRequestRaw
+- uid: CG.Web.MegaApiClient.MegaApiClient
+  name: MegaApiClient
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html
+  commentId: T:CG.Web.MegaApiClient.MegaApiClient
+  fullName: CG.Web.MegaApiClient.MegaApiClient
+  nameWithType: MegaApiClient
+- uid: CG.Web.MegaApiClient.MegaApiClient.#ctor
+  name: MegaApiClient()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient__ctor
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.#ctor
+  fullName: CG.Web.MegaApiClient.MegaApiClient.MegaApiClient()
+  nameWithType: MegaApiClient.MegaApiClient()
+- uid: CG.Web.MegaApiClient.MegaApiClient.#ctor(CG.Web.MegaApiClient.IWebClient)
+  name: MegaApiClient(IWebClient)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient__ctor_CG_Web_MegaApiClient_IWebClient_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.#ctor(CG.Web.MegaApiClient.IWebClient)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.MegaApiClient(CG.Web.MegaApiClient.IWebClient)
+  nameWithType: MegaApiClient.MegaApiClient(IWebClient)
+- uid: CG.Web.MegaApiClient.MegaApiClient.#ctor(CG.Web.MegaApiClient.Options)
+  name: MegaApiClient(Options)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient__ctor_CG_Web_MegaApiClient_Options_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.#ctor(CG.Web.MegaApiClient.Options)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.MegaApiClient(CG.Web.MegaApiClient.Options)
+  nameWithType: MegaApiClient.MegaApiClient(Options)
+- uid: CG.Web.MegaApiClient.MegaApiClient.#ctor(CG.Web.MegaApiClient.Options,CG.Web.MegaApiClient.IWebClient)
+  name: MegaApiClient(Options, IWebClient)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient__ctor_CG_Web_MegaApiClient_Options_CG_Web_MegaApiClient_IWebClient_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.#ctor(CG.Web.MegaApiClient.Options,CG.Web.MegaApiClient.IWebClient)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.MegaApiClient(CG.Web.MegaApiClient.Options, CG.Web.MegaApiClient.IWebClient)
+  nameWithType: MegaApiClient.MegaApiClient(Options, IWebClient)
+- uid: CG.Web.MegaApiClient.MegaApiClient.#ctor*
+  name: MegaApiClient
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.#ctor
+  fullName: CG.Web.MegaApiClient.MegaApiClient.MegaApiClient
+  nameWithType: MegaApiClient.MegaApiClient
+- uid: CG.Web.MegaApiClient.MegaApiClient.ApiRequestFailed
+  name: ApiRequestFailed
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_ApiRequestFailed
+  commentId: E:CG.Web.MegaApiClient.MegaApiClient.ApiRequestFailed
+  fullName: CG.Web.MegaApiClient.MegaApiClient.ApiRequestFailed
+  nameWithType: MegaApiClient.ApiRequestFailed
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos
+  name: MegaApiClient.AuthInfos
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html
+  commentId: T:CG.Web.MegaApiClient.MegaApiClient.AuthInfos
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos
+  nameWithType: MegaApiClient.AuthInfos
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor(System.String,System.String,System.Byte[])
+  name: AuthInfos(String, String, Byte[])
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos__ctor_System_String_System_String_System_Byte___
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor(System.String,System.String,System.Byte[])
+  name.vb: AuthInfos(String, String, Byte())
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.AuthInfos(System.String, System.String, System.Byte[])
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.AuthInfos(System.String, System.String, System.Byte())
+  nameWithType: MegaApiClient.AuthInfos.AuthInfos(String, String, Byte[])
+  nameWithType.vb: MegaApiClient.AuthInfos.AuthInfos(String, String, Byte())
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor*
+  name: AuthInfos
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.AuthInfos
+  nameWithType: MegaApiClient.AuthInfos.AuthInfos
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email
+  name: Email
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_Email
+  commentId: P:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email
+  nameWithType: MegaApiClient.AuthInfos.Email
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email*
+  name: Email
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_Email_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email
+  nameWithType: MegaApiClient.AuthInfos.Email
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
+  name: Hash
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_Hash
+  commentId: P:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
+  nameWithType: MegaApiClient.AuthInfos.Hash
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash*
+  name: Hash
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_Hash_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
+  nameWithType: MegaApiClient.AuthInfos.Hash
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
+  name: PasswordAesKey
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_PasswordAesKey
+  commentId: P:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
+  nameWithType: MegaApiClient.AuthInfos.PasswordAesKey
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey*
+  name: PasswordAesKey
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_PasswordAesKey_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
+  nameWithType: MegaApiClient.AuthInfos.PasswordAesKey
+- uid: CG.Web.MegaApiClient.MegaApiClient.CreateFolder(System.String,CG.Web.MegaApiClient.INode)
+  name: CreateFolder(String, INode)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_CreateFolder_System_String_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.CreateFolder(System.String,CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.CreateFolder(System.String, CG.Web.MegaApiClient.INode)
+  nameWithType: MegaApiClient.CreateFolder(String, INode)
+- uid: CG.Web.MegaApiClient.MegaApiClient.CreateFolder*
+  name: CreateFolder
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_CreateFolder_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.CreateFolder
+  fullName: CG.Web.MegaApiClient.MegaApiClient.CreateFolder
+  nameWithType: MegaApiClient.CreateFolder
+- uid: CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync(System.String,CG.Web.MegaApiClient.INode)
+  name: CreateFolderAsync(String, INode)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_CreateFolderAsync_System_String_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync(System.String,CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync(System.String, CG.Web.MegaApiClient.INode)
+  nameWithType: MegaApiClient.CreateFolderAsync(String, INode)
+- uid: CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync*
+  name: CreateFolderAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_CreateFolderAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync
+  nameWithType: MegaApiClient.CreateFolderAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.Delete(CG.Web.MegaApiClient.INode,System.Boolean)
+  name: Delete(INode, Boolean)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Delete_CG_Web_MegaApiClient_INode_System_Boolean_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Delete(CG.Web.MegaApiClient.INode,System.Boolean)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Delete(CG.Web.MegaApiClient.INode, System.Boolean)
+  nameWithType: MegaApiClient.Delete(INode, Boolean)
+- uid: CG.Web.MegaApiClient.MegaApiClient.Delete*
+  name: Delete
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Delete_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Delete
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Delete
+  nameWithType: MegaApiClient.Delete
+- uid: CG.Web.MegaApiClient.MegaApiClient.DeleteAsync(CG.Web.MegaApiClient.INode,System.Boolean)
+  name: DeleteAsync(INode, Boolean)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DeleteAsync_CG_Web_MegaApiClient_INode_System_Boolean_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DeleteAsync(CG.Web.MegaApiClient.INode,System.Boolean)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DeleteAsync(CG.Web.MegaApiClient.INode, System.Boolean)
+  nameWithType: MegaApiClient.DeleteAsync(INode, Boolean)
+- uid: CG.Web.MegaApiClient.MegaApiClient.DeleteAsync*
+  name: DeleteAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DeleteAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DeleteAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DeleteAsync
+  nameWithType: MegaApiClient.DeleteAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.Download(CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
+  name: Download(INode, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_CG_Web_MegaApiClient_INode_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Download(CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
+  name.vb: Download(INode, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Download(CG.Web.MegaApiClient.INode, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.Download(CG.Web.MegaApiClient.INode, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.Download(INode, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.Download(INode, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.Download(System.Uri,System.Nullable{System.Threading.CancellationToken})
+  name: Download(Uri, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_System_Uri_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Download(System.Uri,System.Nullable{System.Threading.CancellationToken})
+  name.vb: Download(Uri, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Download(System.Uri, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.Download(System.Uri, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.Download(Uri, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.Download(Uri, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.Download*
+  name: Download
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Download
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Download
+  nameWithType: MegaApiClient.Download
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: DownloadAsync(INode, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadAsync_CG_Web_MegaApiClient_INode_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadAsync(INode, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.DownloadAsync(INode, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.DownloadAsync(INode, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(System.Uri,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: DownloadAsync(Uri, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadAsync_System_Uri_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(System.Uri,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadAsync(Uri, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(System.Uri, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(System.Uri, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.DownloadAsync(Uri, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.DownloadAsync(Uri, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync*
+  name: DownloadAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DownloadAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync
+  nameWithType: MegaApiClient.DownloadAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode,System.String,System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFile(INode, String, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFile_CG_Web_MegaApiClient_INode_System_String_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode,System.String,System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFile(INode, String, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode, System.String, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode, System.String, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.DownloadFile(INode, String, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.DownloadFile(INode, String, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFile(System.Uri,System.String,System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFile(Uri, String, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFile_System_Uri_System_String_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DownloadFile(System.Uri,System.String,System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFile(Uri, String, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFile(System.Uri, System.String, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.DownloadFile(System.Uri, System.String, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.DownloadFile(Uri, String, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.DownloadFile(Uri, String, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFile*
+  name: DownloadFile
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFile_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DownloadFile
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFile
+  nameWithType: MegaApiClient.DownloadFile
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFileAsync(INode, String, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFileAsync_CG_Web_MegaApiClient_INode_System_String_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFileAsync(INode, String, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode, System.String, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode, System.String, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.DownloadFileAsync(INode, String, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.DownloadFileAsync(INode, String, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(System.Uri,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFileAsync(Uri, String, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFileAsync_System_Uri_System_String_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(System.Uri,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFileAsync(Uri, String, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(System.Uri, System.String, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(System.Uri, System.String, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.DownloadFileAsync(Uri, String, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.DownloadFileAsync(Uri, String, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync*
+  name: DownloadFileAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFileAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync
+  nameWithType: MegaApiClient.DownloadFileAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String,System.String)
+  name: GenerateAuthInfos(String, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfos_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String, System.String)
+  nameWithType: MegaApiClient.GenerateAuthInfos(String, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos*
+  name: GenerateAuthInfos
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfos_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos
+  nameWithType: MegaApiClient.GenerateAuthInfos
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation
+  name: GetAccountInformation()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetAccountInformation
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation()
+  nameWithType: MegaApiClient.GetAccountInformation()
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation*
+  name: GetAccountInformation
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetAccountInformation_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation
+  nameWithType: MegaApiClient.GetAccountInformation
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync
+  name: GetAccountInformationAsync()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetAccountInformationAsync
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync()
+  nameWithType: MegaApiClient.GetAccountInformationAsync()
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync*
+  name: GetAccountInformationAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetAccountInformationAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync
+  nameWithType: MegaApiClient.GetAccountInformationAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink(CG.Web.MegaApiClient.INode)
+  name: GetDownloadLink(INode)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetDownloadLink_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink(CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink(CG.Web.MegaApiClient.INode)
+  nameWithType: MegaApiClient.GetDownloadLink(INode)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink*
+  name: GetDownloadLink
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetDownloadLink_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink
+  nameWithType: MegaApiClient.GetDownloadLink
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync(CG.Web.MegaApiClient.INode)
+  name: GetDownloadLinkAsync(INode)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetDownloadLinkAsync_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync(CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync(CG.Web.MegaApiClient.INode)
+  nameWithType: MegaApiClient.GetDownloadLinkAsync(INode)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync*
+  name: GetDownloadLinkAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetDownloadLinkAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync
+  nameWithType: MegaApiClient.GetDownloadLinkAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink(System.Uri)
+  name: GetNodeFromLink(Uri)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodeFromLink_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink(System.Uri)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink(System.Uri)
+  nameWithType: MegaApiClient.GetNodeFromLink(Uri)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink*
+  name: GetNodeFromLink
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodeFromLink_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink
+  nameWithType: MegaApiClient.GetNodeFromLink
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync(System.Uri)
+  name: GetNodeFromLinkAsync(Uri)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodeFromLinkAsync_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync(System.Uri)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync(System.Uri)
+  nameWithType: MegaApiClient.GetNodeFromLinkAsync(Uri)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync*
+  name: GetNodeFromLinkAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodeFromLinkAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync
+  nameWithType: MegaApiClient.GetNodeFromLinkAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodes
+  name: GetNodes()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodes
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetNodes
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodes()
+  nameWithType: MegaApiClient.GetNodes()
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodes(CG.Web.MegaApiClient.INode)
+  name: GetNodes(INode)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodes_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetNodes(CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodes(CG.Web.MegaApiClient.INode)
+  nameWithType: MegaApiClient.GetNodes(INode)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodes*
+  name: GetNodes
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodes_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodes
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodes
+  nameWithType: MegaApiClient.GetNodes
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync
+  name: GetNodesAsync()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesAsync
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync()
+  nameWithType: MegaApiClient.GetNodesAsync()
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync(CG.Web.MegaApiClient.INode)
+  name: GetNodesAsync(INode)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesAsync_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync(CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync(CG.Web.MegaApiClient.INode)
+  nameWithType: MegaApiClient.GetNodesAsync(INode)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync*
+  name: GetNodesAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync
+  nameWithType: MegaApiClient.GetNodesAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink(System.Uri)
+  name: GetNodesFromLink(Uri)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesFromLink_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink(System.Uri)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink(System.Uri)
+  nameWithType: MegaApiClient.GetNodesFromLink(Uri)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink*
+  name: GetNodesFromLink
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesFromLink_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink
+  nameWithType: MegaApiClient.GetNodesFromLink
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync(System.Uri)
+  name: GetNodesFromLinkAsync(Uri)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesFromLinkAsync_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync(System.Uri)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync(System.Uri)
+  nameWithType: MegaApiClient.GetNodesFromLinkAsync(Uri)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync*
+  name: GetNodesFromLinkAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesFromLinkAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync
+  nameWithType: MegaApiClient.GetNodesFromLinkAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn
+  name: IsLoggedIn
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_IsLoggedIn
+  commentId: P:CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn
+  fullName: CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn
+  nameWithType: MegaApiClient.IsLoggedIn
+- uid: CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn*
+  name: IsLoggedIn
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_IsLoggedIn_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn
+  fullName: CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn
+  nameWithType: MegaApiClient.IsLoggedIn
+- uid: CG.Web.MegaApiClient.MegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  name: Login(MegaApiClient.AuthInfos)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login_CG_Web_MegaApiClient_MegaApiClient_AuthInfos_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  nameWithType: MegaApiClient.Login(MegaApiClient.AuthInfos)
+- uid: CG.Web.MegaApiClient.MegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  name: Login(MegaApiClient.LogonSessionToken)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login_CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  nameWithType: MegaApiClient.Login(MegaApiClient.LogonSessionToken)
+- uid: CG.Web.MegaApiClient.MegaApiClient.Login(System.String,System.String)
+  name: Login(String, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Login(System.String,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Login(System.String, System.String)
+  nameWithType: MegaApiClient.Login(String, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.Login*
+  name: Login
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Login
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Login
+  nameWithType: MegaApiClient.Login
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous
+  name: LoginAnonymous()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAnonymous
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous()
+  nameWithType: MegaApiClient.LoginAnonymous()
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous*
+  name: LoginAnonymous
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAnonymous_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous
+  nameWithType: MegaApiClient.LoginAnonymous
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync
+  name: LoginAnonymousAsync()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAnonymousAsync
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync()
+  nameWithType: MegaApiClient.LoginAnonymousAsync()
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync*
+  name: LoginAnonymousAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAnonymousAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync
+  nameWithType: MegaApiClient.LoginAnonymousAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  name: LoginAsync(MegaApiClient.AuthInfos)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_CG_Web_MegaApiClient_MegaApiClient_AuthInfos_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
+  nameWithType: MegaApiClient.LoginAsync(MegaApiClient.AuthInfos)
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  name: LoginAsync(MegaApiClient.LogonSessionToken)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  nameWithType: MegaApiClient.LoginAsync(MegaApiClient.LogonSessionToken)
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String,System.String)
+  name: LoginAsync(String, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String, System.String)
+  nameWithType: MegaApiClient.LoginAsync(String, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync*
+  name: LoginAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LoginAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync
+  nameWithType: MegaApiClient.LoginAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken
+  name: MegaApiClient.LogonSessionToken
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html
+  commentId: T:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken
+  nameWithType: MegaApiClient.LogonSessionToken
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.#ctor(System.String,System.Byte[])
+  name: LogonSessionToken(String, Byte[])
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken__ctor_System_String_System_Byte___
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.#ctor(System.String,System.Byte[])
+  name.vb: LogonSessionToken(String, Byte())
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.LogonSessionToken(System.String, System.Byte[])
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.LogonSessionToken(System.String, System.Byte())
+  nameWithType: MegaApiClient.LogonSessionToken.LogonSessionToken(String, Byte[])
+  nameWithType.vb: MegaApiClient.LogonSessionToken.LogonSessionToken(String, Byte())
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.#ctor*
+  name: LogonSessionToken
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.#ctor
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.LogonSessionToken
+  nameWithType: MegaApiClient.LogonSessionToken.LogonSessionToken
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  name: Equals(MegaApiClient.LogonSessionToken)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_Equals_CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
+  nameWithType: MegaApiClient.LogonSessionToken.Equals(MegaApiClient.LogonSessionToken)
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals*
+  name: Equals
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_Equals_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals
+  nameWithType: MegaApiClient.LogonSessionToken.Equals
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey
+  name: MasterKey
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_MasterKey
+  commentId: P:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey
+  nameWithType: MegaApiClient.LogonSessionToken.MasterKey
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey*
+  name: MasterKey
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_MasterKey_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey
+  nameWithType: MegaApiClient.LogonSessionToken.MasterKey
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId
+  name: SessionId
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_SessionId
+  commentId: P:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId
+  nameWithType: MegaApiClient.LogonSessionToken.SessionId
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId*
+  name: SessionId
+  href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_SessionId_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId
+  nameWithType: MegaApiClient.LogonSessionToken.SessionId
+- uid: CG.Web.MegaApiClient.MegaApiClient.Logout
+  name: Logout()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Logout
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Logout
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Logout()
+  nameWithType: MegaApiClient.Logout()
+- uid: CG.Web.MegaApiClient.MegaApiClient.Logout*
+  name: Logout
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Logout_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Logout
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Logout
+  nameWithType: MegaApiClient.Logout
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogoutAsync
+  name: LogoutAsync()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LogoutAsync
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LogoutAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogoutAsync()
+  nameWithType: MegaApiClient.LogoutAsync()
+- uid: CG.Web.MegaApiClient.MegaApiClient.LogoutAsync*
+  name: LogoutAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LogoutAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogoutAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LogoutAsync
+  nameWithType: MegaApiClient.LogoutAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.Move(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
+  name: Move(INode, INode)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Move_CG_Web_MegaApiClient_INode_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Move(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Move(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.INode)
+  nameWithType: MegaApiClient.Move(INode, INode)
+- uid: CG.Web.MegaApiClient.MegaApiClient.Move*
+  name: Move
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Move_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Move
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Move
+  nameWithType: MegaApiClient.Move
+- uid: CG.Web.MegaApiClient.MegaApiClient.MoveAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
+  name: MoveAsync(INode, INode)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_MoveAsync_CG_Web_MegaApiClient_INode_CG_Web_MegaApiClient_INode_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.MoveAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.MoveAsync(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.INode)
+  nameWithType: MegaApiClient.MoveAsync(INode, INode)
+- uid: CG.Web.MegaApiClient.MegaApiClient.MoveAsync*
+  name: MoveAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_MoveAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.MoveAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.MoveAsync
+  nameWithType: MegaApiClient.MoveAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.Rename(CG.Web.MegaApiClient.INode,System.String)
+  name: Rename(INode, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Rename_CG_Web_MegaApiClient_INode_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Rename(CG.Web.MegaApiClient.INode,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Rename(CG.Web.MegaApiClient.INode, System.String)
+  nameWithType: MegaApiClient.Rename(INode, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.Rename*
+  name: Rename
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Rename_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Rename
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Rename
+  nameWithType: MegaApiClient.Rename
+- uid: CG.Web.MegaApiClient.MegaApiClient.RenameAsync(CG.Web.MegaApiClient.INode,System.String)
+  name: RenameAsync(INode, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_RenameAsync_CG_Web_MegaApiClient_INode_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.RenameAsync(CG.Web.MegaApiClient.INode,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.RenameAsync(CG.Web.MegaApiClient.INode, System.String)
+  nameWithType: MegaApiClient.RenameAsync(INode, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.RenameAsync*
+  name: RenameAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_RenameAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.RenameAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.RenameAsync
+  nameWithType: MegaApiClient.RenameAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.Upload(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
+  name: Upload(Stream, String, INode, Nullable<DateTime>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Upload_System_IO_Stream_System_String_CG_Web_MegaApiClient_INode_System_Nullable_System_DateTime__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Upload(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
+  name.vb: Upload(Stream, String, INode, Nullable(Of DateTime), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Upload(System.IO.Stream, System.String, CG.Web.MegaApiClient.INode, System.Nullable<System.DateTime>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.Upload(System.IO.Stream, System.String, CG.Web.MegaApiClient.INode, System.Nullable(Of System.DateTime), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.Upload(Stream, String, INode, Nullable<DateTime>, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.Upload(Stream, String, INode, Nullable(Of DateTime), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.Upload*
+  name: Upload
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Upload_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Upload
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Upload
+  nameWithType: MegaApiClient.Upload
+- uid: CG.Web.MegaApiClient.MegaApiClient.UploadAsync(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
+  name: UploadAsync(Stream, String, INode, IProgress<Double>, Nullable<DateTime>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadAsync_System_IO_Stream_System_String_CG_Web_MegaApiClient_INode_System_IProgress_System_Double__System_Nullable_System_DateTime__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.UploadAsync(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
+  name.vb: UploadAsync(Stream, String, INode, IProgress(Of Double), Nullable(Of DateTime), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.UploadAsync(System.IO.Stream, System.String, CG.Web.MegaApiClient.INode, System.IProgress<System.Double>, System.Nullable<System.DateTime>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.UploadAsync(System.IO.Stream, System.String, CG.Web.MegaApiClient.INode, System.IProgress(Of System.Double), System.Nullable(Of System.DateTime), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.UploadAsync(Stream, String, INode, IProgress<Double>, Nullable<DateTime>, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.UploadAsync(Stream, String, INode, IProgress(Of Double), Nullable(Of DateTime), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.UploadAsync*
+  name: UploadAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.UploadAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.UploadAsync
+  nameWithType: MegaApiClient.UploadAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.UploadFile(System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
+  name: UploadFile(String, INode, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadFile_System_String_CG_Web_MegaApiClient_INode_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.UploadFile(System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
+  name.vb: UploadFile(String, INode, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.UploadFile(System.String, CG.Web.MegaApiClient.INode, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.UploadFile(System.String, CG.Web.MegaApiClient.INode, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.UploadFile(String, INode, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.UploadFile(String, INode, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.UploadFile*
+  name: UploadFile
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadFile_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.UploadFile
+  fullName: CG.Web.MegaApiClient.MegaApiClient.UploadFile
+  nameWithType: MegaApiClient.UploadFile
+- uid: CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync(System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name: UploadFileAsync(String, INode, IProgress<Double>, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadFileAsync_System_String_CG_Web_MegaApiClient_INode_System_IProgress_System_Double__System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync(System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
+  name.vb: UploadFileAsync(String, INode, IProgress(Of Double), Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync(System.String, CG.Web.MegaApiClient.INode, System.IProgress<System.Double>, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync(System.String, CG.Web.MegaApiClient.INode, System.IProgress(Of System.Double), System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.UploadFileAsync(String, INode, IProgress<Double>, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.UploadFileAsync(String, INode, IProgress(Of Double), Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync*
+  name: UploadFileAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadFileAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync
+  nameWithType: MegaApiClient.UploadFileAsync
+- uid: CG.Web.MegaApiClient.NodeExtensions
+  name: NodeExtensions
+  href: api/CG.Web.MegaApiClient.NodeExtensions.html
+  commentId: T:CG.Web.MegaApiClient.NodeExtensions
+  fullName: CG.Web.MegaApiClient.NodeExtensions
+  nameWithType: NodeExtensions
+- uid: CG.Web.MegaApiClient.NodeExtensions.GetFolderSize(CG.Web.MegaApiClient.INodeInfo,CG.Web.MegaApiClient.IMegaApiClient)
+  name: GetFolderSize(INodeInfo, IMegaApiClient)
+  href: api/CG.Web.MegaApiClient.NodeExtensions.html#CG_Web_MegaApiClient_NodeExtensions_GetFolderSize_CG_Web_MegaApiClient_INodeInfo_CG_Web_MegaApiClient_IMegaApiClient_
+  commentId: M:CG.Web.MegaApiClient.NodeExtensions.GetFolderSize(CG.Web.MegaApiClient.INodeInfo,CG.Web.MegaApiClient.IMegaApiClient)
+  fullName: CG.Web.MegaApiClient.NodeExtensions.GetFolderSize(CG.Web.MegaApiClient.INodeInfo, CG.Web.MegaApiClient.IMegaApiClient)
+  nameWithType: NodeExtensions.GetFolderSize(INodeInfo, IMegaApiClient)
+- uid: CG.Web.MegaApiClient.NodeExtensions.GetFolderSize(CG.Web.MegaApiClient.INodeInfo,System.Collections.Generic.IEnumerable{CG.Web.MegaApiClient.INode})
+  name: GetFolderSize(INodeInfo, IEnumerable<INode>)
+  href: api/CG.Web.MegaApiClient.NodeExtensions.html#CG_Web_MegaApiClient_NodeExtensions_GetFolderSize_CG_Web_MegaApiClient_INodeInfo_System_Collections_Generic_IEnumerable_CG_Web_MegaApiClient_INode__
+  commentId: M:CG.Web.MegaApiClient.NodeExtensions.GetFolderSize(CG.Web.MegaApiClient.INodeInfo,System.Collections.Generic.IEnumerable{CG.Web.MegaApiClient.INode})
+  name.vb: GetFolderSize(INodeInfo, IEnumerable(Of INode))
+  fullName: CG.Web.MegaApiClient.NodeExtensions.GetFolderSize(CG.Web.MegaApiClient.INodeInfo, System.Collections.Generic.IEnumerable<CG.Web.MegaApiClient.INode>)
+  fullName.vb: CG.Web.MegaApiClient.NodeExtensions.GetFolderSize(CG.Web.MegaApiClient.INodeInfo, System.Collections.Generic.IEnumerable(Of CG.Web.MegaApiClient.INode))
+  nameWithType: NodeExtensions.GetFolderSize(INodeInfo, IEnumerable<INode>)
+  nameWithType.vb: NodeExtensions.GetFolderSize(INodeInfo, IEnumerable(Of INode))
+- uid: CG.Web.MegaApiClient.NodeExtensions.GetFolderSize*
+  name: GetFolderSize
+  href: api/CG.Web.MegaApiClient.NodeExtensions.html#CG_Web_MegaApiClient_NodeExtensions_GetFolderSize_
+  commentId: Overload:CG.Web.MegaApiClient.NodeExtensions.GetFolderSize
+  fullName: CG.Web.MegaApiClient.NodeExtensions.GetFolderSize
+  nameWithType: NodeExtensions.GetFolderSize
+- uid: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync(CG.Web.MegaApiClient.INodeInfo,CG.Web.MegaApiClient.IMegaApiClient)
+  name: GetFolderSizeAsync(INodeInfo, IMegaApiClient)
+  href: api/CG.Web.MegaApiClient.NodeExtensions.html#CG_Web_MegaApiClient_NodeExtensions_GetFolderSizeAsync_CG_Web_MegaApiClient_INodeInfo_CG_Web_MegaApiClient_IMegaApiClient_
+  commentId: M:CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync(CG.Web.MegaApiClient.INodeInfo,CG.Web.MegaApiClient.IMegaApiClient)
+  fullName: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync(CG.Web.MegaApiClient.INodeInfo, CG.Web.MegaApiClient.IMegaApiClient)
+  nameWithType: NodeExtensions.GetFolderSizeAsync(INodeInfo, IMegaApiClient)
+- uid: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync(CG.Web.MegaApiClient.INodeInfo,System.Collections.Generic.IEnumerable{CG.Web.MegaApiClient.INode})
+  name: GetFolderSizeAsync(INodeInfo, IEnumerable<INode>)
+  href: api/CG.Web.MegaApiClient.NodeExtensions.html#CG_Web_MegaApiClient_NodeExtensions_GetFolderSizeAsync_CG_Web_MegaApiClient_INodeInfo_System_Collections_Generic_IEnumerable_CG_Web_MegaApiClient_INode__
+  commentId: M:CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync(CG.Web.MegaApiClient.INodeInfo,System.Collections.Generic.IEnumerable{CG.Web.MegaApiClient.INode})
+  name.vb: GetFolderSizeAsync(INodeInfo, IEnumerable(Of INode))
+  fullName: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync(CG.Web.MegaApiClient.INodeInfo, System.Collections.Generic.IEnumerable<CG.Web.MegaApiClient.INode>)
+  fullName.vb: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync(CG.Web.MegaApiClient.INodeInfo, System.Collections.Generic.IEnumerable(Of CG.Web.MegaApiClient.INode))
+  nameWithType: NodeExtensions.GetFolderSizeAsync(INodeInfo, IEnumerable<INode>)
+  nameWithType.vb: NodeExtensions.GetFolderSizeAsync(INodeInfo, IEnumerable(Of INode))
+- uid: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync*
+  name: GetFolderSizeAsync
+  href: api/CG.Web.MegaApiClient.NodeExtensions.html#CG_Web_MegaApiClient_NodeExtensions_GetFolderSizeAsync_
+  commentId: Overload:CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync
+  fullName: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync
+  nameWithType: NodeExtensions.GetFolderSizeAsync
+- uid: CG.Web.MegaApiClient.NodeType
+  name: NodeType
+  href: api/CG.Web.MegaApiClient.NodeType.html
+  commentId: T:CG.Web.MegaApiClient.NodeType
+  fullName: CG.Web.MegaApiClient.NodeType
+  nameWithType: NodeType
+- uid: CG.Web.MegaApiClient.NodeType.Directory
+  name: Directory
+  href: api/CG.Web.MegaApiClient.NodeType.html#CG_Web_MegaApiClient_NodeType_Directory
+  commentId: F:CG.Web.MegaApiClient.NodeType.Directory
+  fullName: CG.Web.MegaApiClient.NodeType.Directory
+  nameWithType: NodeType.Directory
+- uid: CG.Web.MegaApiClient.NodeType.File
+  name: File
+  href: api/CG.Web.MegaApiClient.NodeType.html#CG_Web_MegaApiClient_NodeType_File
+  commentId: F:CG.Web.MegaApiClient.NodeType.File
+  fullName: CG.Web.MegaApiClient.NodeType.File
+  nameWithType: NodeType.File
+- uid: CG.Web.MegaApiClient.NodeType.Inbox
+  name: Inbox
+  href: api/CG.Web.MegaApiClient.NodeType.html#CG_Web_MegaApiClient_NodeType_Inbox
+  commentId: F:CG.Web.MegaApiClient.NodeType.Inbox
+  fullName: CG.Web.MegaApiClient.NodeType.Inbox
+  nameWithType: NodeType.Inbox
+- uid: CG.Web.MegaApiClient.NodeType.Root
+  name: Root
+  href: api/CG.Web.MegaApiClient.NodeType.html#CG_Web_MegaApiClient_NodeType_Root
+  commentId: F:CG.Web.MegaApiClient.NodeType.Root
+  fullName: CG.Web.MegaApiClient.NodeType.Root
+  nameWithType: NodeType.Root
+- uid: CG.Web.MegaApiClient.NodeType.Trash
+  name: Trash
+  href: api/CG.Web.MegaApiClient.NodeType.html#CG_Web_MegaApiClient_NodeType_Trash
+  commentId: F:CG.Web.MegaApiClient.NodeType.Trash
+  fullName: CG.Web.MegaApiClient.NodeType.Trash
+  nameWithType: NodeType.Trash
+- uid: CG.Web.MegaApiClient.Options
+  name: Options
+  href: api/CG.Web.MegaApiClient.Options.html
+  commentId: T:CG.Web.MegaApiClient.Options
+  fullName: CG.Web.MegaApiClient.Options
+  nameWithType: Options
+- uid: CG.Web.MegaApiClient.Options.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Single,System.Int32,System.Int32,System.Int64)
+  name: Options(String, Boolean, Int32, Int32, Single, Int32, Int32, Int64)
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Single_System_Int32_System_Int32_System_Int64_
+  commentId: M:CG.Web.MegaApiClient.Options.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Single,System.Int32,System.Int32,System.Int64)
+  fullName: CG.Web.MegaApiClient.Options.Options(System.String, System.Boolean, System.Int32, System.Int32, System.Single, System.Int32, System.Int32, System.Int64)
+  nameWithType: Options.Options(String, Boolean, Int32, Int32, Single, Int32, Int32, Int64)
+- uid: CG.Web.MegaApiClient.Options.#ctor*
+  name: Options
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.Options.#ctor
+  fullName: CG.Web.MegaApiClient.Options.Options
+  nameWithType: Options.Options
+- uid: CG.Web.MegaApiClient.Options.ApiRequestAttempts
+  name: ApiRequestAttempts
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestAttempts
+  commentId: P:CG.Web.MegaApiClient.Options.ApiRequestAttempts
+  fullName: CG.Web.MegaApiClient.Options.ApiRequestAttempts
+  nameWithType: Options.ApiRequestAttempts
+- uid: CG.Web.MegaApiClient.Options.ApiRequestAttempts*
+  name: ApiRequestAttempts
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestAttempts_
+  commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestAttempts
+  fullName: CG.Web.MegaApiClient.Options.ApiRequestAttempts
+  nameWithType: Options.ApiRequestAttempts
+- uid: CG.Web.MegaApiClient.Options.ApiRequestDelay
+  name: ApiRequestDelay
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelay
+  commentId: P:CG.Web.MegaApiClient.Options.ApiRequestDelay
+  fullName: CG.Web.MegaApiClient.Options.ApiRequestDelay
+  nameWithType: Options.ApiRequestDelay
+- uid: CG.Web.MegaApiClient.Options.ApiRequestDelay*
+  name: ApiRequestDelay
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelay_
+  commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestDelay
+  fullName: CG.Web.MegaApiClient.Options.ApiRequestDelay
+  nameWithType: Options.ApiRequestDelay
+- uid: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
+  name: ApiRequestDelayExponentialFactor
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelayExponentialFactor
+  commentId: P:CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
+  fullName: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
+  nameWithType: Options.ApiRequestDelayExponentialFactor
+- uid: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor*
+  name: ApiRequestDelayExponentialFactor
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelayExponentialFactor_
+  commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
+  fullName: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
+  nameWithType: Options.ApiRequestDelayExponentialFactor
+- uid: CG.Web.MegaApiClient.Options.ApplicationKey
+  name: ApplicationKey
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApplicationKey
+  commentId: P:CG.Web.MegaApiClient.Options.ApplicationKey
+  fullName: CG.Web.MegaApiClient.Options.ApplicationKey
+  nameWithType: Options.ApplicationKey
+- uid: CG.Web.MegaApiClient.Options.ApplicationKey*
+  name: ApplicationKey
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApplicationKey_
+  commentId: Overload:CG.Web.MegaApiClient.Options.ApplicationKey
+  fullName: CG.Web.MegaApiClient.Options.ApplicationKey
+  nameWithType: Options.ApplicationKey
+- uid: CG.Web.MegaApiClient.Options.BufferSize
+  name: BufferSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_BufferSize
+  commentId: P:CG.Web.MegaApiClient.Options.BufferSize
+  fullName: CG.Web.MegaApiClient.Options.BufferSize
+  nameWithType: Options.BufferSize
+- uid: CG.Web.MegaApiClient.Options.BufferSize*
+  name: BufferSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_BufferSize_
+  commentId: Overload:CG.Web.MegaApiClient.Options.BufferSize
+  fullName: CG.Web.MegaApiClient.Options.BufferSize
+  nameWithType: Options.BufferSize
+- uid: CG.Web.MegaApiClient.Options.ChunksPackSize
+  name: ChunksPackSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ChunksPackSize
+  commentId: P:CG.Web.MegaApiClient.Options.ChunksPackSize
+  fullName: CG.Web.MegaApiClient.Options.ChunksPackSize
+  nameWithType: Options.ChunksPackSize
+- uid: CG.Web.MegaApiClient.Options.ChunksPackSize*
+  name: ChunksPackSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ChunksPackSize_
+  commentId: Overload:CG.Web.MegaApiClient.Options.ChunksPackSize
+  fullName: CG.Web.MegaApiClient.Options.ChunksPackSize
+  nameWithType: Options.ChunksPackSize
+- uid: CG.Web.MegaApiClient.Options.DefaultApiRequestAttempts
+  name: DefaultApiRequestAttempts
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultApiRequestAttempts
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultApiRequestAttempts
+  fullName: CG.Web.MegaApiClient.Options.DefaultApiRequestAttempts
+  nameWithType: Options.DefaultApiRequestAttempts
+- uid: CG.Web.MegaApiClient.Options.DefaultApiRequestDelay
+  name: DefaultApiRequestDelay
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultApiRequestDelay
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultApiRequestDelay
+  fullName: CG.Web.MegaApiClient.Options.DefaultApiRequestDelay
+  nameWithType: Options.DefaultApiRequestDelay
+- uid: CG.Web.MegaApiClient.Options.DefaultApiRequestDelayExponentialFactor
+  name: DefaultApiRequestDelayExponentialFactor
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultApiRequestDelayExponentialFactor
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultApiRequestDelayExponentialFactor
+  fullName: CG.Web.MegaApiClient.Options.DefaultApiRequestDelayExponentialFactor
+  nameWithType: Options.DefaultApiRequestDelayExponentialFactor
+- uid: CG.Web.MegaApiClient.Options.DefaultApplicationKey
+  name: DefaultApplicationKey
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultApplicationKey
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultApplicationKey
+  fullName: CG.Web.MegaApiClient.Options.DefaultApplicationKey
+  nameWithType: Options.DefaultApplicationKey
+- uid: CG.Web.MegaApiClient.Options.DefaultBufferSize
+  name: DefaultBufferSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultBufferSize
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultBufferSize
+  fullName: CG.Web.MegaApiClient.Options.DefaultBufferSize
+  nameWithType: Options.DefaultBufferSize
+- uid: CG.Web.MegaApiClient.Options.DefaultChunksPackSize
+  name: DefaultChunksPackSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultChunksPackSize
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultChunksPackSize
+  fullName: CG.Web.MegaApiClient.Options.DefaultChunksPackSize
+  nameWithType: Options.DefaultChunksPackSize
+- uid: CG.Web.MegaApiClient.Options.DefaultReportProgressChunkSize
+  name: DefaultReportProgressChunkSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultReportProgressChunkSize
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultReportProgressChunkSize
+  fullName: CG.Web.MegaApiClient.Options.DefaultReportProgressChunkSize
+  nameWithType: Options.DefaultReportProgressChunkSize
+- uid: CG.Web.MegaApiClient.Options.DefaultSynchronizeApiRequests
+  name: DefaultSynchronizeApiRequests
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultSynchronizeApiRequests
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultSynchronizeApiRequests
+  fullName: CG.Web.MegaApiClient.Options.DefaultSynchronizeApiRequests
+  nameWithType: Options.DefaultSynchronizeApiRequests
+- uid: CG.Web.MegaApiClient.Options.ReportProgressChunkSize
+  name: ReportProgressChunkSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ReportProgressChunkSize
+  commentId: P:CG.Web.MegaApiClient.Options.ReportProgressChunkSize
+  fullName: CG.Web.MegaApiClient.Options.ReportProgressChunkSize
+  nameWithType: Options.ReportProgressChunkSize
+- uid: CG.Web.MegaApiClient.Options.ReportProgressChunkSize*
+  name: ReportProgressChunkSize
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ReportProgressChunkSize_
+  commentId: Overload:CG.Web.MegaApiClient.Options.ReportProgressChunkSize
+  fullName: CG.Web.MegaApiClient.Options.ReportProgressChunkSize
+  nameWithType: Options.ReportProgressChunkSize
+- uid: CG.Web.MegaApiClient.Options.SynchronizeApiRequests
+  name: SynchronizeApiRequests
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_SynchronizeApiRequests
+  commentId: P:CG.Web.MegaApiClient.Options.SynchronizeApiRequests
+  fullName: CG.Web.MegaApiClient.Options.SynchronizeApiRequests
+  nameWithType: Options.SynchronizeApiRequests
+- uid: CG.Web.MegaApiClient.Options.SynchronizeApiRequests*
+  name: SynchronizeApiRequests
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_SynchronizeApiRequests_
+  commentId: Overload:CG.Web.MegaApiClient.Options.SynchronizeApiRequests
+  fullName: CG.Web.MegaApiClient.Options.SynchronizeApiRequests
+  nameWithType: Options.SynchronizeApiRequests
+- uid: CG.Web.MegaApiClient.UploadException
+  name: UploadException
+  href: api/CG.Web.MegaApiClient.UploadException.html
+  commentId: T:CG.Web.MegaApiClient.UploadException
+  fullName: CG.Web.MegaApiClient.UploadException
+  nameWithType: UploadException
+- uid: CG.Web.MegaApiClient.UploadException.#ctor(System.String)
+  name: UploadException(String)
+  href: api/CG.Web.MegaApiClient.UploadException.html#CG_Web_MegaApiClient_UploadException__ctor_System_String_
+  commentId: M:CG.Web.MegaApiClient.UploadException.#ctor(System.String)
+  fullName: CG.Web.MegaApiClient.UploadException.UploadException(System.String)
+  nameWithType: UploadException.UploadException(String)
+- uid: CG.Web.MegaApiClient.UploadException.#ctor*
+  name: UploadException
+  href: api/CG.Web.MegaApiClient.UploadException.html#CG_Web_MegaApiClient_UploadException__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.UploadException.#ctor
+  fullName: CG.Web.MegaApiClient.UploadException.UploadException
+  nameWithType: UploadException.UploadException
+- uid: CG.Web.MegaApiClient.WebClient
+  name: WebClient
+  href: api/CG.Web.MegaApiClient.WebClient.html
+  commentId: T:CG.Web.MegaApiClient.WebClient
+  fullName: CG.Web.MegaApiClient.WebClient
+  nameWithType: WebClient
+- uid: CG.Web.MegaApiClient.WebClient.#ctor(System.Int32,System.Net.Http.Headers.ProductInfoHeaderValue,System.Net.Http.HttpMessageHandler)
+  name: WebClient(Int32, ProductInfoHeaderValue, HttpMessageHandler)
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient__ctor_System_Int32_System_Net_Http_Headers_ProductInfoHeaderValue_System_Net_Http_HttpMessageHandler_
+  commentId: M:CG.Web.MegaApiClient.WebClient.#ctor(System.Int32,System.Net.Http.Headers.ProductInfoHeaderValue,System.Net.Http.HttpMessageHandler)
+  fullName: CG.Web.MegaApiClient.WebClient.WebClient(System.Int32, System.Net.Http.Headers.ProductInfoHeaderValue, System.Net.Http.HttpMessageHandler)
+  nameWithType: WebClient.WebClient(Int32, ProductInfoHeaderValue, HttpMessageHandler)
+- uid: CG.Web.MegaApiClient.WebClient.#ctor*
+  name: WebClient
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient__ctor_
+  commentId: Overload:CG.Web.MegaApiClient.WebClient.#ctor
+  fullName: CG.Web.MegaApiClient.WebClient.WebClient
+  nameWithType: WebClient.WebClient
+- uid: CG.Web.MegaApiClient.WebClient.BufferSize
+  name: BufferSize
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_BufferSize
+  commentId: P:CG.Web.MegaApiClient.WebClient.BufferSize
+  fullName: CG.Web.MegaApiClient.WebClient.BufferSize
+  nameWithType: WebClient.BufferSize
+- uid: CG.Web.MegaApiClient.WebClient.BufferSize*
+  name: BufferSize
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_BufferSize_
+  commentId: Overload:CG.Web.MegaApiClient.WebClient.BufferSize
+  fullName: CG.Web.MegaApiClient.WebClient.BufferSize
+  nameWithType: WebClient.BufferSize
+- uid: CG.Web.MegaApiClient.WebClient.GetRequestRaw(System.Uri)
+  name: GetRequestRaw(Uri)
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_GetRequestRaw_System_Uri_
+  commentId: M:CG.Web.MegaApiClient.WebClient.GetRequestRaw(System.Uri)
+  fullName: CG.Web.MegaApiClient.WebClient.GetRequestRaw(System.Uri)
+  nameWithType: WebClient.GetRequestRaw(Uri)
+- uid: CG.Web.MegaApiClient.WebClient.GetRequestRaw*
+  name: GetRequestRaw
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_GetRequestRaw_
+  commentId: Overload:CG.Web.MegaApiClient.WebClient.GetRequestRaw
+  fullName: CG.Web.MegaApiClient.WebClient.GetRequestRaw
+  nameWithType: WebClient.GetRequestRaw
+- uid: CG.Web.MegaApiClient.WebClient.PostRequestJson(System.Uri,System.String)
+  name: PostRequestJson(Uri, String)
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_PostRequestJson_System_Uri_System_String_
+  commentId: M:CG.Web.MegaApiClient.WebClient.PostRequestJson(System.Uri,System.String)
+  fullName: CG.Web.MegaApiClient.WebClient.PostRequestJson(System.Uri, System.String)
+  nameWithType: WebClient.PostRequestJson(Uri, String)
+- uid: CG.Web.MegaApiClient.WebClient.PostRequestJson*
+  name: PostRequestJson
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_PostRequestJson_
+  commentId: Overload:CG.Web.MegaApiClient.WebClient.PostRequestJson
+  fullName: CG.Web.MegaApiClient.WebClient.PostRequestJson
+  nameWithType: WebClient.PostRequestJson
+- uid: CG.Web.MegaApiClient.WebClient.PostRequestRaw(System.Uri,System.IO.Stream)
+  name: PostRequestRaw(Uri, Stream)
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_PostRequestRaw_System_Uri_System_IO_Stream_
+  commentId: M:CG.Web.MegaApiClient.WebClient.PostRequestRaw(System.Uri,System.IO.Stream)
+  fullName: CG.Web.MegaApiClient.WebClient.PostRequestRaw(System.Uri, System.IO.Stream)
+  nameWithType: WebClient.PostRequestRaw(Uri, Stream)
+- uid: CG.Web.MegaApiClient.WebClient.PostRequestRaw*
+  name: PostRequestRaw
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_PostRequestRaw_
+  commentId: Overload:CG.Web.MegaApiClient.WebClient.PostRequestRaw
+  fullName: CG.Web.MegaApiClient.WebClient.PostRequestRaw
+  nameWithType: WebClient.PostRequestRaw
+- uid: faq
+  name: How can I download a file into a specific location?
+  href: articles/faq.html
+- uid: installation
+  name: Installation
+  href: articles/installation.html
+- uid: samples
+  name: List all files / folders on your Mega account
+  href: articles/samples.html
