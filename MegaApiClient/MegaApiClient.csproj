@@ -50,7 +50,7 @@
     <UseHttpClient>True</UseHttpClient>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard1.6'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <NetFramework>False</NetFramework>
     <NetCore>True</NetCore>
   </PropertyGroup>
