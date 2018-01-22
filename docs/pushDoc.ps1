@@ -2,7 +2,8 @@
 
 param([string]$buildFolder, [string]$email, [string]$username, [string]$personalAccessToken)
 
-if ($true -Or $env:APPVEYOR_REPO_BRANCH -eq "master" -And $env:APPVEYOR_REPO_TAG -eq $true)
+#if ($true -Or $env:APPVEYOR_REPO_BRANCH -eq "master" -And $env:APPVEYOR_REPO_TAG -eq $true)
+if ($true)
 {
   Write-Host "- Set config settings...."
   git config --global user.email $email
@@ -42,5 +43,5 @@ if ($true -Or $env:APPVEYOR_REPO_BRANCH -eq "master" -And $env:APPVEYOR_REPO_TAG
 }
 else
 {
-  Write-Host "Nothing to do. Doc is pushed only on tagged master commit"
+  Write-Host "- Nothing to do. Doc is pushed only for tags on master"
 }
