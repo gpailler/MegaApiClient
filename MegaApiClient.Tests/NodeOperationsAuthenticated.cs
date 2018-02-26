@@ -44,7 +44,7 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData(NodeType.Root, 523265)]
+    [InlineData(NodeType.Root, 567387)]
     [InlineData(NodeType.Inbox, 0)]
     [InlineData(NodeType.Trash, 0)]
     public void GetFoldersize_FromNodeType_Succeeds(NodeType nodeType, long expectedSize)
@@ -69,7 +69,7 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData(AuthenticatedTestContext.FolderId, 523265)]
+    [InlineData(AuthenticatedTestContext.FolderId, 567387)]
     [InlineData(AuthenticatedTestContext.SubFolderId, 0)]
     public void GetFoldersize_FromDirectory_Succeeds(string nodeId, long expectedSize)
     {
