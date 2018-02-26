@@ -297,22 +297,31 @@ namespace CG.Web.MegaApiClient.Tests
     {
       var nodes = this.context.Client.GetNodesFromLink(new Uri(AuthenticatedTestContext.FolderLink));
 
-      Assert.Equal(3, nodes.Count());
+      Assert.Equal(4, nodes.Count());
       INode node;
       node = Assert.Single(nodes, x => x.Name == "SharedFile.jpg");
+      Assert.Equal(AuthenticatedTestContext.FileId, node.Id);
       Assert.Equal(523265, node.Size);
       Assert.Equal(DateTime.Parse("2015-07-14T14:04:51.0000000+08:00"), node.ModificationDate);
       Assert.Equal(DateTime.Parse("2017-07-11T10:48:10.0000000+07:00"), node.CreationDate);
 
       node = Assert.Single(nodes, x => x.Name == "SharedFolder");
+      Assert.Equal(AuthenticatedTestContext.FolderId, node.Id);
       Assert.Equal(0, node.Size);
       Assert.Equal(DateTime.Parse("2017-07-11T10:48:00.0000000+07:00"), node.CreationDate);
       Assert.Null(node.ModificationDate);
 
       node = Assert.Single(nodes, x => x.Name == "SharedSubFolder");
+      Assert.Equal(AuthenticatedTestContext.SubFolderId, node.Id);
       Assert.Equal(0, node.Size);
       Assert.Equal(DateTime.Parse("2017-07-11T10:48:01.0000000+07:00"), node.CreationDate);
       Assert.Null(node.ModificationDate);
+
+      node = Assert.Single(nodes, x => x.Name == "breadboard.jpg");
+      Assert.Equal(AuthenticatedTestContext.SubFolderFileId, node.Id);
+      Assert.Equal(44122, node.Size);
+      Assert.Equal(DateTime.Parse("2018-02-15T22:17:23.0000000+07:00"), node.ModificationDate);
+      Assert.Equal(DateTime.Parse("2018-02-26T20:15:15.0000000+07:00"), node.CreationDate);
     }
   }
 }

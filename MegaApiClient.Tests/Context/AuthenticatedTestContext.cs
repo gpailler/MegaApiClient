@@ -19,6 +19,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     internal const string FileId = "P8BBzaTS";
     internal const string FolderId = "e5IjHLLJ";
     internal const string SubFolderId = "CghQlTCa";
+    internal const string SubFolderFileId = "X8JhEKJT";
 
     /*
     Storage layout
@@ -27,6 +28,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     |   +-SharedFolder                          (e5IjHLLJ) (Outgoing Share)
     |       |-SharedFile.jpg                    (P8BBzaTS)
     |       +-SharedSubFolder                   (CghQlTCa) (Outgoing Share)
+    |           |-breadboard.jpg                (X8JhEKJT)
     +-Trash                                     (j0wEGbTZ)
     +-Inbox                                     (zhITTbIJ)
     +-Contacts
@@ -65,6 +67,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     private readonly string[] permanentFilesNodes =
     {
       FileId, // SharedFile.jpg
+      SubFolderFileId, // breadboard.jpg
     };
 
     private readonly string[] permanentRemoteFilesNodes =

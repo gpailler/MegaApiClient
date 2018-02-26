@@ -15,10 +15,14 @@
       if (shareId != null)
       {
         this.QueryArguments["n"] = shareId;
+
+        // Retrieve all nodes in all subfolders
+        this.r = 1;
       }
     }
 
     public int c { get; private set; }
+    public int r { get; private set; }
   }
 
   internal class GetNodesResponse
