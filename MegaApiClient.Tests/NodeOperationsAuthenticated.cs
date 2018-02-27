@@ -70,7 +70,7 @@ namespace CG.Web.MegaApiClient.Tests
 
     [Theory]
     [InlineData(AuthenticatedTestContext.FolderId, 567387)]
-    [InlineData(AuthenticatedTestContext.SubFolderId, 0)]
+    [InlineData(AuthenticatedTestContext.SubFolderId, 44122)]
     public void GetFoldersize_FromDirectory_Succeeds(string nodeId, long expectedSize)
     {
       var node = this.GetNode(nodeId);
