@@ -225,7 +225,7 @@ namespace CG.Web.MegaApiClient.Tests
 
       Assert.NotNull(accountInformation);
       Assert.Equal(53687091200, accountInformation.TotalQuota);
-      Assert.Equal(1613917, accountInformation.UsedQuota);
+      Assert.Equal(1046530 + AuthenticatedTestContext.FileSize + AuthenticatedTestContext.SubFolderFileSize, accountInformation.UsedQuota); // 1046530 is from incoming shares
     }
 
     [Fact]

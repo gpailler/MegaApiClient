@@ -17,9 +17,11 @@ namespace CG.Web.MegaApiClient.Tests.Context
     internal const string FileLink = "https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk";
     internal const string FolderLink = "https://mega.nz/#F!e1ogxQ7T!ee4Q_ocD1bSLmNeg9B6kBw";
     internal const string FileId = "P8BBzaTS";
+    internal const int FileSize = 523265;
     internal const string FolderId = "e5IjHLLJ";
     internal const string SubFolderId = "CghQlTCa";
     internal const string SubFolderFileId = "TlBDQIQY";
+    internal const int SubFolderFileSize = 112916;
 
     /*
     Storage layout
