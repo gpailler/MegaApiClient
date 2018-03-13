@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>MegaApiClient library gives full access to Mega.co.nz API. You can manage filesystem and download/upload files.</Description>
-    <Copyright>Copyright ©  2017</Copyright>
+    <Description>MegaApiClient is a C# .Net library to access http://mega.co.nz / http://mega.nz cloud storage and file hosting service.</Description>
+    <Copyright>Copyright © 2018</Copyright>
     <AssemblyTitle>Mega.co.nz client library</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
     <VersionPrefix>1.6.0</VersionPrefix>
@@ -13,7 +13,7 @@
     <PackageProjectUrl>https://github.com/gpailler/MegaApiClient</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/gpailler/MegaApiClient/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageTags>mega;mega.co.nz;api</PackageTags>
+    <PackageTags>mega;mega.co.nz;mega.nz;netstandard;netcore;mono;xamarin;uwp;cloud-storage</PackageTags>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/gpailler/MegaApiClient</RepositoryUrl>
   </PropertyGroup>
