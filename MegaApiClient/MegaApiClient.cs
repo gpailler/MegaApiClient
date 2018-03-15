@@ -737,7 +737,7 @@
         ApiResultCode apiResult = ApiResultCode.Ok;
         using (MegaAesCtrStreamCrypter encryptedStream = new MegaAesCtrStreamCrypter(stream))
         {
-          var chunkStartPosition = 0;
+          long chunkStartPosition = 0;
           var chunksSizesToUpload = this.ComputeChunksSizesToUpload(encryptedStream.ChunksPositions, encryptedStream.Length).ToArray();
           Uri uri = null;
           for (int i = 0; i < chunksSizesToUpload.Length; i++)
