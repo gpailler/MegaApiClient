@@ -186,6 +186,16 @@
     }
 
     #endregion
+
+    public bool IsShareRoot
+    {
+      get
+      {
+        string serializedKey = this.SerializedKey.Split('/')[0];
+        int splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
+        return serializedKey.Substring(0, splitPosition) == this.Id;
+      }
+    }
   }
 
   [DebuggerDisplay("PublicNode - Type: {Type} - Name: {Name} - Id: {Id}")]
@@ -212,9 +222,9 @@
     public string Name { get { return this.node.Name; } }
     public DateTime? ModificationDate { get { return this.node.ModificationDate; } }
     public string Id { get { return this.node.Id; } }
-    public string ParentId { get { return this.node.ParentId; } }
+    public string ParentId { get { return this.node.IsShareRoot ? null : this.node.ParentId; } }
     public string Owner { get { return this.node.Owner; } }
-    public NodeType Type { get { return this.node.Type; } }
+    public NodeType Type { get { return this.node.IsShareRoot && this.node.Type == NodeType.Directory ? NodeType.Root : this.node.Type; } }
     public DateTime CreationDate { get { return this.node.CreationDate; } }
 
     public byte[] Key { get { return this.node.Key; } }

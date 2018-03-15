@@ -297,22 +297,39 @@ namespace CG.Web.MegaApiClient.Tests
     {
       var nodes = this.context.Client.GetNodesFromLink(new Uri(AuthenticatedTestContext.FolderLink));
 
-      Assert.Equal(3, nodes.Count());
+      Assert.Equal(4, nodes.Count());
       INode node;
       node = Assert.Single(nodes, x => x.Name == "SharedFile.jpg");
+      Assert.Equal(NodeType.File, node.Type);
+      Assert.Equal(AuthenticatedTestContext.FileId, node.Id);
+      Assert.Equal(AuthenticatedTestContext.FolderId, node.ParentId);
       Assert.Equal(523265, node.Size);
       Assert.Equal(DateTime.Parse("2015-07-14T14:04:51.0000000+08:00"), node.ModificationDate);
       Assert.Equal(DateTime.Parse("2017-07-11T10:48:10.0000000+07:00"), node.CreationDate);
 
       node = Assert.Single(nodes, x => x.Name == "SharedFolder");
+      Assert.Equal(NodeType.Root, node.Type);
+      Assert.Equal(AuthenticatedTestContext.FolderId, node.Id);
+      Assert.Null(node.ParentId);
       Assert.Equal(0, node.Size);
       Assert.Equal(DateTime.Parse("2017-07-11T10:48:00.0000000+07:00"), node.CreationDate);
       Assert.Null(node.ModificationDate);
 
       node = Assert.Single(nodes, x => x.Name == "SharedSubFolder");
+      Assert.Equal(NodeType.Directory, node.Type);
+      Assert.Equal(AuthenticatedTestContext.SubFolderId, node.Id);
+      Assert.Equal(AuthenticatedTestContext.FolderId, node.ParentId);
       Assert.Equal(0, node.Size);
       Assert.Equal(DateTime.Parse("2017-07-11T10:48:01.0000000+07:00"), node.CreationDate);
       Assert.Null(node.ModificationDate);
+
+      node = Assert.Single(nodes, x => x.Name == "SharedFileUpSideDown.jpg");
+      Assert.Equal(NodeType.File, node.Type);
+      Assert.Equal(AuthenticatedTestContext.SubFolderFileId, node.Id);
+      Assert.Equal(AuthenticatedTestContext.SubFolderId, node.ParentId);
+      Assert.Equal(112916, node.Size);
+      Assert.Equal(DateTime.Parse("2018-03-13T11:37:26.0000000+07:00"), node.ModificationDate);
+      Assert.Equal(DateTime.Parse("2018-03-13T11:37:51.0000000+07:00"), node.CreationDate);
     }
   }
 }
