@@ -43,6 +43,11 @@
       this.UnwrapException(() => this.client.LoginAsync(logonSessionToken).Wait());
     }
 
+    public void Login()
+    {
+      this.UnwrapException(() => this.client.LoginAsync().Wait());
+    }
+
     public void LoginAnonymous()
     {
       this.UnwrapException(() => this.client.LoginAnonymousAsync().Wait());
@@ -152,6 +157,11 @@
     public Task LoginAsync(MegaApiClient.LogonSessionToken authInfos)
     {
       return this.client.LoginAsync(authInfos);
+    }
+
+    public Task LoginAsync()
+    {
+      return this.client.LoginAsync();
     }
 
     public Task LoginAnonymousAsync()

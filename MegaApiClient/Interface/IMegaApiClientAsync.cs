@@ -15,6 +15,8 @@ namespace CG.Web.MegaApiClient
 
     Task LoginAsync(MegaApiClient.LogonSessionToken logonSessionToken);
 
+    Task LoginAsync();
+
     Task LoginAnonymousAsync();
 
     Task LogoutAsync();
