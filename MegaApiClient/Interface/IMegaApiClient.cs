@@ -19,6 +19,8 @@ namespace CG.Web.MegaApiClient
 
     void Login(MegaApiClient.LogonSessionToken logonSessionToken);
 
+    void Login();
+
     void LoginAnonymous();
 
     void Logout();

@@ -26,6 +26,11 @@ namespace CG.Web.MegaApiClient
       return Task.Run(() => this.Login(logonSessionToken));
     }
 
+    public Task LoginAsync()
+    {
+      return Task.Run(() => this.Login());
+    }
+
     public Task LoginAnonymousAsync()
     {
       return Task.Run(() => this.LoginAnonymous());

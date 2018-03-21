@@ -185,6 +185,15 @@
     /// Login anonymously to Mega.co.nz service
     /// </summary>
     /// <exception cref="ApiException">Throws if service is not available</exception>
+    public void Login()
+    {
+      this.LoginAnonymous();
+    }
+
+    /// <summary>
+    /// Login anonymously to Mega.co.nz service
+    /// </summary>
+    /// <exception cref="ApiException">Throws if service is not available</exception>
     public void LoginAnonymous()
     {
       this.EnsureLoggedOut();
