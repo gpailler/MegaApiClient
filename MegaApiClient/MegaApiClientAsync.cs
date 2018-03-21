@@ -147,6 +147,34 @@ namespace CG.Web.MegaApiClient
       }, cancellationToken.GetValueOrDefault());
     }
 
+    public Task<INode> UpdateAsync(Stream stream, INode parent, INode nodeToReplace, UpdateMode updateMode, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
+    {
+      return Task.Run(() =>
+      {
+        if (stream == null)
+        {
+          throw new ArgumentNullException("stream");
+        }
+
+        using (Stream progressionStream = new ProgressionStream(stream, progress, this.options.ReportProgressChunkSize))
+        {
+          return this.Update(progressionStream, parent, nodeToReplace, updateMode, modificationDate, cancellationToken);
+        }
+      }, cancellationToken.GetValueOrDefault());
+    }
+
+    public Task<INode> UpdateFileAsync(string filename, INode parent, INode nodeToReplace, UpdateMode updateMode, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    {
+      return Task.Run(() =>
+      {
+        DateTime modificationDate = File.GetLastWriteTime(filename);
+        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress, this.options.ReportProgressChunkSize))
+        {
+          return this.Update(stream,parent, nodeToReplace, updateMode, modificationDate, cancellationToken);
+        }
+      }, cancellationToken.GetValueOrDefault());
+    }
+
     public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
     {
       return Task.Run(() => this.GetNodeFromLink(uri));

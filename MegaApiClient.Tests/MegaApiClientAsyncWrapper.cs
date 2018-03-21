@@ -129,6 +129,18 @@
       return this.UnwrapException(() => this.client.UploadAsync(stream, name, parent, progress, modificationDate).Result);
     }
 
+    public INode UpdateFile(string filename, INode parent, INode nodeToReplace, UpdateMode updateMode, CancellationToken? cancellationToken = null)
+    {
+      Progress<double> progress = new Progress<double>();
+      return this.UnwrapException(() => this.client.UpdateFileAsync(filename, parent, nodeToReplace, updateMode, progress, cancellationToken).Result);
+    }
+
+    public INode Update(Stream stream, INode parent, INode nodeToReplace, UpdateMode updateMode, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
+    {
+      Progress<double> progress = new Progress<double>();
+      return this.UnwrapException(() => this.client.UpdateAsync(stream, parent, nodeToReplace, updateMode, progress, modificationDate, cancellationToken).Result);
+    }
+
     public INode Move(INode node, INode destinationParentNode)
     {
       return this.UnwrapException(() => this.client.MoveAsync(node, destinationParentNode).Result);
@@ -232,6 +244,16 @@
     public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
     {
       return this.client.UploadAsync(stream, name, parent, progress, modificationDate, cancellationToken);
+    }
+
+    public Task<INode> UpdateFileAsync(string filename, INode parent, INode nodeToReplace, UpdateMode updateMode, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    {
+      return this.client.UploadFileAsync(filename, parent, progress, cancellationToken);
+    }
+
+    public Task<INode> UpdateAsync(Stream stream, INode parent, INode nodeToReplace, UpdateMode updateMode, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
+    {
+      return this.client.UpdateAsync(stream, parent, nodeToReplace, updateMode, progress, modificationDate, cancellationToken);
     }
 
     public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)

@@ -5,7 +5,7 @@
 
   internal class CreateNodeRequest : RequestBase
   {
-    private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string encryptedKey, byte[] key, string completionHandle)
+    private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string encryptedKey, byte[] key, string completionHandle, bool? historyIfAlreadyExisting)
       : base("p")
     {
       this.ParentId = parentNode.Id;
@@ -31,6 +31,11 @@
         this.Share = new ShareData(parentNode.Id);
         this.Share.AddItem(completionHandle, key, parentNodeCrypto.SharedKey);
       }
+
+      if (historyIfAlreadyExisting.GetValueOrDefault(false))
+      {
+        this.OverwriteMode = 3;
+      }
     }
 
     [JsonProperty("t")]
@@ -42,14 +47,17 @@
     [JsonProperty("n")]
     public CreateNodeRequestData[] Nodes { get; private set; }
 
-    public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] fileKey, string completionHandle)
+    [JsonProperty("v")]
+    public int? OverwriteMode { get; private set; }
+
+    public static CreateNodeRequest CreateFileNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] fileKey, string completionHandle, bool? addToHistory)
     {
-      return new CreateNodeRequest(parentNode, NodeType.File, attributes, encryptedkey, fileKey, completionHandle);
+      return new CreateNodeRequest(parentNode, NodeType.File, attributes, encryptedkey, fileKey, completionHandle, addToHistory);
     }
 
     public static CreateNodeRequest CreateFolderNodeRequest(INode parentNode, string attributes, string encryptedkey, byte[] key)
     {
-      return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, encryptedkey, key, "xxxxxxxx");
+      return new CreateNodeRequest(parentNode, NodeType.Directory, attributes, encryptedkey, key, "xxxxxxxx", null);
     }
 
     internal class CreateNodeRequestData

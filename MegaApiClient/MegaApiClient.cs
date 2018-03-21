@@ -624,6 +624,8 @@
     /// <summary>
     /// Upload a file on Mega.co.nz and attach created node to selected parent
     /// </summary>
+    /// If a file already exists with the same name, you will end up with two files with same name and different <see cref="INodeInfo.Id" />.
+    /// You should use <see cref="UpdateFile"/> method if you want to replace an existing file
     /// <param name="filename">File to upload</param>
     /// <param name="parent">Node to attach the uploaded file (all types except <see cref="NodeType.File" /> are supported)</param>
     /// <param name="cancellationToken">Optional <see cref="CancellationToken"/> to stop the upload</param>
@@ -662,6 +664,10 @@
     /// <summary>
     /// Upload a stream on Mega.co.nz and attach created node to selected parent
     /// </summary>
+    /// <remarks>
+    /// If a file already exists with the same name, you will end up with two files with same name and different <see cref="INodeInfo.Id" />.
+    /// You should use <see cref="Update"/> method if you want to replace an existing file
+    /// </remarks>
     /// <param name="stream">Data to upload</param>
     /// <param name="name">Created node name</param>
     /// <param name="parent">Node to attach the uploaded file (all types except <see cref="NodeType.File" /> are supported)</param>
@@ -673,6 +679,24 @@
     /// <exception cref="ArgumentNullException">stream or name or parent is null</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
     public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
+    {
+      return this.Upload(
+        (p, cryptedAttributes, encryptedKey, fileKey, completionHandle) => 
+          CreateNodeRequest.CreateFileNodeRequest(p, cryptedAttributes, encryptedKey, fileKey, completionHandle, false),
+        stream,
+        name,
+        parent,
+        modificationDate,
+        cancellationToken);
+    }
+
+    private INode Upload(
+      Func<INode, string, string, byte[], string, CreateNodeRequest> createNodeRequestFactory,
+      Stream stream,
+      string name,
+      INode parent,
+      DateTime? modificationDate = null,
+      CancellationToken? cancellationToken = null)
     {
       if (stream == null)
       {
@@ -791,7 +815,7 @@
 
           byte[] encryptedKey = Crypto.EncryptKey(fileKey, this.masterKey);
 
-          CreateNodeRequest createNodeRequest = CreateNodeRequest.CreateFileNodeRequest(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), fileKey, completionHandle);
+          CreateNodeRequest createNodeRequest = createNodeRequestFactory(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), fileKey, completionHandle);
           GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest, this.masterKey);
           return createNodeResponse.Nodes[0];
         }
@@ -880,9 +904,122 @@
       return this.GetNodes().First(n => n.Equals(node));
     }
 
-#endregion
+    /// <summary>
+    /// Upload a file and update an existing node on Mega.co.nz
+    /// </summary>
+    /// <param name="filename">File to upload</param>
+    /// <param name="parent">Node to attach the uploaded file (all types except <see cref="NodeType.File" /> are supported)</param>
+    /// <param name="nodeToReplace">Node to replace (type <see cref="NodeType.File" /> only)</param>
+    /// <param name="updateMode">Mode used to replace existing node</param>
+    /// <param name="cancellationToken">Optional <see cref="CancellationToken"/> to stop the upload</param>
+    /// <returns>New updated node</returns>
+    /// <exception cref="NotSupportedException">Not logged in</exception>
+    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="ArgumentNullException">filename or nodeToReplace is null</exception>
+    /// <exception cref="FileNotFoundException">filename is not found</exception>
+    /// <exception cref="ArgumentException">nodeToReplace is not valid (not a <see cref="NodeType.File" /> type)</exception>
+    public INode UpdateFile(string filename, INode parent, INode nodeToReplace, UpdateMode updateMode, CancellationToken? cancellationToken = null)
+    {
+      if (string.IsNullOrEmpty(filename))
+      {
+        throw new ArgumentNullException("filename");
+      }
 
-#region Private static methods
+      if (parent == null)
+      {
+        throw new ArgumentNullException("parent");
+      }
+
+      if (parent.Type == NodeType.File)
+      {
+        throw new ArgumentException("Invalid parent node");
+      }
+
+      if (nodeToReplace == null)
+      {
+        throw new ArgumentNullException("parent");
+      }
+
+      if (nodeToReplace.Type != NodeType.File)
+      {
+        throw new ArgumentException("Invalid node type");
+      }
+
+      if (!File.Exists(filename))
+      {
+        throw new FileNotFoundException(filename);
+      }
+
+      this.EnsureLoggedIn();
+
+      DateTime modificationDate = File.GetLastWriteTime(filename);
+      using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
+      {
+        return this.Update(fileStream, parent, nodeToReplace, updateMode, modificationDate, cancellationToken);
+      }
+    }
+
+    /// <summary>
+    /// Upload a stream and update an existing node on Mega.co.nz
+    /// </summary>
+    /// <param name="stream">Data to upload</param>
+    /// <param name="parent">Node to attach the uploaded file (all types except <see cref="NodeType.File" /> are supported)</param>
+    /// <param name="nodeToReplace">Node to replace (type <see cref="NodeType.File" /> only)</param>
+    /// <param name="updateMode">Mode used to replace existing node</param>
+    /// <param name="modificationDate">Optional ModificationDate stored in node metadatas</param>
+    /// <param name="cancellationToken">Optional <see cref="CancellationToken"/> to stop the upload</param>
+    /// <returns>New updated node</returns>
+    /// <exception cref="NotSupportedException">Not logged in</exception>
+    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="ArgumentNullException">stream or name or nodeToReplace is null</exception>
+    /// <exception cref="ArgumentException">nodeToReplace is not valid (not a <see cref="NodeType.File" /> type)</exception>
+    public INode Update(Stream stream, INode parent, INode nodeToReplace, UpdateMode updateMode, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
+    {
+      if (stream == null)
+      {
+        throw new ArgumentNullException("stream");
+      }
+
+      if (parent == null)
+      {
+        throw new ArgumentNullException("parent");
+      }
+
+      if (parent.Type == NodeType.File)
+      {
+        throw new ArgumentException("Invalid parent node");
+      }
+
+      if (nodeToReplace == null)
+      {
+        throw new ArgumentNullException("nodeToReplace");
+      }
+
+      if (nodeToReplace.Type != NodeType.File)
+      {
+        throw new ArgumentException("Invalid node type");
+      }
+
+      this.EnsureLoggedIn();
+
+
+      bool addToHistory = updateMode == UpdateMode.OverwriteWithHistory;
+      Func<INode, string, string, byte[], string, CreateNodeRequest> createNodeRequestFactory = (p, cryptedAttributes, encryptedKey, fileKey, completionHandle) =>
+        CreateNodeRequest.CreateFileNodeRequest(p, cryptedAttributes, encryptedKey, fileKey, completionHandle, addToHistory); ;
+
+      var newNode = this.Upload(createNodeRequestFactory, stream, nodeToReplace.Name, parent, modificationDate, cancellationToken);
+
+      if (updateMode == UpdateMode.Overwrite)
+      {
+        this.Delete(nodeToReplace, true);
+      }
+
+      return newNode;
+    }
+
+    #endregion
+
+    #region Private static methods
 
     private static string GenerateHash(string email, byte[] passwordAesKey)
     {

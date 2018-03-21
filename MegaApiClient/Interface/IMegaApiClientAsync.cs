@@ -47,6 +47,10 @@ namespace CG.Web.MegaApiClient
 
     Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null);
 
+    Task<INode> UpdateFileAsync(string filename, INode parent, INode nodeToReplace, UpdateMode updateMode, IProgress<double> progress, CancellationToken? cancellationToken = null);
+
+    Task<INode> UpdateAsync(Stream stream, INode parent, INode nodeToReplace, UpdateMode updateMode, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null);
+
     Task<INodeInfo> GetNodeFromLinkAsync(Uri uri);
 
     Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri);

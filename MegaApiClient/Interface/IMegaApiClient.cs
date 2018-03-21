@@ -52,5 +52,27 @@ namespace CG.Web.MegaApiClient
     INode Move(INode node, INode destinationParentNode);
 
     INode Rename(INode node, string newName);
+
+    INode UpdateFile(string filename, INode parent, INode nodeToReplace, UpdateMode updateMode, CancellationToken? cancellationToken = null);
+
+    INode Update(Stream stream, INode parent, INode nodeToReplace, UpdateMode updateMode, DateTime? modificationDate = null, CancellationToken? cancellationToken = null);
+  }
+
+  public enum UpdateMode
+  {
+    /// <summary>
+    /// Upload new content with same name than existing node (legacy behavior)
+    /// </summary>
+    CreateNew,
+
+    /// <summary>
+    /// Move existing node to Trash and upload new content
+    /// </summary>
+    Overwrite,
+
+    /// <summary>
+    /// Upload new content and keep old version in file history
+    /// </summary>
+    OverwriteWithHistory,
   }
 }
