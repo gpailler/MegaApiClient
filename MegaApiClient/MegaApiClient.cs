@@ -817,7 +817,7 @@
 
           CreateNodeRequest createNodeRequest = createNodeRequestFactory(parent, cryptedAttributes.ToBase64(), encryptedKey.ToBase64(), fileKey, completionHandle);
           GetNodesResponse createNodeResponse = this.Request<GetNodesResponse>(createNodeRequest, this.masterKey);
-          return createNodeResponse.Nodes[0];
+          return createNodeResponse?.Nodes[0];
         }
       }
 
@@ -1003,13 +1003,24 @@
       this.EnsureLoggedIn();
 
 
-      bool addToHistory = updateMode == UpdateMode.OverwriteWithHistory;
+      bool versionning = updateMode == UpdateMode.Version;
       Func<INode, string, string, byte[], string, CreateNodeRequest> createNodeRequestFactory = (p, cryptedAttributes, encryptedKey, fileKey, completionHandle) =>
-        CreateNodeRequest.CreateFileNodeRequest(p, cryptedAttributes, encryptedKey, fileKey, completionHandle, addToHistory); ;
+        CreateNodeRequest.CreateFileNodeRequest(p, cryptedAttributes, encryptedKey, fileKey, completionHandle, versionning); ;
 
       var newNode = this.Upload(createNodeRequestFactory, stream, nodeToReplace.Name, parent, modificationDate, cancellationToken);
+      if (newNode == null)
+      {
+        if (versionning)
+        {
+          newNode = nodeToReplace;
+        }
+        else
+        {
+          throw new Exception("Unable to retrieve uploaded node");
+        }
+      }
 
-      if (updateMode == UpdateMode.Overwrite)
+      if (updateMode == UpdateMode.Replace)
       {
         this.Delete(nodeToReplace, true);
       }

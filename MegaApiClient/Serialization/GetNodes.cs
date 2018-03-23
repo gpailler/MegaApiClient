@@ -27,6 +27,8 @@
 
   internal class GetNodesResponse
   {
+    public static readonly GetNodesResponse Empty = new GetNodesResponse(null) { Nodes = new Node[0] };
+
     private readonly byte[] masterKey;
     private List<SharedKey> sharedKeys;
 

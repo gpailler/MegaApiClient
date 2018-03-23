@@ -216,6 +216,56 @@ namespace CG.Web.MegaApiClient.Tests
       }
     }
 
+    [Fact]
+    public void UpdateFile_Replace_Succeeds()
+    {
+      const string sampleFile = "Data/SampleFile.jpg";
+      var root = this.GetNode(NodeType.Root);
+
+      var uploadNode = this.context.Client.UploadFile(sampleFile, root);
+      var updateNode = this.context.Client.UpdateFile(sampleFile, root, uploadNode, UpdateMode.Replace);
+
+      var nodes = this.context.Client.GetNodes().ToList();
+      uploadNode = this.GetNode(uploadNode.Id);
+      Assert.True(nodes.Contains(uploadNode));
+      Assert.True(uploadNode.ParentId == this.GetNode(NodeType.Trash).Id);
+
+      Assert.True(nodes.Contains(updateNode));
+      Assert.True(updateNode.ParentId == root.Id);
+    }
+
+    [Fact]
+    public void UpdateFile_Duplicate_Succeeds()
+    {
+      const string sampleFile = "Data/SampleFile.jpg";
+      var root = this.GetNode(NodeType.Root);
+
+      var uploadNode = this.context.Client.UploadFile(sampleFile, root);
+      var updateNode = this.context.Client.UpdateFile(sampleFile, root, uploadNode, UpdateMode.Duplicate);
+
+      var nodes = this.context.Client.GetNodes().ToList();
+      Assert.True(nodes.Contains(uploadNode));
+      Assert.True(uploadNode.ParentId == root.Id);
+
+      Assert.True(nodes.Contains(updateNode));
+      Assert.True(uploadNode.ParentId == root.Id);
+    }
+
+    [Fact]
+    public void UpdateFile_Version_Succeeds()
+    {
+      const string sampleFile = "Data/SampleFile.jpg";
+      var root = this.GetNode(NodeType.Root);
+
+      var uploadNode = this.context.Client.UploadFile(sampleFile, root);
+      var updateNode = this.context.Client.UpdateFile(sampleFile, root, uploadNode, UpdateMode.Version);
+
+      Assert.Equal(uploadNode, updateNode);
+
+      var nodes = this.context.Client.GetNodes().ToList();
+      Assert.True(nodes.Contains(updateNode));
+    }
+
     protected void AreStreamsEquivalent(Stream stream1, Stream stream2)
     {
       byte[] stream1data = new byte[stream1.Length];

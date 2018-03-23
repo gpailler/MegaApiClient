@@ -26,6 +26,13 @@
         return null;
       }
 
+      if (reader.TokenType == JsonToken.StartArray)
+      {
+        // Empty nodes array. Consume the reader and quit
+        reader.Read();
+        return null;
+      }
+
       JObject jObject = JObject.Load(reader);
 
       GetNodesResponse target = new GetNodesResponse(this.masterKey);

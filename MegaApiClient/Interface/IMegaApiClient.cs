@@ -63,16 +63,16 @@ namespace CG.Web.MegaApiClient
     /// <summary>
     /// Upload new content with same name than existing node (legacy behavior)
     /// </summary>
-    CreateNew,
+    Duplicate,
 
     /// <summary>
-    /// Move existing node to Trash and upload new content
+    /// Upload new content and move previous node to Trash
     /// </summary>
-    Overwrite,
+    Replace,
 
     /// <summary>
     /// Upload new content and keep old version in file history
     /// </summary>
-    OverwriteWithHistory,
+    Version,
   }
 }
