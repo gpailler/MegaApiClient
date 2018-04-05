@@ -15,7 +15,7 @@ Whole [API](xref:CG.Web.MegaApiClient.MegaApiClient) documentation
 
 #### Compatibility
 
-The library supports .NET 4.0, .NET 4.5 and [.NET Standard 1.3](https://docs.microsoft.com/en-us/dotnet/standard/net-standard). Here is the list of all supported implementations:
+The library supports .NET 4.0, .NET 4.5, .NET 4.6 and [.NET Standard 1.3](https://docs.microsoft.com/en-us/dotnet/standard/net-standard). Here is the list of all supported implementations:
 
 | Implementation             | Version |
 |----------------------------|---------|
