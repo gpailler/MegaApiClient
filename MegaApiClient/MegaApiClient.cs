@@ -102,7 +102,7 @@
       }
 
       // Retrieve password as UTF8 byte array
-      byte[] passwordBytes = password.ToBytes();
+      byte[] passwordBytes = password.ToBytesPassword();
 
       // Encrypt password to use password as key for the hash
       byte[] passwordAesKey = PrepareKey(passwordBytes);

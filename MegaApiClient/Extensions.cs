@@ -2,6 +2,7 @@
 {
   using System;
   using System.IO;
+  using System.Linq;
   using System.Text;
 
   internal static class Extensions
@@ -39,6 +40,28 @@
     public static byte[] ToBytes(this string data)
     {
       return Encoding.UTF8.GetBytes(data);
+    }
+
+    public static byte[] ToBytesPassword(this string data)
+    { 
+      // Store bytes characters in uint array
+      // discards bits 8-31 of multibyte characters for backwards compatibility
+      var array = new uint[(data.Length + 3) >> 2];
+      for (var i = 0; i < data.Length; i++)
+      {
+        array[i >> 2] |= (uint)(data[i] << (24 - (i & 3) * 8));
+      }
+
+      return array.SelectMany(x =>
+      {
+        var bytes = BitConverter.GetBytes(x);
+        if (BitConverter.IsLittleEndian)
+        {
+          Array.Reverse(bytes);
+        }
+
+        return bytes;
+      }).ToArray();
     }
 
     public static T[] CopySubArray<T>(this T[] source, int length, int offset = 0)
