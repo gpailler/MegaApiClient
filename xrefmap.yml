@@ -23,6 +23,7 @@ references:
   name: ApiResultCode
   href: api/CG.Web.MegaApiClient.ApiException.html#CG_Web_MegaApiClient_ApiException_ApiResultCode_
   commentId: Overload:CG.Web.MegaApiClient.ApiException.ApiResultCode
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiException.ApiResultCode
   nameWithType: ApiException.ApiResultCode
 - uid: CG.Web.MegaApiClient.ApiException.Message
@@ -35,6 +36,7 @@ references:
   name: Message
   href: api/CG.Web.MegaApiClient.ApiException.html#CG_Web_MegaApiClient_ApiException_Message_
   commentId: Overload:CG.Web.MegaApiClient.ApiException.Message
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiException.Message
   nameWithType: ApiException.Message
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs
@@ -59,6 +61,7 @@ references:
   name: ApiRequestFailedEventArgs
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_
   commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiRequestFailedEventArgs
   nameWithType: ApiRequestFailedEventArgs.ApiRequestFailedEventArgs
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult
@@ -71,6 +74,7 @@ references:
   name: ApiResult
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ApiResult_
   commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiResult
   nameWithType: ApiRequestFailedEventArgs.ApiResult
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl
@@ -83,6 +87,7 @@ references:
   name: ApiUrl
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ApiUrl_
   commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiUrl
   nameWithType: ApiRequestFailedEventArgs.ApiUrl
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
@@ -95,6 +100,7 @@ references:
   name: AttemptNum
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_AttemptNum_
   commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
   nameWithType: ApiRequestFailedEventArgs.AttemptNum
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
@@ -107,6 +113,7 @@ references:
   name: DelayMilliseconds
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_DelayMilliseconds_
   commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
   nameWithType: ApiRequestFailedEventArgs.DelayMilliseconds
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
@@ -119,6 +126,7 @@ references:
   name: Exception
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_Exception_
   commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
   nameWithType: ApiRequestFailedEventArgs.Exception
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
@@ -131,6 +139,7 @@ references:
   name: ResponseJson
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_ResponseJson_
   commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
   nameWithType: ApiRequestFailedEventArgs.ResponseJson
 - uid: CG.Web.MegaApiClient.ApiResultCode
@@ -293,6 +302,7 @@ references:
   name: CancellableStream
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream__ctor_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.CancellableStream
   nameWithType: CancellableStream.CancellableStream
 - uid: CG.Web.MegaApiClient.CancellableStream.CanRead
@@ -305,6 +315,7 @@ references:
   name: CanRead
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanRead_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.CanRead
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.CanRead
   nameWithType: CancellableStream.CanRead
 - uid: CG.Web.MegaApiClient.CancellableStream.CanSeek
@@ -317,6 +328,7 @@ references:
   name: CanSeek
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanSeek_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.CanSeek
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.CanSeek
   nameWithType: CancellableStream.CanSeek
 - uid: CG.Web.MegaApiClient.CancellableStream.CanWrite
@@ -329,6 +341,7 @@ references:
   name: CanWrite
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_CanWrite_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.CanWrite
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.CanWrite
   nameWithType: CancellableStream.CanWrite
 - uid: CG.Web.MegaApiClient.CancellableStream.Close
@@ -341,6 +354,7 @@ references:
   name: Close
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Close_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Close
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.Close
   nameWithType: CancellableStream.Close
 - uid: CG.Web.MegaApiClient.CancellableStream.Dispose(System.Boolean)
@@ -353,6 +367,7 @@ references:
   name: Dispose
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Dispose_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Dispose
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.Dispose
   nameWithType: CancellableStream.Dispose
 - uid: CG.Web.MegaApiClient.CancellableStream.Flush
@@ -365,6 +380,7 @@ references:
   name: Flush
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Flush_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Flush
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.Flush
   nameWithType: CancellableStream.Flush
 - uid: CG.Web.MegaApiClient.CancellableStream.Length
@@ -377,6 +393,7 @@ references:
   name: Length
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Length_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Length
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.Length
   nameWithType: CancellableStream.Length
 - uid: CG.Web.MegaApiClient.CancellableStream.Position
@@ -389,6 +406,7 @@ references:
   name: Position
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Position_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Position
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.Position
   nameWithType: CancellableStream.Position
 - uid: CG.Web.MegaApiClient.CancellableStream.Read(System.Byte[],System.Int32,System.Int32)
@@ -404,6 +422,7 @@ references:
   name: Read
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Read_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Read
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.Read
   nameWithType: CancellableStream.Read
 - uid: CG.Web.MegaApiClient.CancellableStream.Seek(System.Int64,System.IO.SeekOrigin)
@@ -416,6 +435,7 @@ references:
   name: Seek
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Seek_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Seek
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.Seek
   nameWithType: CancellableStream.Seek
 - uid: CG.Web.MegaApiClient.CancellableStream.SetLength(System.Int64)
@@ -428,6 +448,7 @@ references:
   name: SetLength
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_SetLength_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.SetLength
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.SetLength
   nameWithType: CancellableStream.SetLength
 - uid: CG.Web.MegaApiClient.CancellableStream.Write(System.Byte[],System.Int32,System.Int32)
@@ -443,6 +464,7 @@ references:
   name: Write
   href: api/CG.Web.MegaApiClient.CancellableStream.html#CG_Web_MegaApiClient_CancellableStream_Write_
   commentId: Overload:CG.Web.MegaApiClient.CancellableStream.Write
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.CancellableStream.Write
   nameWithType: CancellableStream.Write
 - uid: CG.Web.MegaApiClient.DownloadException
@@ -461,6 +483,7 @@ references:
   name: DownloadException
   href: api/CG.Web.MegaApiClient.DownloadException.html#CG_Web_MegaApiClient_DownloadException__ctor_
   commentId: Overload:CG.Web.MegaApiClient.DownloadException.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.DownloadException.DownloadException
   nameWithType: DownloadException.DownloadException
 - uid: CG.Web.MegaApiClient.IAccountInformation
@@ -479,6 +502,7 @@ references:
   name: Metrics
   href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_Metrics_
   commentId: Overload:CG.Web.MegaApiClient.IAccountInformation.Metrics
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IAccountInformation.Metrics
   nameWithType: IAccountInformation.Metrics
 - uid: CG.Web.MegaApiClient.IAccountInformation.TotalQuota
@@ -491,6 +515,7 @@ references:
   name: TotalQuota
   href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_TotalQuota_
   commentId: Overload:CG.Web.MegaApiClient.IAccountInformation.TotalQuota
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IAccountInformation.TotalQuota
   nameWithType: IAccountInformation.TotalQuota
 - uid: CG.Web.MegaApiClient.IAccountInformation.UsedQuota
@@ -503,6 +528,7 @@ references:
   name: UsedQuota
   href: api/CG.Web.MegaApiClient.IAccountInformation.html#CG_Web_MegaApiClient_IAccountInformation_UsedQuota_
   commentId: Overload:CG.Web.MegaApiClient.IAccountInformation.UsedQuota
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IAccountInformation.UsedQuota
   nameWithType: IAccountInformation.UsedQuota
 - uid: CG.Web.MegaApiClient.IMegaApiClient
@@ -527,6 +553,7 @@ references:
   name: CreateFolder
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_CreateFolder_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.CreateFolder
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.CreateFolder
   nameWithType: IMegaApiClient.CreateFolder
 - uid: CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync(System.String,CG.Web.MegaApiClient.INode)
@@ -539,6 +566,7 @@ references:
   name: CreateFolderAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_CreateFolderAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.CreateFolderAsync
   nameWithType: IMegaApiClient.CreateFolderAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.Delete(CG.Web.MegaApiClient.INode,System.Boolean)
@@ -551,6 +579,7 @@ references:
   name: Delete
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Delete_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Delete
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.Delete
   nameWithType: IMegaApiClient.Delete
 - uid: CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync(CG.Web.MegaApiClient.INode,System.Boolean)
@@ -563,6 +592,7 @@ references:
   name: DeleteAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DeleteAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.DeleteAsync
   nameWithType: IMegaApiClient.DeleteAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.Download(CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
@@ -587,6 +617,7 @@ references:
   name: Download
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Download_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Download
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.Download
   nameWithType: IMegaApiClient.Download
 - uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
@@ -611,6 +642,7 @@ references:
   name: DownloadAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadAsync
   nameWithType: IMegaApiClient.DownloadAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode,System.String,System.Nullable{System.Threading.CancellationToken})
@@ -635,6 +667,7 @@ references:
   name: DownloadFile
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFile_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DownloadFile
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFile
   nameWithType: IMegaApiClient.DownloadFile
 - uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
@@ -659,6 +692,7 @@ references:
   name: DownloadFileAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFileAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync
   nameWithType: IMegaApiClient.DownloadFileAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation
@@ -671,6 +705,7 @@ references:
   name: GetAccountInformation
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetAccountInformation_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation
   nameWithType: IMegaApiClient.GetAccountInformation
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync
@@ -683,6 +718,7 @@ references:
   name: GetAccountInformationAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetAccountInformationAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformationAsync
   nameWithType: IMegaApiClient.GetAccountInformationAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink(CG.Web.MegaApiClient.INode)
@@ -695,6 +731,7 @@ references:
   name: GetDownloadLink
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetDownloadLink_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLink
   nameWithType: IMegaApiClient.GetDownloadLink
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync(CG.Web.MegaApiClient.INode)
@@ -707,6 +744,7 @@ references:
   name: GetDownloadLinkAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetDownloadLinkAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetDownloadLinkAsync
   nameWithType: IMegaApiClient.GetDownloadLinkAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink(System.Uri)
@@ -719,6 +757,7 @@ references:
   name: GetNodeFromLink
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodeFromLink_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLink
   nameWithType: IMegaApiClient.GetNodeFromLink
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync(System.Uri)
@@ -731,6 +770,7 @@ references:
   name: GetNodeFromLinkAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodeFromLinkAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodeFromLinkAsync
   nameWithType: IMegaApiClient.GetNodeFromLinkAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodes
@@ -749,6 +789,7 @@ references:
   name: GetNodes
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodes_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodes
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodes
   nameWithType: IMegaApiClient.GetNodes
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync
@@ -767,6 +808,7 @@ references:
   name: GetNodesAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesAsync
   nameWithType: IMegaApiClient.GetNodesAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink(System.Uri)
@@ -779,6 +821,7 @@ references:
   name: GetNodesFromLink
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesFromLink_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLink
   nameWithType: IMegaApiClient.GetNodesFromLink
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync(System.Uri)
@@ -791,6 +834,7 @@ references:
   name: GetNodesFromLinkAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetNodesFromLinkAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GetNodesFromLinkAsync
   nameWithType: IMegaApiClient.GetNodesFromLinkAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn
@@ -803,8 +847,15 @@ references:
   name: IsLoggedIn
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_IsLoggedIn_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.IsLoggedIn
   nameWithType: IMegaApiClient.IsLoggedIn
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Login
+  name: Login()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Login
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Login()
+  nameWithType: IMegaApiClient.Login()
 - uid: CG.Web.MegaApiClient.IMegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
   name: Login(MegaApiClient.AuthInfos)
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login_CG_Web_MegaApiClient_MegaApiClient_AuthInfos_
@@ -827,6 +878,7 @@ references:
   name: Login
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Login
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.Login
   nameWithType: IMegaApiClient.Login
 - uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous
@@ -839,6 +891,7 @@ references:
   name: LoginAnonymous
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAnonymous_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymous
   nameWithType: IMegaApiClient.LoginAnonymous
 - uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync
@@ -851,8 +904,15 @@ references:
   name: LoginAnonymousAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAnonymousAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAnonymousAsync
   nameWithType: IMegaApiClient.LoginAnonymousAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync
+  name: LoginAsync()
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync()
+  nameWithType: IMegaApiClient.LoginAsync()
 - uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
   name: LoginAsync(MegaApiClient.AuthInfos)
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_CG_Web_MegaApiClient_MegaApiClient_AuthInfos_
@@ -875,6 +935,7 @@ references:
   name: LoginAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync
   nameWithType: IMegaApiClient.LoginAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.Logout
@@ -887,6 +948,7 @@ references:
   name: Logout
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Logout_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Logout
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.Logout
   nameWithType: IMegaApiClient.Logout
 - uid: CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync
@@ -899,6 +961,7 @@ references:
   name: LogoutAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LogoutAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.LogoutAsync
   nameWithType: IMegaApiClient.LogoutAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.Move(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
@@ -911,6 +974,7 @@ references:
   name: Move
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Move_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Move
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.Move
   nameWithType: IMegaApiClient.Move
 - uid: CG.Web.MegaApiClient.IMegaApiClient.MoveAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
@@ -923,6 +987,7 @@ references:
   name: MoveAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_MoveAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.MoveAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.MoveAsync
   nameWithType: IMegaApiClient.MoveAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.Rename(CG.Web.MegaApiClient.INode,System.String)
@@ -935,6 +1000,7 @@ references:
   name: Rename
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Rename_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Rename
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.Rename
   nameWithType: IMegaApiClient.Rename
 - uid: CG.Web.MegaApiClient.IMegaApiClient.RenameAsync(CG.Web.MegaApiClient.INode,System.String)
@@ -947,6 +1013,7 @@ references:
   name: RenameAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_RenameAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.RenameAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.RenameAsync
   nameWithType: IMegaApiClient.RenameAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.Upload(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
@@ -962,6 +1029,7 @@ references:
   name: Upload
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Upload_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.Upload
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.Upload
   nameWithType: IMegaApiClient.Upload
 - uid: CG.Web.MegaApiClient.IMegaApiClient.UploadAsync(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
@@ -977,6 +1045,7 @@ references:
   name: UploadAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.UploadAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadAsync
   nameWithType: IMegaApiClient.UploadAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.UploadFile(System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
@@ -992,6 +1061,7 @@ references:
   name: UploadFile
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadFile_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.UploadFile
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadFile
   nameWithType: IMegaApiClient.UploadFile
 - uid: CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync(System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
@@ -1007,6 +1077,7 @@ references:
   name: UploadFileAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_UploadFileAsync_
   commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.UploadFileAsync
   nameWithType: IMegaApiClient.UploadFileAsync
 - uid: CG.Web.MegaApiClient.INode
@@ -1025,6 +1096,7 @@ references:
   name: CreationDate
   href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_CreationDate_
   commentId: Overload:CG.Web.MegaApiClient.INode.CreationDate
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.INode.CreationDate
   nameWithType: INode.CreationDate
 - uid: CG.Web.MegaApiClient.INode.Owner
@@ -1037,6 +1109,7 @@ references:
   name: Owner
   href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_Owner_
   commentId: Overload:CG.Web.MegaApiClient.INode.Owner
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.INode.Owner
   nameWithType: INode.Owner
 - uid: CG.Web.MegaApiClient.INode.ParentId
@@ -1049,6 +1122,7 @@ references:
   name: ParentId
   href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_ParentId_
   commentId: Overload:CG.Web.MegaApiClient.INode.ParentId
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.INode.ParentId
   nameWithType: INode.ParentId
 - uid: CG.Web.MegaApiClient.INodeInfo
@@ -1067,6 +1141,7 @@ references:
   name: Id
   href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Id_
   commentId: Overload:CG.Web.MegaApiClient.INodeInfo.Id
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.INodeInfo.Id
   nameWithType: INodeInfo.Id
 - uid: CG.Web.MegaApiClient.INodeInfo.ModificationDate
@@ -1079,6 +1154,7 @@ references:
   name: ModificationDate
   href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_ModificationDate_
   commentId: Overload:CG.Web.MegaApiClient.INodeInfo.ModificationDate
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.INodeInfo.ModificationDate
   nameWithType: INodeInfo.ModificationDate
 - uid: CG.Web.MegaApiClient.INodeInfo.Name
@@ -1091,6 +1167,7 @@ references:
   name: Name
   href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Name_
   commentId: Overload:CG.Web.MegaApiClient.INodeInfo.Name
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.INodeInfo.Name
   nameWithType: INodeInfo.Name
 - uid: CG.Web.MegaApiClient.INodeInfo.Size
@@ -1103,6 +1180,7 @@ references:
   name: Size
   href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Size_
   commentId: Overload:CG.Web.MegaApiClient.INodeInfo.Size
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.INodeInfo.Size
   nameWithType: INodeInfo.Size
 - uid: CG.Web.MegaApiClient.INodeInfo.Type
@@ -1115,6 +1193,7 @@ references:
   name: Type
   href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Type_
   commentId: Overload:CG.Web.MegaApiClient.INodeInfo.Type
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.INodeInfo.Type
   nameWithType: INodeInfo.Type
 - uid: CG.Web.MegaApiClient.IStorageMetrics
@@ -1133,6 +1212,7 @@ references:
   name: BytesUsed
   href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_BytesUsed_
   commentId: Overload:CG.Web.MegaApiClient.IStorageMetrics.BytesUsed
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IStorageMetrics.BytesUsed
   nameWithType: IStorageMetrics.BytesUsed
 - uid: CG.Web.MegaApiClient.IStorageMetrics.FilesCount
@@ -1145,6 +1225,7 @@ references:
   name: FilesCount
   href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_FilesCount_
   commentId: Overload:CG.Web.MegaApiClient.IStorageMetrics.FilesCount
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IStorageMetrics.FilesCount
   nameWithType: IStorageMetrics.FilesCount
 - uid: CG.Web.MegaApiClient.IStorageMetrics.FoldersCount
@@ -1157,6 +1238,7 @@ references:
   name: FoldersCount
   href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_FoldersCount_
   commentId: Overload:CG.Web.MegaApiClient.IStorageMetrics.FoldersCount
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IStorageMetrics.FoldersCount
   nameWithType: IStorageMetrics.FoldersCount
 - uid: CG.Web.MegaApiClient.IStorageMetrics.NodeId
@@ -1169,6 +1251,7 @@ references:
   name: NodeId
   href: api/CG.Web.MegaApiClient.IStorageMetrics.html#CG_Web_MegaApiClient_IStorageMetrics_NodeId_
   commentId: Overload:CG.Web.MegaApiClient.IStorageMetrics.NodeId
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IStorageMetrics.NodeId
   nameWithType: IStorageMetrics.NodeId
 - uid: CG.Web.MegaApiClient.IWebClient
@@ -1187,6 +1270,7 @@ references:
   name: BufferSize
   href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_BufferSize_
   commentId: Overload:CG.Web.MegaApiClient.IWebClient.BufferSize
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IWebClient.BufferSize
   nameWithType: IWebClient.BufferSize
 - uid: CG.Web.MegaApiClient.IWebClient.GetRequestRaw(System.Uri)
@@ -1199,6 +1283,7 @@ references:
   name: GetRequestRaw
   href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_GetRequestRaw_
   commentId: Overload:CG.Web.MegaApiClient.IWebClient.GetRequestRaw
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IWebClient.GetRequestRaw
   nameWithType: IWebClient.GetRequestRaw
 - uid: CG.Web.MegaApiClient.IWebClient.PostRequestJson(System.Uri,System.String)
@@ -1211,6 +1296,7 @@ references:
   name: PostRequestJson
   href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_PostRequestJson_
   commentId: Overload:CG.Web.MegaApiClient.IWebClient.PostRequestJson
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IWebClient.PostRequestJson
   nameWithType: IWebClient.PostRequestJson
 - uid: CG.Web.MegaApiClient.IWebClient.PostRequestRaw(System.Uri,System.IO.Stream)
@@ -1223,6 +1309,7 @@ references:
   name: PostRequestRaw
   href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_PostRequestRaw_
   commentId: Overload:CG.Web.MegaApiClient.IWebClient.PostRequestRaw
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.IWebClient.PostRequestRaw
   nameWithType: IWebClient.PostRequestRaw
 - uid: CG.Web.MegaApiClient.MegaApiClient
@@ -1259,6 +1346,7 @@ references:
   name: MegaApiClient
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient__ctor_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.MegaApiClient
   nameWithType: MegaApiClient.MegaApiClient
 - uid: CG.Web.MegaApiClient.MegaApiClient.ApiRequestFailed
@@ -1286,6 +1374,7 @@ references:
   name: AuthInfos
   href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos__ctor_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.AuthInfos
   nameWithType: MegaApiClient.AuthInfos.AuthInfos
 - uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email
@@ -1298,6 +1387,7 @@ references:
   name: Email
   href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_Email_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Email
   nameWithType: MegaApiClient.AuthInfos.Email
 - uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
@@ -1310,6 +1400,7 @@ references:
   name: Hash
   href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_Hash_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
   nameWithType: MegaApiClient.AuthInfos.Hash
 - uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
@@ -1322,6 +1413,7 @@ references:
   name: PasswordAesKey
   href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_PasswordAesKey_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
   nameWithType: MegaApiClient.AuthInfos.PasswordAesKey
 - uid: CG.Web.MegaApiClient.MegaApiClient.CreateFolder(System.String,CG.Web.MegaApiClient.INode)
@@ -1334,6 +1426,7 @@ references:
   name: CreateFolder
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_CreateFolder_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.CreateFolder
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.CreateFolder
   nameWithType: MegaApiClient.CreateFolder
 - uid: CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync(System.String,CG.Web.MegaApiClient.INode)
@@ -1346,6 +1439,7 @@ references:
   name: CreateFolderAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_CreateFolderAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.CreateFolderAsync
   nameWithType: MegaApiClient.CreateFolderAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.Delete(CG.Web.MegaApiClient.INode,System.Boolean)
@@ -1358,6 +1452,7 @@ references:
   name: Delete
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Delete_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Delete
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.Delete
   nameWithType: MegaApiClient.Delete
 - uid: CG.Web.MegaApiClient.MegaApiClient.DeleteAsync(CG.Web.MegaApiClient.INode,System.Boolean)
@@ -1370,6 +1465,7 @@ references:
   name: DeleteAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DeleteAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DeleteAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.DeleteAsync
   nameWithType: MegaApiClient.DeleteAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.Download(CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
@@ -1394,6 +1490,7 @@ references:
   name: Download
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Download
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.Download
   nameWithType: MegaApiClient.Download
 - uid: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync(CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
@@ -1418,6 +1515,7 @@ references:
   name: DownloadAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DownloadAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadAsync
   nameWithType: MegaApiClient.DownloadAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFile(CG.Web.MegaApiClient.INode,System.String,System.Nullable{System.Threading.CancellationToken})
@@ -1442,6 +1540,7 @@ references:
   name: DownloadFile
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFile_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DownloadFile
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFile
   nameWithType: MegaApiClient.DownloadFile
 - uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync(CG.Web.MegaApiClient.INode,System.String,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
@@ -1466,6 +1565,7 @@ references:
   name: DownloadFileAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFileAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync
   nameWithType: MegaApiClient.DownloadFileAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String,System.String)
@@ -1478,6 +1578,7 @@ references:
   name: GenerateAuthInfos
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfos_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos
   nameWithType: MegaApiClient.GenerateAuthInfos
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation
@@ -1490,6 +1591,7 @@ references:
   name: GetAccountInformation
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetAccountInformation_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation
   nameWithType: MegaApiClient.GetAccountInformation
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync
@@ -1502,6 +1604,7 @@ references:
   name: GetAccountInformationAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetAccountInformationAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformationAsync
   nameWithType: MegaApiClient.GetAccountInformationAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink(CG.Web.MegaApiClient.INode)
@@ -1514,6 +1617,7 @@ references:
   name: GetDownloadLink
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetDownloadLink_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLink
   nameWithType: MegaApiClient.GetDownloadLink
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync(CG.Web.MegaApiClient.INode)
@@ -1526,6 +1630,7 @@ references:
   name: GetDownloadLinkAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetDownloadLinkAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetDownloadLinkAsync
   nameWithType: MegaApiClient.GetDownloadLinkAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink(System.Uri)
@@ -1538,6 +1643,7 @@ references:
   name: GetNodeFromLink
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodeFromLink_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLink
   nameWithType: MegaApiClient.GetNodeFromLink
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync(System.Uri)
@@ -1550,6 +1656,7 @@ references:
   name: GetNodeFromLinkAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodeFromLinkAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodeFromLinkAsync
   nameWithType: MegaApiClient.GetNodeFromLinkAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetNodes
@@ -1568,6 +1675,7 @@ references:
   name: GetNodes
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodes_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodes
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodes
   nameWithType: MegaApiClient.GetNodes
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync
@@ -1586,6 +1694,7 @@ references:
   name: GetNodesAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesAsync
   nameWithType: MegaApiClient.GetNodesAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink(System.Uri)
@@ -1598,6 +1707,7 @@ references:
   name: GetNodesFromLink
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesFromLink_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLink
   nameWithType: MegaApiClient.GetNodesFromLink
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync(System.Uri)
@@ -1610,6 +1720,7 @@ references:
   name: GetNodesFromLinkAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetNodesFromLinkAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GetNodesFromLinkAsync
   nameWithType: MegaApiClient.GetNodesFromLinkAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn
@@ -1622,8 +1733,15 @@ references:
   name: IsLoggedIn
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_IsLoggedIn_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.IsLoggedIn
   nameWithType: MegaApiClient.IsLoggedIn
+- uid: CG.Web.MegaApiClient.MegaApiClient.Login
+  name: Login()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Login
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Login()
+  nameWithType: MegaApiClient.Login()
 - uid: CG.Web.MegaApiClient.MegaApiClient.Login(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
   name: Login(MegaApiClient.AuthInfos)
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login_CG_Web_MegaApiClient_MegaApiClient_AuthInfos_
@@ -1646,6 +1764,7 @@ references:
   name: Login
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Login
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.Login
   nameWithType: MegaApiClient.Login
 - uid: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous
@@ -1658,6 +1777,7 @@ references:
   name: LoginAnonymous
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAnonymous_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymous
   nameWithType: MegaApiClient.LoginAnonymous
 - uid: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync
@@ -1670,8 +1790,15 @@ references:
   name: LoginAnonymousAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAnonymousAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAnonymousAsync
   nameWithType: MegaApiClient.LoginAnonymousAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync
+  name: LoginAsync()
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAsync
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync()
+  nameWithType: MegaApiClient.LoginAsync()
 - uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.AuthInfos)
   name: LoginAsync(MegaApiClient.AuthInfos)
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_CG_Web_MegaApiClient_MegaApiClient_AuthInfos_
@@ -1694,6 +1821,7 @@ references:
   name: LoginAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LoginAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync
   nameWithType: MegaApiClient.LoginAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken
@@ -1715,6 +1843,7 @@ references:
   name: LogonSessionToken
   href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken__ctor_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.LogonSessionToken
   nameWithType: MegaApiClient.LogonSessionToken.LogonSessionToken
 - uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
@@ -1727,6 +1856,7 @@ references:
   name: Equals
   href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_Equals_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.Equals
   nameWithType: MegaApiClient.LogonSessionToken.Equals
 - uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey
@@ -1739,6 +1869,7 @@ references:
   name: MasterKey
   href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_MasterKey_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.MasterKey
   nameWithType: MegaApiClient.LogonSessionToken.MasterKey
 - uid: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId
@@ -1751,6 +1882,7 @@ references:
   name: SessionId
   href: api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html#CG_Web_MegaApiClient_MegaApiClient_LogonSessionToken_SessionId_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.SessionId
   nameWithType: MegaApiClient.LogonSessionToken.SessionId
 - uid: CG.Web.MegaApiClient.MegaApiClient.Logout
@@ -1763,6 +1895,7 @@ references:
   name: Logout
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Logout_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Logout
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.Logout
   nameWithType: MegaApiClient.Logout
 - uid: CG.Web.MegaApiClient.MegaApiClient.LogoutAsync
@@ -1775,6 +1908,7 @@ references:
   name: LogoutAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LogoutAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.LogoutAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.LogoutAsync
   nameWithType: MegaApiClient.LogoutAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.Move(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
@@ -1787,6 +1921,7 @@ references:
   name: Move
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Move_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Move
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.Move
   nameWithType: MegaApiClient.Move
 - uid: CG.Web.MegaApiClient.MegaApiClient.MoveAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.INode)
@@ -1799,6 +1934,7 @@ references:
   name: MoveAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_MoveAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.MoveAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.MoveAsync
   nameWithType: MegaApiClient.MoveAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.Rename(CG.Web.MegaApiClient.INode,System.String)
@@ -1811,6 +1947,7 @@ references:
   name: Rename
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Rename_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Rename
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.Rename
   nameWithType: MegaApiClient.Rename
 - uid: CG.Web.MegaApiClient.MegaApiClient.RenameAsync(CG.Web.MegaApiClient.INode,System.String)
@@ -1823,6 +1960,7 @@ references:
   name: RenameAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_RenameAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.RenameAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.RenameAsync
   nameWithType: MegaApiClient.RenameAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.Upload(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
@@ -1838,6 +1976,7 @@ references:
   name: Upload
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Upload_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.Upload
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.Upload
   nameWithType: MegaApiClient.Upload
 - uid: CG.Web.MegaApiClient.MegaApiClient.UploadAsync(System.IO.Stream,System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.DateTime},System.Nullable{System.Threading.CancellationToken})
@@ -1853,6 +1992,7 @@ references:
   name: UploadAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.UploadAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.UploadAsync
   nameWithType: MegaApiClient.UploadAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.UploadFile(System.String,CG.Web.MegaApiClient.INode,System.Nullable{System.Threading.CancellationToken})
@@ -1868,6 +2008,7 @@ references:
   name: UploadFile
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadFile_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.UploadFile
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.UploadFile
   nameWithType: MegaApiClient.UploadFile
 - uid: CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync(System.String,CG.Web.MegaApiClient.INode,System.IProgress{System.Double},System.Nullable{System.Threading.CancellationToken})
@@ -1883,6 +2024,7 @@ references:
   name: UploadFileAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadFileAsync_
   commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.UploadFileAsync
   nameWithType: MegaApiClient.UploadFileAsync
 - uid: CG.Web.MegaApiClient.NodeExtensions
@@ -1910,6 +2052,7 @@ references:
   name: GetFolderSize
   href: api/CG.Web.MegaApiClient.NodeExtensions.html#CG_Web_MegaApiClient_NodeExtensions_GetFolderSize_
   commentId: Overload:CG.Web.MegaApiClient.NodeExtensions.GetFolderSize
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.NodeExtensions.GetFolderSize
   nameWithType: NodeExtensions.GetFolderSize
 - uid: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync(CG.Web.MegaApiClient.INodeInfo,CG.Web.MegaApiClient.IMegaApiClient)
@@ -1931,6 +2074,7 @@ references:
   name: GetFolderSizeAsync
   href: api/CG.Web.MegaApiClient.NodeExtensions.html#CG_Web_MegaApiClient_NodeExtensions_GetFolderSizeAsync_
   commentId: Overload:CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.NodeExtensions.GetFolderSizeAsync
   nameWithType: NodeExtensions.GetFolderSizeAsync
 - uid: CG.Web.MegaApiClient.NodeType
@@ -1985,6 +2129,7 @@ references:
   name: Options
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options__ctor_
   commentId: Overload:CG.Web.MegaApiClient.Options.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.Options
   nameWithType: Options.Options
 - uid: CG.Web.MegaApiClient.Options.ApiRequestAttempts
@@ -1997,6 +2142,7 @@ references:
   name: ApiRequestAttempts
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestAttempts_
   commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestAttempts
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.ApiRequestAttempts
   nameWithType: Options.ApiRequestAttempts
 - uid: CG.Web.MegaApiClient.Options.ApiRequestDelay
@@ -2009,6 +2155,7 @@ references:
   name: ApiRequestDelay
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelay_
   commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestDelay
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.ApiRequestDelay
   nameWithType: Options.ApiRequestDelay
 - uid: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
@@ -2021,6 +2168,7 @@ references:
   name: ApiRequestDelayExponentialFactor
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelayExponentialFactor_
   commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
   nameWithType: Options.ApiRequestDelayExponentialFactor
 - uid: CG.Web.MegaApiClient.Options.ApplicationKey
@@ -2033,6 +2181,7 @@ references:
   name: ApplicationKey
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApplicationKey_
   commentId: Overload:CG.Web.MegaApiClient.Options.ApplicationKey
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.ApplicationKey
   nameWithType: Options.ApplicationKey
 - uid: CG.Web.MegaApiClient.Options.BufferSize
@@ -2045,6 +2194,7 @@ references:
   name: BufferSize
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_BufferSize_
   commentId: Overload:CG.Web.MegaApiClient.Options.BufferSize
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.BufferSize
   nameWithType: Options.BufferSize
 - uid: CG.Web.MegaApiClient.Options.ChunksPackSize
@@ -2057,6 +2207,7 @@ references:
   name: ChunksPackSize
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ChunksPackSize_
   commentId: Overload:CG.Web.MegaApiClient.Options.ChunksPackSize
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.ChunksPackSize
   nameWithType: Options.ChunksPackSize
 - uid: CG.Web.MegaApiClient.Options.DefaultApiRequestAttempts
@@ -2117,6 +2268,7 @@ references:
   name: ReportProgressChunkSize
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ReportProgressChunkSize_
   commentId: Overload:CG.Web.MegaApiClient.Options.ReportProgressChunkSize
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.ReportProgressChunkSize
   nameWithType: Options.ReportProgressChunkSize
 - uid: CG.Web.MegaApiClient.Options.SynchronizeApiRequests
@@ -2129,6 +2281,7 @@ references:
   name: SynchronizeApiRequests
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_SynchronizeApiRequests_
   commentId: Overload:CG.Web.MegaApiClient.Options.SynchronizeApiRequests
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.SynchronizeApiRequests
   nameWithType: Options.SynchronizeApiRequests
 - uid: CG.Web.MegaApiClient.UploadException
@@ -2147,6 +2300,7 @@ references:
   name: UploadException
   href: api/CG.Web.MegaApiClient.UploadException.html#CG_Web_MegaApiClient_UploadException__ctor_
   commentId: Overload:CG.Web.MegaApiClient.UploadException.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.UploadException.UploadException
   nameWithType: UploadException.UploadException
 - uid: CG.Web.MegaApiClient.WebClient
@@ -2165,6 +2319,7 @@ references:
   name: WebClient
   href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient__ctor_
   commentId: Overload:CG.Web.MegaApiClient.WebClient.#ctor
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.WebClient.WebClient
   nameWithType: WebClient.WebClient
 - uid: CG.Web.MegaApiClient.WebClient.BufferSize
@@ -2177,6 +2332,7 @@ references:
   name: BufferSize
   href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_BufferSize_
   commentId: Overload:CG.Web.MegaApiClient.WebClient.BufferSize
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.WebClient.BufferSize
   nameWithType: WebClient.BufferSize
 - uid: CG.Web.MegaApiClient.WebClient.GetRequestRaw(System.Uri)
@@ -2189,6 +2345,7 @@ references:
   name: GetRequestRaw
   href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_GetRequestRaw_
   commentId: Overload:CG.Web.MegaApiClient.WebClient.GetRequestRaw
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.WebClient.GetRequestRaw
   nameWithType: WebClient.GetRequestRaw
 - uid: CG.Web.MegaApiClient.WebClient.PostRequestJson(System.Uri,System.String)
@@ -2201,6 +2358,7 @@ references:
   name: PostRequestJson
   href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_PostRequestJson_
   commentId: Overload:CG.Web.MegaApiClient.WebClient.PostRequestJson
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.WebClient.PostRequestJson
   nameWithType: WebClient.PostRequestJson
 - uid: CG.Web.MegaApiClient.WebClient.PostRequestRaw(System.Uri,System.IO.Stream)
@@ -2213,6 +2371,7 @@ references:
   name: PostRequestRaw
   href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_PostRequestRaw_
   commentId: Overload:CG.Web.MegaApiClient.WebClient.PostRequestRaw
+  isSpec: "True"
   fullName: CG.Web.MegaApiClient.WebClient.PostRequestRaw
   nameWithType: WebClient.PostRequestRaw
 - uid: faq
