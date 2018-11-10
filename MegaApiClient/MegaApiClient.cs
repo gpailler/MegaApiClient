@@ -534,7 +534,7 @@
 
       Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
 
-      Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
+      Stream resultStream = new MegaAesCtrStreamDecrypter(new BufferedStream(dataStream), downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
 #if !NET35
       if (cancellationToken.HasValue)
       {
@@ -576,7 +576,7 @@
 
       Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
 
-      Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, key, iv, metaMac);
+      Stream resultStream = new MegaAesCtrStreamDecrypter(new BufferedStream(dataStream), downloadResponse.Size, key, iv, metaMac);
 #if !NET35
       if (cancellationToken.HasValue)
       {
