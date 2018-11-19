@@ -82,10 +82,12 @@ namespace CG.Web.MegaApiClient.Tests
     {
       get
       {
-        Assert.NotEmpty(AuthenticatedTestContext.Username);
+        Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV1);
+        Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV2);
         Assert.NotEmpty(AuthenticatedTestContext.Password);
 
-        yield return new[] {AuthenticatedTestContext.Username, AuthenticatedTestContext.Password };
+        yield return new[] {AuthenticatedTestContext.UsernameAccountV1, AuthenticatedTestContext.Password };
+        yield return new[] {AuthenticatedTestContext.UsernameAccountV2, AuthenticatedTestContext.Password };
       }
     }
 
@@ -150,7 +152,7 @@ namespace CG.Web.MegaApiClient.Tests
     [Theory, MemberData(nameof(Credentials))]
     public void Login_DeserializedAuthInfos_Succeeds(string email, string password)
     {
-      var authInfos = MegaApiClient.GenerateAuthInfos(email, password);
+      var authInfos = this.context.Client.GenerateAuthInfos(email, password);
       var serializedAuthInfos = JsonConvert.SerializeObject(authInfos, Formatting.None).Replace('\"', '\'');
       var deserializedAuthInfos = JsonConvert.DeserializeObject<MegaApiClient.AuthInfos>(serializedAuthInfos);
 
@@ -161,13 +163,13 @@ namespace CG.Web.MegaApiClient.Tests
     [Theory, MemberData(nameof(InvalidCredentials))]
     public void GenerateAuthInfos_InvalidCredentials_Throws(string email, string password, string expectedMessage)
     {
-      Assert.Throws<ArgumentNullException>(expectedMessage, () => MegaApiClient.GenerateAuthInfos(email, password));
+      Assert.Throws<ArgumentNullException>(expectedMessage, () => this.context.Client.GenerateAuthInfos(email, password));
     }
 
     [Theory, InlineData("username@example.com", "password", "{'Email':'username@example.com','Hash':'ObELy57HULI','PasswordAesKey':'ZAM5cl5uvROiXwBSEp98sQ=='}")]
     public void GenerateAuthInfos_ValidCredentials_Succeeds(string email, string password, string expectedResult)
     {
-      var authInfos = MegaApiClient.GenerateAuthInfos(email, password);
+      var authInfos = this.context.Client.GenerateAuthInfos(email, password);
       var result = JsonConvert.SerializeObject(authInfos, Formatting.None).Replace('\"', '\'');
 
       Assert.Equal(expectedResult, result);

@@ -80,5 +80,7 @@ namespace CG.Web.MegaApiClient
     INode Move(INode node, INode destinationParentNode);
 
     INode Rename(INode node, string newName);
+
+    MegaApiClient.AuthInfos GenerateAuthInfos(string email, string password);
   }
 }
