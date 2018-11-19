@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Newtonsoft.Json;
@@ -71,27 +72,38 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(expectedErrorCode, exception.ApiResultCode);
     }
 
-    [Theory, MemberData(nameof(Credentials))]
+    [Theory, MemberData(nameof(AllValidCredentials))]
     public void Login_ValidCredentials_Succeeds(string email, string password)
     {
       Assert.NotNull(this.context.Client.Login(email, password));
       Assert.True(this.context.Client.IsLoggedIn);
     }
 
-    public static IEnumerable<object[]> Credentials
+    public static IEnumerable<object[]> CredentialsV1
     {
       get
       {
         Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV1);
-        Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV2);
         Assert.NotEmpty(AuthenticatedTestContext.Password);
 
         yield return new[] {AuthenticatedTestContext.UsernameAccountV1, AuthenticatedTestContext.Password };
+      }
+    }
+
+    public static IEnumerable<object[]> CredentialsV2
+    {
+      get
+      {
+        Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV2);
+        Assert.NotEmpty(AuthenticatedTestContext.Password);
+
         yield return new[] {AuthenticatedTestContext.UsernameAccountV2, AuthenticatedTestContext.Password };
       }
     }
 
-    [Theory, MemberData(nameof(Credentials))]
+    public static IEnumerable<object[]> AllValidCredentials => CredentialsV1.Concat(CredentialsV2);
+
+    [Theory, MemberData(nameof(AllValidCredentials))]
     public void LoginTwice_ValidCredentials_Throws(string email, string password)
     {
       this.context.Client.Login(email, password);
@@ -116,7 +128,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal("Already logged in", exception.Message);
     }
 
-    [Theory, MemberData(nameof(Credentials))]
+    [Theory, MemberData(nameof(AllValidCredentials))]
     public void LogoutAfterLogin_Succeeds(string email, string password)
     {
       this.context.Client.Login(email, password);
@@ -126,7 +138,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.False(this.context.Client.IsLoggedIn);
     }
 
-    [Theory, MemberData(nameof(Credentials))]
+    [Theory, MemberData(nameof(AllValidCredentials))]
     public void LogoutTwiceAfterLogin_Throws(string email, string password)
     {
       this.context.Client.Login(email, password);
@@ -149,7 +161,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Throws<ArgumentNullException>("authInfos", () => this.context.Client.Login((MegaApiClient.AuthInfos)null));
     }
 
-    [Theory, MemberData(nameof(Credentials))]
+    [Theory, MemberData(nameof(AllValidCredentials))]
     public void Login_DeserializedAuthInfos_Succeeds(string email, string password)
     {
       var authInfos = this.context.Client.GenerateAuthInfos(email, password);
@@ -214,8 +226,8 @@ namespace CG.Web.MegaApiClient.Tests
       yield return new object[] { (Action<IMegaApiClient>)(x => x.GetAccountInformation()) };
     }
 
-    [Theory, MemberData(nameof(Credentials))]
-    public void GetAccountInformation_AuthenticatedUser_Succeeds(string email, string password)
+    [Theory, MemberData(nameof(CredentialsV1))]
+    public void GetAccountInformation_AuthenticatedUserV1_Succeeds(string email, string password)
     {
       this.context.Client.Login(email, password);
 
@@ -228,6 +240,18 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.NotNull(accountInformation);
       Assert.Equal(53687091200, accountInformation.TotalQuota);
       Assert.Equal(1046530 + AuthenticatedTestContext.FileSize + AuthenticatedTestContext.SubFolderFileSize, accountInformation.UsedQuota); // 1046530 is from incoming shares
+    }
+
+    [Theory, MemberData(nameof(CredentialsV2))]
+    public void GetAccountInformation_AuthenticatedUserV2_Succeeds(string email, string password)
+    {
+      this.context.Client.Login(email, password);
+
+      IAccountInformation accountInformation = this.context.Client.GetAccountInformation();
+
+      Assert.NotNull(accountInformation);
+      Assert.Equal(53687091200, accountInformation.TotalQuota);
+      Assert.Equal(0, accountInformation.UsedQuota);
     }
 
     [Fact]
