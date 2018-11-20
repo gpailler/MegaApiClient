@@ -92,7 +92,31 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
       protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
       {
-        return await base.SendAsync(request, cancellationToken);
+        request.Version = new Version(1, 0);
+        this.Log($"Request: {request}");
+        try
+        {
+          var response = await base.SendAsync(request, cancellationToken);
+          this.Log($"Response: {response}");
+          return response;
+        }
+        catch (Exception ex)
+        {
+          this.Log($"Failed to get response: {ex}");
+          throw;
+        }
+      }
+
+      private void Log(string message)
+      {
+        try
+        {
+          this.testOutputHelper.WriteLine(message);
+        }
+        catch (InvalidOperationException)
+        {
+          // Logging can be called outside of the tests (in Dispose method for instance)
+        }
       }
     }
   }
