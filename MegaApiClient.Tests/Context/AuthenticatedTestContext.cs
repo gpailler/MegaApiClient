@@ -5,8 +5,8 @@ using Xunit;
 
 namespace CG.Web.MegaApiClient.Tests.Context
 {
-  [CollectionDefinition("AuthenticatedLoginTests")]
-  public class AuthenticatedLoginTestsCollection : ICollectionFixture<AuthenticatedTestContext> { }
+  [CollectionDefinition(nameof(AuthenticatedTestContext))]
+  public class AuthenticatedLoginTestsCollection : ICollectionFixture<AuthenticatedTestContext>, ICollectionFixture<AuthenticatedAsyncTestContext> { }
 
   public class AuthenticatedTestContext : TestContext, IDisposable
   {

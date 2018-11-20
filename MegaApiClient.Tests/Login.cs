@@ -10,8 +10,8 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  [Collection("NotLoggedTests")]
-  public class Login : TestsBase, IDisposable
+  [Collection(nameof(NotLoggedTestContext))]
+  public class Login : TestsBase
   {
     public Login(NotLoggedTestContext context, ITestOutputHelper testOutputHelper)
       : base(context, testOutputHelper)

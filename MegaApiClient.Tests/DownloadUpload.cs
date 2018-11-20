@@ -29,8 +29,14 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory, MemberData(nameof(InvalidUploadStreamParameters))]
-    public void UploadStream_InvalidParameters_Throws(Stream stream, string name, INode parent, Type expectedExceptionType)
+    public void UploadStream_InvalidParameters_Throws(bool hasStream, string name, NodeType? nodeType, Type expectedExceptionType)
     {
+      var stream = hasStream ? new MemoryStream() : null;
+      INode parent = nodeType == null
+        ? null
+        : nodeType == NodeType.Directory
+          ? Mock.Of<INode>(x => x.Type == NodeType.Directory)
+          : Mock.Of<INode>(x => x.Type == NodeType.File);
       Assert.Throws(expectedExceptionType, () => this.context.Client.Upload(stream, name, parent));
     }
 
@@ -38,22 +44,18 @@ namespace CG.Web.MegaApiClient.Tests
     {
       get
       {
-        INode nodeDirectory = Mock.Of<INode>(x => x.Type == NodeType.Directory);
-        INode nodeFile = Mock.Of<INode>(x => x.Type == NodeType.File);
-        Stream stream = new MemoryStream();
-
-        yield return new object[] {null, null, null, typeof(ArgumentNullException)};
-        yield return new object[] {null, null, nodeDirectory, typeof(ArgumentNullException)};
-        yield return new object[] {null, "", null, typeof(ArgumentNullException)};
-        yield return new object[] {null, "", nodeDirectory, typeof(ArgumentNullException)};
-        yield return new object[] {null, "name", null, typeof(ArgumentNullException)};
-        yield return new object[] {null, "name", nodeDirectory, typeof(ArgumentNullException)};
-        yield return new object[] {stream, null, null, typeof(ArgumentNullException)};
-        yield return new object[] {stream, null, nodeDirectory, typeof(ArgumentNullException)};
-        yield return new object[] {stream, "", null, typeof(ArgumentNullException)};
-        yield return new object[] {stream, "", nodeDirectory, typeof(ArgumentNullException)};
-        yield return new object[] {stream, "name", null, typeof(ArgumentNullException)};
-        yield return new object[] {stream, "name", nodeFile, typeof(ArgumentException)};
+        yield return new object[] { false, null, null, typeof(ArgumentNullException) };
+        yield return new object[] { false, null, NodeType.Directory, typeof(ArgumentNullException) };
+        yield return new object[] { false, "", null, typeof(ArgumentNullException) };
+        yield return new object[] { false, "", NodeType.Directory, typeof(ArgumentNullException) };
+        yield return new object[] { false, "name", null, typeof(ArgumentNullException) };
+        yield return new object[] { false, "name", NodeType.Directory, typeof(ArgumentNullException) };
+        yield return new object[] { true, null, null, typeof(ArgumentNullException) };
+        yield return new object[] { true, null, NodeType.Directory, typeof(ArgumentNullException) };
+        yield return new object[] { true, "", null, typeof(ArgumentNullException) };
+        yield return new object[] { true, "", NodeType.Directory, typeof(ArgumentNullException) };
+        yield return new object[] { true, "name", null, typeof(ArgumentNullException) };
+        yield return new object[] { true, "name", NodeType.File, typeof(ArgumentException) };
       }
     }
 
@@ -83,12 +85,12 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData(20000, 128*1024, 1)]
-    [InlineData(200000, 128*1024, 2)]
-    [InlineData(2000000, 128*1024, 6)]
-    [InlineData(20000, 1024*1024, 1)]
-    [InlineData(200000, 1024*1024, 1)]
-    [InlineData(2000000, 1024*1024, 2)]
+    [InlineData(20000, 128 * 1024, 1)]
+    [InlineData(200000, 128 * 1024, 2)]
+    [InlineData(2000000, 128 * 1024, 6)]
+    [InlineData(20000, 1024 * 1024, 1)]
+    [InlineData(200000, 1024 * 1024, 1)]
+    [InlineData(2000000, 1024 * 1024, 2)]
     [InlineData(2000000, -1, 1)]
     public void UploadStream_ValidateContent_Succeeds(int dataSize, int chunksPackSize, int expectedUploadCalls)
     {
@@ -128,18 +130,19 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory, MemberData(nameof(DownloadLinkInvalidParameter))]
-    public void DownloadLink_ToStream_InvalidParameter_Throws(Uri uri, Type expectedExceptionType)
+    public void DownloadLink_ToStream_InvalidParameter_Throws(string uriString, Type expectedExceptionType)
     {
+      var uri = uriString == null ? null : new Uri(uriString);
       Assert.Throws(expectedExceptionType, () => this.context.Client.Download(uri));
     }
 
     public static IEnumerable<object[]> DownloadLinkInvalidParameter()
     {
       yield return new object[] { null, typeof(ArgumentNullException) };
-      yield return new object[] { new Uri("http://www.example.com"), typeof(ArgumentException) };
-      yield return new object[] { new Uri("https://mega.nz"), typeof(ArgumentException) };
-      yield return new object[] { new Uri("https://mega.nz/#!axYS1TLL"), typeof(ArgumentException) };
-      yield return new object[] { new Uri("https://mega.nz/#!axYS1TLL!"), typeof(ArgumentException) };
+      yield return new object[] { "http://www.example.com", typeof(ArgumentException) };
+      yield return new object[] { "https://mega.nz", typeof(ArgumentException) };
+      yield return new object[] { "https://mega.nz/#!axYS1TLL", typeof(ArgumentException) };
+      yield return new object[] { "https://mega.nz/#!axYS1TLL!", typeof(ArgumentException) };
     }
 
     [Fact]
@@ -147,7 +150,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
       const string expectedResultFile = "Data/SampleFile.jpg";
 
-      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
+      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open, FileAccess.Read))
       {
         this.AreStreamsEquivalent(this.context.Client.Download(new Uri(AuthenticatedTestContext.FileLink)), stream);
       }
@@ -169,8 +172,9 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory, MemberData(nameof(DownloadLinkToFileInvalidParameter))]
-    public void DownloadLink_ToFile_InvalidParameter_Throws(Uri uri, string outFile, Type expectedExceptionType)
+    public void DownloadLink_ToFile_InvalidParameter_Throws(string uriString, string outFile, Type expectedExceptionType)
     {
+      var uri = uriString == null ? null : new Uri(uriString);
       Assert.Throws(expectedExceptionType, () => this.context.Client.DownloadFile(uri, outFile));
     }
 
@@ -182,13 +186,13 @@ namespace CG.Web.MegaApiClient.Tests
 
         yield return new object[] { null, null, typeof(ArgumentNullException) };
         yield return new object[] { null, outFile, typeof(ArgumentNullException) };
-        yield return new object[] { new Uri("http://www.example.com"), outFile, typeof(ArgumentException) };
-        yield return new object[] { new Uri("https://mega.nz"), outFile, typeof(ArgumentException) };
-        yield return new object[] { new Uri("https://mega.nz/#!38JjRYIA"), outFile, typeof(ArgumentException) };
-        yield return new object[] { new Uri("https://mega.nz/#!ulISSQIb!"), outFile, typeof(ArgumentException) };
-        yield return new object[] { new Uri(AuthenticatedTestContext.FileLink), null, typeof(ArgumentNullException) };
-        yield return new object[] { new Uri(AuthenticatedTestContext.FileLink), string.Empty, typeof(ArgumentNullException) };
-        yield return new object[] { new Uri(AuthenticatedTestContext.FileLink), outFile, typeof(IOException) };
+        yield return new object[] { "http://www.example.com", outFile, typeof(ArgumentException) };
+        yield return new object[] { "https://mega.nz", outFile, typeof(ArgumentException) };
+        yield return new object[] { "https://mega.nz/#!38JjRYIA", outFile, typeof(ArgumentException) };
+        yield return new object[] { "https://mega.nz/#!ulISSQIb!", outFile, typeof(ArgumentException) };
+        yield return new object[] { AuthenticatedTestContext.FileLink, null, typeof(ArgumentNullException) };
+        yield return new object[] { AuthenticatedTestContext.FileLink, string.Empty, typeof(ArgumentNullException) };
+        yield return new object[] { AuthenticatedTestContext.FileLink, outFile, typeof(IOException) };
       }
     }
 
@@ -211,7 +215,7 @@ namespace CG.Web.MegaApiClient.Tests
       var nodes = this.context.Client.GetNodesFromLink(new Uri(AuthenticatedTestContext.FolderLink));
       var node = nodes.Single(x => x.Name == "SharedFile.jpg");
 
-      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open))
+      using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open, FileAccess.Read))
       {
         this.AreStreamsEquivalent(this.context.Client.Download(node), stream);
       }
@@ -233,9 +237,9 @@ namespace CG.Web.MegaApiClient.Tests
 
     protected void AreFileEquivalent(string file1, string file2)
     {
-      using (Stream stream1 = new FileStream(file1, FileMode.Open))
+      using (Stream stream1 = new FileStream(file1, FileMode.Open, FileAccess.Read))
       {
-        using (Stream stream2 = new FileStream(file2, FileMode.Open))
+        using (Stream stream2 = new FileStream(file2, FileMode.Open, FileAccess.Read))
         {
           this.AreStreamsEquivalent(stream1, stream2);
         }

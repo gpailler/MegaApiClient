@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  [Collection("AuthenticatedLoginTests")]
+  [Collection(nameof(AuthenticatedTestContext))]
   public class DownloadUploadAuthenticated : DownloadUpload
   {
     public DownloadUploadAuthenticated(AuthenticatedTestContext context, ITestOutputHelper testOutputHelper)
@@ -24,7 +24,7 @@ namespace CG.Web.MegaApiClient.Tests
 
       using (Stream stream = this.context.Client.Download(node))
       {
-        using (Stream expectedStream = new FileStream(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), FileMode.Open))
+        using (Stream expectedStream = new FileStream(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), FileMode.Open, FileAccess.Read))
         {
           this.AreStreamsEquivalent(stream, expectedStream);
         }

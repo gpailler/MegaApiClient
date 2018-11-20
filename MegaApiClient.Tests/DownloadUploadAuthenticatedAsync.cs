@@ -8,7 +8,7 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  [Collection("AuthenticatedLoginAsyncTests")]
+  [Collection(nameof(AuthenticatedTestContext))]
   public class DownloadUploadAuthenticatedAsync : DownloadUploadAuthenticated
   {
     private readonly long savedReportProgressChunkSize;
