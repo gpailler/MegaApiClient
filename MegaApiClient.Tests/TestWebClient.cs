@@ -1,6 +1,4 @@
-﻿using Xunit.Abstractions;
-
-namespace CG.Web.MegaApiClient.Tests
+﻿namespace CG.Web.MegaApiClient.Tests
 {
   using System;
   using System.IO;
@@ -13,9 +11,9 @@ namespace CG.Web.MegaApiClient.Tests
   {
     private readonly IWebClient _webClient;
     private readonly Policy _policy;
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly Action<string> _logMessageAction;
 
-    public TestWebClient(IWebClient webClient, int maxRetry, ITestOutputHelper testOutputHelper)
+    public TestWebClient(IWebClient webClient, int maxRetry, Action<string> _logMessageAction)
     {
       this._webClient = webClient;
       this._policy = Policy
@@ -24,7 +22,7 @@ namespace CG.Web.MegaApiClient.Tests
         .Or<TaskCanceledException>()
         .Or<AggregateException>()
         .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), this.OnRetry);
-      this._testOutputHelper = testOutputHelper;
+      this._logMessageAction = _logMessageAction;
     }
 
     public enum CallType
@@ -92,12 +90,12 @@ namespace CG.Web.MegaApiClient.Tests
       {
         if (ex is AggregateException aEx)
         {
-          this._testOutputHelper.WriteLine("AggregateException...");
+          this._logMessageAction("AggregateException...");
           ex = aEx.InnerException;
 
           if (ex is TaskCanceledException tEx)
           {
-            this._testOutputHelper.WriteLine("TaskCanceledException...");
+            this._logMessageAction("TaskCanceledException...");
             if (tEx.InnerException != null)
             {
               ex = tEx.InnerException;
@@ -105,7 +103,7 @@ namespace CG.Web.MegaApiClient.Tests
           }
         }
 
-        this._testOutputHelper.WriteLine($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
+        this._logMessageAction($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
       }
       catch (InvalidOperationException ex2)
       {

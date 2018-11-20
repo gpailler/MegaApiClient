@@ -10,7 +10,7 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  public abstract class DownloadUpload : TestsBase, IDisposable
+  public abstract class DownloadUpload : TestsBase
   {
     protected readonly Random random = new Random();
 
@@ -22,9 +22,10 @@ namespace CG.Web.MegaApiClient.Tests
       this.savedChunksPackSize = this.context.Options.ChunksPackSize;
     }
 
-    public virtual void Dispose()
+    public override void Dispose()
     {
       this.context.Options.ChunksPackSize = this.savedChunksPackSize;
+      base.Dispose();
     }
 
     [Theory, MemberData(nameof(InvalidUploadStreamParameters))]

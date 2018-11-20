@@ -18,12 +18,14 @@ namespace CG.Web.MegaApiClient.Tests
     {
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
       if (this.context.Client.IsLoggedIn)
       {
         this.context.Client.Logout();
       }
+
+      base.Dispose();
     }
 
     [Fact]
