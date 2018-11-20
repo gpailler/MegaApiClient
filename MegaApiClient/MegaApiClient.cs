@@ -2,16 +2,17 @@
 {
   using System;
   using System.Collections.Generic;
-  using System.Collections.Specialized;
   using System.Globalization;
   using System.IO;
   using System.Linq;
-  using System.Runtime.Serialization;
+  using System.Security.Cryptography;
   using System.Text.RegularExpressions;
   using System.Threading;
   using System.Threading.Tasks;
 
   using CG.Web.MegaApiClient.Serialization;
+
+  using Medo.Security.Cryptography;
 
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
@@ -89,7 +90,7 @@
     /// <param name="password">password</param>
     /// <returns><see cref="AuthInfos" /> object containing encrypted data</returns>
     /// <exception cref="ArgumentNullException">email or password is null</exception>
-    public static AuthInfos GenerateAuthInfos(string email, string password)
+    public AuthInfos GenerateAuthInfos(string email, string password)
     {
       if (string.IsNullOrEmpty(email))
       {
@@ -101,16 +102,47 @@
         throw new ArgumentNullException("password");
       }
 
-      // Retrieve password as UTF8 byte array
-      byte[] passwordBytes = password.ToBytesPassword();
+      // Prelogin to retrieve account version
+      PreLoginRequest preLoginRequest = new PreLoginRequest(email);
+      PreLoginResponse preLoginResponse = this.Request<PreLoginResponse>(preLoginRequest);
 
-      // Encrypt password to use password as key for the hash
-      byte[] passwordAesKey = PrepareKey(passwordBytes);
+      if (preLoginResponse.Version == 2 && !string.IsNullOrEmpty(preLoginResponse.Salt))
+      {
+        // Mega uses a new way to hash password based on a salt sent by Mega during prelogin
+        var saltBytes = preLoginResponse.Salt.FromBase64();
+        var passwordBytes = password.ToBytesPassword();
+        const int Iterations = 100000;
 
-      // Hash email and password to decrypt master key on Mega servers
-      string hash = GenerateHash(email.ToLowerInvariant(), passwordAesKey);
+        var derivedKeyBytes = new byte[32];
+        using (var hmac = new HMACSHA512())
+        {
+          var pbkdf2 = new Pbkdf2(hmac, passwordBytes, saltBytes, Iterations);
+          derivedKeyBytes = pbkdf2.GetBytes(derivedKeyBytes.Length);
+        }
 
-      return new AuthInfos(email, hash, passwordAesKey);
+        // Derived key contains master key (0-16) and password hash (16-32)
+        return new AuthInfos(
+          email,
+          derivedKeyBytes.Skip(16).ToArray().ToBase64(),
+          derivedKeyBytes.Take(16).ToArray());
+      }
+      else if (preLoginResponse.Version == 1)
+      {
+        // Retrieve password as UTF8 byte array
+        byte[] passwordBytes = password.ToBytesPassword();
+
+        // Encrypt password to use password as key for the hash
+        byte[] passwordAesKey = PrepareKey(passwordBytes);
+
+        // Hash email and password to decrypt master key on Mega servers
+        string hash = GenerateHash(email.ToLowerInvariant(), passwordAesKey);
+
+        return new AuthInfos(email, hash, passwordAesKey);
+      }
+      else
+      {
+        throw new NotSupportedException("Version of account not supported");
+      }
     }
 
     public event EventHandler<ApiRequestFailedEventArgs> ApiRequestFailed;

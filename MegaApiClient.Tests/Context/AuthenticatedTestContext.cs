@@ -11,7 +11,8 @@ namespace CG.Web.MegaApiClient.Tests.Context
   public class AuthenticatedTestContext : TestContext, IDisposable
   {
     private const string MegaApiClientPasswordEnvironment = "MEGAAPICLIENT_PASSWORD";
-    internal const string Username = "megaapiclient@yopmail.com";
+    internal const string UsernameAccountV1 = "megaapiclient@yopmail.com";
+    internal const string UsernameAccountV2 = "megaapiclient-accountv2@yopmail.com";
     internal static readonly string Password = Environment.GetEnvironmentVariable(MegaApiClientPasswordEnvironment);
 
     internal const string FileLink = "https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk";
@@ -91,7 +92,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     protected override void ConnectClient(IMegaApiClient client)
     {
       Assert.False(string.IsNullOrEmpty(Password), $"Environment variable {MegaApiClientPasswordEnvironment} not set.");
-      client.Login(Username, Password);
+      client.Login(UsernameAccountV1, Password);
     }
 
     protected override IEnumerable<string> GetProtectedNodes()

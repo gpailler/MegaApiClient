@@ -162,6 +162,11 @@ namespace CG.Web.MegaApiClient
       return Task.Run(() => this.GetNodesFromLink(uri));
     }
 
+    public Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password)
+    {
+      return Task.Run(() => this.GenerateAuthInfos(email, password));
+    }
+
     #endregion
   }
 }

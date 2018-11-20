@@ -52,6 +52,8 @@ namespace CG.Web.MegaApiClient
     Task<INodeInfo> GetNodeFromLinkAsync(Uri uri);
 
     Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri);
+
+    Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password);
   }
 }
 #endif

@@ -144,6 +144,11 @@
       return this.UnwrapException(() => this.client.RenameAsync(node, newName).Result);
     }
 
+    public MegaApiClient.AuthInfos GenerateAuthInfos(string email, string password)
+    {
+      return this.UnwrapException(() => this.client.GenerateAuthInfosAsync(email, password).Result);
+    }
+
     public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password)
     {
       return this.client.LoginAsync(email, password);
@@ -252,6 +257,11 @@
     public Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri)
     {
       return this.client.GetNodesFromLinkAsync(uri);
+    }
+
+    public Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password)
+    {
+      return this.client.GenerateAuthInfosAsync(email, password);
     }
 
     private T UnwrapException<T>(Func<T> action)
