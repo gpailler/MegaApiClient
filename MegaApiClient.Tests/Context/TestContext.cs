@@ -61,7 +61,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     protected virtual IMegaApiClient CreateClient()
     {
       this.Options = new Options(applicationKey: "ewZQFBBC");
-      this.WebClient = new TestWebClient(new WebClient(this.WebTimeout, null, new TestMessageHandler(this.logMessageAction)), MaxRetry, this.logMessageAction);
+      this.WebClient = new TestWebClient(new WebClient(this.WebTimeout, null, new TestMessageHandler(this.logMessageAction), true), MaxRetry, this.logMessageAction);
 
       return new MegaApiClient(this.Options, this.WebClient);
     }
