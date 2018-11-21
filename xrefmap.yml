@@ -695,6 +695,32 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync
   nameWithType: IMegaApiClient.DownloadFileAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String,System.String)
+  name: GenerateAuthInfos(String, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfos_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String, System.String)
+  nameWithType: IMegaApiClient.GenerateAuthInfos(String, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos*
+  name: GenerateAuthInfos
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfos_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos
+  nameWithType: IMegaApiClient.GenerateAuthInfos
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync(System.String,System.String)
+  name: GenerateAuthInfosAsync(String, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfosAsync_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync(System.String,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync(System.String, System.String)
+  nameWithType: IMegaApiClient.GenerateAuthInfosAsync(String, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync*
+  name: GenerateAuthInfosAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfosAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync
+  nameWithType: IMegaApiClient.GenerateAuthInfosAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GetAccountInformation
   name: GetAccountInformation()
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GetAccountInformation
@@ -1581,6 +1607,19 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos
   nameWithType: MegaApiClient.GenerateAuthInfos
+- uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync(System.String,System.String)
+  name: GenerateAuthInfosAsync(String, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfosAsync_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync(System.String,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync(System.String, System.String)
+  nameWithType: MegaApiClient.GenerateAuthInfosAsync(String, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync*
+  name: GenerateAuthInfosAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfosAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync
+  nameWithType: MegaApiClient.GenerateAuthInfosAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.GetAccountInformation
   name: GetAccountInformation()
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GetAccountInformation
@@ -2380,6 +2419,107 @@ references:
 - uid: installation
   name: Installation
   href: articles/installation.html
+- uid: Medo.Security.Cryptography
+  name: Medo.Security.Cryptography
+  href: api/Medo.Security.Cryptography.html
+  commentId: N:Medo.Security.Cryptography
+  fullName: Medo.Security.Cryptography
+  nameWithType: Medo.Security.Cryptography
+- uid: Medo.Security.Cryptography.Pbkdf2
+  name: Pbkdf2
+  href: api/Medo.Security.Cryptography.Pbkdf2.html
+  commentId: T:Medo.Security.Cryptography.Pbkdf2
+  fullName: Medo.Security.Cryptography.Pbkdf2
+  nameWithType: Pbkdf2
+- uid: Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.Byte[],System.Byte[])
+  name: Pbkdf2(HMAC, Byte[], Byte[])
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_Byte___System_Byte___
+  commentId: M:Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.Byte[],System.Byte[])
+  name.vb: Pbkdf2(HMAC, Byte(), Byte())
+  fullName: Medo.Security.Cryptography.Pbkdf2.Pbkdf2(System.Security.Cryptography.HMAC, System.Byte[], System.Byte[])
+  fullName.vb: Medo.Security.Cryptography.Pbkdf2.Pbkdf2(System.Security.Cryptography.HMAC, System.Byte(), System.Byte())
+  nameWithType: Pbkdf2.Pbkdf2(HMAC, Byte[], Byte[])
+  nameWithType.vb: Pbkdf2.Pbkdf2(HMAC, Byte(), Byte())
+- uid: Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.Byte[],System.Byte[],System.Int32)
+  name: Pbkdf2(HMAC, Byte[], Byte[], Int32)
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_Byte___System_Byte___System_Int32_
+  commentId: M:Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.Byte[],System.Byte[],System.Int32)
+  name.vb: Pbkdf2(HMAC, Byte(), Byte(), Int32)
+  fullName: Medo.Security.Cryptography.Pbkdf2.Pbkdf2(System.Security.Cryptography.HMAC, System.Byte[], System.Byte[], System.Int32)
+  fullName.vb: Medo.Security.Cryptography.Pbkdf2.Pbkdf2(System.Security.Cryptography.HMAC, System.Byte(), System.Byte(), System.Int32)
+  nameWithType: Pbkdf2.Pbkdf2(HMAC, Byte[], Byte[], Int32)
+  nameWithType.vb: Pbkdf2.Pbkdf2(HMAC, Byte(), Byte(), Int32)
+- uid: Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.String,System.String)
+  name: Pbkdf2(HMAC, String, String)
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_String_System_String_
+  commentId: M:Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.String,System.String)
+  fullName: Medo.Security.Cryptography.Pbkdf2.Pbkdf2(System.Security.Cryptography.HMAC, System.String, System.String)
+  nameWithType: Pbkdf2.Pbkdf2(HMAC, String, String)
+- uid: Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.String,System.String,System.Int32)
+  name: Pbkdf2(HMAC, String, String, Int32)
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_String_System_String_System_Int32_
+  commentId: M:Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.String,System.String,System.Int32)
+  fullName: Medo.Security.Cryptography.Pbkdf2.Pbkdf2(System.Security.Cryptography.HMAC, System.String, System.String, System.Int32)
+  nameWithType: Pbkdf2.Pbkdf2(HMAC, String, String, Int32)
+- uid: Medo.Security.Cryptography.Pbkdf2.#ctor*
+  name: Pbkdf2
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2__ctor_
+  commentId: Overload:Medo.Security.Cryptography.Pbkdf2.#ctor
+  isSpec: "True"
+  fullName: Medo.Security.Cryptography.Pbkdf2.Pbkdf2
+  nameWithType: Pbkdf2.Pbkdf2
+- uid: Medo.Security.Cryptography.Pbkdf2.Algorithm
+  name: Algorithm
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2_Algorithm
+  commentId: P:Medo.Security.Cryptography.Pbkdf2.Algorithm
+  fullName: Medo.Security.Cryptography.Pbkdf2.Algorithm
+  nameWithType: Pbkdf2.Algorithm
+- uid: Medo.Security.Cryptography.Pbkdf2.Algorithm*
+  name: Algorithm
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2_Algorithm_
+  commentId: Overload:Medo.Security.Cryptography.Pbkdf2.Algorithm
+  isSpec: "True"
+  fullName: Medo.Security.Cryptography.Pbkdf2.Algorithm
+  nameWithType: Pbkdf2.Algorithm
+- uid: Medo.Security.Cryptography.Pbkdf2.GetBytes(System.Int32)
+  name: GetBytes(Int32)
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2_GetBytes_System_Int32_
+  commentId: M:Medo.Security.Cryptography.Pbkdf2.GetBytes(System.Int32)
+  fullName: Medo.Security.Cryptography.Pbkdf2.GetBytes(System.Int32)
+  nameWithType: Pbkdf2.GetBytes(Int32)
+- uid: Medo.Security.Cryptography.Pbkdf2.GetBytes*
+  name: GetBytes
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2_GetBytes_
+  commentId: Overload:Medo.Security.Cryptography.Pbkdf2.GetBytes
+  isSpec: "True"
+  fullName: Medo.Security.Cryptography.Pbkdf2.GetBytes
+  nameWithType: Pbkdf2.GetBytes
+- uid: Medo.Security.Cryptography.Pbkdf2.IterationCount
+  name: IterationCount
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2_IterationCount
+  commentId: P:Medo.Security.Cryptography.Pbkdf2.IterationCount
+  fullName: Medo.Security.Cryptography.Pbkdf2.IterationCount
+  nameWithType: Pbkdf2.IterationCount
+- uid: Medo.Security.Cryptography.Pbkdf2.IterationCount*
+  name: IterationCount
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2_IterationCount_
+  commentId: Overload:Medo.Security.Cryptography.Pbkdf2.IterationCount
+  isSpec: "True"
+  fullName: Medo.Security.Cryptography.Pbkdf2.IterationCount
+  nameWithType: Pbkdf2.IterationCount
+- uid: Medo.Security.Cryptography.Pbkdf2.Salt
+  name: Salt
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2_Salt
+  commentId: P:Medo.Security.Cryptography.Pbkdf2.Salt
+  fullName: Medo.Security.Cryptography.Pbkdf2.Salt
+  nameWithType: Pbkdf2.Salt
+- uid: Medo.Security.Cryptography.Pbkdf2.Salt*
+  name: Salt
+  href: api/Medo.Security.Cryptography.Pbkdf2.html#Medo_Security_Cryptography_Pbkdf2_Salt_
+  commentId: Overload:Medo.Security.Cryptography.Pbkdf2.Salt
+  isSpec: "True"
+  fullName: Medo.Security.Cryptography.Pbkdf2.Salt
+  nameWithType: Pbkdf2.Salt
 - uid: samples
   name: List all files / folders on your Mega account
   href: articles/samples.html
