@@ -198,8 +198,8 @@
       byte[] encryptedSid = response.SessionId.FromBase64();
       byte[] sid = Crypto.RsaDecrypt(encryptedSid.FromMPINumber(), rsaPrivateKeyComponents[0], rsaPrivateKeyComponents[1], rsaPrivateKeyComponents[2]);
 
-      // Session id contains only the first 58 base64 characters
-      this.sessionId = sid.ToBase64().Substring(0, 58);
+      // Session id contains only the first 43 bytes
+      this.sessionId = sid.Take(43).ToArray().ToBase64();
 
       return new LogonSessionToken(this.sessionId, this.masterKey);
     }
