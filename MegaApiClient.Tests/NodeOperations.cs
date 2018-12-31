@@ -58,8 +58,9 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory, MemberData(nameof(InvalidCreateFolderParameters))]
-    public void CreateFolder_InvalidParameters_Throws(string name, INode parentNode, Type expectedExceptionType, string expectedMessage)
+    public void CreateFolder_InvalidParameters_Throws(string name, NodeType? parentNodeType, Type expectedExceptionType, string expectedMessage)
     {
+      var parentNode = parentNodeType == null ? null : Mock.Of<INode>(x => x.Type == parentNodeType.Value);
       var exception = Assert.Throws(expectedExceptionType, () => this.context.Client.CreateFolder(name, parentNode));
       Assert.Equal(expectedMessage, exception.GetType() == typeof(ArgumentNullException) ? ((ArgumentNullException)exception).ParamName : exception.Message);
     }
@@ -71,8 +72,8 @@ namespace CG.Web.MegaApiClient.Tests
         yield return new object[] { null, null, typeof(ArgumentNullException), "name" };
         yield return new object[] { "", null, typeof(ArgumentNullException), "name" };
         yield return new object[] { "name", null, typeof(ArgumentNullException), "parent" };
-        yield return new object[] { null, Mock.Of<INode>(x => x.Type == NodeType.File), typeof(ArgumentNullException), "name" };
-        yield return new object[] { "name", Mock.Of<INode>(x => x.Type == NodeType.File), typeof(ArgumentException), "Invalid parent node" };
+        yield return new object[] { null, NodeType.File, typeof(ArgumentNullException), "name" };
+        yield return new object[] { "name", NodeType.File, typeof(ArgumentException), "Invalid parent node" };
       }
     }
 
@@ -187,8 +188,10 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory, MemberData(nameof(InvalidMoveParameters))]
-    public void Move_InvalidParameters_Throws(INode node, INode destinationParentNode, Type expectedExceptionType, string expectedMessage)
+    public void Move_InvalidParameters_Throws(NodeType? nodeType, NodeType? destinationParentNodeType, Type expectedExceptionType, string expectedMessage)
     {
+      var node = nodeType == null ? null : Mock.Of<INode>(x => x.Type == nodeType.Value);
+      var destinationParentNode = destinationParentNodeType == null ? null : Mock.Of<INode>(x => x.Type == destinationParentNodeType.Value);
       var exception = Assert.Throws(expectedExceptionType, () => this.context.Client.Move(node, destinationParentNode));
       Assert.Equal(expectedMessage, exception.GetType() == typeof(ArgumentNullException) ? ((ArgumentNullException)exception).ParamName : exception.Message);
     }
@@ -198,12 +201,12 @@ namespace CG.Web.MegaApiClient.Tests
       get
       {
         yield return new object[] { null, null, typeof(ArgumentNullException), "node" };
-        yield return new object[] { null, Mock.Of<INode>(), typeof(ArgumentNullException), "node" };
-        yield return new object[] { Mock.Of<INode>(), null, typeof(ArgumentNullException), "destinationParentNode" };
-        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.Root), Mock.Of<INode>(), typeof(ArgumentException), "Invalid node type" };
-        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.Inbox), Mock.Of<INode>(), typeof(ArgumentException), "Invalid node type" };
-        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.Trash), Mock.Of<INode>(), typeof(ArgumentException), "Invalid node type" };
-        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.File), Mock.Of<INode>(x => x.Type == NodeType.File), typeof(ArgumentException), "Invalid destination parent node" };
+        yield return new object[] { null, NodeType.Directory, typeof(ArgumentNullException), "node" };
+        yield return new object[] { NodeType.File, null, typeof(ArgumentNullException), "destinationParentNode" };
+        yield return new object[] { NodeType.Root, NodeType.Directory, typeof(ArgumentException), "Invalid node type" };
+        yield return new object[] { NodeType.Inbox, NodeType.Directory, typeof(ArgumentException), "Invalid node type" };
+        yield return new object[] { NodeType.Trash, NodeType.Directory, typeof(ArgumentException), "Invalid node type" };
+        yield return new object[] { NodeType.File, NodeType.File, typeof(ArgumentException), "Invalid destination parent node" };
       }
     }
 

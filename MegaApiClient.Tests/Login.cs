@@ -252,7 +252,7 @@ namespace CG.Web.MegaApiClient.Tests
       IAccountInformation accountInformation = this.context.Client.GetAccountInformation();
 
       Assert.NotNull(accountInformation);
-      Assert.Equal(53687091200, accountInformation.TotalQuota);
+      Assert.Equal(16106127360, accountInformation.TotalQuota);
       Assert.Equal(0, accountInformation.UsedQuota);
     }
 
