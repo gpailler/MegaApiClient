@@ -106,26 +106,25 @@ namespace CG.Web.MegaApiClient.Tests
         {
           if (callType == TestWebClient.CallType.PostRequestRaw)
           {
-            if (url.AbsolutePath.EndsWith("/0", StringComparison.Ordinal))
-            {
-              // Reset counter when it's the first chunk (to avoid error when Upload is restarted from start)
-              uploadCalls = 1;
-            }
-            else
-            {
-              uploadCalls++;
-            }
+            uploadCalls++;
           }
         };
 
-        ((TestWebClient)this.context.WebClient).OnCalled += onCall;
-
         this.context.Options.ChunksPackSize = chunksPackSize;
-        var node = this.context.Client.Upload(stream, "test", parent);
+        INode node = null;
+        try
+        {
+          ((TestWebClient)this.context.WebClient).OnCalled += onCall;
+          node = this.context.Client.Upload(stream, "test", parent);
+        }
+        finally
+        {
+          ((TestWebClient)this.context.WebClient).OnCalled -= onCall;
+          Assert.Equal(expectedUploadCalls, uploadCalls);
+        }
 
         stream.Position = 0;
         this.AreStreamsEquivalent(this.context.Client.Download(node), stream);
-        Assert.Equal(expectedUploadCalls, uploadCalls);
       }
     }
 
