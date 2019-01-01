@@ -146,7 +146,7 @@ Task("Test")
 
         Codecov(coverageResult);
 
-        DotNetCoreTest(
+        /*DotNetCoreTest(
             "./MegaApiClient.Tests/MegaApiClient.Tests.csproj",
             new DotNetCoreTestSettings
             {
@@ -154,7 +154,7 @@ Task("Test")
                 Framework = "netcoreapp2.1",
                 NoBuild = true
             }
-        );
+        );*/
     }
     else
     {
