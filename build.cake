@@ -151,7 +151,7 @@ Task("Test")
             new DotNetCoreTestSettings
             {
                 Configuration = testConfiguration,
-                Framework = "netcoreapp1.1",
+                Framework = "netcoreapp2.1",
                 NoBuild = true
             }
         );
