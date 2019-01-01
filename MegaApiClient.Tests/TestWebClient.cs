@@ -91,30 +91,22 @@
 
     private void OnRetry(Exception ex, TimeSpan ts)
     {
-      try
+      if (ex is AggregateException aEx)
       {
-        if (ex is AggregateException aEx)
-        {
-          this._logMessageAction("AggregateException...");
-          ex = aEx.InnerException;
+        this._logMessageAction("AggregateException...");
+        ex = aEx.InnerException;
 
-          if (ex is TaskCanceledException tEx)
+        if (ex is TaskCanceledException tEx)
+        {
+          this._logMessageAction("TaskCanceledException...");
+          if (tEx.InnerException != null)
           {
-            this._logMessageAction("TaskCanceledException...");
-            if (tEx.InnerException != null)
-            {
-              ex = tEx.InnerException;
-            }
+            ex = tEx.InnerException;
           }
         }
+      }
 
-        this._logMessageAction($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
-      }
-      catch (InvalidOperationException ex2)
-      {
-        // We're out of a test so logger is not working
-        Console.WriteLine("Retry out of a test: {0}", ex2.Message);
-      }
+      this._logMessageAction($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
     }
   }
 }
