@@ -44,8 +44,10 @@
     {
       return this._policy.Execute(() =>
       {
+        var result = this._webClient.PostRequestJson(url, jsonData);
         this.OnCalled?.Invoke(CallType.PostRequestJson, url);
-        return this._webClient.PostRequestJson(url, jsonData);
+
+        return result;
       });
     }
 
@@ -53,13 +55,14 @@
     {
       return this._policy.Execute(() =>
       {
-        this.OnCalled?.Invoke(CallType.PostRequestRaw, url);
-
         // Create a copy of the stream because webClient can dispose it
         // It's useful in case of retries
         Stream dataStreamCopy = this.CloneStream(dataStream);
 
-        return this._webClient.PostRequestRaw(url, dataStreamCopy);
+        var result = this._webClient.PostRequestRaw(url, dataStreamCopy);
+        this.OnCalled?.Invoke(CallType.PostRequestRaw, url);
+
+        return result;
       });
     }
 
@@ -67,8 +70,10 @@
     {
       return this._policy.Execute(() =>
       {
+        var result = this._webClient.GetRequestRaw(url);
         this.OnCalled?.Invoke(CallType.GetRequestRaw, url);
-        return this._webClient.GetRequestRaw(url);
+
+        return result;
       });
     }
 
