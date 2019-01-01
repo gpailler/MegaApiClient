@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -24,7 +25,11 @@ namespace CG.Web.MegaApiClient.Tests.Context
       this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
       this.lazyProtectedNodes = new Lazy<IEnumerable<string>>(() => this.GetProtectedNodes().ToArray());
       this.lazyPermanentNodes = new Lazy<IEnumerable<string>>(() => this.GetPermanentNodes().ToArray());
-      this.logMessageAction = x => testOutputHelper?.WriteLine(x);
+      this.logMessageAction = x =>
+      {
+        Debug.WriteLine(x);
+        testOutputHelper?.WriteLine(x);
+      };
     }
 
     public IMegaApiClient Client
