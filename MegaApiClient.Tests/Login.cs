@@ -285,7 +285,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(0, accountInformation.UsedQuota);
     }
 
-    [Theory, MemberData(nameof(CredentialsV2))]
+    [Theory, MemberData(nameof(GetCredentialsV2), false)]
     public void GetSessionHistory_AuthenticatedUserV2_Succeeds(string email, string password)
     {
       this.context.Client.Login(email, password);
