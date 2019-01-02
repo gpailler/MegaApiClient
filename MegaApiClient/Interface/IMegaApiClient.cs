@@ -23,6 +23,8 @@ namespace CG.Web.MegaApiClient
 
     void Logout();
 
+    string GetRecoveryKey();
+
     IAccountInformation GetAccountInformation();
 
     IEnumerable<INode> GetNodes();

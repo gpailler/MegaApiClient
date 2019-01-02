@@ -14,6 +14,8 @@ namespace CG.Web.MegaApiClient.Tests.Context
     internal const string UsernameAccountV1 = "megaapiclient@yopmail.com";
     internal const string UsernameAccountV2 = "megaapiclient-accountv2@yopmail.com";
     internal static readonly string Password = Environment.GetEnvironmentVariable(MegaApiClientPasswordEnvironment);
+    internal const string MasterKeyHashV1 = "Q7LYmSw2Et4GjL9KWZKcq1oEzC1dX3wZDEdhS3YJICk";
+    internal const string MasterKeyHashV2 = "pRYA3b7JExchAvcTPaGpgl5h9U42iKncvXhPku7YIcA";
 
     internal const string FileLink = "https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk";
     internal const string FolderLink = "https://mega.nz/#F!e1ogxQ7T!ee4Q_ocD1bSLmNeg9B6kBw";
