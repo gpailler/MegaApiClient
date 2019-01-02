@@ -41,6 +41,11 @@ namespace CG.Web.MegaApiClient
       return Task.Run(() => this.Logout());
     }
 
+    public Task<string> GetRecoveryKeyAsync()
+    {
+      return Task.FromResult(this.GetRecoveryKey());
+    }
+
     public Task<IAccountInformation> GetAccountInformationAsync()
     {
       return Task.Run(() => this.GetAccountInformation());

@@ -58,6 +58,11 @@
       this.UnwrapException(() => this.client.LogoutAsync().Wait());
     }
 
+    public string GetRecoveryKey()
+    {
+      return this.UnwrapException(() => this.client.GetRecoveryKeyAsync().Result);
+    }
+
     public IAccountInformation GetAccountInformation()
     {
       return this.UnwrapException(() => this.client.GetAccountInformationAsync().Result);
@@ -177,6 +182,11 @@
     public Task LogoutAsync()
     {
       return this.client.LogoutAsync();
+    }
+
+    public Task<string> GetRecoveryKeyAsync()
+    {
+      return this.client.GetRecoveryKeyAsync();
     }
 
     public Task<IAccountInformation> GetAccountInformationAsync()

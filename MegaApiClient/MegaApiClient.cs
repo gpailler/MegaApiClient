@@ -283,6 +283,22 @@
     }
 
     /// <summary>
+    /// Retrieve recovery key
+    /// </summary>
+    /// <exception cref="NotSupportedException">Not logged in</exception>
+    public string GetRecoveryKey()
+    {
+      this.EnsureLoggedIn();
+
+      if (!this.authenticatedLogin)
+      {
+        throw new NotSupportedException("Anonymous login is not supported");
+      }
+
+      return this.masterKey.ToBase64();
+    }
+
+    /// <summary>
     /// Retrieve account (quota) information
     /// </summary>
     /// <returns>An object containing account information</returns>

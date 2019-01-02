@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Newtonsoft.Json;
@@ -79,29 +81,27 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.True(this.context.Client.IsLoggedIn);
     }
 
-    public static IEnumerable<object[]> CredentialsV1
+    public static IEnumerable<object[]> GetCredentialsV1(bool includeMasterKeyHash)
     {
-      get
-      {
-        Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV1);
-        Assert.NotEmpty(AuthenticatedTestContext.Password);
+      Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV1);
+      Assert.NotEmpty(AuthenticatedTestContext.Password);
 
-        yield return new[] {AuthenticatedTestContext.UsernameAccountV1, AuthenticatedTestContext.Password };
-      }
+      var credentials = new object[] {AuthenticatedTestContext.UsernameAccountV1, AuthenticatedTestContext.Password, AuthenticatedTestContext.MasterKeyHashV1 };
+      yield return includeMasterKeyHash ? credentials : credentials.Take(2).ToArray();
     }
 
-    public static IEnumerable<object[]> CredentialsV2
+    public static IEnumerable<object[]> GetCredentialsV2(bool includeMasterKeyHash)
     {
-      get
-      {
-        Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV2);
-        Assert.NotEmpty(AuthenticatedTestContext.Password);
+      Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV2);
+      Assert.NotEmpty(AuthenticatedTestContext.Password);
 
-        yield return new[] {AuthenticatedTestContext.UsernameAccountV2, AuthenticatedTestContext.Password };
-      }
+      var credentials = new object[] { AuthenticatedTestContext.UsernameAccountV2, AuthenticatedTestContext.Password, AuthenticatedTestContext.MasterKeyHashV2 };
+      yield return includeMasterKeyHash ? credentials : credentials.Take(2).ToArray();
     }
 
-    public static IEnumerable<object[]> AllValidCredentials => CredentialsV1.Concat(CredentialsV2);
+    public static IEnumerable<object[]> AllValidCredentials => GetCredentialsV1(false).Concat(GetCredentialsV2(false));
+
+    public static IEnumerable<object[]> AllValidCredentialsWithHash => GetCredentialsV1(true).Concat(GetCredentialsV2(true));
 
     [Theory, MemberData(nameof(AllValidCredentials))]
     public void LoginTwice_ValidCredentials_Throws(string email, string password)
@@ -153,6 +153,35 @@ namespace CG.Web.MegaApiClient.Tests
     {
       var exception = Assert.Throws<NotSupportedException>(() => this.context.Client.Logout());
       Assert.Equal("Not logged in", exception.Message);
+    }
+
+    [Theory, MemberData(nameof(AllValidCredentialsWithHash))]
+    public void GetRecoveryKeyAfterLogin_Succeeds(string email, string password, string expectedRecoveryKeyHash)
+    {
+      this.context.Client.Login(email, password);
+      Assert.True(this.context.Client.IsLoggedIn);
+
+      var recoveryKey = this.context.Client.GetRecoveryKey();
+      using (var sha256 = SHA256.Create())
+      {
+        var recoveryKeyHash = sha256.ComputeHash(Encoding.UTF8.GetBytes(recoveryKey)).ToBase64();
+        Assert.Equal(expectedRecoveryKeyHash, recoveryKeyHash);
+      }
+    }
+
+    [Fact]
+    public void GetRecoveryKeyWithoutLogin_Throws()
+    {
+      var exception = Assert.Throws<NotSupportedException>(() => this.context.Client.GetRecoveryKey());
+      Assert.Equal("Not logged in", exception.Message);
+    }
+
+    [Fact]
+    public void GetRecoveryKeyWithAnonymousLogin_Throws()
+    {
+      this.context.Client.LoginAnonymous();
+      var exception = Assert.Throws<NotSupportedException>(() => this.context.Client.GetRecoveryKey());
+      Assert.Equal("Anonymous login is not supported", exception.Message);
     }
 
     [Fact]
@@ -226,7 +255,7 @@ namespace CG.Web.MegaApiClient.Tests
       yield return new object[] { (Action<IMegaApiClient>)(x => x.GetAccountInformation()) };
     }
 
-    [Theory, MemberData(nameof(CredentialsV1))]
+    [Theory, MemberData(nameof(GetCredentialsV1), false)]
     public void GetAccountInformation_AuthenticatedUserV1_Succeeds(string email, string password)
     {
       this.context.Client.Login(email, password);
@@ -242,7 +271,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(1046530 + AuthenticatedTestContext.FileSize + AuthenticatedTestContext.SubFolderFileSize, accountInformation.UsedQuota); // 1046530 is from incoming shares
     }
 
-    [Theory, MemberData(nameof(CredentialsV2))]
+    [Theory, MemberData(nameof(GetCredentialsV2), false)]
     public void GetAccountInformation_AuthenticatedUserV2_Succeeds(string email, string password)
     {
       this.context.Client.Login(email, password);
