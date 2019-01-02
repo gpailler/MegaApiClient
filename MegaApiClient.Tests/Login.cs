@@ -256,6 +256,21 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(0, accountInformation.UsedQuota);
     }
 
+    [Theory, MemberData(nameof(CredentialsV2))]
+    public void GetSessionHistory_AuthenticatedUserV2_Succeeds(string email, string password)
+    {
+      this.context.Client.Login(email, password);
+
+      IEnumerable<ISession> sessionsHistory = this.context.Client.GetSessionsHistory();
+
+      Assert.NotNull(sessionsHistory);
+      ISession first = sessionsHistory.First();
+      Assert.NotNull(first);
+      Assert.Equal(SessionStatus.Current | SessionStatus.Active, first.Status);
+      Assert.Equal(DateTime.UtcNow, first.LoginTime, TimeSpan.FromSeconds(30));
+      Assert.Equal(DateTime.UtcNow, first.LastSeenTime, TimeSpan.FromSeconds(30));
+    }
+
     [Fact]
     public void GetAccountInformation_AnonymousUser_Succeeds()
     {
