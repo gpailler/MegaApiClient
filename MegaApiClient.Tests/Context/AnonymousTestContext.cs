@@ -4,7 +4,7 @@ using Xunit;
 
 namespace CG.Web.MegaApiClient.Tests.Context
 {
-  [CollectionDefinition("AnonymousLoginTests")]
+  [CollectionDefinition(nameof(AnonymousTestContext))]
   public class AnonymousLoginTestsCollection : ICollectionFixture<AnonymousTestContext> { }
 
   public class AnonymousTestContext : TestContext

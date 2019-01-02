@@ -9,7 +9,7 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  [Collection("AuthenticatedLoginTests")]
+  [Collection(nameof(AuthenticatedTestContext))]
   public class DownloadUploadAuthenticated : DownloadUpload
   {
     public DownloadUploadAuthenticated(AuthenticatedTestContext context, ITestOutputHelper testOutputHelper)
@@ -24,7 +24,7 @@ namespace CG.Web.MegaApiClient.Tests
 
       using (Stream stream = this.context.Client.Download(node))
       {
-        using (Stream expectedStream = new FileStream(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), FileMode.Open))
+        using (Stream expectedStream = new FileStream(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), FileMode.Open, FileAccess.Read))
         {
           this.AreStreamsEquivalent(stream, expectedStream);
         }
@@ -32,8 +32,9 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory, MemberData(nameof(GetDownloadLinkInvalidParameter))]
-    public void GetDownloadLink_InvalidNode_Throws(INode node, Type expectedExceptionType, string expectedMessage)
+    public void GetDownloadLink_InvalidNode_Throws(NodeType? nodeType, Type expectedExceptionType, string expectedMessage)
     {
+      INode node = nodeType == null ? null : Mock.Of<INode>(x => x.Type == nodeType.Value);
       var exception = Assert.Throws(expectedExceptionType, () => this.context.Client.GetDownloadLink(node));
       if (expectedExceptionType == typeof(ArgumentException))
       {
@@ -45,14 +46,11 @@ namespace CG.Web.MegaApiClient.Tests
     {
       get
       {
-        yield return new object[] { null, typeof(ArgumentNullException), null };
-
-        foreach (NodeType nodeType in new[] {NodeType.Inbox, NodeType.Root, NodeType.Trash})
-        {
-          yield return new object[] { Mock.Of<INode>(x => x.Type == nodeType), typeof(ArgumentException), "Invalid node" };
-        }
-
-        yield return new object[] { Mock.Of<INode>(x => x.Type == NodeType.File), typeof(ArgumentException), "node must implement INodeCrypto" };
+        yield return new object[] {null, typeof(ArgumentNullException), null};
+        yield return new object[] {NodeType.Inbox, typeof(ArgumentException), "Invalid node"};
+        yield return new object[] {NodeType.Root, typeof(ArgumentException), "Invalid node"};
+        yield return new object[] {NodeType.Trash, typeof(ArgumentException), "Invalid node"};
+        yield return new object[] {NodeType.File, typeof(ArgumentException), "node must implement INodeCrypto"};
       }
     }
 

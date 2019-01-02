@@ -6,7 +6,7 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  [Collection("AuthenticatedLoginTests")]
+  [Collection(nameof(AuthenticatedTestContext))]
   public class NodeOperationsAuthenticated : NodeOperations
   {
     public NodeOperationsAuthenticated(AuthenticatedTestContext context, ITestOutputHelper testOutputHelper)
