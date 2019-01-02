@@ -17,6 +17,8 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     IEnumerable<string> PermanentRootNodes { get; }
 
-    void AssignLogger(ITestOutputHelper testOutputHelper);
+    void SetLogger(ITestOutputHelper testOutputHelper);
+
+    void ClearLogger();
   }
 }

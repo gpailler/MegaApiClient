@@ -36,7 +36,7 @@
     #region Constructors
 
     /// <summary>
-    /// Instantiate a new <see cref="MegaApiClient" /> object with default <see cref="Options"/> and default <see cref="IWebClient"/> 
+    /// Instantiate a new <see cref="MegaApiClient" /> object with default <see cref="Options"/> and default <see cref="IWebClient"/>
     /// </summary>
     public MegaApiClient()
         : this(new Options(), new WebClient())
@@ -44,7 +44,7 @@
     }
 
     /// <summary>
-    /// Instantiate a new <see cref="MegaApiClient" /> object with custom <see cref="Options" /> and default <see cref="IWebClient"/> 
+    /// Instantiate a new <see cref="MegaApiClient" /> object with custom <see cref="Options" /> and default <see cref="IWebClient"/>
     /// </summary>
     public MegaApiClient(Options options)
         : this(options, new WebClient())
@@ -52,7 +52,7 @@
     }
 
     /// <summary>
-    /// Instantiate a new <see cref="MegaApiClient" /> object with default <see cref="Options" /> and custom <see cref="IWebClient"/> 
+    /// Instantiate a new <see cref="MegaApiClient" /> object with default <see cref="Options" /> and custom <see cref="IWebClient"/>
     /// </summary>
     public MegaApiClient(IWebClient webClient)
         : this(new Options(), webClient)
@@ -198,8 +198,8 @@
       byte[] encryptedSid = response.SessionId.FromBase64();
       byte[] sid = Crypto.RsaDecrypt(encryptedSid.FromMPINumber(), rsaPrivateKeyComponents[0], rsaPrivateKeyComponents[1], rsaPrivateKeyComponents[2]);
 
-      // Session id contains only the first 58 base64 characters
-      this.sessionId = sid.ToBase64().Substring(0, 58);
+      // Session id contains only the first 43 bytes
+      this.sessionId = sid.Take(43).ToArray().ToBase64();
 
       return new LogonSessionToken(this.sessionId, this.masterKey);
     }
@@ -481,11 +481,7 @@
     /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
-#if NET35
-    public void DownloadFile(INode node, string outputFile)
-#else
     public void DownloadFile(INode node, string outputFile, CancellationToken? cancellationToken = null)
-#endif
     {
       if (node == null)
       {
@@ -497,11 +493,7 @@
         throw new ArgumentNullException("outputFile");
       }
 
-#if NET35
-      using (Stream stream = this.Download(node))
-#else
       using (Stream stream = this.Download(node, cancellationToken))
-#endif
       {
         this.SaveStream(stream, outputFile);
       }
@@ -517,11 +509,7 @@
     /// <exception cref="ArgumentNullException">uri or outputFile is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
-#if NET35
-    public void DownloadFile(Uri uri, string outputFile)
-#else
     public void DownloadFile(Uri uri, string outputFile, CancellationToken? cancellationToken = null)
-#endif
     {
       if (uri == null)
       {
@@ -533,11 +521,7 @@
         throw new ArgumentNullException("outputFile");
       }
 
-#if NET35
-      using (Stream stream = this.Download(uri))
-#else
-        using (Stream stream = this.Download(uri, cancellationToken))
-#endif
+      using (Stream stream = this.Download(uri, cancellationToken))
       {
         this.SaveStream(stream, outputFile);
       }
@@ -552,11 +536,7 @@
     /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
     /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
-#if NET35
-    public Stream Download(INode node)
-#else
     public Stream Download(INode node, CancellationToken? cancellationToken = null)
-#endif
     {
       if (node == null)
       {
@@ -583,12 +563,12 @@
       Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
 
       Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
-#if !NET35
+
       if (cancellationToken.HasValue)
       {
         resultStream = new CancellableStream(resultStream, cancellationToken.Value);
       }
-#endif
+
       return resultStream;
     }
 
@@ -601,11 +581,7 @@
     /// <exception cref="ArgumentNullException">uri is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
     /// <exception cref="DownloadException">Checksum is invalid. Downloaded data are corrupted</exception>
-#if NET35
-    public Stream Download(Uri uri)
-#else
     public Stream Download(Uri uri, CancellationToken? cancellationToken = null)
-#endif
     {
       if (uri == null)
       {
@@ -625,12 +601,12 @@
       Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
 
       Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, key, iv, metaMac);
-#if !NET35
+
       if (cancellationToken.HasValue)
       {
         resultStream = new CancellableStream(resultStream, cancellationToken.Value);
       }
-#endif
+
       return resultStream;
     }
 
@@ -702,11 +678,7 @@
     /// <exception cref="ArgumentNullException">filename or parent is null</exception>
     /// <exception cref="FileNotFoundException">filename is not found</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
-#if NET35
-    public INode UploadFile(string filename, INode parent)
-#else
     public INode UploadFile(string filename, INode parent, CancellationToken? cancellationToken = null)
-#endif
     {
       if (string.IsNullOrEmpty(filename))
       {
@@ -728,11 +700,7 @@
       DateTime modificationDate = File.GetLastWriteTime(filename);
       using (FileStream fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read))
       {
-#if NET35
-        return this.Upload(fileStream, Path.GetFileName(filename), parent, modificationDate);
-#else
         return this.Upload(fileStream, Path.GetFileName(filename), parent, modificationDate, cancellationToken);
-#endif
       }
     }
 
@@ -747,11 +715,7 @@
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">stream or name or parent is null</exception>
     /// <exception cref="ArgumentException">parent is not valid (all types except <see cref="NodeType.File" /> are supported)</exception>
-#if NET35
-    public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null)
-#else
     public INode Upload(Stream stream, string name, INode parent, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
-#endif
     {
       if (stream == null)
       {
@@ -775,12 +739,10 @@
 
       this.EnsureLoggedIn();
 
-#if !NET35
       if (cancellationToken.HasValue)
       {
         stream = new CancellableStream(stream, cancellationToken.Value);
       }
-#endif
 
       string completionHandle = string.Empty;
       int requestDelay = this.options.ApiRequestDelay;
@@ -1037,7 +999,7 @@
       {
         string dataResult = this.webClient.PostRequestJson(uri, dataRequest);
 
-        if (string.IsNullOrEmpty(dataResult) 
+        if (string.IsNullOrEmpty(dataResult)
           || (jsonData = JsonConvert.DeserializeObject(dataResult)) == null
           || jsonData is long
           || (jsonData is JArray && ((JArray)jsonData)[0].Type == JTokenType.Integer))
@@ -1152,7 +1114,7 @@
       id = match.Groups["id"].Value;
       byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
       var isFolder = match.Groups["type"].Value == "F";
-      
+
       if (isFolder)
       {
         iv = null;

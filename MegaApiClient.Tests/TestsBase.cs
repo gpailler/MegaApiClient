@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CG.Web.MegaApiClient.Tests.Context;
 using Xunit;
@@ -6,19 +7,24 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  public abstract class TestsBase
+  public abstract class TestsBase : IDisposable
   {
     protected readonly ITestContext context;
 
     protected TestsBase(ITestContext context, ITestOutputHelper testOutputHelper)
     {
       this.context = context;
-      this.context.AssignLogger(testOutputHelper);
+      this.context.SetLogger(testOutputHelper);
 
       if (this.context.Client.IsLoggedIn)
       {
         this.SanitizeStorage();
       }
+    }
+
+    public virtual void Dispose()
+    {
+      this.context.ClearLogger();
     }
 
     protected INode GetNode(NodeType nodeType)

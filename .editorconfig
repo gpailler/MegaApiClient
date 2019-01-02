@@ -1,0 +1,7 @@
+[*.{cs}]
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+charset = utf-8-bom
+dotnet_sort_system_directives_first = true
+csharp_add_imports_to_deepest_scope = true
