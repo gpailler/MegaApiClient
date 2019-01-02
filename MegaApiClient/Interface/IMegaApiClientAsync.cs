@@ -25,6 +25,8 @@ namespace CG.Web.MegaApiClient
 
     Task<IAccountInformation> GetAccountInformationAsync();
 
+    Task<IEnumerable<ISession>> GetSessionsHistoryAsync();
+
     Task<IEnumerable<INode>> GetNodesAsync();
 
     Task<IEnumerable<INode>> GetNodesAsync(INode parent);

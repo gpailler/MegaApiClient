@@ -313,6 +313,20 @@
     }
 
     /// <summary>
+    /// Retrieve session history
+    /// </summary>
+    /// <returns>A collection of sessions</returns>
+    /// <exception cref="NotSupportedException">Not logged in</exception>
+    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    public IEnumerable<ISession> GetSessionsHistory()
+    {
+      this.EnsureLoggedIn();
+
+      SessionHistoryRequest request = new SessionHistoryRequest();
+      return this.Request<SessionHistoryResponse>(request);
+    }
+
+    /// <summary>
     /// Retrieve all filesystem nodes
     /// </summary>
     /// <returns>Flat representation of all the filesystem nodes</returns>

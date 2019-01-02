@@ -68,6 +68,11 @@
       return this.UnwrapException(() => this.client.GetAccountInformationAsync().Result);
     }
 
+    public IEnumerable<ISession> GetSessionsHistory()
+    {
+      return this.UnwrapException(() => this.client.GetSessionsHistoryAsync().Result);
+    }
+
     public IEnumerable<INode> GetNodes()
     {
       return this.UnwrapException(() => this.client.GetNodesAsync().Result);
@@ -192,6 +197,11 @@
     public Task<IAccountInformation> GetAccountInformationAsync()
     {
       return this.client.GetAccountInformationAsync();
+    }
+
+    public Task<IEnumerable<ISession>> GetSessionsHistoryAsync()
+    {
+      return this.client.GetSessionsHistoryAsync();
     }
 
     public Task<IEnumerable<INode>> GetNodesAsync()

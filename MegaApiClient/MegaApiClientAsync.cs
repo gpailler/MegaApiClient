@@ -51,6 +51,11 @@ namespace CG.Web.MegaApiClient
       return Task.Run(() => this.GetAccountInformation());
     }
 
+    public Task<IEnumerable<ISession>> GetSessionsHistoryAsync()
+    {
+      return Task.Run(() => this.GetSessionsHistory());
+    }
+
     public Task<IEnumerable<INode>> GetNodesAsync()
     {
       return Task.Run(() => this.GetNodes());
