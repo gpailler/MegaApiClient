@@ -16,12 +16,18 @@ namespace CG.Web.MegaApiClient
 
     private readonly HttpClient httpClient;
 
-    public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null, HttpMessageHandler messageHandler = null)
+    public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null)
+      : this(responseTimeout, userAgent, null, false)
+    {
+    }
+
+    internal WebClient(int responseTimeout, ProductInfoHeaderValue userAgent, HttpMessageHandler messageHandler, bool connectionClose)
     {
       this.BufferSize = Options.DefaultBufferSize;
       this.httpClient = messageHandler == null ? new HttpClient() : new HttpClient(messageHandler);
       this.httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
       this.httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent ?? this.GenerateUserAgent());
+      this.httpClient.DefaultRequestHeaders.ConnectionClose = connectionClose;
     }
 
     public int BufferSize { get; set; }

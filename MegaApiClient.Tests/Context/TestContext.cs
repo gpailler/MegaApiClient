@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -15,6 +16,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     private readonly Lazy<IMegaApiClient> lazyClient;
     private readonly Lazy<IEnumerable<string>> lazyProtectedNodes;
     private readonly Lazy<IEnumerable<string>> lazyPermanentNodes;
+    private readonly Action<string> logMessageAction;
     private ITestOutputHelper testOutputHelper;
 
     protected TestContext()
@@ -23,6 +25,11 @@ namespace CG.Web.MegaApiClient.Tests.Context
       this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
       this.lazyProtectedNodes = new Lazy<IEnumerable<string>>(() => this.GetProtectedNodes().ToArray());
       this.lazyPermanentNodes = new Lazy<IEnumerable<string>>(() => this.GetPermanentNodes().ToArray());
+      this.logMessageAction = x =>
+      {
+        Debug.WriteLine(x);
+        testOutputHelper?.WriteLine(x);
+      };
     }
 
     public IMegaApiClient Client
@@ -46,15 +53,20 @@ namespace CG.Web.MegaApiClient.Tests.Context
       get { return this.lazyPermanentNodes.Value; }
     }
 
-    public void AssignLogger(ITestOutputHelper testOutputHelper)
+    public void SetLogger(ITestOutputHelper testOutputHelper)
     {
       this.testOutputHelper = testOutputHelper;
+    }
+
+    public void ClearLogger()
+    {
+      this.testOutputHelper = null;
     }
 
     protected virtual IMegaApiClient CreateClient()
     {
       this.Options = new Options(applicationKey: "ewZQFBBC");
-      this.WebClient = new TestWebClient(new WebClient(this.WebTimeout, null, new TestMessageHandler(this.testOutputHelper)), MaxRetry, this.testOutputHelper);
+      this.WebClient = new TestWebClient(new WebClient(this.WebTimeout, null, new TestMessageHandler(this.logMessageAction), true), MaxRetry, this.logMessageAction);
 
       return new MegaApiClient(this.Options, this.WebClient);
     }
@@ -71,23 +83,23 @@ namespace CG.Web.MegaApiClient.Tests.Context
       client.ApiRequestFailed += this.OnApiRequestFailed;
       this.ConnectClient(client);
 
-      this.testOutputHelper.WriteLine("Client created for context {0}", this.GetType().Name);
+      this.logMessageAction($"Client created for context {this.GetType().Name}");
 
       return client;
     }
 
     private void OnApiRequestFailed(object sender, ApiRequestFailedEventArgs e)
     {
-      this.testOutputHelper.WriteLine($"ApiRequestFailed: {e.ApiResult}, {e.ApiUrl}, {e.AttemptNum}, {e.DelayMilliseconds}ms, {e.ResponseJson}, {e.Exception} {e.Exception?.Message}");
+      this.logMessageAction($"ApiRequestFailed: {e.ApiResult}, {e.ApiUrl}, {e.AttemptNum}, {e.DelayMilliseconds}ms, {e.ResponseJson}, {e.Exception} {e.Exception?.Message}");
     }
 
     private class TestMessageHandler : HttpClientHandler
     {
-      private readonly ITestOutputHelper testOutputHelper;
+      private readonly Action<string> logMessageAction;
 
-      public TestMessageHandler(ITestOutputHelper testOutputHelper)
+      public TestMessageHandler(Action<string> logMessageAction)
       {
-        this.testOutputHelper = testOutputHelper;
+        this.logMessageAction = logMessageAction;
       }
 
       protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

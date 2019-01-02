@@ -103,12 +103,7 @@
 
           using (var crc32Hasher = new Crc32(CryptoPPCRC32Polynomial, Crc32.DefaultSeed))
           {
-#if NETCORE
             var crcValBytes = crc32Hasher.ComputeHash(fileBuffer, begin, end - begin);
-#else
-            crc32Hasher.TransformFinalBlock(fileBuffer, begin, end - begin);
-            var crcValBytes = crc32Hasher.Hash;
-#endif
             crcVal = BitConverter.ToUInt32(crcValBytes, 0);
           }
           crc[i] = crcVal;
@@ -138,12 +133,7 @@
 
             using (var crc32Hasher = new Crc32(CryptoPPCRC32Polynomial, seed))
             {
-#if NETCORE
               crc32ValBytes = crc32Hasher.ComputeHash(block, 0, blockWritten);
-#else
-              crc32Hasher.TransformFinalBlock(block, 0, blockWritten);
-              crc32ValBytes = crc32Hasher.Hash;
-#endif
               var seedBytes = new byte[crc32ValBytes.Length];
               crc32ValBytes.CopyTo(seedBytes, 0);
               if (BitConverter.IsLittleEndian)

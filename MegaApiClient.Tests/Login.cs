@@ -10,20 +10,22 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  [Collection("NotLoggedTests")]
-  public class Login : TestsBase, IDisposable
+  [Collection(nameof(NotLoggedTestContext))]
+  public class Login : TestsBase
   {
     public Login(NotLoggedTestContext context, ITestOutputHelper testOutputHelper)
       : base(context, testOutputHelper)
     {
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
       if (this.context.Client.IsLoggedIn)
       {
         this.context.Client.Logout();
       }
+
+      base.Dispose();
     }
 
     [Fact]
@@ -250,7 +252,7 @@ namespace CG.Web.MegaApiClient.Tests
       IAccountInformation accountInformation = this.context.Client.GetAccountInformation();
 
       Assert.NotNull(accountInformation);
-      Assert.Equal(53687091200, accountInformation.TotalQuota);
+      Assert.Equal(16106127360, accountInformation.TotalQuota);
       Assert.Equal(0, accountInformation.UsedQuota);
     }
 

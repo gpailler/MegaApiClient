@@ -1,6 +1,4 @@
-﻿using Xunit.Abstractions;
-
-namespace CG.Web.MegaApiClient.Tests
+﻿namespace CG.Web.MegaApiClient.Tests
 {
   using System;
   using System.IO;
@@ -13,9 +11,9 @@ namespace CG.Web.MegaApiClient.Tests
   {
     private readonly IWebClient _webClient;
     private readonly Policy _policy;
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly Action<string> _logMessageAction;
 
-    public TestWebClient(IWebClient webClient, int maxRetry, ITestOutputHelper testOutputHelper)
+    public TestWebClient(IWebClient webClient, int maxRetry, Action<string> _logMessageAction)
     {
       this._webClient = webClient;
       this._policy = Policy
@@ -24,7 +22,7 @@ namespace CG.Web.MegaApiClient.Tests
         .Or<TaskCanceledException>()
         .Or<AggregateException>()
         .WaitAndRetry(maxRetry, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)), this.OnRetry);
-      this._testOutputHelper = testOutputHelper;
+      this._logMessageAction = _logMessageAction;
     }
 
     public enum CallType
@@ -46,8 +44,10 @@ namespace CG.Web.MegaApiClient.Tests
     {
       return this._policy.Execute(() =>
       {
+        var result = this._webClient.PostRequestJson(url, jsonData);
         this.OnCalled?.Invoke(CallType.PostRequestJson, url);
-        return this._webClient.PostRequestJson(url, jsonData);
+
+        return result;
       });
     }
 
@@ -55,13 +55,14 @@ namespace CG.Web.MegaApiClient.Tests
     {
       return this._policy.Execute(() =>
       {
-        this.OnCalled?.Invoke(CallType.PostRequestRaw, url);
-
         // Create a copy of the stream because webClient can dispose it
         // It's useful in case of retries
         Stream dataStreamCopy = this.CloneStream(dataStream);
 
-        return this._webClient.PostRequestRaw(url, dataStreamCopy);
+        var result = this._webClient.PostRequestRaw(url, dataStreamCopy);
+        this.OnCalled?.Invoke(CallType.PostRequestRaw, url);
+
+        return result;
       });
     }
 
@@ -69,8 +70,10 @@ namespace CG.Web.MegaApiClient.Tests
     {
       return this._policy.Execute(() =>
       {
+        var result = this._webClient.GetRequestRaw(url);
         this.OnCalled?.Invoke(CallType.GetRequestRaw, url);
-        return this._webClient.GetRequestRaw(url);
+
+        return result;
       });
     }
 
@@ -88,30 +91,22 @@ namespace CG.Web.MegaApiClient.Tests
 
     private void OnRetry(Exception ex, TimeSpan ts)
     {
-      try
+      if (ex is AggregateException aEx)
       {
-        if (ex is AggregateException aEx)
-        {
-          this._testOutputHelper.WriteLine("AggregateException...");
-          ex = aEx.InnerException;
+        this._logMessageAction("AggregateException...");
+        ex = aEx.InnerException;
 
-          if (ex is TaskCanceledException tEx)
+        if (ex is TaskCanceledException tEx)
+        {
+          this._logMessageAction("TaskCanceledException...");
+          if (tEx.InnerException != null)
           {
-            this._testOutputHelper.WriteLine("TaskCanceledException...");
-            if (tEx.InnerException != null)
-            {
-              ex = tEx.InnerException;
-            }
+            ex = tEx.InnerException;
           }
         }
+      }
 
-        this._testOutputHelper.WriteLine($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
-      }
-      catch (InvalidOperationException ex2)
-      {
-        // We're out of a test so logger is not working
-        Console.WriteLine("Retry out of a test: {0}", ex2.Message);
-      }
+      this._logMessageAction($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
     }
   }
 }

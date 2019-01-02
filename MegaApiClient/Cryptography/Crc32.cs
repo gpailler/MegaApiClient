@@ -169,11 +169,7 @@ namespace DamienG.Security.Cryptography
 
         protected override byte[] HashFinal()
         {
-            var hashBuffer = UInt32ToBigEndianBytes(~hash);
-#if !NETCORE
-            HashValue = hashBuffer;
-#endif
-            return hashBuffer;
+            return UInt32ToBigEndianBytes(~hash);
         }
 
         public override int HashSize { get { return 32; } }
