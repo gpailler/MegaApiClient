@@ -74,7 +74,7 @@
     private readonly HashSet<long> chunksPositionsCache;
     private readonly byte[] counter = new byte[8];
     private readonly ICryptoTransform encryptor;
-    private long currentCounter = 0;
+    private long currentCounter = 0; // Represents the next counter value to use.
     private byte[] currentChunkMac = new byte[16];
     private byte[] fileMac = new byte[16];
 
@@ -262,13 +262,23 @@
 
     private void IncrementCounter()
     {
-      byte[] counter = BitConverter.GetBytes(this.currentCounter++);
-      if (BitConverter.IsLittleEndian)
+      if ((this.currentCounter & 0xFF) != 0xFF && (this.currentCounter & 0xFF) != 0x00)
       {
-        Array.Reverse(counter);
+        // Fast path - no wrapping.
+        this.counter[7]++;
+      }
+      else
+      {
+        byte[] counter = BitConverter.GetBytes(this.currentCounter);
+        if (BitConverter.IsLittleEndian)
+        {
+          Array.Reverse(counter);
+        }
+
+        Array.Copy(counter, this.counter, 8);
       }
 
-      Array.Copy(counter, this.counter, 8);
+      this.currentCounter++;
     }
 
     private void ComputeChunk(ICryptoTransform encryptor)
