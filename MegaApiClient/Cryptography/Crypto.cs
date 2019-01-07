@@ -11,11 +11,19 @@
   internal class Crypto
   {
     private static readonly Aes AesCbc;
+    private static readonly bool IsKnownReusable;
     private static readonly byte[] DefaultIv = new byte[16];
 
     static Crypto()
     {
-      AesCbc = Aes.Create();
+#if !NETCORE
+      AesCbc = new AesManaged();
+      IsKnownReusable = true;
+#else
+      AesCbc = Aes.Create(); // More per-call overhead but supported everywhere.
+      IsKnownReusable = false;
+#endif
+
       AesCbc.Padding = PaddingMode.None;
       AesCbc.Mode = CipherMode.CBC;
     }
@@ -82,7 +90,7 @@
 
     public static ICryptoTransform CreateAesEncryptor(byte[] key)
     {
-      return new CachedCryptoTransform(() => AesCbc.CreateEncryptor(key, DefaultIv));
+      return new CachedCryptoTransform(() => AesCbc.CreateEncryptor(key, DefaultIv), IsKnownReusable);
     }
 
     public static byte[] EncryptAes(byte[] data, ICryptoTransform encryptor)

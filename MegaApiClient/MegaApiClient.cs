@@ -574,7 +574,7 @@
       DownloadUrlRequest downloadRequest = new DownloadUrlRequest(node);
       DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
 
-      Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
+      Stream dataStream = new BufferedStream(this.webClient.GetRequestRaw(new Uri(downloadResponse.Url)));;
 
       Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
 
@@ -612,7 +612,7 @@
       DownloadUrlRequestFromId downloadRequest = new DownloadUrlRequestFromId(id);
       DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
 
-      Stream dataStream = this.webClient.GetRequestRaw(new Uri(downloadResponse.Url));
+      Stream dataStream = new BufferedStream(this.webClient.GetRequestRaw(new Uri(downloadResponse.Url)));
 
       Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, key, iv, metaMac);
 

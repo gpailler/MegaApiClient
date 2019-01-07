@@ -6,11 +6,13 @@
   internal class CachedCryptoTransform : ICryptoTransform
   {
     private readonly Func<ICryptoTransform> factory;
+    private readonly bool isKnownReusable;
     private ICryptoTransform cachedInstance;
 
-    public CachedCryptoTransform(Func<ICryptoTransform> factory)
+    public CachedCryptoTransform(Func<ICryptoTransform> factory, bool isKnownReusable)
     {
-      this.factory = factory;
+        this.factory = factory;
+        this.isKnownReusable = isKnownReusable;
     }
 
     public void Dispose()
@@ -25,7 +27,15 @@
 
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
     {
-      return this.Forward(x => x.TransformFinalBlock(inputBuffer, inputOffset, inputCount));
+      if (isKnownReusable && cachedInstance != null)
+      {
+        // Fast path.
+        return cachedInstance.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
+      }
+      else
+      {
+        return this.Forward(x => x.TransformFinalBlock(inputBuffer, inputOffset, inputCount));
+      }
     }
 
     public int InputBlockSize { get { return this.Forward(x => x.InputBlockSize); } }
@@ -46,7 +56,7 @@
       }
       finally
       {
-        if (instance.CanReuseTransform == false)
+        if (!isKnownReusable && instance.CanReuseTransform == false) // Try to avoid a virtual call to CanReuseTransform.
         {
           instance.Dispose();
         }
