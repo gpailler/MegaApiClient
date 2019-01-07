@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("d4d9205c-f753-4694-8823-dac8a65729be")]
 
-#if NETCORE
+#if NETSTANDARD1_3 || NETSTANDARD2_0
 [assembly: InternalsVisibleTo("MegaApiClient.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
 #else

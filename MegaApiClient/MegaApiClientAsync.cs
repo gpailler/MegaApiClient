@@ -1,4 +1,4 @@
-﻿#if ASYNC
+﻿#if !NET40
 namespace CG.Web.MegaApiClient
 {
   using System;

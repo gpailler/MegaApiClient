@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;net46;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard2.0</TargetFrameworks>
     <RootNamespace>CG.Web.MegaApiClient</RootNamespace>
     <SignAssembly>False</SignAssembly>
     <DocumentationFile>bin\docs\MegaApiClient.xml</DocumentationFile>
@@ -43,52 +43,25 @@
     <DebugSymbols>True</DebugSymbols>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <NetFramework>True</NetFramework>
-    <NetCore>False</NetCore>
-    <AsyncSupport>True</AsyncSupport>
-    <UseHttpClient>True</UseHttpClient>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
-    <NetFramework>False</NetFramework>
-    <NetCore>True</NetCore>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net40'">
-    <AsyncSupport>False</AsyncSupport>
-    <UseHttpClient>False</UseHttpClient>
-  </PropertyGroup>
-
-
-
-  <PropertyGroup Condition="$(AsyncSupport) == True">
-    <DefineConstants>ASYNC</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(AsyncSupport) == True And $(NetCore) == True">
-    <DefineConstants>ASYNC;NETCORE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(NetFramework) == True">
-    <SignAssembly>True</SignAssembly>
-    <AssemblyOriginatorKeyFile>../key.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-
-  <ItemGroup Condition="$(NetFramework) == True">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40' Or '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net46'">
     <Reference Include="System" />
     <Reference Include="System.Web" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(NetFramework) == True And $(UseHttpClient) == True">
-    <Reference Include="System.Net.Http" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net46' Or '$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.Net.Http">
+      <Version>4.3.4</Version>
+    </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="$(NetCore) == True">
-    <Compile Remove="Properties\AssemblyInfo.cs" />
-    <PackageReference Include="System.Net.Http" Version="4.3.2" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.2" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net40' Or '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net46'">
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>../key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />

@@ -3,7 +3,7 @@
   using System;
   using System.Collections.Generic;
   using System.Linq;
-#if ASYNC
+#if !NET40
   using System.Threading.Tasks;
 #endif
 
@@ -40,7 +40,7 @@
       return folderSize;
     }
 
-#if ASYNC
+#if !NET40
 
     public static async Task<long> GetFolderSizeAsync(this INodeInfo node, IMegaApiClient client)
     {

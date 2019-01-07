@@ -574,7 +574,7 @@
       DownloadUrlRequest downloadRequest = new DownloadUrlRequest(node);
       DownloadUrlResponse downloadResponse = this.Request<DownloadUrlResponse>(downloadRequest);
 
-      Stream dataStream = new BufferedStream(this.webClient.GetRequestRaw(new Uri(downloadResponse.Url)));;
+      Stream dataStream = new BufferedStream(this.webClient.GetRequestRaw(new Uri(downloadResponse.Url)));
 
       Stream resultStream = new MegaAesCtrStreamDecrypter(dataStream, downloadResponse.Size, nodeCrypto.Key, nodeCrypto.Iv, nodeCrypto.MetaMac);
 
@@ -1073,7 +1073,7 @@
         query["sid"] = this.sessionId;
       }
 
-#if NETCORE
+#if NETSTANDARD1_3
       return new Uri(Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(BaseApiUri.AbsoluteUri, query));
 #else
       UriBuilder builder = new UriBuilder(BaseApiUri);
