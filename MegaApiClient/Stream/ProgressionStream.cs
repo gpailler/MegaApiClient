@@ -39,7 +39,7 @@ namespace CG.Web.MegaApiClient
       // Report 100% progress only if it was not already sent
       if (this.chunkSize != 0)
       {
-        this.progress.Report(100);
+        this.progress?.Report(100);
       }
     }
 
@@ -82,7 +82,7 @@ namespace CG.Web.MegaApiClient
       if (this.chunkSize >= this.reportProgressChunkSize)
       {
         this.chunkSize = 0;
-        this.progress.Report(this.Position / (double)this.Length * 100);
+        this.progress?.Report(this.Position / (double)this.Length * 100);
       }
     }
   }
