@@ -46,7 +46,7 @@
 
         Array.Resize(ref fingerprintBuffer, fingerprintBuffer.Length - (sizeof(long) + 1) + serializedModificationDate.Length);
 
-        this.SerializedFingerprint = Convert.ToBase64String(fingerprintBuffer);
+        this.SerializedFingerprint = fingerprintBuffer.ToBase64();
       }
     }
 
