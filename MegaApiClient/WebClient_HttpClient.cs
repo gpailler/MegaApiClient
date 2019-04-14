@@ -10,10 +10,12 @@ namespace CG.Web.MegaApiClient
   using System.Net.Http;
   using System.Net.Http.Headers;
 
+
+  
   public class WebClient : IWebClient
   {
     private const int DefaultResponseTimeout = Timeout.Infinite;
-
+    public event EventHandler<UploadProgress> OnUploadProgress;
     private readonly HttpClient httpClient;
 
     public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null)
@@ -52,16 +54,19 @@ namespace CG.Web.MegaApiClient
 
     private string PostRequest(Uri url, Stream dataStream, string contentType)
     {
-      using (StreamContent content = new StreamContent(dataStream, this.BufferSize))
+      using (ProgressionStreamBasic PS = new ProgressionStreamBasic(dataStream,  x => OnUploadProgress(this, new UploadProgress((long)(((double)x / (double)dataStream.Length) * 100), x, dataStream.Length))))
       {
-        content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-        using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)
+        using (StreamContent content = new StreamContent(PS, this.BufferSize))
         {
-          using (Stream stream = response.Content.ReadAsStreamAsync().Result)
+          content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+          using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)
           {
-            using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+            using (Stream stream = response.Content.ReadAsStreamAsync().Result)
             {
-              return streamReader.ReadToEnd();
+              using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+              {
+                return streamReader.ReadToEnd();
+              }
             }
           }
         }

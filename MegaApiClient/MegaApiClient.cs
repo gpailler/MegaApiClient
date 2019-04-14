@@ -32,6 +32,12 @@
     private byte[] masterKey;
     private uint sequenceIndex = (uint)(uint.MaxValue * new Random().NextDouble());
     private bool authenticatedLogin;
+    public event EventHandler<UploadProgress> OnUploadProgress;
+    public long TotalChunkLeng = 0;
+    private long CurrentUpload = 0;
+
+
+
 
     #region Constructors
 
@@ -41,6 +47,7 @@
     public MegaApiClient()
         : this(new Options(), new WebClient())
     {
+      this.webClient.OnUploadProgress += WebClient_OnUploadProgress;
     }
 
     /// <summary>
@@ -80,6 +87,14 @@
     }
 
     #endregion
+
+    private void WebClient_OnUploadProgress(object sender, UploadProgress e)
+    {
+      if (OnUploadProgress != null)
+      {
+        OnUploadProgress(this, new UploadProgress(e.Progress, CurrentUpload + e.Uploaded, TotalChunkLeng));
+      }
+    }
 
     #region Public API
 
@@ -773,6 +788,10 @@
           long chunkStartPosition = 0;
           var chunksSizesToUpload = this.ComputeChunksSizesToUpload(encryptedStream.ChunksPositions, encryptedStream.Length).ToArray();
           Uri uri = null;
+
+          TotalChunkLeng = chunksSizesToUpload.Sum(x => x);
+          CurrentUpload = 0;
+
           for (int i = 0; i < chunksSizesToUpload.Length; i++)
           {
             completionHandle = string.Empty;
@@ -791,6 +810,7 @@
                 if (string.IsNullOrEmpty(completionHandle))
                 {
                   apiResult = ApiResultCode.Ok;
+                  CurrentUpload += chunkSize;
                   continue;
                 }
 
@@ -828,6 +848,7 @@
 
             throw new ApiException(apiResult);
           }
+
 
           // Encrypt attributes
           byte[] cryptedAttributes = Crypto.EncryptAttributes(new Attributes(name, stream, modificationDate), encryptedStream.FileKey);
@@ -926,9 +947,9 @@
       return this.GetNodes().First(n => n.Equals(node));
     }
 
-#endregion
+    #endregion
 
-#region Private static methods
+    #region Private static methods
 
     private static string GenerateHash(string email, byte[] passwordAesKey)
     {
@@ -976,16 +997,16 @@
       return pkey;
     }
 
-#endregion
+    #endregion
 
-#region Web
+    #region Web
 
     private string Request(RequestBase request)
     {
       return this.Request<string>(request);
     }
 
-    private TResponse Request<TResponse>(RequestBase request, byte[] key= null)
+    private TResponse Request<TResponse>(RequestBase request, byte[] key = null)
             where TResponse : class
     {
       if (this.options.SynchronizeApiRequests)
@@ -1021,7 +1042,7 @@
           ApiResultCode apiCode = jsonData == null
             ? ApiResultCode.RequestFailedRetry
             : jsonData is long
-              ?(ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
+              ? (ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
               : (ApiResultCode)((JArray)jsonData)[0].Value<int>();
 
           if (apiCode != ApiResultCode.Ok)
@@ -1050,7 +1071,7 @@
 
     private int Wait(int requestDelay)
     {
-      requestDelay = (int) Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor);
+      requestDelay = (int)Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor);
 #if NET40
       Thread.Sleep(requestDelay);
 #else
@@ -1096,9 +1117,9 @@
       }
     }
 
-#endregion
+    #endregion
 
-#region Private methods
+    #region Private methods
 
     private void EnsureLoggedIn()
     {
@@ -1163,9 +1184,9 @@
       }
     }
 
-#endregion
+    #endregion
 
-#region AuthInfos
+    #region AuthInfos
 
     public class AuthInfos
     {
@@ -1213,19 +1234,19 @@
 
         if (this.SessionId == null || other.SessionId == null || string.Compare(this.SessionId, other.SessionId) != 0)
         {
-            return false;
+          return false;
         }
 
         if (this.MasterKey == null || other.MasterKey == null || !Enumerable.SequenceEqual(MasterKey, other.MasterKey))
         {
-            return false;
+          return false;
         }
 
         return true;
       }
     }
 
-#endregion
+    #endregion
 
   }
 }

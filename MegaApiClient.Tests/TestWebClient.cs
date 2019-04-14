@@ -25,6 +25,8 @@
       this._logMessageAction = _logMessageAction;
     }
 
+    public event EventHandler<UploadProgress> OnUploadProgress;
+
     public enum CallType
     {
       PostRequestJson,

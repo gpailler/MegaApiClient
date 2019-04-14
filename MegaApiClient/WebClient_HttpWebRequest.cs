@@ -7,6 +7,7 @@ namespace CG.Web.MegaApiClient
   using System.Reflection;
   using System.Text;
   using System.Threading;
+  using System.Threading.Tasks;
 
   public class WebClient : IWebClient
   {
@@ -14,6 +15,7 @@ namespace CG.Web.MegaApiClient
 
     private readonly int responseTimeout;
     private readonly string userAgent;
+    public event EventHandler<UploadProgress> OnUploadProgress;
 
     public WebClient(int responseTimeout = DefaultResponseTimeout, string userAgent = null)
     {
@@ -54,8 +56,29 @@ namespace CG.Web.MegaApiClient
 
       using (Stream requestStream = request.GetRequestStream())
       {
-        dataStream.Position = 0;
-        dataStream.CopyTo(requestStream, this.BufferSize);
+        int bytesRead;
+        byte[] buffer = new byte[this.BufferSize];
+
+        if (OnUploadProgress != null)
+        {
+          OnUploadProgress(this, new UploadProgress(0, dataStream.Position, dataStream.Length));
+        }
+
+        while ((bytesRead = dataStream.Read(buffer, 0, buffer.Length)) > 0)
+        {
+          requestStream.Write(buffer, 0, bytesRead);
+          if (OnUploadProgress != null)
+          {
+            new Thread(() =>
+            {
+              OnUploadProgress(this, new UploadProgress((long)(((double)dataStream.Position / (double)dataStream.Length) * 100), dataStream.Position, dataStream.Length));
+
+            }).Start();
+          }
+        }
+
+        OnUploadProgress(this, new UploadProgress(0,0,0));
+
       }
 
       using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())

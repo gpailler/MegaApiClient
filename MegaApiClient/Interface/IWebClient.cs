@@ -12,5 +12,7 @@
     string PostRequestRaw(Uri url, Stream dataStream);
 
     Stream GetRequestRaw(Uri url);
+
+    event EventHandler<UploadProgress> OnUploadProgress;
   }
 }
