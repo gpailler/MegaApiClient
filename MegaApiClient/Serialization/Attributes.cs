@@ -54,7 +54,7 @@
     public string Name { get; set; }
 
     [JsonProperty("c", DefaultValueHandling = DefaultValueHandling.Ignore)]
-    private string SerializedFingerprint { get; set; }
+    public string SerializedFingerprint { get; set; }
 
     [JsonIgnore]
     public DateTime? ModificationDate
