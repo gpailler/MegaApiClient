@@ -47,6 +47,12 @@
     }
 
     [JsonIgnore]
+    public string SerializedFingerprint
+    {
+      get { return this.Attributes?.SerializedFingerprint; }
+    }
+
+    [JsonIgnore]
     public Attributes Attributes { get; protected set; }
 
     #region Equality
@@ -221,6 +227,7 @@
     public long Size { get { return this.node.Size; } }
     public string Name { get { return this.node.Name; } }
     public DateTime? ModificationDate { get { return this.node.ModificationDate; } }
+    public string SerializedFingerprint { get { return this.node.Attributes.SerializedFingerprint; } }
     public string Id { get { return this.node.Id; } }
     public string ParentId { get { return this.node.IsShareRoot ? null : this.node.ParentId; } }
     public string Owner { get { return this.node.Owner; } }
