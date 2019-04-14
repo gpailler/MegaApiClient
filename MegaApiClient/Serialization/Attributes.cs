@@ -46,7 +46,7 @@
 
         Array.Resize(ref fingerprintBuffer, fingerprintBuffer.Length - (sizeof(long) + 1) + serializedModificationDate.Length);
 
-        this.SerializedFingerprint = Convert.ToBase64String(fingerprintBuffer);
+        this.SerializedFingerprint = fingerprintBuffer.ToBase64();
       }
     }
 
@@ -54,7 +54,7 @@
     public string Name { get; set; }
 
     [JsonProperty("c", DefaultValueHandling = DefaultValueHandling.Ignore)]
-    private string SerializedFingerprint { get; set; }
+    public string SerializedFingerprint { get; set; }
 
     [JsonIgnore]
     public DateTime? ModificationDate

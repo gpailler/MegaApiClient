@@ -1,4 +1,4 @@
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System;
 
@@ -13,6 +13,8 @@ namespace CG.Web.MegaApiClient
     long Size { get; }
 
     DateTime? ModificationDate { get; }
+
+    string SerializedFingerprint { get; }
   }
 
   public interface INode : INodeInfo
