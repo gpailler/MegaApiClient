@@ -157,14 +157,32 @@
       }
     }
 
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-      if (this.position == this.streamLength)
-      {
+    public override int Read(byte[] buffer, int offset, int count) {
+      if (buffer == null) {
+        throw new ArgumentNullException(nameof(buffer));
+      }
+
+      if (offset < 0) {
+        throw new ArgumentOutOfRangeException(nameof(offset));
+      }
+
+      count = (int) Math.Min(count, Length - Position);
+
+      if (buffer.Length - offset < count) {
+        throw new ArgumentException();
+      }
+
+      if (Position >= Length) {
         return 0;
       }
 
-      for (long pos = this.position; pos < Math.Min(this.position + count, this.streamLength); pos += 16)
+      var originalPosition = Position;
+
+      this.stream.Seek(Position, SeekOrigin.Begin);
+      var readCount = this.stream.Read(buffer, offset, count);
+
+      var endPosition = Math.Min(originalPosition + count, this.streamLength);
+      for (long pos = originalPosition; pos < endPosition; pos += 16)
       {
         // We are on a chunk bondary
         if (this.chunksPositionsCache.Contains(pos))
@@ -186,14 +204,10 @@
         this.IncrementCounter();
 
         // Iterate each AES 16 bytes block
-        byte[] input = new byte[16];
-        byte[] output = new byte[input.Length];
-        int inputLength = this.stream.Read(input, 0, input.Length);
-        if (inputLength != input.Length)
-        {
-          // Sometimes, the stream is not finished but the read is not complete
-          inputLength += this.stream.Read(input, inputLength, input.Length - inputLength);
-        }
+        var inputLength = Math.Min(16, endPosition - pos);
+        byte[] input = new byte[inputLength];
+        byte[] output = new byte[inputLength];
+        Array.Copy(buffer, pos - originalPosition, input, 0, input.Length);
 
         // Merge Iv and counter
         byte[] ivCounter = new byte[16];
@@ -233,7 +247,7 @@
         this.OnStreamRead();
       }
 
-      return (int)len;
+      return readCount;
     }
 
     public override void Flush()

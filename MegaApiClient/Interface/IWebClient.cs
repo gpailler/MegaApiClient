@@ -12,5 +12,9 @@
     string PostRequestRaw(Uri url, Stream dataStream);
 
     Stream GetRequestRaw(Uri url);
+
+    long GetLength(Uri url);
+
+    Stream GetRequestRawWithRange(Uri url, long startByte, long endByte);
   }
 }

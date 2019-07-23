@@ -29,7 +29,9 @@
     {
       PostRequestJson,
       PostRequestRaw,
-      GetRequestRaw
+      GetRequestRaw,
+      GetLength,
+      GetRequestRawWithRange
     }
 
     public event Action<CallType, Uri> OnCalled;
@@ -72,6 +74,28 @@
       {
         var result = this._webClient.GetRequestRaw(url);
         this.OnCalled?.Invoke(CallType.GetRequestRaw, url);
+
+        return result;
+      });
+    }
+
+    public long GetLength(Uri url)
+    {
+      return this._policy.Execute(() =>
+      {
+        var result = this._webClient.GetLength(url);
+        this.OnCalled?.Invoke(CallType.GetLength, url);
+
+        return result;
+      });
+    }
+
+    public Stream GetRequestRawWithRange(Uri url, long startByte, long endByte)
+    {
+      return this._policy.Execute(() =>
+      {
+        var result = this._webClient.GetRequestRawWithRange(url, startByte, endByte);
+        this.OnCalled?.Invoke(CallType.GetRequestRawWithRange, url);
 
         return result;
       });

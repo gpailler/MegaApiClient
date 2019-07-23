@@ -50,6 +50,20 @@ namespace CG.Web.MegaApiClient
       return this.httpClient.GetStreamAsync(url).Result;
     }
 
+    public long GetLength(Uri url)
+    {
+      var request = new HttpRequestMessage(HttpMethod.Head, url);
+      return this.httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead).Result.Content.Headers
+        .ContentLength.GetValueOrDefault(-1);
+    }
+
+    public Stream GetRequestRawWithRange(Uri url, long startByte, long endByte)
+    {
+      var request = new HttpRequestMessage(HttpMethod.Get, url);
+      request.Headers.Add("Range", "bytes=" + startByte + "-" + (endByte - 1));
+      return this.httpClient.SendAsync(request).Result.Content.ReadAsStreamAsync().Result;
+    }
+
     private string PostRequest(Uri url, Stream dataStream, string contentType)
     {
       using (StreamContent content = new StreamContent(dataStream, this.BufferSize))
