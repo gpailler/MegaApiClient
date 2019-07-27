@@ -45,6 +45,22 @@ namespace CG.Web.MegaApiClient
       return request.GetResponse().GetResponseStream();
     }
 
+    public long GetLength(Uri url)
+    {
+      HttpWebRequest request = this.CreateRequest(url);
+      request.Method = "HEAD";
+      return request.GetResponse().ContentLength;
+    }
+
+    public Stream GetRequestRawWithRange(Uri url, long startByte, long endByte)
+    {
+      HttpWebRequest request = this.CreateRequest(url);
+      request.Method = "GET";
+      request.AddRange(startByte, endByte - 1);
+
+      return request.GetResponse().GetResponseStream();
+    }
+
     private string PostRequest(Uri url, Stream dataStream, string contentType)
     {
       HttpWebRequest request = this.CreateRequest(url);
