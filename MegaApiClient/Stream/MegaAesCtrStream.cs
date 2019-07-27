@@ -207,7 +207,7 @@
         var inputLength = Math.Min(16, endPosition - pos);
         byte[] input = new byte[inputLength];
         byte[] output = new byte[inputLength];
-        Array.Copy(buffer, pos - originalPosition, input, 0, input.Length);
+        Array.Copy(buffer, (int)(pos - originalPosition), input, 0, input.Length);
 
         // Merge Iv and counter
         byte[] ivCounter = new byte[16];
