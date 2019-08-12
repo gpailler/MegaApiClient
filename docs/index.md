@@ -27,8 +27,14 @@ The library supports .NET 4.0, .NET 4.5, .NET 4.6 and [.NET Standard 1.3](https:
 | Xamarin.Mac                | >= 3.0    |
 | Xamarin.Android            | >= 7.0    |
 | Universal Windows Platform | >= 10.0   |
-| Unity                      | >= 2018.2 |
+| Unity*                     | >= 2018.2 |
 
+* Need a link.xml file if IL2CPP is used:
+<linker>
+    <assembly fullname="MegaApiClient"> // the name of the assembly
+        <type fullname="CG.Web.MegaApiClient.*" preserve="all"/> // excludes all namespaces and classes recursively under MyNamespace
+    </assembly>
+</linker>
 
 ---
 
