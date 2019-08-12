@@ -29,7 +29,10 @@ The library supports .NET 4.0, .NET 4.5, .NET 4.6 and [.NET Standard 1.3](https:
 | Universal Windows Platform | >= 10.0   |
 | Unity*                     | >= 2018.2 |
 
-* Need a link.xml file if IL2CPP is used:
+* Need a link.xml file and a recompiled version of JSON .NET for Unity if IL2CPP is used:
+https://assetstore.unity.com/packages/tools/input-management/json-net-for-unity-11347
+(get the source code from the zip and open it in Visual studio, change the version to 10.0.0.0 and add a reference to UnityEngine.dll in the Unity installation \Editor\Data\Managed. recompile and use the compiled .dll instead of the default dll that comes with MegaApiClient)
+This is the link.xml file:
 <linker>
     <assembly fullname="MegaApiClient"> // the name of the assembly
         <type fullname="CG.Web.MegaApiClient.*" preserve="all"/> // excludes all namespaces and classes recursively under MyNamespace
