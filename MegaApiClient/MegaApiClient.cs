@@ -1077,11 +1077,12 @@
       return new Uri(Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(BaseApiUri.AbsoluteUri, query));
 #else
       UriBuilder builder = new UriBuilder(BaseApiUri);
-      var arguments = System.Web.HttpUtility.ParseQueryString(builder.Query);
+      var arguments = "";
       foreach (var item in query)
       {
-        arguments.Add(item.Key, item.Value);
+        arguments = arguments + item.Key + "=" + item.Value + "&";
       }
+      arguments = arguments.Substring(0, arguments.Length - 1);
 
       builder.Query = arguments.ToString();
       return builder.Uri;
