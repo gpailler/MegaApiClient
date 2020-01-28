@@ -119,6 +119,9 @@
     [JsonIgnore]
     public byte[] MetaMac { get; private set; }
 
+    [JsonIgnore]
+    public bool Failed { get; private set; }
+
     #endregion
 
     #region Deserialization
@@ -142,6 +145,13 @@
       }
 
       this.CreationDate = this.SerializedCreationDate.ToDateTime();
+
+      if (string.IsNullOrEmpty(this.SerializedKey))
+      {
+        Failed = true;
+
+        return;
+      }
 
       if (this.Type == NodeType.File || this.Type == NodeType.Directory)
       {
