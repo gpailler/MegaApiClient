@@ -120,7 +120,7 @@
     public byte[] MetaMac { get; private set; }
 
     [JsonIgnore]
-    public bool Failed { get; private set; }
+    public bool EmptyKey { get; private set; }
 
     #endregion
 
@@ -146,15 +146,16 @@
 
       this.CreationDate = this.SerializedCreationDate.ToDateTime();
 
-      if (string.IsNullOrEmpty(this.SerializedKey))
-      {
-        Failed = true;
-
-        return;
-      }
-
       if (this.Type == NodeType.File || this.Type == NodeType.Directory)
       {
+        // Check if file is not yet decrypted
+        if (string.IsNullOrEmpty(this.SerializedKey))
+        {
+          this.EmptyKey = true;
+
+          return;
+        }
+
         // There are cases where the SerializedKey property contains multiple keys separated with /
         // This can occur when a folder is shared and the parent is shared too.
         // Both keys are working so we use the first one
