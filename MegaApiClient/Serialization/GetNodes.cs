@@ -1,6 +1,7 @@
 ﻿namespace CG.Web.MegaApiClient.Serialization
 {
   using System.Collections.Generic;
+  using System.Linq;
   using System.Runtime.Serialization;
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
@@ -37,6 +38,8 @@
 
     public Node[] Nodes { get; private set; }
 
+    public Node[] UndecryptedNodes { get; private set; }
+
     [JsonProperty("f")]
     public JRaw NodesSerialized { get; private set; }
 
@@ -50,7 +53,10 @@
     [OnDeserialized]
     public void OnDeserialized(StreamingContext ctx)
     {
-      this.Nodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), new NodeConverter(this.masterKey, ref this.sharedKeys));
+      var tempNodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), new NodeConverter(this.masterKey, ref this.sharedKeys));
+
+      this.UndecryptedNodes = tempNodes.Where(x => x.EmptyKey).ToArray();
+      this.Nodes = tempNodes.Where(x => !x.EmptyKey).ToArray();
     }
   }
 }

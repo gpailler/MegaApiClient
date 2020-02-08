@@ -119,6 +119,9 @@
     [JsonIgnore]
     public byte[] MetaMac { get; private set; }
 
+    [JsonIgnore]
+    public bool EmptyKey { get; private set; }
+
     #endregion
 
     #region Deserialization
@@ -145,6 +148,14 @@
 
       if (this.Type == NodeType.File || this.Type == NodeType.Directory)
       {
+        // Check if file is not yet decrypted
+        if (string.IsNullOrEmpty(this.SerializedKey))
+        {
+          this.EmptyKey = true;
+
+          return;
+        }
+
         // There are cases where the SerializedKey property contains multiple keys separated with /
         // This can occur when a folder is shared and the parent is shared too.
         // Both keys are working so we use the first one
