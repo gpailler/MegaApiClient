@@ -138,7 +138,7 @@ Task("Test")
             new OpenCoverSettings
             {
                 ReturnTargetCodeOffset = 0,
-                Register = "user"
+                Register = "Path32"
             }
             .WithFilter("+[MegaApiClient]CG.Web.MegaApiClient*")
             .WithFilter("-[MegaApiClient.Tests]*")
