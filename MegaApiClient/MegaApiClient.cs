@@ -1119,16 +1119,11 @@
 
     private void GetPartsFromUri(Uri uri, out string id, out byte[] iv, out byte[] metaMac, out byte[] key)
     {
-      Regex uriRegex = new Regex("#(?<type>F?)!(?<id>.+)!(?<key>.+)");
-      Match match = uriRegex.Match(uri.Fragment);
-      if (match.Success == false)
+      if (!this.TryGetPartsFromUri(uri, out id, out var decryptedKey, out var isFolder)
+          && !this.TryGetPartsFromLegacyUri(uri, out id, out decryptedKey, out isFolder))
       {
         throw new ArgumentException(string.Format("Invalid uri. Unable to extract Id and Key from the uri {0}", uri));
       }
-
-      id = match.Groups["id"].Value;
-      byte[] decryptedKey = match.Groups["key"].Value.FromBase64();
-      var isFolder = match.Groups["type"].Value == "F";
 
       if (isFolder)
       {
@@ -1139,6 +1134,46 @@
       else
       {
         Crypto.GetPartsFromDecryptedKey(decryptedKey, out iv, out metaMac, out key);
+      }
+    }
+
+    private bool TryGetPartsFromUri(Uri uri, out string id, out byte[] decryptedKey, out bool isFolder)
+    {
+      Regex uriRegex = new Regex(@"/(?<type>(file|folder))/(?<id>[^#]+)#(?<key>[^$/]+)");
+      Match match = uriRegex.Match(uri.PathAndQuery + uri.Fragment);
+      if (match.Success)
+      {
+        id = match.Groups["id"].Value;
+        decryptedKey = match.Groups["key"].Value.FromBase64();
+        isFolder = match.Groups["type"].Value == "folder";
+        return true;
+      }
+      else
+      {
+        id = null;
+        decryptedKey = null;
+        isFolder = default;
+        return false;
+      }
+    }
+
+    private bool TryGetPartsFromLegacyUri(Uri uri, out string id, out byte[] decryptedKey, out bool isFolder)
+    {
+      Regex uriRegex = new Regex(@"#(?<type>F?)!(?<id>[^!]+)!(?<key>[^$!\?]+)");
+      Match match = uriRegex.Match(uri.Fragment);
+      if (match.Success)
+      {
+        id = match.Groups["id"].Value;
+        decryptedKey = match.Groups["key"].Value.FromBase64();
+        isFolder = match.Groups["type"].Value == "F";
+        return true;
+      }
+      else
+      {
+        id = null;
+        decryptedKey = null;
+        isFolder = default;
+        return false;
       }
     }
 

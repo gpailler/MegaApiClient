@@ -284,10 +284,12 @@ namespace CG.Web.MegaApiClient.Tests
       }
     }
 
-    [Fact]
-    public void GetNodeFromLink_Browse_Succeeds()
+    [Theory]
+    [InlineData(AuthenticatedTestContext.FileLink)]
+    [InlineData(AuthenticatedTestContext.FileLinkLegacy)]
+    public void GetNodeFromLink_Browse_Succeeds(string fileLink)
     {
-      var node = this.context.Client.GetNodeFromLink(new Uri(AuthenticatedTestContext.FileLink));
+      var node = this.context.Client.GetNodeFromLink(new Uri(fileLink));
 
       Assert.NotNull(node);
       Assert.Equal("SharedFile.jpg", node.Name);
@@ -295,10 +297,16 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(DateTime.Parse("2015-07-14T14:04:51.0000000+08:00"), node.ModificationDate);
     }
 
-    [Fact]
-    public void GetNodesFromLink_Succeeds()
+    [Theory]
+    [InlineData(AuthenticatedTestContext.FolderLink, null)]
+    [InlineData(AuthenticatedTestContext.FolderLink, "/file/SELECTED_FILE_NODE_ID")]
+    [InlineData(AuthenticatedTestContext.FolderLink, "/folder/SELECTED_FOLDER_NODE_ID")]
+    [InlineData(AuthenticatedTestContext.FolderLinkLegacy, null)]
+    [InlineData(AuthenticatedTestContext.FolderLinkLegacy, "?SELECTED_FILE_NODE_ID")]
+    [InlineData(AuthenticatedTestContext.FolderLinkLegacy, "!SELECTED_FOLDER_NODE_ID")]
+    public void GetNodesFromLink_Succeeds(string folderLink, string suffix)
     {
-      var nodes = this.context.Client.GetNodesFromLink(new Uri(AuthenticatedTestContext.FolderLink));
+      var nodes = this.context.Client.GetNodesFromLink(new Uri(folderLink + suffix));
 
       Assert.Equal(4, nodes.Count());
       INode node;
