@@ -479,8 +479,8 @@
       string response = this.Request<string>(request);
 
       return new Uri(BaseUri, string.Format(
-          "/#{0}!{1}!{2}",
-          node.Type == NodeType.Directory ? "F" : string.Empty,
+          "/{0}/{1}#{2}",
+          node.Type == NodeType.Directory ? "folder" : "file",
           response,
           node.Type == NodeType.Directory ? nodeCrypto.SharedKey.ToBase64() : nodeCrypto.FullKey.ToBase64()));
     }
