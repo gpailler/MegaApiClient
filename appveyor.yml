@@ -1,4 +1,4 @@
-version: 1.7.1.{build}
+version: x.x.x.{build}
 image: Visual Studio 2017
 
 pull_requests:

@@ -490,6 +490,7 @@
     /// </summary>
     /// <param name="node">Node to download (only <see cref="NodeType.File" /> can be downloaded)</param>
     /// <param name="outputFile">File to save the node to</param>
+    /// <param name="cancellationToken">CancellationToken used to cancel the action</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
@@ -518,6 +519,7 @@
     /// </summary>
     /// <param name="uri">Uri to download</param>
     /// <param name="outputFile">File to save the Uri to</param>
+    /// <param name="cancellationToken">CancellationToken used to cancel the action</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">uri or outputFile is null</exception>
@@ -545,6 +547,7 @@
     /// Retrieve a Stream to download and decrypt the specified node
     /// </summary>
     /// <param name="node">Node to download (only <see cref="NodeType.File" /> can be downloaded)</param>
+    /// <param name="cancellationToken">CancellationToken used to cancel the action</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
@@ -590,6 +593,7 @@
     /// Retrieve a Stream to download and decrypt the specified Uri
     /// </summary>
     /// <param name="uri">Uri to download</param>
+    /// <param name="cancellationToken">CancellationToken used to cancel the action</param>
     /// <exception cref="NotSupportedException">Not logged in</exception>
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">uri is null</exception>
@@ -686,6 +690,7 @@
     /// </summary>
     /// <param name="filename">File to upload</param>
     /// <param name="parent">Node to attach the uploaded file (all types except <see cref="NodeType.File" /> are supported)</param>
+    /// <param name="cancellationToken">CancellationToken used to cancel the action</param>
     /// <returns>Created node</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
@@ -723,7 +728,9 @@
     /// </summary>
     /// <param name="stream">Data to upload</param>
     /// <param name="name">Created node name</param>
+    /// <param name="modificationDate">Custom modification date stored in the Node attributes</param>
     /// <param name="parent">Node to attach the uploaded file (all types except <see cref="NodeType.File" /> are supported)</param>
+    /// <param name="cancellationToken">CancellationToken used to cancel the action</param>
     /// <returns>Created node</returns>
     /// <exception cref="NotSupportedException">Not logged in</exception>
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>

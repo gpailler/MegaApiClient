@@ -1,24 +1,20 @@
-#addin nuget:?package=Cake.Git
-#tool "nuget:?package=OpenCover"
-#tool "nuget:?package=xunit.runner.console"
-#tool nuget:?package=Codecov
-#addin nuget:?package=Cake.Codecov
-#addin nuget:?package=Cake.DocFx
+#tool "nuget:?package=GitVersion.CommandLine&version=5.2.4"
+#tool "nuget:?package=OpenCover&version=4.7.922"
+#tool "nuget:?package=xunit.runner.console&version=2.4.1"
+#tool "nuget:?package=Codecov&version=1.10.0"
+#addin "nuget:?package=Cake.Codecov&version=0.8.0"
+#addin "nuget:?package=Cake.DocFx&version=0.13.1"
+#addin "Cake.Incubator&version=5.1.0"
 
 var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Release");
 
 var artifactsDirectory = Directory("./artifacts");
 var solution = File("./MegaApiClient.sln");
 var globalAssemblyInfo = File("./GlobalAssemblyInfo.cs");
 var coverageResult = File("./artifacts/opencover.xml");
-var revision = AppVeyor.IsRunningOnAppVeyor ? AppVeyor.Environment.Build.Number : 0;
-var version = AppVeyor.IsRunningOnAppVeyor ? new Version(AppVeyor.Environment.Build.Version.Split('-')[0]).ToString(3) : "1.0.0";
-var isRCBuild = AppVeyor.IsRunningOnAppVeyor
-    && AppVeyor.Environment.Repository.Branch == "master"
-    && revision > 0
-    && AppVeyor.Environment.Repository.Tag.IsTag;
-var generatedVersion = "";
-var generatedSemVersion = "";
+GitVersion gitVersion = null;
+var isReleaseBuild = false;
 
 Task("Clean")
     .Does(() =>
@@ -37,50 +33,36 @@ Task("Restore-Packages")
 Task("Generate-Versionning")
     .Does(() =>
 {
-    generatedVersion = version + "." + revision;
-    Information("Generated version '{0}'", generatedVersion);
+    gitVersion = GitVersion(new GitVersionSettings {
+        UpdateAssemblyInfo = true,
+        UpdateAssemblyInfoFilePath = globalAssemblyInfo
+    });
 
-    var branch = AppVeyor.IsRunningOnAppVeyor
-        ? AppVeyor.Environment.PullRequest.IsPullRequest
-            ? AppVeyor.Environment.Build.Version.Split('-')[1]
-            : AppVeyor.Environment.Repository.Branch
-        : GitBranchCurrent(".").FriendlyName;
-    branch = branch.Replace('/', '-');
+    Information("GitVersion details:\n{0}", gitVersion.Dump());
 
-    generatedSemVersion = isRCBuild
-        ? version
-        : string.Join("-", version, branch.Substring(0, Math.Min(10, branch.Length)), revision);
-    Information("Generated semantic version '{0}'", generatedSemVersion);
-});
+    isReleaseBuild = AppVeyor.IsRunningOnAppVeyor
+        && (AppVeyor.Environment.Repository.Branch == "master" || AppVeyor.Environment.Repository.Tag.IsTag);
 
-
-Task("Patch-GlobalAssemblyVersions")
-    .IsDependentOn("Generate-Versionning")
-    .Does(() =>
-{
-    CreateAssemblyInfo(
-        globalAssemblyInfo,
-        new AssemblyInfoSettings
-        {
-            FileVersion = generatedVersion,
-            InformationalVersion = generatedSemVersion,
-            Version = generatedVersion
-        }
-    );
+    if (AppVeyor.IsRunningOnAppVeyor)
+    {
+        var buildVersion = gitVersion.SemVer + ".ci." + AppVeyor.Environment.Build.Number;
+        Information("Using build version: {0}", buildVersion);
+        AppVeyor.UpdateBuildVersion(buildVersion);
+    }
 });
 
 
 Task("Build")
     .IsDependentOn("Restore-Packages")
-    .IsDependentOn("Patch-GlobalAssemblyVersions")
+    .IsDependentOn("Generate-Versionning")
     .Does(() =>
 {
     DotNetCoreBuild(
         solution,
         new DotNetCoreBuildSettings
         {
-            Configuration = "Release",
-            ArgumentCustomization = args => args.Append("/p:PackageVersion={0}", generatedSemVersion)
+            Configuration = configuration,
+            ArgumentCustomization = args => args.Append("/p:PackageVersion={0}", gitVersion.NuGetVersion)
         }
     );
 });
@@ -94,12 +76,14 @@ Task("Pack")
         "./MegaApiClient/MegaApiClient.csproj",
         new DotNetCorePackSettings
         {
+            NoBuild = true,
+            Configuration = configuration,
             OutputDirectory = artifactsDirectory,
             ArgumentCustomization = args =>
             {
-                args.Append("/p:PackageVersion={0}", generatedSemVersion);
+                args.Append("/p:PackageVersion={0}", gitVersion.NuGetVersion);
 
-                if (isRCBuild == false)
+                if (!isReleaseBuild)
                 {
                     args.Append("--include-symbols");
                 }
@@ -114,7 +98,7 @@ Task("Pack")
 
 Task("Test")
     .IsDependentOn("Restore-Packages")
-    .IsDependentOn("Patch-GlobalAssemblyVersions")
+    .IsDependentOn("Generate-Versionning")
     .Does(() =>
 {
     var testConfiguration = "Debug";
@@ -124,7 +108,7 @@ Task("Test")
         new DotNetCoreBuildSettings
         {
             Configuration = testConfiguration,
-            ArgumentCustomization = args => args.Append("/p:PackageVersion={0}", generatedSemVersion)
+            ArgumentCustomization = args => args.Append("/p:PackageVersion={0}", gitVersion.NuGetVersion)
         }
     );
 
