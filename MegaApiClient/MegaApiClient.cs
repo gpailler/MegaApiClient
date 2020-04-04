@@ -766,9 +766,8 @@
       }
 
       string completionHandle = string.Empty;
-      int requestDelay = this.options.ApiRequestDelay;
-      int remainingRetry = this.options.ApiRequestAttempts;
-      while (remainingRetry-- > 0)
+      int attempt = 0;
+      while (this.options.ComputeApiRequestRetryWaitDelay(++attempt, out var retryDelay))
       {
         // Retrieve upload URL
         UploadUrlRequest uploadRequest = new UploadUrlRequest(stream.Length);
@@ -811,7 +810,7 @@
               catch (Exception ex)
               {
                 apiResult = ApiResultCode.RequestFailedRetry;
-                this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, remainingRetry, requestDelay, apiResult, ex));
+                this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, attempt, retryDelay, apiResult, ex));
 
                 break;
               }
@@ -820,12 +819,12 @@
 
           if (apiResult != ApiResultCode.Ok)
           {
-            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, remainingRetry, requestDelay, apiResult, completionHandle));
+            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, attempt, retryDelay, apiResult, completionHandle));
 
             if (apiResult == ApiResultCode.RequestFailedRetry || apiResult == ApiResultCode.RequestFailedPermanetly || apiResult == ApiResultCode.TooManyRequests)
             {
               // Restart upload from the beginning
-              requestDelay = this.Wait(requestDelay);
+              this.Wait(retryDelay);
 
               // Reset steam position
               stream.Seek(0, SeekOrigin.Begin);
@@ -1014,9 +1013,8 @@
       string dataRequest = JsonConvert.SerializeObject(new object[] { request });
       Uri uri = this.GenerateUrl(request.QueryArguments);
       object jsonData = null;
-      int requestDelay = this.options.ApiRequestDelay;
-      int remainingRetry = this.options.ApiRequestAttempts;
-      while (remainingRetry-- > 0)
+      int attempt = 0;
+      while (this.options.ComputeApiRequestRetryWaitDelay(++attempt, out var retryDelay))
       {
         string dataResult = this.webClient.PostRequestJson(uri, dataRequest);
 
@@ -1033,12 +1031,12 @@
 
           if (apiCode != ApiResultCode.Ok)
           {
-            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, this.options.ApiRequestAttempts - remainingRetry, requestDelay, apiCode, dataResult));
+            this.ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, attempt, retryDelay, apiCode, dataResult));
           }
 
           if (apiCode == ApiResultCode.RequestFailedRetry)
           {
-            requestDelay = this.Wait(requestDelay);
+            this.Wait(retryDelay);
             continue;
           }
 
@@ -1055,18 +1053,15 @@
       return (typeof(TResponse) == typeof(string)) ? data as TResponse : JsonConvert.DeserializeObject<TResponse>(data, new GetNodesResponseConverter(key));
     }
 
-    private int Wait(int requestDelay)
+    private void Wait(TimeSpan retryDelay)
     {
-      requestDelay = (int) Math.Round(requestDelay * this.options.ApiRequestDelayExponentialFactor);
 #if NET40
-      Thread.Sleep(requestDelay);
+      Thread.Sleep(retryDelay);
 #else
       Task
-        .Delay(requestDelay)
+        .Delay(retryDelay)
         .Wait();
 #endif
-
-      return requestDelay;
     }
 
     private Uri GenerateUrl(Dictionary<string, string> queryArguments)
