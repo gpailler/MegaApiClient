@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <Description>MegaApiClient is a C# .Net library to access http://mega.co.nz / http://mega.nz cloud storage and file hosting service.</Description>
-    <Copyright>Copyright © 2018</Copyright>
+    <Copyright>Copyright © 2020</Copyright>
     <AssemblyTitle>Mega.co.nz client library</AssemblyTitle>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <VersionPrefix>1.6.0</VersionPrefix>
+    <VersionPrefix>1.0.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <Title>Mega.co.nz client library</Title>
     <Authors>Gregoire Pailler</Authors>

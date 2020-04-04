@@ -232,3 +232,6 @@ _Pvt_Extensions
 # CakeBuild
 tools/*
 !tools/packages.config
+
+# Ignore Rider
+.idea/*
