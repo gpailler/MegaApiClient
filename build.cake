@@ -7,6 +7,7 @@
 #addin "Cake.Incubator&version=5.1.0"
 
 var target = Argument("target", "Default");
+var configuration = Argument("configuration", "Release");
 
 var artifactsDirectory = Directory("./artifacts");
 var solution = File("./MegaApiClient.sln");
@@ -60,7 +61,7 @@ Task("Build")
         solution,
         new DotNetCoreBuildSettings
         {
-            Configuration = "Release",
+            Configuration = configuration,
             ArgumentCustomization = args => args.Append("/p:PackageVersion={0}", gitVersion.NuGetVersion)
         }
     );
@@ -75,6 +76,8 @@ Task("Pack")
         "./MegaApiClient/MegaApiClient.csproj",
         new DotNetCorePackSettings
         {
+            NoBuild = true,
+            Configuration = configuration,
             OutputDirectory = artifactsDirectory,
             ArgumentCustomization = args =>
             {

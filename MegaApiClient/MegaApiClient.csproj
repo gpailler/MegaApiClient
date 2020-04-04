@@ -11,7 +11,7 @@
     <Authors>Gregoire Pailler</Authors>
     <AssemblyName>MegaApiClient</AssemblyName>
     <PackageProjectUrl>https://github.com/gpailler/MegaApiClient</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/gpailler/MegaApiClient/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageTags>mega;mega.co.nz;mega.nz;netstandard;netcore;mono;xamarin;uwp;cloud-storage</PackageTags>
     <RepositoryType>git</RepositoryType>
