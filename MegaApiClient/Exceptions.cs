@@ -148,6 +148,11 @@
     /// <summary>
     /// API_EAPPKEY (-22): Invalid application key; request not processed
     /// </summary>
-    InvalidOrMissingApplicationKey = -22
+    InvalidOrMissingApplicationKey = -22,
+
+    /// <summary>
+    /// Login requires Two-Factor Authentication
+    /// </summary>
+    TwoFactorAuthenticationError = -26
   }
 }
