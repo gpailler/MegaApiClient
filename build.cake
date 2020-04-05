@@ -38,10 +38,12 @@ Task("Generate-Versionning")
         UpdateAssemblyInfoFilePath = globalAssemblyInfo
     });
 
-    Information("GitVersion details:\n{0}", gitVersion.Dump());
-
     isReleaseBuild = AppVeyor.IsRunningOnAppVeyor
-        && (AppVeyor.Environment.Repository.Branch == "master" || AppVeyor.Environment.Repository.Tag.IsTag);
+            && AppVeyor.Environment.Repository.Branch == "master"
+            && AppVeyor.Environment.Repository.Tag.IsTag;
+
+    Information("GitVersion details:\n{0}", gitVersion.Dump());
+    Information("Release build: {0}", isReleaseBuild);
 
     if (AppVeyor.IsRunningOnAppVeyor)
     {

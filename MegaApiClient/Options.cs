@@ -1,15 +1,16 @@
 ﻿namespace CG.Web.MegaApiClient
 {
   using System;
+  using System.Linq;
 
   public class Options
   {
     public const string DefaultApplicationKey = "axhQiYyQ";
     public const bool DefaultSynchronizeApiRequests = true;
 
-    public const int DefaultApiRequestAttempts = 60;
-    public const int DefaultApiRequestDelay = 500;
-    public const float DefaultApiRequestDelayExponentialFactor = 1.5f;
+    public const int DefaultApiRequestAttempts = 17;
+    public const int DefaultApiRequestDelay = 100;
+    public const float DefaultApiRequestDelayFactor = 1.5f;
 
     public const int DefaultBufferSize = 1024 * 64;
     public const int DefaultChunksPackSize = 1024 * 1024;
@@ -18,12 +19,12 @@
     public const long DefaultReportProgressChunkSize = DefaultBufferSize;
 #endif
 
+    public delegate bool ComputeApiRequestRetryWaitDelayDelegate(int attempt, out TimeSpan delay);
+
     public Options(
       string applicationKey = DefaultApplicationKey,
       bool synchronizeApiRequests = DefaultSynchronizeApiRequests,
-      int apiRequestAttempts = DefaultApiRequestAttempts,
-      int apiRequestDelay = DefaultApiRequestDelay,
-      float apiRequestDelayExponentialFactor = DefaultApiRequestDelayExponentialFactor,
+      ComputeApiRequestRetryWaitDelayDelegate computeApiRequestRetryWaitDelay = null,
       int bufferSize = DefaultBufferSize,
       int chunksPackSize = DefaultChunksPackSize
 #if !NET40
@@ -35,9 +36,7 @@
       this.ApplicationKey = applicationKey;
       this.SynchronizeApiRequests = synchronizeApiRequests;
 
-      this.ApiRequestAttempts = apiRequestAttempts;
-      this.ApiRequestDelay = apiRequestDelay;
-      this.ApiRequestDelayExponentialFactor = apiRequestDelayExponentialFactor;
+      this.ComputeApiRequestRetryWaitDelay = computeApiRequestRetryWaitDelay ?? this.ComputeDefaultApiRequestRetryWaitDelay;
 
       this.BufferSize = bufferSize;
       this.ChunksPackSize = chunksPackSize;
@@ -57,11 +56,7 @@
 
     public bool SynchronizeApiRequests { get; }
 
-    public int ApiRequestAttempts { get; }
-
-    public int ApiRequestDelay { get; }
-
-    public float ApiRequestDelayExponentialFactor { get; }
+    public ComputeApiRequestRetryWaitDelayDelegate ComputeApiRequestRetryWaitDelay { get; }
 
     /// <summary>
     /// Size of the buffer used when downloading files
@@ -83,5 +78,21 @@
 #if !NET40
     public long ReportProgressChunkSize { get; internal set;}
 #endif
+
+    private bool ComputeDefaultApiRequestRetryWaitDelay(int attempt, out TimeSpan delay)
+    {
+      if (attempt > DefaultApiRequestAttempts)
+      {
+        delay = default;
+        return false;
+      }
+      else
+      {
+        var delayMilliseconds = Enumerable.Range(0, attempt)
+          .Aggregate(0, (current, item) => (int)(current == 0 ? DefaultApiRequestDelay : current * DefaultApiRequestDelayFactor));
+        delay = TimeSpan.FromMilliseconds(delayMilliseconds);
+        return true;
+      }
+    }
   }
 }
