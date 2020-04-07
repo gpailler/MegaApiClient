@@ -45,18 +45,18 @@ references:
   commentId: T:CG.Web.MegaApiClient.ApiRequestFailedEventArgs
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs
   nameWithType: ApiRequestFailedEventArgs
-- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.Int32,CG.Web.MegaApiClient.ApiResultCode,System.Exception)
-  name: ApiRequestFailedEventArgs(Uri, Int32, Int32, ApiResultCode, Exception)
-  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_System_Uri_System_Int32_System_Int32_CG_Web_MegaApiClient_ApiResultCode_System_Exception_
-  commentId: M:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.Int32,CG.Web.MegaApiClient.ApiResultCode,System.Exception)
-  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(System.Uri, System.Int32, System.Int32, CG.Web.MegaApiClient.ApiResultCode, System.Exception)
-  nameWithType: ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(Uri, Int32, Int32, ApiResultCode, Exception)
-- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.Int32,CG.Web.MegaApiClient.ApiResultCode,System.String)
-  name: ApiRequestFailedEventArgs(Uri, Int32, Int32, ApiResultCode, String)
-  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_System_Uri_System_Int32_System_Int32_CG_Web_MegaApiClient_ApiResultCode_System_String_
-  commentId: M:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.Int32,CG.Web.MegaApiClient.ApiResultCode,System.String)
-  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(System.Uri, System.Int32, System.Int32, CG.Web.MegaApiClient.ApiResultCode, System.String)
-  nameWithType: ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(Uri, Int32, Int32, ApiResultCode, String)
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.TimeSpan,CG.Web.MegaApiClient.ApiResultCode,System.Exception)
+  name: ApiRequestFailedEventArgs(Uri, Int32, TimeSpan, ApiResultCode, Exception)
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_System_Uri_System_Int32_System_TimeSpan_CG_Web_MegaApiClient_ApiResultCode_System_Exception_
+  commentId: M:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.TimeSpan,CG.Web.MegaApiClient.ApiResultCode,System.Exception)
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(System.Uri, System.Int32, System.TimeSpan, CG.Web.MegaApiClient.ApiResultCode, System.Exception)
+  nameWithType: ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(Uri, Int32, TimeSpan, ApiResultCode, Exception)
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.TimeSpan,CG.Web.MegaApiClient.ApiResultCode,System.String)
+  name: ApiRequestFailedEventArgs(Uri, Int32, TimeSpan, ApiResultCode, String)
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_System_Uri_System_Int32_System_TimeSpan_CG_Web_MegaApiClient_ApiResultCode_System_String_
+  commentId: M:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor(System.Uri,System.Int32,System.TimeSpan,CG.Web.MegaApiClient.ApiResultCode,System.String)
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(System.Uri, System.Int32, System.TimeSpan, CG.Web.MegaApiClient.ApiResultCode, System.String)
+  nameWithType: ApiRequestFailedEventArgs.ApiRequestFailedEventArgs(Uri, Int32, TimeSpan, ApiResultCode, String)
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.#ctor*
   name: ApiRequestFailedEventArgs
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs__ctor_
@@ -103,19 +103,6 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.AttemptNum
   nameWithType: ApiRequestFailedEventArgs.AttemptNum
-- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
-  name: DelayMilliseconds
-  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_DelayMilliseconds
-  commentId: P:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
-  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
-  nameWithType: ApiRequestFailedEventArgs.DelayMilliseconds
-- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds*
-  name: DelayMilliseconds
-  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_DelayMilliseconds_
-  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
-  isSpec: "True"
-  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.DelayMilliseconds
-  nameWithType: ApiRequestFailedEventArgs.DelayMilliseconds
 - uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.Exception
   name: Exception
   href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_Exception
@@ -142,6 +129,19 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.ResponseJson
   nameWithType: ApiRequestFailedEventArgs.ResponseJson
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.RetryDelay
+  name: RetryDelay
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_RetryDelay
+  commentId: P:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.RetryDelay
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.RetryDelay
+  nameWithType: ApiRequestFailedEventArgs.RetryDelay
+- uid: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.RetryDelay*
+  name: RetryDelay
+  href: api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html#CG_Web_MegaApiClient_ApiRequestFailedEventArgs_RetryDelay_
+  commentId: Overload:CG.Web.MegaApiClient.ApiRequestFailedEventArgs.RetryDelay
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.ApiRequestFailedEventArgs.RetryDelay
+  nameWithType: ApiRequestFailedEventArgs.RetryDelay
 - uid: CG.Web.MegaApiClient.ApiResultCode
   name: ApiResultCode
   href: api/CG.Web.MegaApiClient.ApiResultCode.html
@@ -286,6 +286,12 @@ references:
   commentId: F:CG.Web.MegaApiClient.ApiResultCode.TooManyRequests
   fullName: CG.Web.MegaApiClient.ApiResultCode.TooManyRequests
   nameWithType: ApiResultCode.TooManyRequests
+- uid: CG.Web.MegaApiClient.ApiResultCode.TwoFactorAuthenticationError
+  name: TwoFactorAuthenticationError
+  href: api/CG.Web.MegaApiClient.ApiResultCode.html#CG_Web_MegaApiClient_ApiResultCode_TwoFactorAuthenticationError
+  commentId: F:CG.Web.MegaApiClient.ApiResultCode.TwoFactorAuthenticationError
+  fullName: CG.Web.MegaApiClient.ApiResultCode.TwoFactorAuthenticationError
+  nameWithType: ApiResultCode.TwoFactorAuthenticationError
 - uid: CG.Web.MegaApiClient.CancellableStream
   name: CancellableStream
   href: api/CG.Web.MegaApiClient.CancellableStream.html
@@ -1235,6 +1241,19 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.INodeInfo.Name
   nameWithType: INodeInfo.Name
+- uid: CG.Web.MegaApiClient.INodeInfo.SerializedFingerprint
+  name: SerializedFingerprint
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_SerializedFingerprint
+  commentId: P:CG.Web.MegaApiClient.INodeInfo.SerializedFingerprint
+  fullName: CG.Web.MegaApiClient.INodeInfo.SerializedFingerprint
+  nameWithType: INodeInfo.SerializedFingerprint
+- uid: CG.Web.MegaApiClient.INodeInfo.SerializedFingerprint*
+  name: SerializedFingerprint
+  href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_SerializedFingerprint_
+  commentId: Overload:CG.Web.MegaApiClient.INodeInfo.SerializedFingerprint
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.INodeInfo.SerializedFingerprint
+  nameWithType: INodeInfo.SerializedFingerprint
 - uid: CG.Web.MegaApiClient.INodeInfo.Size
   name: Size
   href: api/CG.Web.MegaApiClient.INodeInfo.html#CG_Web_MegaApiClient_INodeInfo_Size
@@ -2346,12 +2365,12 @@ references:
   commentId: T:CG.Web.MegaApiClient.Options
   fullName: CG.Web.MegaApiClient.Options
   nameWithType: Options
-- uid: CG.Web.MegaApiClient.Options.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Single,System.Int32,System.Int32,System.Int64)
-  name: Options(String, Boolean, Int32, Int32, Single, Int32, Int32, Int64)
-  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options__ctor_System_String_System_Boolean_System_Int32_System_Int32_System_Single_System_Int32_System_Int32_System_Int64_
-  commentId: M:CG.Web.MegaApiClient.Options.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Single,System.Int32,System.Int32,System.Int64)
-  fullName: CG.Web.MegaApiClient.Options.Options(System.String, System.Boolean, System.Int32, System.Int32, System.Single, System.Int32, System.Int32, System.Int64)
-  nameWithType: Options.Options(String, Boolean, Int32, Int32, Single, Int32, Int32, Int64)
+- uid: CG.Web.MegaApiClient.Options.#ctor(System.String,System.Boolean,CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate,System.Int32,System.Int32,System.Int64)
+  name: Options(String, Boolean, Options.ComputeApiRequestRetryWaitDelayDelegate, Int32, Int32, Int64)
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options__ctor_System_String_System_Boolean_CG_Web_MegaApiClient_Options_ComputeApiRequestRetryWaitDelayDelegate_System_Int32_System_Int32_System_Int64_
+  commentId: M:CG.Web.MegaApiClient.Options.#ctor(System.String,System.Boolean,CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate,System.Int32,System.Int32,System.Int64)
+  fullName: CG.Web.MegaApiClient.Options.Options(System.String, System.Boolean, CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate, System.Int32, System.Int32, System.Int64)
+  nameWithType: Options.Options(String, Boolean, Options.ComputeApiRequestRetryWaitDelayDelegate, Int32, Int32, Int64)
 - uid: CG.Web.MegaApiClient.Options.#ctor*
   name: Options
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options__ctor_
@@ -2359,45 +2378,6 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.Options
   nameWithType: Options.Options
-- uid: CG.Web.MegaApiClient.Options.ApiRequestAttempts
-  name: ApiRequestAttempts
-  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestAttempts
-  commentId: P:CG.Web.MegaApiClient.Options.ApiRequestAttempts
-  fullName: CG.Web.MegaApiClient.Options.ApiRequestAttempts
-  nameWithType: Options.ApiRequestAttempts
-- uid: CG.Web.MegaApiClient.Options.ApiRequestAttempts*
-  name: ApiRequestAttempts
-  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestAttempts_
-  commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestAttempts
-  isSpec: "True"
-  fullName: CG.Web.MegaApiClient.Options.ApiRequestAttempts
-  nameWithType: Options.ApiRequestAttempts
-- uid: CG.Web.MegaApiClient.Options.ApiRequestDelay
-  name: ApiRequestDelay
-  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelay
-  commentId: P:CG.Web.MegaApiClient.Options.ApiRequestDelay
-  fullName: CG.Web.MegaApiClient.Options.ApiRequestDelay
-  nameWithType: Options.ApiRequestDelay
-- uid: CG.Web.MegaApiClient.Options.ApiRequestDelay*
-  name: ApiRequestDelay
-  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelay_
-  commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestDelay
-  isSpec: "True"
-  fullName: CG.Web.MegaApiClient.Options.ApiRequestDelay
-  nameWithType: Options.ApiRequestDelay
-- uid: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
-  name: ApiRequestDelayExponentialFactor
-  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelayExponentialFactor
-  commentId: P:CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
-  fullName: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
-  nameWithType: Options.ApiRequestDelayExponentialFactor
-- uid: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor*
-  name: ApiRequestDelayExponentialFactor
-  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApiRequestDelayExponentialFactor_
-  commentId: Overload:CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
-  isSpec: "True"
-  fullName: CG.Web.MegaApiClient.Options.ApiRequestDelayExponentialFactor
-  nameWithType: Options.ApiRequestDelayExponentialFactor
 - uid: CG.Web.MegaApiClient.Options.ApplicationKey
   name: ApplicationKey
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ApplicationKey
@@ -2437,6 +2417,25 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.Options.ChunksPackSize
   nameWithType: Options.ChunksPackSize
+- uid: CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelay
+  name: ComputeApiRequestRetryWaitDelay
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ComputeApiRequestRetryWaitDelay
+  commentId: P:CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelay
+  fullName: CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelay
+  nameWithType: Options.ComputeApiRequestRetryWaitDelay
+- uid: CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelay*
+  name: ComputeApiRequestRetryWaitDelay
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_ComputeApiRequestRetryWaitDelay_
+  commentId: Overload:CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelay
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelay
+  nameWithType: Options.ComputeApiRequestRetryWaitDelay
+- uid: CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate
+  name: Options.ComputeApiRequestRetryWaitDelayDelegate
+  href: api/CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate.html
+  commentId: T:CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate
+  fullName: CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate
+  nameWithType: Options.ComputeApiRequestRetryWaitDelayDelegate
 - uid: CG.Web.MegaApiClient.Options.DefaultApiRequestAttempts
   name: DefaultApiRequestAttempts
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultApiRequestAttempts
@@ -2449,12 +2448,12 @@ references:
   commentId: F:CG.Web.MegaApiClient.Options.DefaultApiRequestDelay
   fullName: CG.Web.MegaApiClient.Options.DefaultApiRequestDelay
   nameWithType: Options.DefaultApiRequestDelay
-- uid: CG.Web.MegaApiClient.Options.DefaultApiRequestDelayExponentialFactor
-  name: DefaultApiRequestDelayExponentialFactor
-  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultApiRequestDelayExponentialFactor
-  commentId: F:CG.Web.MegaApiClient.Options.DefaultApiRequestDelayExponentialFactor
-  fullName: CG.Web.MegaApiClient.Options.DefaultApiRequestDelayExponentialFactor
-  nameWithType: Options.DefaultApiRequestDelayExponentialFactor
+- uid: CG.Web.MegaApiClient.Options.DefaultApiRequestDelayFactor
+  name: DefaultApiRequestDelayFactor
+  href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultApiRequestDelayFactor
+  commentId: F:CG.Web.MegaApiClient.Options.DefaultApiRequestDelayFactor
+  fullName: CG.Web.MegaApiClient.Options.DefaultApiRequestDelayFactor
+  nameWithType: Options.DefaultApiRequestDelayFactor
 - uid: CG.Web.MegaApiClient.Options.DefaultApplicationKey
   name: DefaultApplicationKey
   href: api/CG.Web.MegaApiClient.Options.html#CG_Web_MegaApiClient_Options_DefaultApplicationKey

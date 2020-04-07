@@ -8,7 +8,7 @@
     <title>MegaApiClient's documentation | MegaApiClient's documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="MegaApiClient's documentation | MegaApiClient's documentation ">
-    <meta name="generator" content="docfx 2.40.7.0">
+    <meta name="generator" content="docfx 2.51.0.0">
     
     <link rel="shortcut icon" href="images/mega_favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -125,11 +125,19 @@
 <td>&gt;= 10.0</td>
 </tr>
 <tr>
-<td>Unity</td>
+<td>Unity*</td>
 <td>&gt;= 2018.2</td>
 </tr>
 </tbody>
 </table>
+<ul>
+<li>Need a link.xml file if IL2CPP is used:
+<linker>
+  <assembly fullname="MegaApiClient"> // the name of the assembly
+      <type fullname="CG.Web.MegaApiClient.*" preserve="all"></type> // excludes all namespaces and classes recursively under MyNamespace
+  </assembly>
+</linker></li>
+</ul>
 <hr>
 <p>MegaApiClient source is available on <a href="https://github.com/gpailler/MegaApiClient">GitHub</a> and is released under <a href="https://choosealicense.com/licenses/mit/">MIT</a> license.</p>
 </article>
