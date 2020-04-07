@@ -29,12 +29,18 @@ The library supports .NET 4.0, .NET 4.5, .NET 4.6 and [.NET Standard 1.3](https:
 | Universal Windows Platform | >= 10.0   |
 | Unity*                     | >= 2018.2 |
 
-* Need a link.xml file if IL2CPP is used:
+---
+
+\* Need a link.xml file if IL2CPP is used:
+```
 <linker>
-    <assembly fullname="MegaApiClient"> // the name of the assembly
-        <type fullname="CG.Web.MegaApiClient.*" preserve="all"/> // excludes all namespaces and classes recursively under MyNamespace
+    <!-- the name of the assembly -->
+    <assembly fullname="MegaApiClient">
+        <!-- excludes all namespaces and classes recursively under MyNamespace -->
+        <type fullname="CG.Web.MegaApiClient.*" preserve="all"/>
     </assembly>
 </linker>
+```
 
 ---
 
