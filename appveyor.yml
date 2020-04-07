@@ -52,7 +52,7 @@ deploy:
     release: v$(appveyor_build_version)
     description: 'Description'
     auth_token:
-      secure: +346hyzBwuhGGVJJTgtAdGfoQ3ck26Q9zFx8mNSsWYkx8og19sJXjAlOYj8EnZv1
+      secure: OELWxLBLVw9arTKB4IIBhY+xRdeSZK26a4gUqhHR631GqPSd0IPKaxYVvhuAfeaa
     draft: true
     on:
       branch: master
