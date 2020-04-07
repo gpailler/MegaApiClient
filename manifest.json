@@ -9,7 +9,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.ApiException.html",
-          "hash": "kEHPnFEAD072aWU8jjY+4A=="
+          "hash": "/Hs/tr3cLrIKX0K3K3lS8g=="
         }
       },
       "is_incremental": false,
@@ -21,7 +21,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html",
-          "hash": "/lL3mG+M9cjxWyHcL8CA9Q=="
+          "hash": "FKT46t/AFemAYW0zlN4Uww=="
         }
       },
       "is_incremental": false,
@@ -33,7 +33,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.ApiResultCode.html",
-          "hash": "VDkR5OU9iag6s7KbAp1cGg=="
+          "hash": "GN8O/hnKSqPwYy1Cfw/k/w=="
         }
       },
       "is_incremental": false,
@@ -45,7 +45,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.CancellableStream.html",
-          "hash": "uIf1ngG4R0maErJ2TdrUuQ=="
+          "hash": "emiMhfsYERYJkYsFBfjQmw=="
         }
       },
       "is_incremental": false,
@@ -57,7 +57,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.DownloadException.html",
-          "hash": "8UppuoLCzDakVxA2oW3C0Q=="
+          "hash": "9eYVYZOGcdnJdo1fwPiv8w=="
         }
       },
       "is_incremental": false,
@@ -69,7 +69,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.IAccountInformation.html",
-          "hash": "wfLZQJr0mJKLVPagIv/oag=="
+          "hash": "clhl/dTQyPRdmYNDQn/R4g=="
         }
       },
       "is_incremental": false,
@@ -81,7 +81,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.IMegaApiClient.html",
-          "hash": "6+SVECVWhxv8U8eiSHS8LA=="
+          "hash": "LdjULgMh06nT0mCKC5CV6w=="
         }
       },
       "is_incremental": false,
@@ -93,7 +93,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.INode.html",
-          "hash": "GWx7JsULXgGzMAK4vA8qVA=="
+          "hash": "W5qRQCv1io/qGjSFpWLHQw=="
         }
       },
       "is_incremental": false,
@@ -105,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.INodeInfo.html",
-          "hash": "FNAY7TAVkw6qVQSQ11EDqQ=="
+          "hash": "65jH1idb4I1DAXoNudZU3Q=="
         }
       },
       "is_incremental": false,
@@ -117,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.ISession.html",
-          "hash": "pQomVvb6kGG71BeQDxTIqg=="
+          "hash": "5vfJLHXMCSdkafM6bpN0VA=="
         }
       },
       "is_incremental": false,
@@ -129,7 +129,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.IStorageMetrics.html",
-          "hash": "SYFhdHe8Gh0DV3oH+XJnhw=="
+          "hash": "X92PgR7r4uuvC4CzKT/G0w=="
         }
       },
       "is_incremental": false,
@@ -141,7 +141,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.IWebClient.html",
-          "hash": "HvdpVpFKWA1/3Jb6JtUdxQ=="
+          "hash": "ZV8FjkNno85pyO0s4UFXCg=="
         }
       },
       "is_incremental": false,
@@ -153,7 +153,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html",
-          "hash": "kIj+1XSKPmSzJA6Kr8nS5g=="
+          "hash": "Vt0zOmuUC2HGS+CH69t1lg=="
         }
       },
       "is_incremental": false,
@@ -165,7 +165,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html",
-          "hash": "pfvVXtmSHboQ6wJW3n9yxQ=="
+          "hash": "6WjtSyfjrxNs6Jl0cClvzA=="
         }
       },
       "is_incremental": false,
@@ -177,7 +177,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.html",
-          "hash": "ct/EEDrDa9D1InDCnmjfIA=="
+          "hash": "PKWUZMQb172Xep1JJRyM1Q=="
         }
       },
       "is_incremental": false,
@@ -189,7 +189,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.NodeExtensions.html",
-          "hash": "tRveLQ8IOV8BYUmvW03zKw=="
+          "hash": "YmZpaLN1QCm+dJ/3KpNOhA=="
         }
       },
       "is_incremental": false,
@@ -201,7 +201,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.NodeType.html",
-          "hash": "zuFc5uzo0R15N3Ub5JYuyg=="
+          "hash": "NkpGlM33pFV+GUY8DVNouw=="
         }
       },
       "is_incremental": false,
@@ -213,7 +213,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate.html",
-          "hash": "OQGZRTHcCPQsXigQ1xBikg=="
+          "hash": "2Byw6pF9Pmz4TpY1y3NYBA=="
         }
       },
       "is_incremental": false,
@@ -225,7 +225,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.Options.html",
-          "hash": "uO0xnRkj8unCh2rgKnp10w=="
+          "hash": "ofAOcx4P2GR1EiTzijrz/g=="
         }
       },
       "is_incremental": false,
@@ -237,7 +237,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.SessionStatus.html",
-          "hash": "iBasPjtCoRB797UpbH4NZw=="
+          "hash": "ra/B/nrEBMNtDH1s1756HQ=="
         }
       },
       "is_incremental": false,
@@ -249,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.UploadException.html",
-          "hash": "fBPfOTL2Vb54aI/JDLGEIA=="
+          "hash": "1e3wYyQdBsSQN0VEYi8n+A=="
         }
       },
       "is_incremental": false,
@@ -261,7 +261,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.WebClient.html",
-          "hash": "tO+6mciQnNs/uZFulgedyw=="
+          "hash": "XrVZ3NDVLXSwkwUVv6V8tw=="
         }
       },
       "is_incremental": false,
@@ -273,7 +273,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CG.Web.MegaApiClient.html",
-          "hash": "pYUexq0lhZOtwaeMFvdeHg=="
+          "hash": "y6l41+D7MzrcBX7ddPgiOg=="
         }
       },
       "is_incremental": false,
@@ -285,7 +285,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Medo.Security.Cryptography.Pbkdf2.html",
-          "hash": "yl52536XLCOerv5UZg6HlA=="
+          "hash": "z/nsypImHVkJ5FxZXd1xrQ=="
         }
       },
       "is_incremental": false,
@@ -297,7 +297,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Medo.Security.Cryptography.html",
-          "hash": "M2bTZfqaQrGNhf7e6ie4Zg=="
+          "hash": "mI4VFP49xAuXXwJNYrrF6g=="
         }
       },
       "is_incremental": false,
@@ -321,7 +321,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/faq.html",
-          "hash": "gzsHe2xnGjaa5REJitBemQ=="
+          "hash": "ex/hXjp/n24MZJSJsvza+w=="
         }
       },
       "is_incremental": false,
@@ -333,7 +333,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/installation.html",
-          "hash": "33/IzmWuduCiBXFd0qAMJQ=="
+          "hash": "0KrCWveeSa2uGlhZ9sfI7Q=="
         }
       },
       "is_incremental": false,
@@ -345,7 +345,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/samples.html",
-          "hash": "ERyqc+qzaGKv6+RvGpedGQ=="
+          "hash": "X+fw2enyg3pSQDJ3KZ8zkA=="
         }
       },
       "is_incremental": false,
@@ -386,12 +386,15 @@
       "version": ""
     },
     {
+      "log_codes": [
+        "InvalidYamlHeader"
+      ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "fSd1rEvaWhzTvjV6fXjFYg=="
+          "hash": "LIXCG11SUhdW8Rjm6U9VBQ=="
         }
       },
       "is_incremental": false,

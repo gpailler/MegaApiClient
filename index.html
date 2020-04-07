@@ -130,15 +130,16 @@
 </tr>
 </tbody>
 </table>
-<ul>
-<li>Need a link.xml file if IL2CPP is used:
-<linker>
-  <assembly fullname="MegaApiClient"> // the name of the assembly
-      <type fullname="CG.Web.MegaApiClient.*" preserve="all"></type> // excludes all namespaces and classes recursively under MyNamespace
-  </assembly>
-</linker></li>
-</ul>
 <hr>
+<p>* Need a link.xml file if IL2CPP is used:</p>
+<pre><code>&lt;linker&gt;
+    &lt;!-- the name of the assembly --&gt;
+    &lt;assembly fullname=&quot;MegaApiClient&quot;&gt;
+        &lt;!-- excludes all namespaces and classes recursively under MyNamespace --&gt;
+        &lt;type fullname=&quot;CG.Web.MegaApiClient.*&quot; preserve=&quot;all&quot;/&gt;
+    &lt;/assembly&gt;
+&lt;/linker&gt;
+</code></pre><hr>
 <p>MegaApiClient source is available on <a href="https://github.com/gpailler/MegaApiClient">GitHub</a> and is released under <a href="https://choosealicense.com/licenses/mit/">MIT</a> license.</p>
 </article>
           </div>
@@ -167,7 +168,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2013-2018 - Gregoire Pailler
+            Copyright © 2013-2020 - Gregoire Pailler
             
           </div>
         </div>
