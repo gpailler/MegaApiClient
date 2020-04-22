@@ -171,7 +171,7 @@
 
     public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password)
     {
-      return this.client.LoginAsync(email, password, null);
+      return this.client.LoginAsync(email, password);
     }
 
     public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password, string mfaKey)
