@@ -1,4 +1,4 @@
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System;
   using System.Collections.Generic;
@@ -12,6 +12,8 @@ namespace CG.Web.MegaApiClient
     bool IsLoggedIn { get; }
 
     MegaApiClient.LogonSessionToken Login(string email, string password);
+
+    MegaApiClient.LogonSessionToken Login(string email, string password, string mfaKey);
 
     MegaApiClient.LogonSessionToken Login(MegaApiClient.AuthInfos authInfos);
 
@@ -59,6 +61,6 @@ namespace CG.Web.MegaApiClient
 
     INode Rename(INode node, string newName);
 
-    MegaApiClient.AuthInfos GenerateAuthInfos(string email, string password);
+    MegaApiClient.AuthInfos GenerateAuthInfos(string email, string password, string mfaKey);
   }
 }

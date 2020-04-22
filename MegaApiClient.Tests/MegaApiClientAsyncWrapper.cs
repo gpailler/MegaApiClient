@@ -30,7 +30,12 @@
 
     public MegaApiClient.LogonSessionToken Login(string email, string password)
     {
-      return this.UnwrapException(() => this.client.LoginAsync(email, password).Result);
+      return this.UnwrapException(() => this.client.LoginAsync(email, password, null).Result);
+    }
+
+    public MegaApiClient.LogonSessionToken Login(string email, string password, string mfaKey)
+    {
+      return this.UnwrapException(() => this.client.LoginAsync(email, password, mfaKey).Result);
     }
 
     public MegaApiClient.LogonSessionToken Login(MegaApiClient.AuthInfos authInfos)
@@ -159,9 +164,19 @@
       return this.UnwrapException(() => this.client.GenerateAuthInfosAsync(email, password).Result);
     }
 
+    public MegaApiClient.AuthInfos GenerateAuthInfos(string email, string password, string mfaKey)
+    {
+      return this.UnwrapException(() => this.client.GenerateAuthInfosAsync(email, password, mfaKey).Result);
+    }
+
     public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password)
     {
-      return this.client.LoginAsync(email, password);
+      return this.client.LoginAsync(email, password, null);
+    }
+
+    public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password, string mfaKey)
+    {
+      return this.client.LoginAsync(email, password, mfaKey);
     }
 
     public Task<MegaApiClient.LogonSessionToken> LoginAsync(MegaApiClient.AuthInfos authInfos)
@@ -282,6 +297,11 @@
     public Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password)
     {
       return this.client.GenerateAuthInfosAsync(email, password);
+    }
+
+    public Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password, string mfaKey)
+    {
+      return this.client.GenerateAuthInfosAsync(email, password, mfaKey);
     }
 
     private T UnwrapException<T>(Func<T> action)

@@ -195,7 +195,7 @@ namespace CG.Web.MegaApiClient.Tests
     [Theory, MemberData(nameof(AllValidCredentials))]
     public void Login_DeserializedAuthInfos_Succeeds(string email, string password)
     {
-      var authInfos = this.context.Client.GenerateAuthInfos(email, password);
+      var authInfos = this.context.Client.GenerateAuthInfos(email, password, null);
       var serializedAuthInfos = JsonConvert.SerializeObject(authInfos, Formatting.None).Replace('\"', '\'');
       var deserializedAuthInfos = JsonConvert.DeserializeObject<MegaApiClient.AuthInfos>(serializedAuthInfos);
 
@@ -206,13 +206,13 @@ namespace CG.Web.MegaApiClient.Tests
     [Theory, MemberData(nameof(InvalidCredentials))]
     public void GenerateAuthInfos_InvalidCredentials_Throws(string email, string password, string expectedMessage)
     {
-      Assert.Throws<ArgumentNullException>(expectedMessage, () => this.context.Client.GenerateAuthInfos(email, password));
+      Assert.Throws<ArgumentNullException>(expectedMessage, () => this.context.Client.GenerateAuthInfos(email, password, null));
     }
 
     [Theory, InlineData("username@example.com", "password", "{'Email':'username@example.com','Hash':'ObELy57HULI','PasswordAesKey':'ZAM5cl5uvROiXwBSEp98sQ=='}")]
     public void GenerateAuthInfos_ValidCredentials_Succeeds(string email, string password, string expectedResult)
     {
-      var authInfos = this.context.Client.GenerateAuthInfos(email, password);
+      var authInfos = this.context.Client.GenerateAuthInfos(email, password, null);
       var result = JsonConvert.SerializeObject(authInfos, Formatting.None).Replace('\"', '\'');
 
       Assert.Equal(expectedResult, result);
