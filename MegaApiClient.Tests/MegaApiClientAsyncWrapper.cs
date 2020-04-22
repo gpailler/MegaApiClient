@@ -30,7 +30,7 @@
 
     public MegaApiClient.LogonSessionToken Login(string email, string password)
     {
-      return this.UnwrapException(() => this.client.LoginAsync(email, password, null).Result);
+      return this.UnwrapException(() => this.client.LoginAsync(email, password).Result);
     }
 
     public MegaApiClient.LogonSessionToken Login(string email, string password, string mfaKey)

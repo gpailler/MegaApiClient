@@ -61,6 +61,6 @@
 
     INode Rename(INode node, string newName);
 
-    MegaApiClient.AuthInfos GenerateAuthInfos(string email, string password, string mfaKey);
+    MegaApiClient.AuthInfos GenerateAuthInfos(string email, string password, string mfaKey = null);
   }
 }
