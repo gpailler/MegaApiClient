@@ -213,7 +213,8 @@
       if (!string.IsNullOrEmpty(authInfos.MFAKey))
       {
         request = new LoginRequest(authInfos.Email, authInfos.Hash, authInfos.MFAKey);
-      } else
+      }
+      else
       {
         request = new LoginRequest(authInfos.Email, authInfos.Hash);
       }

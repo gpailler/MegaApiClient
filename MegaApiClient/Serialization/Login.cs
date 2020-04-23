@@ -12,7 +12,7 @@
     }
 
     public LoginRequest(string userHandle, string passwordHash, string mfaKey)
-  : base("us")
+      : base("us")
     {
       this.UserHandle = userHandle;
       this.PasswordHash = passwordHash;
