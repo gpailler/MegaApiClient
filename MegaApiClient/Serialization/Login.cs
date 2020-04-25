@@ -11,11 +11,22 @@
       this.PasswordHash = passwordHash;
     }
 
+    public LoginRequest(string userHandle, string passwordHash, string mfaKey)
+      : base("us")
+    {
+      this.UserHandle = userHandle;
+      this.PasswordHash = passwordHash;
+      this.MFAKey = mfaKey;
+    }
+
     [JsonProperty("user")]
     public string UserHandle { get; private set; }
 
     [JsonProperty("uh")]
     public string PasswordHash { get; private set; }
+
+    [JsonProperty("mfa")]
+    public string MFAKey { get; private set; }
   }
 
   internal class LoginResponse

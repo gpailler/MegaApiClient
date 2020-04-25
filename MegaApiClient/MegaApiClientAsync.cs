@@ -9,11 +9,11 @@ namespace CG.Web.MegaApiClient
 
   public partial class MegaApiClient : IMegaApiClient
   {
-    #region Public async methods
+#region Public async methods
 
-    public Task<LogonSessionToken> LoginAsync(string email, string password)
+    public Task<LogonSessionToken> LoginAsync(string email, string password, string mfaKey = null)
     {
-      return Task.Run(() => this.Login(email, password));
+      return Task.Run(() => this.Login(email, password, mfaKey));
     }
 
     public Task<LogonSessionToken> LoginAsync(AuthInfos authInfos)
@@ -177,7 +177,12 @@ namespace CG.Web.MegaApiClient
       return Task.Run(() => this.GenerateAuthInfos(email, password));
     }
 
-    #endregion
+    public Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password, string mfaKey)
+    {
+      return Task.Run(() => this.GenerateAuthInfos(email, password, mfaKey));
+    }
+
+#endregion
   }
 }
 #endif
