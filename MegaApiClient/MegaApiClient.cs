@@ -1241,14 +1241,7 @@
 
     public class AuthInfos
     {
-      public AuthInfos(string email, string hash, byte[] passwordAesKey)
-      {
-        this.Email = email;
-        this.Hash = hash;
-        this.PasswordAesKey = passwordAesKey;
-      }
-
-      public AuthInfos(string email, string hash, byte[] passwordAesKey, string mfaKey)
+      public AuthInfos(string email, string hash, byte[] passwordAesKey, string mfaKey = null)
       {
         this.Email = email;
         this.Hash = hash;
