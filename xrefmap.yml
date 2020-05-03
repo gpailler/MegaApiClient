@@ -688,12 +688,12 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync
   nameWithType: IMegaApiClient.DownloadFileAsync
-- uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String,System.String)
-  name: GenerateAuthInfos(String, String)
-  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfos_System_String_System_String_
-  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String,System.String)
-  fullName: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String, System.String)
-  nameWithType: IMegaApiClient.GenerateAuthInfos(String, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String,System.String,System.String)
+  name: GenerateAuthInfos(String, String, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfos_System_String_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String,System.String,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String, System.String, System.String)
+  nameWithType: IMegaApiClient.GenerateAuthInfos(String, String, String)
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos*
   name: GenerateAuthInfos
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfos_
@@ -707,6 +707,12 @@ references:
   commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync(System.String,System.String)
   fullName: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync(System.String, System.String)
   nameWithType: IMegaApiClient.GenerateAuthInfosAsync(String, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync(System.String,System.String,System.String)
+  name: GenerateAuthInfosAsync(String, String, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfosAsync_System_String_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync(System.String,System.String,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync(System.String, System.String, System.String)
+  nameWithType: IMegaApiClient.GenerateAuthInfosAsync(String, String, String)
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfosAsync*
   name: GenerateAuthInfosAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfosAsync_
@@ -945,6 +951,12 @@ references:
   commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Login(System.String,System.String)
   fullName: CG.Web.MegaApiClient.IMegaApiClient.Login(System.String, System.String)
   nameWithType: IMegaApiClient.Login(String, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.Login(System.String,System.String,System.String)
+  name: Login(String, String, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login_System_String_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.Login(System.String,System.String,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.Login(System.String, System.String, System.String)
+  nameWithType: IMegaApiClient.Login(String, String, String)
 - uid: CG.Web.MegaApiClient.IMegaApiClient.Login*
   name: Login
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_Login_
@@ -996,12 +1008,12 @@ references:
   commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
   fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
   nameWithType: IMegaApiClient.LoginAsync(MegaApiClient.LogonSessionToken)
-- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String,System.String)
-  name: LoginAsync(String, String)
-  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_System_String_System_String_
-  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String,System.String)
-  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String, System.String)
-  nameWithType: IMegaApiClient.LoginAsync(String, String)
+- uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String,System.String,System.String)
+  name: LoginAsync(String, String, String)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_System_String_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String,System.String,System.String)
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync(System.String, System.String, System.String)
+  nameWithType: IMegaApiClient.LoginAsync(String, String, String)
 - uid: CG.Web.MegaApiClient.IMegaApiClient.LoginAsync*
   name: LoginAsync
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_LoginAsync_
@@ -1542,15 +1554,15 @@ references:
   commentId: T:CG.Web.MegaApiClient.MegaApiClient.AuthInfos
   fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos
   nameWithType: MegaApiClient.AuthInfos
-- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor(System.String,System.String,System.Byte[])
-  name: AuthInfos(String, String, Byte[])
-  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos__ctor_System_String_System_String_System_Byte___
-  commentId: M:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor(System.String,System.String,System.Byte[])
-  name.vb: AuthInfos(String, String, Byte())
-  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.AuthInfos(System.String, System.String, System.Byte[])
-  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.AuthInfos(System.String, System.String, System.Byte())
-  nameWithType: MegaApiClient.AuthInfos.AuthInfos(String, String, Byte[])
-  nameWithType.vb: MegaApiClient.AuthInfos.AuthInfos(String, String, Byte())
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor(System.String,System.String,System.Byte[],System.String)
+  name: AuthInfos(String, String, Byte[], String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos__ctor_System_String_System_String_System_Byte___System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor(System.String,System.String,System.Byte[],System.String)
+  name.vb: AuthInfos(String, String, Byte(), String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.AuthInfos(System.String, System.String, System.Byte[], System.String)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.AuthInfos(System.String, System.String, System.Byte(), System.String)
+  nameWithType: MegaApiClient.AuthInfos.AuthInfos(String, String, Byte[], String)
+  nameWithType.vb: MegaApiClient.AuthInfos.AuthInfos(String, String, Byte(), String)
 - uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.#ctor*
   name: AuthInfos
   href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos__ctor_
@@ -1584,6 +1596,19 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.Hash
   nameWithType: MegaApiClient.AuthInfos.Hash
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.MFAKey
+  name: MFAKey
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_MFAKey
+  commentId: P:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.MFAKey
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.MFAKey
+  nameWithType: MegaApiClient.AuthInfos.MFAKey
+- uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.MFAKey*
+  name: MFAKey
+  href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_MFAKey_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.AuthInfos.MFAKey
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.MFAKey
+  nameWithType: MegaApiClient.AuthInfos.MFAKey
 - uid: CG.Web.MegaApiClient.MegaApiClient.AuthInfos.PasswordAesKey
   name: PasswordAesKey
   href: api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html#CG_Web_MegaApiClient_MegaApiClient_AuthInfos_PasswordAesKey
@@ -1749,12 +1774,12 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync
   nameWithType: MegaApiClient.DownloadFileAsync
-- uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String,System.String)
-  name: GenerateAuthInfos(String, String)
-  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfos_System_String_System_String_
-  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String,System.String)
-  fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String, System.String)
-  nameWithType: MegaApiClient.GenerateAuthInfos(String, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String,System.String,System.String)
+  name: GenerateAuthInfos(String, String, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfos_System_String_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String,System.String,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String, System.String, System.String)
+  nameWithType: MegaApiClient.GenerateAuthInfos(String, String, String)
 - uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos*
   name: GenerateAuthInfos
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfos_
@@ -1768,6 +1793,12 @@ references:
   commentId: M:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync(System.String,System.String)
   fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync(System.String, System.String)
   nameWithType: MegaApiClient.GenerateAuthInfosAsync(String, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync(System.String,System.String,System.String)
+  name: GenerateAuthInfosAsync(String, String, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfosAsync_System_String_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync(System.String,System.String,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync(System.String, System.String, System.String)
+  nameWithType: MegaApiClient.GenerateAuthInfosAsync(String, String, String)
 - uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfosAsync*
   name: GenerateAuthInfosAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfosAsync_
@@ -2006,6 +2037,12 @@ references:
   commentId: M:CG.Web.MegaApiClient.MegaApiClient.Login(System.String,System.String)
   fullName: CG.Web.MegaApiClient.MegaApiClient.Login(System.String, System.String)
   nameWithType: MegaApiClient.Login(String, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.Login(System.String,System.String,System.String)
+  name: Login(String, String, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login_System_String_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.Login(System.String,System.String,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.Login(System.String, System.String, System.String)
+  nameWithType: MegaApiClient.Login(String, String, String)
 - uid: CG.Web.MegaApiClient.MegaApiClient.Login*
   name: Login
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Login_
@@ -2057,12 +2094,12 @@ references:
   commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
   fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken)
   nameWithType: MegaApiClient.LoginAsync(MegaApiClient.LogonSessionToken)
-- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String,System.String)
-  name: LoginAsync(String, String)
-  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_System_String_System_String_
-  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String,System.String)
-  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String, System.String)
-  nameWithType: MegaApiClient.LoginAsync(String, String)
+- uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String,System.String,System.String)
+  name: LoginAsync(String, String, String)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_System_String_System_String_System_String_
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String,System.String,System.String)
+  fullName: CG.Web.MegaApiClient.MegaApiClient.LoginAsync(System.String, System.String, System.String)
+  nameWithType: MegaApiClient.LoginAsync(String, String, String)
 - uid: CG.Web.MegaApiClient.MegaApiClient.LoginAsync*
   name: LoginAsync
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_LoginAsync_
