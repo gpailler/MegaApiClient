@@ -12,7 +12,7 @@ environment:
   github_email: gregoire@pailler.fr
   github_username: Gregoire Pailler (auto push)
   github_auth_token:
-    secure: +346hyzBwuhGGVJJTgtAdGfoQ3ck26Q9zFx8mNSsWYkx8og19sJXjAlOYj8EnZv1
+    secure: OELWxLBLVw9arTKB4IIBhY+xRdeSZK26a4gUqhHR631GqPSd0IPKaxYVvhuAfeaa
 
 install:
   - choco install docfx -y
