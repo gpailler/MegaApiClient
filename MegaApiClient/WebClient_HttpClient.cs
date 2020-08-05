@@ -3,6 +3,7 @@ namespace CG.Web.MegaApiClient
 {
   using System;
   using System.IO;
+  using System.Net;
   using System.Reflection;
   using System.Text;
   using System.Threading;
@@ -55,8 +56,21 @@ namespace CG.Web.MegaApiClient
       using (StreamContent content = new StreamContent(dataStream, this.BufferSize))
       {
         content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-        using (HttpResponseMessage response = this.httpClient.PostAsync(url, content).Result)
+      
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+        requestMessage.Content = content;
+        
+        using (HttpResponseMessage response = this.httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead).Result)
         {
+          if (!response.IsSuccessStatusCode
+              && response.StatusCode == HttpStatusCode.InternalServerError
+              && response.ReasonPhrase == "Server Too Busy")
+          {
+            return ((long)ApiResultCode.RequestFailedRetry).ToString();
+          }
+          
+          response.EnsureSuccessStatusCode();
+          
           using (Stream stream = response.Content.ReadAsStreamAsync().Result)
           {
             using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
