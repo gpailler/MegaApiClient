@@ -16,7 +16,7 @@
 
     static Crypto()
     {
-#if NETSTANDARD1_3
+#if NETSTANDARD1_3 || NETSTANDARD2_0
       AesCbc = Aes.Create(); // More per-call overhead but supported everywhere.
       IsKnownReusable = false;
 #else
