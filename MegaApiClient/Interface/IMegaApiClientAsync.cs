@@ -60,6 +60,8 @@ namespace CG.Web.MegaApiClient
     Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password);
 
     Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password, string mfaKey);
+
+    Task<Stream> DownloadFileAttributeAsync(INode node, FileAttributeType fileAttributeType, CancellationToken? cancellationToken = null);
   }
 }
 #endif

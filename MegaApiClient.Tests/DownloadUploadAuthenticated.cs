@@ -105,5 +105,21 @@ namespace CG.Web.MegaApiClient.Tests
         Assert.NotNull(((INodeCrypto) updatedNode).SharedKey);
       }
     }
+
+    [Theory]
+    [InlineData(FileAttributeType.Thumbnail, "Data/SampleFile_thumbnail.jpg")]
+    [InlineData(FileAttributeType.Preview, "Data/SampleFile_preview.jpg")]
+    public void DownloadFileAttribute_ToStream_Succeeds(FileAttributeType fileAttributeType, string expectedFileContent)
+    {
+      var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
+
+      using (Stream stream = this.context.Client.DownloadFileAttribute(node, fileAttributeType))
+      {
+        using (Stream expectedStream = new FileStream(this.GetAbsoluteFilePath(expectedFileContent), FileMode.Open, FileAccess.Read))
+        {
+          this.AreStreamsEquivalent(stream, expectedStream);
+        }
+      }
+    }
   }
 }

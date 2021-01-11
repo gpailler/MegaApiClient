@@ -169,6 +169,11 @@
       return this.UnwrapException(() => this.client.GenerateAuthInfosAsync(email, password, mfaKey).Result);
     }
 
+    public Stream DownloadFileAttribute(INode node, FileAttributeType fileAttributeType, CancellationToken? cancellationToken = null)
+    {
+      return this.UnwrapException(() => this.client.DownloadFileAttributeAsync(node, fileAttributeType, cancellationToken).Result);
+    }
+
     public Task<MegaApiClient.LogonSessionToken> LoginAsync(string email, string password)
     {
       return this.client.LoginAsync(email, password);
@@ -302,6 +307,11 @@
     public Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password, string mfaKey)
     {
       return this.client.GenerateAuthInfosAsync(email, password, mfaKey);
+    }
+
+    public Task<Stream> DownloadFileAttributeAsync(INode node, FileAttributeType fileAttributeType, CancellationToken? cancellationToken = null)
+    {
+      return this.client.DownloadFileAttributeAsync(node, fileAttributeType, cancellationToken);
     }
 
     private T UnwrapException<T>(Func<T> action)

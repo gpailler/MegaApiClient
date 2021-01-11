@@ -182,6 +182,10 @@ namespace CG.Web.MegaApiClient
       return Task.Run(() => this.GenerateAuthInfos(email, password, mfaKey));
     }
 
+    public Task<Stream> DownloadFileAttributeAsync(INode node, FileAttributeType fileAttributeType, CancellationToken? cancellationToken = null)
+    {
+      return Task.Run(() => this.DownloadFileAttribute(node, fileAttributeType, cancellationToken));
+    }
 #endregion
   }
 }

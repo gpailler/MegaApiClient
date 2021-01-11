@@ -62,5 +62,7 @@
     INode Rename(INode node, string newName);
 
     MegaApiClient.AuthInfos GenerateAuthInfos(string email, string password, string mfaKey = null);
+
+    Stream DownloadFileAttribute(INode node, FileAttributeType fileAttributeType, CancellationToken? cancellationToken = null);
   }
 }

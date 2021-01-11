@@ -966,6 +966,80 @@
       return this.GetNodes().First(n => n.Equals(node));
     }
 
+    /// <summary>
+    /// Download thumbnail from file attributes (or return null if thumbnail is not available)
+    /// </summary>
+    /// <param name="node">Node to download the thumbnail from (only <see cref="NodeType.File" /> can be downloaded)</param>
+    /// <param name="fileAttributeType">File attribute type to retrieve</param>
+    /// <param name="cancellationToken">CancellationToken used to cancel the action</param>
+    /// <exception cref="NotSupportedException">Not logged in</exception>
+    /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
+    /// <exception cref="ArgumentNullException">node or outputFile is null</exception>
+    /// <exception cref="ArgumentException">node is not valid (only <see cref="NodeType.File" /> can be downloaded)</exception>
+    /// <exception cref="InvalidOperationException">file attribute data is invalid</exception>
+    public Stream DownloadFileAttribute(INode node, FileAttributeType fileAttributeType, CancellationToken? cancellationToken = null)
+    {
+      if (node == null)
+      {
+        throw new ArgumentNullException(nameof(node));
+      }
+
+      if (node.Type != NodeType.File)
+      {
+        throw new ArgumentException("Invalid node");
+      }
+
+      INodeCrypto nodeCrypto = node as INodeCrypto;
+      if (nodeCrypto == null)
+      {
+        throw new ArgumentException("node must implement INodeCrypto");
+      }
+
+      this.EnsureLoggedIn();
+
+      var fileAttribute = node.FileAttributes.FirstOrDefault(_ => _.Type == fileAttributeType);
+      if (fileAttribute == null)
+      {
+        return null;
+      }
+
+      var downloadRequest = new DownloadFileAttributeRequest(fileAttribute.Handle);
+      var downloadResponse = this.Request<DownloadFileAttributeResponse>(downloadRequest);
+
+      var fileAttributeHandle = fileAttribute.Handle.FromBase64();
+      using (var stream = this.webClient.PostRequestRawAsStream(new Uri(downloadResponse.Url + "/0"), new MemoryStream(fileAttributeHandle)))
+      {
+        using (var memoryStream = new MemoryStream())
+        {
+          stream.CopyTo(memoryStream);
+          memoryStream.Position = 0;
+
+          const int dataOffset = 12; // handle (8) + position (4)
+          var data = memoryStream.ToArray();
+          var dataHandle = data.CopySubArray(8, 0);
+          if (!dataHandle.SequenceEqual(fileAttributeHandle))
+          {
+            throw new InvalidOperationException($"File attribute handle mismatch ({fileAttribute.Handle} requested but {dataHandle.ToBase64()} received)");
+          }
+
+          var dataSize = BitConverter.ToUInt32(data.CopySubArray(4, 8), 0);
+          if (dataSize != data.Length - dataOffset)
+          {
+            throw new InvalidOperationException($"File attribute size mismatch ({dataSize} expected but {data.Length - dataOffset} received)");
+          }
+
+          data = data.CopySubArray(data.Length - dataOffset, dataOffset);
+          Stream resultStream = new MemoryStream(Crypto.DecryptAes(data, nodeCrypto.Key));
+          if (cancellationToken.HasValue)
+          {
+            resultStream = new CancellableStream(resultStream, cancellationToken.Value);
+          }
+
+          return resultStream;
+        }
+      }
+    }
+
 #endregion
 
 #region Private static methods

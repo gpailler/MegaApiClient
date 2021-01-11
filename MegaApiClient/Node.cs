@@ -5,7 +5,7 @@
   using System.Diagnostics;
   using System.Linq;
   using System.Runtime.Serialization;
-
+  using System.Text.RegularExpressions;
   using CG.Web.MegaApiClient.Serialization;
 
   using Newtonsoft.Json;
@@ -78,6 +78,8 @@
   [DebuggerDisplay("Node - Type: {Type} - Name: {Name} - Id: {Id}")]
   internal class Node : NodeInfo, INode, INodeCrypto
   {
+    private static readonly Regex FileAttributeRegex = new Regex(@"(?<id>\d+):(?<type>\d+)\*(?<handle>[a-zA-Z0-9-_]+)");
+
     private byte[] masterKey;
     private List<SharedKey> sharedKeys;
 
@@ -122,6 +124,9 @@
     [JsonIgnore]
     public bool EmptyKey { get; private set; }
 
+    [JsonIgnore]
+    public IFileAttribute[] FileAttributes { get; private set; }
+
     #endregion
 
     #region Deserialization
@@ -134,6 +139,9 @@
 
     [JsonProperty("k")]
     private string SerializedKey { get; set; }
+
+    [JsonProperty("fa")]
+    private string SerializedFileAttributes { get; set; }
 
     [OnDeserialized]
     public void OnDeserialized(StreamingContext ctx)
@@ -199,6 +207,19 @@
         }
 
         this.Attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
+
+        if (this.SerializedFileAttributes != null)
+        {
+          var attributes = this.SerializedFileAttributes.Split('/');
+          this.FileAttributes = attributes
+            .Select(_ => FileAttributeRegex.Match(_))
+            .Where(_ => _.Success)
+            .Select(_ => new FileAttribute(
+              int.Parse(_.Groups["id"].Value),
+              (FileAttributeType) Enum.Parse(typeof(FileAttributeType), _.Groups["type"].Value),
+              _.Groups["handle"].Value))
+            .ToArray();
+        }
       }
     }
 
@@ -251,6 +272,22 @@
     public byte[] MetaMac { get { return this.node.MetaMac; } }
     public byte[] FullKey { get { return this.node.FullKey; } }
 
+    public IFileAttribute[] FileAttributes { get { return this.node.FileAttributes; } }
+
     #endregion
+  }
+
+  internal class FileAttribute : IFileAttribute
+  {
+    public FileAttribute(int id, FileAttributeType type, string handle)
+    {
+      this.Id = id;
+      this.Type = type;
+      this.Handle = handle;
+    }
+
+    public int Id { get; }
+    public FileAttributeType Type { get; }
+    public string Handle { get; }
   }
 }
