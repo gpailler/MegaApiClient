@@ -200,8 +200,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
       const string expectedResultFile = "Data/SampleFile.jpg";
 
-      string outFile = Path.GetTempFileName();
-      File.Delete(outFile);
+      string outFile = this.GetTempFileName();
       this.context.Client.DownloadFile(new Uri(AuthenticatedTestContext.FileLink), outFile);
 
       Assert.Equal(File.ReadAllBytes(this.GetAbsoluteFilePath(expectedResultFile)), File.ReadAllBytes(outFile));
@@ -251,6 +250,14 @@ namespace CG.Web.MegaApiClient.Tests
       var assemblyDirectory = Path.GetDirectoryName(currentAssembly);
 
       return Path.Combine(assemblyDirectory, relativeFilePath);
+    }
+
+    protected string GetTempFileName()
+    {
+      var file = Path.GetTempFileName();
+      File.Delete(file);
+
+      return file;
     }
   }
 }

@@ -15,7 +15,7 @@ namespace CG.Web.MegaApiClient
     public ProgressionStream(Stream baseStream, IProgress<double> progress, long reportProgressChunkSize)
     {
       this.baseStream = baseStream;
-      this.progress = progress;
+      this.progress = progress ?? new Progress<double>();
       this.reportProgressChunkSize = reportProgressChunkSize;
     }
 

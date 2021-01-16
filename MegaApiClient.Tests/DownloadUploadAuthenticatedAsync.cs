@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using CG.Web.MegaApiClient.Tests.Context;
 using Xunit;
@@ -39,8 +38,7 @@ namespace CG.Web.MegaApiClient.Tests
       EventTester<double> eventTester = new EventTester<double>();
       IProgress<double> progress = new SyncProgress<double>(eventTester.OnRaised);
 
-      string outputFile = Path.GetTempFileName();
-      File.Delete(outputFile);
+      string outputFile = this.GetTempFileName();
 
       // Act
       Task task = this.context.Client.DownloadFileAsync(node, outputFile, progress);
@@ -62,8 +60,7 @@ namespace CG.Web.MegaApiClient.Tests
       EventTester<double> eventTester = new EventTester<double>();
       IProgress<double> progress = new SyncProgress<double>(eventTester.OnRaised);
 
-      string outputFile = Path.GetTempFileName();
-      File.Delete(outputFile);
+      string outputFile = this.GetTempFileName();
 
       // Act
       Task task = this.context.Client.DownloadFileAsync(new Uri(AuthenticatedTestContext.FileLink), outputFile, progress);
@@ -114,6 +111,42 @@ namespace CG.Web.MegaApiClient.Tests
         stream.Position = 0;
         this.AreStreamsEquivalent(this.context.Client.Download(uri), stream);
       }
+    }
+
+    [Fact]
+    public void AsyncMethods_WithoutProgression_Succeeds()
+    {
+      var root = this.GetNode(NodeType.Root);
+      var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
+      var uri = new Uri(AuthenticatedTestContext.FileLink);
+      var sampleFilePath = this.GetAbsoluteFilePath("Data/SampleFile.jpg");
+      var sampleFileStream = new FileStream(sampleFilePath, FileMode.Open, FileAccess.Read);
+
+      var task1 = this.context.Client.DownloadAsync(node);
+      var result1 = task1.Wait(this.Timeout);
+      Assert.True(result1);
+
+      var task2 = this.context.Client.DownloadAsync(uri);
+      var result2 = task2.Wait(this.Timeout);
+      Assert.True(result2);
+
+      var outputFile3 = this.GetTempFileName();
+      var task3 = this.context.Client.DownloadFileAsync(node, outputFile3);
+      var result3 = task3.Wait(this.Timeout);
+      Assert.True(result3);
+
+      var outputFile4 = this.GetTempFileName();
+      var task4 = this.context.Client.DownloadFileAsync(uri, outputFile4);
+      var result4 = task4.Wait(this.Timeout);
+      Assert.True(result4);
+
+      var task5 = this.context.Client.UploadAsync(sampleFileStream, Guid.NewGuid().ToString("N"), root);
+      var result5 = task5.Wait(this.Timeout);
+      Assert.True(result5);
+
+      var task6 = this.context.Client.UploadFileAsync(sampleFilePath, root);
+      var result6 = task6.Wait(this.Timeout);
+      Assert.True(result6);
     }
 
     private int Timeout
