@@ -11,6 +11,8 @@
 
     string PostRequestRaw(Uri url, Stream dataStream);
 
+    Stream PostRequestRawAsStream(Uri url, Stream dataStream);
+
     Stream GetRequestRaw(Uri url);
   }
 }

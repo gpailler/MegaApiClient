@@ -29,6 +29,7 @@
     {
       PostRequestJson,
       PostRequestRaw,
+      PostRequestRawAsStream,
       GetRequestRaw
     }
 
@@ -61,6 +62,21 @@
 
         var result = this._webClient.PostRequestRaw(url, dataStreamCopy);
         this.OnCalled?.Invoke(CallType.PostRequestRaw, url);
+
+        return result;
+      });
+    }
+
+    public Stream PostRequestRawAsStream(Uri url, Stream dataStream)
+    {
+      return this._policy.Execute(() =>
+      {
+        // Create a copy of the stream because webClient can dispose it
+        // It's useful in case of retries
+        Stream dataStreamCopy = this.CloneStream(dataStream);
+
+        var result = this._webClient.PostRequestRawAsStream(url, dataStreamCopy);
+        this.OnCalled?.Invoke(CallType.PostRequestRawAsStream, url);
 
         return result;
       });

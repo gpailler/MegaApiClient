@@ -79,5 +79,23 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client.GetNodes()));
       Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client.GetNodes()).Result);
     }
+
+    [Fact]
+    public void GetFileAttributes_FromNode_Succeeds()
+    {
+      var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
+
+      Assert.Equal(2, node.FileAttributes.Length);
+
+      var fileAttribute = node.FileAttributes[0];
+      Assert.Equal("sqbpWSbonCU", fileAttribute.Handle);
+      Assert.Equal(924, fileAttribute.Id);
+      Assert.Equal(FileAttributeType.Preview, fileAttribute.Type);
+
+      fileAttribute = node.FileAttributes[1];
+      Assert.Equal("lH0B2ump-G8", fileAttribute.Handle);
+      Assert.Equal(925, fileAttribute.Id);
+      Assert.Equal(FileAttributeType.Thumbnail, fileAttribute.Type);
+    }
   }
 }

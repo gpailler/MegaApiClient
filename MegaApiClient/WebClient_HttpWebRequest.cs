@@ -28,11 +28,22 @@ namespace CG.Web.MegaApiClient
     {
       using (MemoryStream jsonStream = new MemoryStream(jsonData.ToBytes()))
       {
-        return this.PostRequest(url, jsonStream, "application/json");
+        using (var responseStream = this.PostRequest(url, jsonStream, "application/json"))
+        {
+          return this.StreamToString(responseStream);
+        }
       }
     }
 
     public string PostRequestRaw(Uri url, Stream dataStream)
+    {
+      using (var responseStream = this.PostRequest(url, dataStream, "application/octet-stream"))
+      {
+        return this.StreamToString(responseStream);
+      }
+    }
+
+    public Stream PostRequestRawAsStream(Uri url, Stream dataStream)
     {
       return this.PostRequest(url, dataStream, "application/octet-stream");
     }
@@ -45,7 +56,7 @@ namespace CG.Web.MegaApiClient
       return request.GetResponse().GetResponseStream();
     }
 
-    private string PostRequest(Uri url, Stream dataStream, string contentType)
+    private Stream PostRequest(Uri url, Stream dataStream, string contentType)
     {
       HttpWebRequest request = this.CreateRequest(url);
       request.ContentLength = dataStream.Length;
@@ -58,16 +69,8 @@ namespace CG.Web.MegaApiClient
         dataStream.CopyTo(requestStream, this.BufferSize);
       }
 
-      using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-      {
-        using (Stream responseStream = response.GetResponseStream())
-        {
-          using (StreamReader streamReader = new StreamReader(responseStream, Encoding.UTF8))
-          {
-            return streamReader.ReadToEnd();
-          }
-        }
-      }
+      HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+      return response.GetResponseStream();
     }
 
     private HttpWebRequest CreateRequest(Uri url)
@@ -83,6 +86,14 @@ namespace CG.Web.MegaApiClient
     {
       AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
       return string.Format("{0} v{1}", assemblyName.Name, assemblyName.Version.ToString(2));
+    }
+
+    private string StreamToString(Stream stream)
+    {
+      using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+      {
+        return streamReader.ReadToEnd();
+      }
     }
   }
 }

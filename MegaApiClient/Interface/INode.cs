@@ -24,6 +24,8 @@
     DateTime CreationDate { get; }
 
     string Owner { get; }
+
+    IFileAttribute[] FileAttributes { get; }
   }
 
   internal interface INodeCrypto
@@ -37,6 +39,21 @@
     byte[] MetaMac { get; }
 
     byte[] FullKey { get; }
+  }
+
+  public interface IFileAttribute
+  {
+    int Id { get; }
+
+    FileAttributeType Type { get; }
+
+    string Handle { get; }
+  }
+
+  public enum FileAttributeType
+  {
+    Thumbnail = 0,
+    Preview = 1
   }
 
   public enum NodeType

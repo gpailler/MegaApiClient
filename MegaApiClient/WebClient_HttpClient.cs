@@ -37,11 +37,22 @@ namespace CG.Web.MegaApiClient
     {
       using (MemoryStream jsonStream = new MemoryStream(jsonData.ToBytes()))
       {
-        return this.PostRequest(url, jsonStream, "application/json");
+        using (var responseStream = this.PostRequest(url, jsonStream, "application/json"))
+        {
+          return this.StreamToString(responseStream);
+        }
       }
     }
 
     public string PostRequestRaw(Uri url, Stream dataStream)
+    {
+      using (var responseStream = this.PostRequest(url, dataStream, "application/json"))
+      {
+        return this.StreamToString(responseStream);
+      }
+    }
+
+    public Stream PostRequestRawAsStream(Uri url, Stream dataStream)
     {
       return this.PostRequest(url, dataStream, "application/octet-stream");
     }
@@ -51,34 +62,34 @@ namespace CG.Web.MegaApiClient
       return this.httpClient.GetStreamAsync(url).Result;
     }
 
-    private string PostRequest(Uri url, Stream dataStream, string contentType)
+    private Stream PostRequest(Uri url, Stream dataStream, string contentType)
     {
       using (StreamContent content = new StreamContent(dataStream, this.BufferSize))
       {
         content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-      
+
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
         requestMessage.Content = content;
-        
-        using (HttpResponseMessage response = this.httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead).Result)
+
+        HttpResponseMessage response = this.httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead).Result;
+        if (!response.IsSuccessStatusCode
+            && response.StatusCode == HttpStatusCode.InternalServerError
+            && response.ReasonPhrase == "Server Too Busy")
         {
-          if (!response.IsSuccessStatusCode
-              && response.StatusCode == HttpStatusCode.InternalServerError
-              && response.ReasonPhrase == "Server Too Busy")
-          {
-            return ((long)ApiResultCode.RequestFailedRetry).ToString();
-          }
-          
-          response.EnsureSuccessStatusCode();
-          
-          using (Stream stream = response.Content.ReadAsStreamAsync().Result)
-          {
-            using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
-            {
-              return streamReader.ReadToEnd();
-            }
-          }
+          return new MemoryStream(Encoding.UTF8.GetBytes(((long)ApiResultCode.RequestFailedRetry).ToString()));
         }
+
+        response.EnsureSuccessStatusCode();
+
+        return response.Content.ReadAsStreamAsync().Result;
+      }
+    }
+
+    private string StreamToString(Stream stream)
+    {
+      using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+      {
+        return streamReader.ReadToEnd();
       }
     }
 
