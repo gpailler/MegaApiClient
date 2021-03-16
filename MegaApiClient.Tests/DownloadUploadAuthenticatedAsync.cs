@@ -7,6 +7,8 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
+  using xRetry;
+
   [Collection(nameof(AuthenticatedTestContext))]
   public class DownloadUploadAuthenticatedAsync : DownloadUploadAuthenticated
   {
@@ -113,7 +115,7 @@ namespace CG.Web.MegaApiClient.Tests
       }
     }
 
-    [Fact]
+    [RetryFact]
     public void AsyncMethods_WithoutProgression_Succeeds()
     {
       var root = this.GetNode(NodeType.Root);

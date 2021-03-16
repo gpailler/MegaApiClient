@@ -157,7 +157,7 @@ namespace CG.Web.MegaApiClient.Tests
       }
     }
 
-    [RetryFact(3)]
+    [RetryFact]
     public void Download_ValidateStream_Succeeds()
     {
       using (Stream stream = this.context.Client.Download(new Uri(AuthenticatedTestContext.FileLink)))
