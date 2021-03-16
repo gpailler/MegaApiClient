@@ -1,0 +1,147 @@
+name: MegaApiClient CI
+
+on:
+  push:
+    branches-ignore:
+      - gh-pages
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  CONFIGURATION: Release
+
+jobs:
+  build:
+    name: Build and Pack ⚙️
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Full history is required by GitVersion
+
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.x'
+
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.7
+        with:
+          updateAssemblyInfo: true
+          updateAssemblyInfoFilename: './GlobalAssemblyInfo.cs'
+
+      - name: Build
+        run: dotnet build --configuration ${{ env.CONFIGURATION }} ./MegaApiClient/
+
+      - name: Create NuGet package
+        run: dotnet pack --configuration ${{ env.CONFIGURATION }} ./MegaApiClient/ --no-restore --no-build --output ./artifacts/ -p:PackageVersion=${{ env.GITVERSION_NUGETVERSION }} --include-symbols -p:SymbolPackageFormat=snupkg
+
+      - name: Upload NuGet packages
+        uses: actions/upload-artifact@v2
+        with:
+          name: NuGet packages
+          path: ./artifacts/*.*nupkg
+          if-no-files-found: error
+
+  test:
+    name: Test 🧪
+    timeout-minutes: 60
+    runs-on: windows-latest
+    steps:
+      - name: Concurrent test execution check
+        uses: softprops/turnstyle@v1
+        with:
+          same-branch-only: false
+          abort-after-seconds: 1800
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Tests
+        run: dotnet test --configuration ${{ env.CONFIGURATION }} ./MegaApiClient.Tests/ --framework net46 --logger "console;verbosity=detailed" -p:CollectCoverage=true -p:CoverletOutputFormat=opencover -p:Exclude="[MegaApiClient]BigInteger"
+        env:
+          MEGAAPICLIENT_PASSWORD: ${{ secrets.MEGAAPICLIENT_PASSWORD }}
+
+      - name: Codecov
+        uses: codecov/codecov-action@v1
+
+  doc:
+    name: Documentation 📚
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Install DocFX
+        run: nuget install docfx.console -Version 2.56.7
+
+      - name: Build documentation
+        run: |
+          ./docfx.console.2.56.7/tools/docfx.exe metadata ./docs/docfx.json
+          ./docfx.console.2.56.7/tools/docfx.exe build ./docs/docfx.json
+          
+      - name: Upload Documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: Documentation
+          path: ./docs/_site/
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy 🚀
+    needs: [ build, test, doc]
+    runs-on: windows-latest
+    steps:
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v2
+        with:
+          name: NuGet packages
+          path: ./artifacts/
+
+      - name: Publish on MyGet
+        run: |
+          cd ./artifacts/
+          dotnet nuget push *.nupkg --skip-duplicate --source https://www.myget.org/F/megaapiclient/api/v3/index.json --api-key ${{ secrets.MYGET_SECRET }}
+
+  deploy-release:
+    name: Deploy release 🚀🌐
+    needs: [ build, test, doc ]
+    runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download NuGet packages
+        uses: actions/download-artifact@v2
+        with:
+          name: NuGet packages
+          path: ./artifacts/
+
+      - name: Download Documentation
+        uses: actions/download-artifact@v2
+        with:
+          name: Documentation
+          path: ./docs/_site/
+
+      - name: Publish on NuGet
+        run: |
+          cd ./artifacts/
+          dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_SECRET }}
+
+      - name: Publish Documentation
+        uses: JamesIves/github-pages-deploy-action@4.1.0
+        with:
+          branch: gh-pages
+          folder: ./docs/_site/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          files: ./artifacts/*.nupkg
+          draft: true

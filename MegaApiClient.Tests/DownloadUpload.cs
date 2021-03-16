@@ -10,6 +10,8 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
+  using xRetry;
+
   public abstract class DownloadUpload : TestsBase
   {
     protected readonly Random random = new Random();
@@ -155,7 +157,7 @@ namespace CG.Web.MegaApiClient.Tests
       }
     }
 
-    [Fact]
+    [RetryFact(3)]
     public void Download_ValidateStream_Succeeds()
     {
       using (Stream stream = this.context.Client.Download(new Uri(AuthenticatedTestContext.FileLink)))

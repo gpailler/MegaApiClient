@@ -298,8 +298,8 @@ namespace CG.Web.MegaApiClient.Tests
       ISession first = sessionsHistory.First();
       Assert.NotNull(first);
       Assert.Equal(SessionStatus.Current | SessionStatus.Active, first.Status);
-      Assert.Equal(DateTime.UtcNow, first.LoginTime, TimeSpan.FromSeconds(30));
-      Assert.Equal(DateTime.UtcNow, first.LastSeenTime, TimeSpan.FromSeconds(30));
+      Assert.Equal(DateTime.UtcNow, first.LoginTime.ToUniversalTime(), TimeSpan.FromSeconds(30));
+      Assert.Equal(DateTime.UtcNow, first.LastSeenTime.ToUniversalTime(), TimeSpan.FromSeconds(30));
     }
 
     [Fact]
