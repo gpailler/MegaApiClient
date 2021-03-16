@@ -56,7 +56,7 @@ jobs:
         uses: softprops/turnstyle@v1
         with:
           same-branch-only: false
-+         abort-after-seconds: 1800
+          abort-after-seconds: 1800
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
