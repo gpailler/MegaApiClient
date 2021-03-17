@@ -41,17 +41,17 @@ namespace CG.Web.MegaApiClient
 
     Task<Uri> GetDownloadLinkAsync(INode node);
 
-    Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null);
+    Task<Stream> DownloadAsync(INode node, IProgress<double> progress = null, CancellationToken? cancellationToken = null);
 
-    Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress, CancellationToken? cancellationToken = null);
+    Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress = null, CancellationToken? cancellationToken = null);
 
-    Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null);
+    Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress = null, CancellationToken? cancellationToken = null);
 
-    Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null);
+    Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress = null, CancellationToken? cancellationToken = null);
 
-    Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null);
+    Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress = null, DateTime? modificationDate = null, CancellationToken? cancellationToken = null);
 
-    Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null);
+    Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress = null, CancellationToken? cancellationToken = null);
 
     Task<INodeInfo> GetNodeFromLinkAsync(Uri uri);
 

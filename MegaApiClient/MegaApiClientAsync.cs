@@ -91,7 +91,7 @@ namespace CG.Web.MegaApiClient
       return Task.Run(() => this.GetDownloadLink(node));
     }
 
-    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    public Task<Stream> DownloadAsync(INode node, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
@@ -99,7 +99,7 @@ namespace CG.Web.MegaApiClient
       }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    public Task<Stream> DownloadAsync(Uri uri, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
@@ -107,7 +107,7 @@ namespace CG.Web.MegaApiClient
       }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    public Task DownloadFileAsync(INode node, string outputFile, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
@@ -118,7 +118,7 @@ namespace CG.Web.MegaApiClient
       }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    public Task DownloadFileAsync(Uri uri, string outputFile, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
@@ -134,7 +134,7 @@ namespace CG.Web.MegaApiClient
       }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
+    public Task<INode> UploadAsync(Stream stream, string name, INode parent, IProgress<double> progress = null, DateTime? modificationDate = null, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
@@ -150,7 +150,7 @@ namespace CG.Web.MegaApiClient
       }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress, CancellationToken? cancellationToken = null)
+    public Task<INode> UploadFileAsync(string filename, INode parent, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
