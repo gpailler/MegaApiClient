@@ -164,6 +164,16 @@
         return 0;
       }
 
+      if (this.position + count < this.streamLength && count < 16)
+      {
+        throw new NotSupportedException($"Invalid '{nameof(count)}' argument. Minimal read operation must be greater than 16 bytes (except for last read operation).");
+      }
+      
+      // Validate count boundaries 
+      count = (this.position + count < this.streamLength)
+        ? count - (count % 16) // Make count divisible by 16 for partial reads (as the minimal block is 16)
+        : count;
+
       for (long pos = this.position; pos < Math.Min(this.position + count, this.streamLength); pos += 16)
       {
         // We are on a chunk bondary
