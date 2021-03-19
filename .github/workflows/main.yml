@@ -4,6 +4,7 @@ on:
   push:
     branches-ignore:
       - gh-pages
+    tags:
   pull_request:
     branches:
       - master
@@ -127,11 +128,6 @@ jobs:
           name: Documentation
           path: ./docs/_site/
 
-      - name: Publish on NuGet
-        run: |
-          cd ./artifacts/
-          dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_SECRET }}
-
       - name: Publish Documentation
         uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
@@ -145,3 +141,8 @@ jobs:
         with:
           files: ./artifacts/*.nupkg
           draft: true
+
+      - name: Publish on NuGet
+        run: |
+          cd ./artifacts/
+          dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_SECRET }}
