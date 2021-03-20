@@ -479,6 +479,24 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.DownloadException.DownloadException
   nameWithType: DownloadException.DownloadException
+- uid: CG.Web.MegaApiClient.FileAttributeType
+  name: FileAttributeType
+  href: api/CG.Web.MegaApiClient.FileAttributeType.html
+  commentId: T:CG.Web.MegaApiClient.FileAttributeType
+  fullName: CG.Web.MegaApiClient.FileAttributeType
+  nameWithType: FileAttributeType
+- uid: CG.Web.MegaApiClient.FileAttributeType.Preview
+  name: Preview
+  href: api/CG.Web.MegaApiClient.FileAttributeType.html#CG_Web_MegaApiClient_FileAttributeType_Preview
+  commentId: F:CG.Web.MegaApiClient.FileAttributeType.Preview
+  fullName: CG.Web.MegaApiClient.FileAttributeType.Preview
+  nameWithType: FileAttributeType.Preview
+- uid: CG.Web.MegaApiClient.FileAttributeType.Thumbnail
+  name: Thumbnail
+  href: api/CG.Web.MegaApiClient.FileAttributeType.html#CG_Web_MegaApiClient_FileAttributeType_Thumbnail
+  commentId: F:CG.Web.MegaApiClient.FileAttributeType.Thumbnail
+  fullName: CG.Web.MegaApiClient.FileAttributeType.Thumbnail
+  nameWithType: FileAttributeType.Thumbnail
 - uid: CG.Web.MegaApiClient.IAccountInformation
   name: IAccountInformation
   href: api/CG.Web.MegaApiClient.IAccountInformation.html
@@ -524,6 +542,51 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.IAccountInformation.UsedQuota
   nameWithType: IAccountInformation.UsedQuota
+- uid: CG.Web.MegaApiClient.IFileAttribute
+  name: IFileAttribute
+  href: api/CG.Web.MegaApiClient.IFileAttribute.html
+  commentId: T:CG.Web.MegaApiClient.IFileAttribute
+  fullName: CG.Web.MegaApiClient.IFileAttribute
+  nameWithType: IFileAttribute
+- uid: CG.Web.MegaApiClient.IFileAttribute.Handle
+  name: Handle
+  href: api/CG.Web.MegaApiClient.IFileAttribute.html#CG_Web_MegaApiClient_IFileAttribute_Handle
+  commentId: P:CG.Web.MegaApiClient.IFileAttribute.Handle
+  fullName: CG.Web.MegaApiClient.IFileAttribute.Handle
+  nameWithType: IFileAttribute.Handle
+- uid: CG.Web.MegaApiClient.IFileAttribute.Handle*
+  name: Handle
+  href: api/CG.Web.MegaApiClient.IFileAttribute.html#CG_Web_MegaApiClient_IFileAttribute_Handle_
+  commentId: Overload:CG.Web.MegaApiClient.IFileAttribute.Handle
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.IFileAttribute.Handle
+  nameWithType: IFileAttribute.Handle
+- uid: CG.Web.MegaApiClient.IFileAttribute.Id
+  name: Id
+  href: api/CG.Web.MegaApiClient.IFileAttribute.html#CG_Web_MegaApiClient_IFileAttribute_Id
+  commentId: P:CG.Web.MegaApiClient.IFileAttribute.Id
+  fullName: CG.Web.MegaApiClient.IFileAttribute.Id
+  nameWithType: IFileAttribute.Id
+- uid: CG.Web.MegaApiClient.IFileAttribute.Id*
+  name: Id
+  href: api/CG.Web.MegaApiClient.IFileAttribute.html#CG_Web_MegaApiClient_IFileAttribute_Id_
+  commentId: Overload:CG.Web.MegaApiClient.IFileAttribute.Id
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.IFileAttribute.Id
+  nameWithType: IFileAttribute.Id
+- uid: CG.Web.MegaApiClient.IFileAttribute.Type
+  name: Type
+  href: api/CG.Web.MegaApiClient.IFileAttribute.html#CG_Web_MegaApiClient_IFileAttribute_Type
+  commentId: P:CG.Web.MegaApiClient.IFileAttribute.Type
+  fullName: CG.Web.MegaApiClient.IFileAttribute.Type
+  nameWithType: IFileAttribute.Type
+- uid: CG.Web.MegaApiClient.IFileAttribute.Type*
+  name: Type
+  href: api/CG.Web.MegaApiClient.IFileAttribute.html#CG_Web_MegaApiClient_IFileAttribute_Type_
+  commentId: Overload:CG.Web.MegaApiClient.IFileAttribute.Type
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.IFileAttribute.Type
+  nameWithType: IFileAttribute.Type
 - uid: CG.Web.MegaApiClient.IMegaApiClient
   name: IMegaApiClient
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html
@@ -688,6 +751,38 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAsync
   nameWithType: IMegaApiClient.DownloadFileAsync
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttribute(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.FileAttributeType,System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFileAttribute(INode, FileAttributeType, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFileAttribute_CG_Web_MegaApiClient_INode_CG_Web_MegaApiClient_FileAttributeType_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttribute(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.FileAttributeType,System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFileAttribute(INode, FileAttributeType, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttribute(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.FileAttributeType, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttribute(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.FileAttributeType, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.DownloadFileAttribute(INode, FileAttributeType, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.DownloadFileAttribute(INode, FileAttributeType, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttribute*
+  name: DownloadFileAttribute
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFileAttribute_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttribute
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttribute
+  nameWithType: IMegaApiClient.DownloadFileAttribute
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttributeAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.FileAttributeType,System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFileAttributeAsync(INode, FileAttributeType, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFileAttributeAsync_CG_Web_MegaApiClient_INode_CG_Web_MegaApiClient_FileAttributeType_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttributeAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.FileAttributeType,System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFileAttributeAsync(INode, FileAttributeType, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttributeAsync(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.FileAttributeType, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttributeAsync(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.FileAttributeType, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: IMegaApiClient.DownloadFileAttributeAsync(INode, FileAttributeType, Nullable<CancellationToken>)
+  nameWithType.vb: IMegaApiClient.DownloadFileAttributeAsync(INode, FileAttributeType, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttributeAsync*
+  name: DownloadFileAttributeAsync
+  href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_DownloadFileAttributeAsync_
+  commentId: Overload:CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttributeAsync
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.IMegaApiClient.DownloadFileAttributeAsync
+  nameWithType: IMegaApiClient.DownloadFileAttributeAsync
 - uid: CG.Web.MegaApiClient.IMegaApiClient.GenerateAuthInfos(System.String,System.String,System.String)
   name: GenerateAuthInfos(String, String, String)
   href: api/CG.Web.MegaApiClient.IMegaApiClient.html#CG_Web_MegaApiClient_IMegaApiClient_GenerateAuthInfos_System_String_System_String_System_String_
@@ -1182,6 +1277,19 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.INode.CreationDate
   nameWithType: INode.CreationDate
+- uid: CG.Web.MegaApiClient.INode.FileAttributes
+  name: FileAttributes
+  href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_FileAttributes
+  commentId: P:CG.Web.MegaApiClient.INode.FileAttributes
+  fullName: CG.Web.MegaApiClient.INode.FileAttributes
+  nameWithType: INode.FileAttributes
+- uid: CG.Web.MegaApiClient.INode.FileAttributes*
+  name: FileAttributes
+  href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_FileAttributes_
+  commentId: Overload:CG.Web.MegaApiClient.INode.FileAttributes
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.INode.FileAttributes
+  nameWithType: INode.FileAttributes
 - uid: CG.Web.MegaApiClient.INode.Owner
   name: Owner
   href: api/CG.Web.MegaApiClient.INode.html#CG_Web_MegaApiClient_INode_Owner
@@ -1505,6 +1613,19 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.IWebClient.PostRequestRaw
   nameWithType: IWebClient.PostRequestRaw
+- uid: CG.Web.MegaApiClient.IWebClient.PostRequestRawAsStream(System.Uri,System.IO.Stream)
+  name: PostRequestRawAsStream(Uri, Stream)
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_PostRequestRawAsStream_System_Uri_System_IO_Stream_
+  commentId: M:CG.Web.MegaApiClient.IWebClient.PostRequestRawAsStream(System.Uri,System.IO.Stream)
+  fullName: CG.Web.MegaApiClient.IWebClient.PostRequestRawAsStream(System.Uri, System.IO.Stream)
+  nameWithType: IWebClient.PostRequestRawAsStream(Uri, Stream)
+- uid: CG.Web.MegaApiClient.IWebClient.PostRequestRawAsStream*
+  name: PostRequestRawAsStream
+  href: api/CG.Web.MegaApiClient.IWebClient.html#CG_Web_MegaApiClient_IWebClient_PostRequestRawAsStream_
+  commentId: Overload:CG.Web.MegaApiClient.IWebClient.PostRequestRawAsStream
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.IWebClient.PostRequestRawAsStream
+  nameWithType: IWebClient.PostRequestRawAsStream
 - uid: CG.Web.MegaApiClient.MegaApiClient
   name: MegaApiClient
   href: api/CG.Web.MegaApiClient.MegaApiClient.html
@@ -1774,6 +1895,38 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAsync
   nameWithType: MegaApiClient.DownloadFileAsync
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttribute(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.FileAttributeType,System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFileAttribute(INode, FileAttributeType, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFileAttribute_CG_Web_MegaApiClient_INode_CG_Web_MegaApiClient_FileAttributeType_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttribute(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.FileAttributeType,System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFileAttribute(INode, FileAttributeType, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttribute(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.FileAttributeType, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttribute(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.FileAttributeType, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.DownloadFileAttribute(INode, FileAttributeType, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.DownloadFileAttribute(INode, FileAttributeType, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttribute*
+  name: DownloadFileAttribute
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFileAttribute_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttribute
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttribute
+  nameWithType: MegaApiClient.DownloadFileAttribute
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttributeAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.FileAttributeType,System.Nullable{System.Threading.CancellationToken})
+  name: DownloadFileAttributeAsync(INode, FileAttributeType, Nullable<CancellationToken>)
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFileAttributeAsync_CG_Web_MegaApiClient_INode_CG_Web_MegaApiClient_FileAttributeType_System_Nullable_System_Threading_CancellationToken__
+  commentId: M:CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttributeAsync(CG.Web.MegaApiClient.INode,CG.Web.MegaApiClient.FileAttributeType,System.Nullable{System.Threading.CancellationToken})
+  name.vb: DownloadFileAttributeAsync(INode, FileAttributeType, Nullable(Of CancellationToken))
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttributeAsync(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.FileAttributeType, System.Nullable<System.Threading.CancellationToken>)
+  fullName.vb: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttributeAsync(CG.Web.MegaApiClient.INode, CG.Web.MegaApiClient.FileAttributeType, System.Nullable(Of System.Threading.CancellationToken))
+  nameWithType: MegaApiClient.DownloadFileAttributeAsync(INode, FileAttributeType, Nullable<CancellationToken>)
+  nameWithType.vb: MegaApiClient.DownloadFileAttributeAsync(INode, FileAttributeType, Nullable(Of CancellationToken))
+- uid: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttributeAsync*
+  name: DownloadFileAttributeAsync
+  href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadFileAttributeAsync_
+  commentId: Overload:CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttributeAsync
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.MegaApiClient.DownloadFileAttributeAsync
+  nameWithType: MegaApiClient.DownloadFileAttributeAsync
 - uid: CG.Web.MegaApiClient.MegaApiClient.GenerateAuthInfos(System.String,System.String,System.String)
   name: GenerateAuthInfos(String, String, String)
   href: api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_GenerateAuthInfos_System_String_System_String_System_String_
@@ -2667,6 +2820,19 @@ references:
   isSpec: "True"
   fullName: CG.Web.MegaApiClient.WebClient.PostRequestRaw
   nameWithType: WebClient.PostRequestRaw
+- uid: CG.Web.MegaApiClient.WebClient.PostRequestRawAsStream(System.Uri,System.IO.Stream)
+  name: PostRequestRawAsStream(Uri, Stream)
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_PostRequestRawAsStream_System_Uri_System_IO_Stream_
+  commentId: M:CG.Web.MegaApiClient.WebClient.PostRequestRawAsStream(System.Uri,System.IO.Stream)
+  fullName: CG.Web.MegaApiClient.WebClient.PostRequestRawAsStream(System.Uri, System.IO.Stream)
+  nameWithType: WebClient.PostRequestRawAsStream(Uri, Stream)
+- uid: CG.Web.MegaApiClient.WebClient.PostRequestRawAsStream*
+  name: PostRequestRawAsStream
+  href: api/CG.Web.MegaApiClient.WebClient.html#CG_Web_MegaApiClient_WebClient_PostRequestRawAsStream_
+  commentId: Overload:CG.Web.MegaApiClient.WebClient.PostRequestRawAsStream
+  isSpec: "True"
+  fullName: CG.Web.MegaApiClient.WebClient.PostRequestRawAsStream
+  nameWithType: WebClient.PostRequestRawAsStream
 - uid: faq
   name: How can I download a file into a specific location?
   href: articles/faq.html
