@@ -16,7 +16,7 @@ env:
 
 jobs:
   build:
-    name: Build and Pack ⚙️
+    name: Build and Pack ⚙️📦
     runs-on: windows-latest
     outputs:
       semVer: ${{ steps.gitversion.outputs.semVer }}
