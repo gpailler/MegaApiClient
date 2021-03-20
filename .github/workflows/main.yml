@@ -152,4 +152,4 @@ jobs:
       - name: Publish on NuGet
         run: |
           cd ./artifacts/
-          dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_SECRET }}
+          dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_SECRET }}
