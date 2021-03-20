@@ -18,6 +18,8 @@ jobs:
   build:
     name: Build and Pack ⚙️
     runs-on: windows-latest
+    outputs:
+      semVer: ${{ steps.gitversion.outputs.semVer }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -75,6 +77,7 @@ jobs:
 
   doc:
     name: Documentation 📚
+    needs: [ build ]
     runs-on: windows-latest
     steps:
       - name: Check out repository code
@@ -86,7 +89,7 @@ jobs:
       - name: Build documentation
         run: |
           ./docfx.console.2.56.7/tools/docfx.exe metadata ./docs/docfx.json
-          ./docfx.console.2.56.7/tools/docfx.exe build ./docs/docfx.json
+          ./docfx.console.2.56.7/tools/docfx.exe build ./docs/docfx.json --globalMetadata "{'_appFooter': 'Copyright © 2013-2021 - Gregoire Pailler - MegaApiClient ${{ needs.build.outputs.semVer }}'}"
           
       - name: Upload Documentation
         uses: actions/upload-artifact@v2
@@ -97,7 +100,7 @@ jobs:
 
   deploy:
     name: Deploy 🚀
-    needs: [ build, test, doc]
+    needs: [ build, test, doc ]
     runs-on: windows-latest
     steps:
       - name: Download NuGet packages
@@ -109,14 +112,17 @@ jobs:
       - name: Publish on MyGet
         run: |
           cd ./artifacts/
-          dotnet nuget push *.nupkg --skip-duplicate --source https://www.myget.org/F/megaapiclient/api/v3/index.json --api-key ${{ secrets.MYGET_SECRET }}
+          dotnet nuget push *.nupkg --source https://www.myget.org/F/megaapiclient/api/v3/index.json --api-key ${{ secrets.MYGET_SECRET }}
 
   deploy-release:
     name: Deploy release 🚀🌐
     needs: [ build, test, doc ]
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
       - name: Download NuGet packages
         uses: actions/download-artifact@v2
         with:
@@ -146,4 +152,4 @@ jobs:
       - name: Publish on NuGet
         run: |
           cd ./artifacts/
-          dotnet nuget push *.nupkg --skip-duplicate --api-key ${{ secrets.NUGET_SECRET }}
+          dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_SECRET }}
