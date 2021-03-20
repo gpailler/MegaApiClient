@@ -9,8 +9,7 @@ Getting started with MegaApiClient
   * [Installation](xref:installation)
   * [Code samples](xref:samples)
   * [FAQ](xref:faq)
-
-Whole [API](xref:CG.Web.MegaApiClient.MegaApiClient) documentation
+  * [API](xref:CG.Web.MegaApiClient.MegaApiClient) documentation
 
 
 #### Compatibility

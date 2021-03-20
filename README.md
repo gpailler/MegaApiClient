@@ -1,12 +1,12 @@
 MegaApiClient
 =============
 
-[![Build status](https://ci.appveyor.com/api/projects/status/a87jre98xr1wiryt/branch/master?svg=true)](https://ci.appveyor.com/project/gpailler/megaapiclient/branch/master)
-[![Coverage Status](https://codecov.io/gh/gpailler/MegaApiClient/branch/master/graph/badge.svg)](https://codecov.io/gh/gpailler/MegaApiClient)
-[![NuGet version](https://badge.fury.io/nu/MegaApiClient.svg)](https://badge.fury.io/nu/MegaApiClient)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/gpailler/MegaApiClient/blob/master/LICENSE)
+[![Build status](https://github.com/gpailler/MegaApiClient/actions/workflows/main.yml/badge.svg)](https://github.com/gpailler/MegaApiClient/actions/workflows/main.yml)
+[![Coverage Status](https://img.shields.io/codecov/c/github/gpailler/MegaApiClient)](https://codecov.io/gh/gpailler/MegaApiClient)
+[![Nuget version](https://img.shields.io/nuget/v/MegaApiClient)](https://www.nuget.org/packages/MegaApiClient/)
+[![Nuget downloads](https://img.shields.io/nuget/dt/MegaApiClient)](https://www.nuget.org/packages/MegaApiClient/)
+[![License](https://img.shields.io/github/license/gpailler/MegaApiClient)](https://github.com/gpailler/MegaApiClient/blob/master/LICENSE)
 
 **MegaApiClient is a C# .Net library to access [http://mega.co.nz](http://mega.co.nz) / [http://mega.nz](http://mega.nz) cloud storage and file hosting service.**
 
-Whole documentation is available on [https://gpailler.github.io/MegaApiClient/](https://gpailler.github.io/MegaApiClient/)
-
+Documentation is available on [https://gpailler.github.io/MegaApiClient/](https://gpailler.github.io/MegaApiClient/)
