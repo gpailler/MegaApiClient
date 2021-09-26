@@ -15,22 +15,26 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData(AuthenticatedTestContext.FolderId, "bsxVBKLL", NodeType.Directory, "SharedFolder", 0, "2017-07-11T10:48:00.0000000+07:00", null)]
-    [InlineData(AuthenticatedTestContext.SubFolderId, AuthenticatedTestContext.FolderId, NodeType.Directory, "SharedSubFolder", 0, "2017-07-11T10:48:01.0000000+07:00", null)]
-    [InlineData(AuthenticatedTestContext.FileId, AuthenticatedTestContext.FolderId, NodeType.File, "SharedFile.jpg", AuthenticatedTestContext.FileSize, "2017-07-11T10:48:10.0000000+07:00", "2015-07-14T14:04:51.0000000+08:00")]
-    [InlineData("b0I0QDhA", "u4IgDb5K", NodeType.Directory, "SharedRemoteFolder", 0, "2015-05-21T02:35:22.0000000+08:00", null)]
-    [InlineData("e5wjkSJB", "b0I0QDhA", NodeType.File, "SharedRemoteFile.jpg", AuthenticatedTestContext.FileSize, "2015-05-21T02:36:06.0000000+08:00", "2015-05-19T09:39:50.0000000+08:00")]
-    [InlineData("KhZSWI7C", "b0I0QDhA", NodeType.Directory, "SharedRemoteSubFolder", 0, "2015-07-14T17:05:03.0000000+08:00", null)]
-    [InlineData("HtonzYYY", "KhZSWI7C", NodeType.File, "SharedRemoteSubFile.jpg", AuthenticatedTestContext.FileSize, "2015-07-14T18:06:27.0000000+08:00", "2015-05-27T02:42:21.0000000+08:00")]
-    [InlineData("z1YCibCT", "KhZSWI7C", NodeType.Directory, "SharedRemoteSubSubFolder", 0, "2015-07-14T18:01:56.0000000+08:00", null)]
+    [JsonInputsData(new object[] { NodeType.Root, null }, new string[] { "Root.Id", "", null, "Root.CreationDate", null })]
+    [JsonInputsData(new object[] { NodeType.Trash, null }, new string[] { "Trash.Id", "", null, "Trash.CreationDate", null })]
+    [JsonInputsData(new object[] { NodeType.Inbox, null }, new string[] { "Inbox.Id", "", null, "Inbox.CreationDate", null })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedFolder" }, new string[] { "SharedFolder.Id", "Root.Id", null, "SharedFolder.CreationDate", null })]
+    [JsonInputsData(new object[] { NodeType.File, "SharedFile.jpg" }, new string[] { "SharedFile.Id", "SharedFolder.Id", "SharedFile.Size", "SharedFile.CreationDate", "SharedFile.ModificationDate" })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedSubFolder" }, new string[] { "SharedSubFolder.Id", "SharedFolder.Id", null, "SharedSubFolder.CreationDate", null })]
+    [JsonInputsData(new object[] { NodeType.File, "SharedFileUpSideDown.jpg" }, new string[] { "SharedFileUpSideDown.Id", "SharedSubFolder.Id", "SharedFileUpSideDown.Size", "SharedFileUpSideDown.CreationDate", "SharedFileUpSideDown.ModificationDate" })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteFolder" }, new string[] { "SharedRemoteFolder.Id", "SharedRemoteFolder.ParentId", null, "SharedRemoteFolder.CreationDate", null })]
+    [JsonInputsData(new object[] { NodeType.File, "SharedRemoteFile.jpg" }, new string[] { "SharedRemoteFile.Id", "SharedRemoteFolder.Id", "SharedRemoteFile.Size", "SharedRemoteFile.CreationDate", "SharedRemoteFile.ModificationDate" })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteSubFolder" }, new string[] { "SharedRemoteSubFolder.Id", "SharedRemoteFolder.Id", null, "SharedRemoteSubFolder.CreationDate", null })]
+    [JsonInputsData(new object[] { NodeType.File, "SharedRemoteSubFile.jpg" }, new string[] { "SharedRemoteSubFile.Id", "SharedRemoteSubFolder.Id", "SharedRemoteSubFile.Size", "SharedRemoteSubFile.CreationDate", "SharedRemoteSubFile.ModificationDate" })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteSubSubFolder" }, new string[] { "SharedRemoteSubSubFolder.Id", "SharedRemoteSubFolder.Id", null, "SharedRemoteSubSubFolder.CreationDate", null })]
     public void Validate_PermanentNodes_Succeeds(
-        string id,
-        string expectedParent,
         NodeType expectedNodeType,
         string expectedName,
+        string id,
+        string expectedParent,
         long expectedSize,
-        string expectedCreationDate,
-        string expectedModificationDate
+        DateTime expectedCreationDate,
+        DateTime? expectedModificationDate
         )
     {
       var node = this.GetNode(id);
@@ -39,17 +43,18 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(expectedParent,node.ParentId);
       Assert.Equal(expectedName, node.Name);
       Assert.Equal(expectedSize, node.Size);
-      Assert.Equal(DateTime.Parse(expectedCreationDate), node.CreationDate);
-      Assert.Equal(expectedModificationDate == null ? (DateTime?)null : DateTime.Parse(expectedModificationDate), node.ModificationDate);
+      Assert.Equal(expectedCreationDate, node.CreationDate);
+      Assert.Equal(expectedModificationDate, node.ModificationDate);
     }
 
     [Theory]
-    [InlineData(NodeType.Root, AuthenticatedTestContext.FileSize + AuthenticatedTestContext.SubFolderFileSize)]
-    [InlineData(NodeType.Inbox, 0)]
-    [InlineData(NodeType.Trash, 0)]
-    public void GetFoldersize_FromNodeType_Succeeds(NodeType nodeType, long expectedSize)
+    [JsonInputsData(new object[] { NodeType.Root }, new string[] { "SharedFile.Size", "SharedFileUpSideDown.Size" })]
+    [InlineData(NodeType.Inbox, 0, 0)]
+    [InlineData(NodeType.Trash, 0, 0)]
+    public void GetFoldersize_FromNodeType_Succeeds(NodeType nodeType, long sharedFileSize, long sharedFileUpSideDownSize)
     {
       var node = this.GetNode(nodeType);
+      var expectedSize = sharedFileSize + sharedFileUpSideDownSize;
       Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client));
       Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client).Result);
       Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client.GetNodes()));
@@ -69,11 +74,12 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData(AuthenticatedTestContext.FolderId, AuthenticatedTestContext.FileSize + AuthenticatedTestContext.SubFolderFileSize)]
-    [InlineData(AuthenticatedTestContext.SubFolderId, AuthenticatedTestContext.SubFolderFileSize)]
-    public void GetFoldersize_FromDirectory_Succeeds(string nodeId, long expectedSize)
+    [JsonInputsData("SharedFolder.Id", "SharedFile.Size", "SharedFileUpSideDown.Size")]
+    [JsonInputsData("SharedSubFolder.Id", null, "SharedFileUpSideDown.Size")]
+    public void GetFoldersize_FromDirectory_Succeeds(string nodeId, long size1, long size2)
     {
       var node = this.GetNode(nodeId);
+      var expectedSize = size1 + size2;
       Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client));
       Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client).Result);
       Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client.GetNodes()));
@@ -83,19 +89,19 @@ namespace CG.Web.MegaApiClient.Tests
     [Fact]
     public void GetFileAttributes_FromNode_Succeeds()
     {
-      var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
+      var node = this.GetNode(AuthenticatedTestContext.Inputs.SharedFile.Id);
 
       Assert.Equal(2, node.FileAttributes.Length);
 
       var fileAttribute = node.FileAttributes[0];
-      Assert.Equal("sqbpWSbonCU", fileAttribute.Handle);
-      Assert.Equal(924, fileAttribute.Id);
-      Assert.Equal(FileAttributeType.Preview, fileAttribute.Type);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Thumbnail.Id, fileAttribute.Handle);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Thumbnail.AttributeId, fileAttribute.Id);
+      Assert.Equal(FileAttributeType.Thumbnail, fileAttribute.Type);
 
       fileAttribute = node.FileAttributes[1];
-      Assert.Equal("lH0B2ump-G8", fileAttribute.Handle);
-      Assert.Equal(925, fileAttribute.Id);
-      Assert.Equal(FileAttributeType.Thumbnail, fileAttribute.Type);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Preview.Id, fileAttribute.Handle);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Preview.AttributeId, fileAttribute.Id);
+      Assert.Equal(FileAttributeType.Preview, fileAttribute.Type);
     }
   }
 }

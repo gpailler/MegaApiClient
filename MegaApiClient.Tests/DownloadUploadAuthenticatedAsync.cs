@@ -35,7 +35,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
       // Arrange
       this.context.Options.ReportProgressChunkSize = reportProgressChunkSize.GetValueOrDefault(this.context.Options.ReportProgressChunkSize);
-      var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
+      var node = this.GetNode(AuthenticatedTestContext.Inputs.SharedFile.Id);
 
       EventTester<double> eventTester = new EventTester<double>();
       IProgress<double> progress = new SyncProgress<double>(eventTester.OnRaised);
@@ -65,7 +65,7 @@ namespace CG.Web.MegaApiClient.Tests
       string outputFile = this.GetTempFileName();
 
       // Act
-      Task task = this.context.Client.DownloadFileAsync(new Uri(AuthenticatedTestContext.FileLink), outputFile, progress);
+      Task task = this.context.Client.DownloadFileAsync(new Uri(AuthenticatedTestContext.Inputs.FileLink), outputFile, progress);
       bool result = task.Wait(this.Timeout);
 
       // Assert
@@ -119,8 +119,8 @@ namespace CG.Web.MegaApiClient.Tests
     public void AsyncMethods_WithoutProgression_Succeeds()
     {
       var root = this.GetNode(NodeType.Root);
-      var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
-      var uri = new Uri(AuthenticatedTestContext.FileLink);
+      var node = this.GetNode(AuthenticatedTestContext.Inputs.SharedFile.Id);
+      var uri = new Uri(AuthenticatedTestContext.Inputs.FileLink);
       var sampleFilePath = this.GetAbsoluteFilePath("Data/SampleFile.jpg");
       var sampleFileStream = new FileStream(sampleFilePath, FileMode.Open, FileAccess.Read);
 

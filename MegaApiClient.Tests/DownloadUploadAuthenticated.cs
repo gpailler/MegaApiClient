@@ -20,7 +20,7 @@ namespace CG.Web.MegaApiClient.Tests
     [Fact]
     public void DownloadNode_ToStream_Succeeds()
     {
-      var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
+      var node = this.GetNode(AuthenticatedTestContext.Inputs.SharedFile.Id);
 
       using (Stream stream = this.context.Client.Download(node))
       {
@@ -74,8 +74,8 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData(AuthenticatedTestContext.FileId, AuthenticatedTestContext.FileLink)]
-    [InlineData(AuthenticatedTestContext.FolderId, AuthenticatedTestContext.FolderLink)]
+    [JsonInputsData("SharedFile.Id", "FileLink")]
+    [JsonInputsData("SharedFolder.Id", "FolderLink")]
     public void GetDownloadLink_ExistingLinks_Succeeds(string id, string expectedLink)
     {
       var node = this.GetNode(id);
@@ -111,7 +111,7 @@ namespace CG.Web.MegaApiClient.Tests
     [InlineData(FileAttributeType.Preview, "Data/SampleFile_preview.jpg")]
     public void DownloadFileAttribute_ToStream_Succeeds(FileAttributeType fileAttributeType, string expectedFileContent)
     {
-      var node = this.GetNode(((AuthenticatedTestContext)this.context).PermanentFilesNode);
+      var node = this.GetNode(AuthenticatedTestContext.Inputs.SharedFile.Id);
 
       using (Stream stream = this.context.Client.DownloadFileAttribute(node, fileAttributeType))
       {

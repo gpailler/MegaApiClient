@@ -153,17 +153,17 @@ namespace CG.Web.MegaApiClient.Tests
 
       using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open, FileAccess.Read))
       {
-        this.AreStreamsEquivalent(this.context.Client.Download(new Uri(AuthenticatedTestContext.FileLink)), stream);
+        this.AreStreamsEquivalent(this.context.Client.Download(new Uri(AuthenticatedTestContext.Inputs.FileLink)), stream);
       }
     }
 
     [RetryFact]
     public void Download_ValidateStream_Succeeds()
     {
-      using (Stream stream = this.context.Client.Download(new Uri(AuthenticatedTestContext.FileLink)))
+      using (Stream stream = this.context.Client.Download(new Uri(AuthenticatedTestContext.Inputs.FileLink)))
       {
         Assert.NotNull(stream);
-        Assert.Equal(523265, stream.Length);
+        Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Size, stream.Length);
         Assert.True(stream.CanRead);
         Assert.False(stream.CanSeek);
         Assert.False(stream.CanTimeout);
@@ -191,9 +191,9 @@ namespace CG.Web.MegaApiClient.Tests
         yield return new object[] { "https://mega.nz", outFile, typeof(ArgumentException) };
         yield return new object[] { "https://mega.nz/#!38JjRYIA", outFile, typeof(ArgumentException) };
         yield return new object[] { "https://mega.nz/#!ulISSQIb!", outFile, typeof(ArgumentException) };
-        yield return new object[] { AuthenticatedTestContext.FileLink, null, typeof(ArgumentNullException) };
-        yield return new object[] { AuthenticatedTestContext.FileLink, string.Empty, typeof(ArgumentNullException) };
-        yield return new object[] { AuthenticatedTestContext.FileLink, outFile, typeof(IOException) };
+        yield return new object[] { AuthenticatedTestContext.Inputs.FileLink, null, typeof(ArgumentNullException) };
+        yield return new object[] { AuthenticatedTestContext.Inputs.FileLink, string.Empty, typeof(ArgumentNullException) };
+        yield return new object[] { AuthenticatedTestContext.Inputs.FileLink, outFile, typeof(IOException) };
       }
     }
 
@@ -203,7 +203,7 @@ namespace CG.Web.MegaApiClient.Tests
       const string expectedResultFile = "Data/SampleFile.jpg";
 
       string outFile = this.GetTempFileName();
-      this.context.Client.DownloadFile(new Uri(AuthenticatedTestContext.FileLink), outFile);
+      this.context.Client.DownloadFile(new Uri(AuthenticatedTestContext.Inputs.FileLink), outFile);
 
       Assert.Equal(File.ReadAllBytes(this.GetAbsoluteFilePath(expectedResultFile)), File.ReadAllBytes(outFile));
     }
@@ -212,7 +212,7 @@ namespace CG.Web.MegaApiClient.Tests
     public void GetNodesFromLink_Download_Succeeds()
     {
       const string expectedResultFile = "Data/SampleFile.jpg";
-      var nodes = this.context.Client.GetNodesFromLink(new Uri(AuthenticatedTestContext.FolderLink));
+      var nodes = this.context.Client.GetNodesFromLink(new Uri(AuthenticatedTestContext.Inputs.FolderLink));
       var node = nodes.Single(x => x.Name == "SharedFile.jpg");
 
       using (Stream stream = new FileStream(this.GetAbsoluteFilePath(expectedResultFile), FileMode.Open, FileAccess.Read))

@@ -83,27 +83,18 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.True(this.context.Client.IsLoggedIn);
     }
 
-    public static IEnumerable<object[]> GetCredentialsV1(bool includeMasterKeyHash)
+    public static IEnumerable<object[]> GetCredentials(bool includeMasterKeyHash)
     {
-      Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV1);
+      Assert.NotEmpty(AuthenticatedTestContext.Inputs.UsernameAccount);
       Assert.NotEmpty(AuthenticatedTestContext.Password);
 
-      var credentials = new object[] {AuthenticatedTestContext.UsernameAccountV1, AuthenticatedTestContext.Password, AuthenticatedTestContext.MasterKeyHashV1 };
+      var credentials = new object[] {AuthenticatedTestContext.Inputs.UsernameAccount, AuthenticatedTestContext.Password, AuthenticatedTestContext.Inputs.MasterKeyHash };
       yield return includeMasterKeyHash ? credentials : credentials.Take(2).ToArray();
     }
 
-    public static IEnumerable<object[]> GetCredentialsV2(bool includeMasterKeyHash)
-    {
-      Assert.NotEmpty(AuthenticatedTestContext.UsernameAccountV2);
-      Assert.NotEmpty(AuthenticatedTestContext.Password);
+    public static IEnumerable<object[]> AllValidCredentials => GetCredentials(false);
 
-      var credentials = new object[] { AuthenticatedTestContext.UsernameAccountV2, AuthenticatedTestContext.Password, AuthenticatedTestContext.MasterKeyHashV2 };
-      yield return includeMasterKeyHash ? credentials : credentials.Take(2).ToArray();
-    }
-
-    public static IEnumerable<object[]> AllValidCredentials => GetCredentialsV1(false).Concat(GetCredentialsV2(false));
-
-    public static IEnumerable<object[]> AllValidCredentialsWithHash => GetCredentialsV1(true).Concat(GetCredentialsV2(true));
+    public static IEnumerable<object[]> AllValidCredentialsWithHash => GetCredentials(true);
 
     [Theory, MemberData(nameof(AllValidCredentials))]
     public void LoginTwice_ValidCredentials_Throws(string email, string password)
@@ -259,8 +250,8 @@ namespace CG.Web.MegaApiClient.Tests
       yield return new object[] { (Action<IMegaApiClient>)(x => x.GetAccountInformation()) };
     }
 
-    [Theory, MemberData(nameof(GetCredentialsV1), false)]
-    public void GetAccountInformation_AuthenticatedUserV1_Succeeds(string email, string password)
+    [Theory, MemberData(nameof(GetCredentials), false)]
+    public void GetAccountInformation_AuthenticatedUser_Succeeds(string email, string password)
     {
       this.context.Client.Login(email, password);
 
@@ -271,24 +262,12 @@ namespace CG.Web.MegaApiClient.Tests
       IAccountInformation accountInformation = this.context.Client.GetAccountInformation();
 
       Assert.NotNull(accountInformation);
-      Assert.Equal(53687091200, accountInformation.TotalQuota);
-      Assert.Equal(AuthenticatedTestContext.FileSize + AuthenticatedTestContext.SubFolderFileSize, accountInformation.UsedQuota);
+      Assert.Equal(AuthenticatedTestContext.Inputs.TotalQuota, accountInformation.TotalQuota);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Size + AuthenticatedTestContext.Inputs.SharedFileUpSideDown.Size, accountInformation.UsedQuota);
     }
 
-    [Theory, MemberData(nameof(GetCredentialsV2), false)]
-    public void GetAccountInformation_AuthenticatedUserV2_Succeeds(string email, string password)
-    {
-      this.context.Client.Login(email, password);
-
-      IAccountInformation accountInformation = this.context.Client.GetAccountInformation();
-
-      Assert.NotNull(accountInformation);
-      Assert.Equal(16106127360, accountInformation.TotalQuota);
-      Assert.Equal(0, accountInformation.UsedQuota);
-    }
-
-    [Theory, MemberData(nameof(GetCredentialsV2), false)]
-    public void GetSessionHistory_AuthenticatedUserV2_Succeeds(string email, string password)
+    [Theory, MemberData(nameof(GetCredentials), false)]
+    public void GetSessionHistory_AuthenticatedUser_Succeeds(string email, string password)
     {
       this.context.Client.Login(email, password);
 
@@ -310,7 +289,7 @@ namespace CG.Web.MegaApiClient.Tests
       IAccountInformation accountInformation = this.context.Client.GetAccountInformation();
 
       Assert.NotNull(accountInformation);
-      Assert.Equal(16106127360, accountInformation.TotalQuota);
+      Assert.Equal(AuthenticatedTestContext.Inputs.TotalQuota, accountInformation.TotalQuota);
       Assert.Equal(0, accountInformation.UsedQuota);
     }
   }
