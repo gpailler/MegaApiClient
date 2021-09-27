@@ -4,33 +4,31 @@
   using System.IO;
   using Xunit;
 
-  public class MegaAesCtrStream_Tests : IDisposable
+  public class MegaAesCtrStreamTests : IDisposable
   {
-    private readonly byte[] originalData;
-    private readonly Stream decryptedStream;
-    
-    public MegaAesCtrStream_Tests()
+    private readonly byte[] _originalData;
+    private readonly Stream _decryptedStream;
+
+    public MegaAesCtrStreamTests()
     {
-      this.originalData = new byte[123];
-      new Random().NextBytes(this.originalData);
+      _originalData = new byte[123];
+      new Random().NextBytes(_originalData);
 
-      byte[] encryptedData = new byte[this.originalData.Length];
-      using (var encryptedStream = new MegaAesCtrStreamCrypter(new MemoryStream(this.originalData)))
-      {
-        encryptedStream.Read(encryptedData, 0, encryptedData.Length);
+      var encryptedData = new byte[_originalData.Length];
+      using var encryptedStream = new MegaAesCtrStreamCrypter(new MemoryStream(_originalData));
+      encryptedStream.Read(encryptedData, 0, encryptedData.Length);
 
-        this.decryptedStream = new MegaAesCtrStreamDecrypter(
-          new MemoryStream(encryptedData),
-          encryptedData.Length,
-          encryptedStream.FileKey,
-          encryptedStream.Iv,
-          encryptedStream.MetaMac);
-      }
+      _decryptedStream = new MegaAesCtrStreamDecrypter(
+        new MemoryStream(encryptedData),
+        encryptedData.Length,
+        encryptedStream.FileKey,
+        encryptedStream.Iv,
+        encryptedStream.MetaMac);
     }
 
     public void Dispose()
     {
-      this.decryptedStream.Dispose();
+      _decryptedStream.Dispose();
     }
 
     [Theory]
@@ -43,20 +41,20 @@
     public void Read_DifferentBufferSize_Succeeds(int bufferSize)
     {
       // Arrange
-      byte[] decryptedData = new byte[decryptedStream.Length];
+      var decryptedData = new byte[_decryptedStream.Length];
       var subBuffer = new byte[bufferSize];
-      int read = 0;
-      int pos = 0;
-      
+      var pos = 0;
+
+      int read;
       // Act
-      while ((read = decryptedStream.Read(subBuffer, 0, subBuffer.Length)) > 0)
+      while ((read = _decryptedStream.Read(subBuffer, 0, subBuffer.Length)) > 0)
       {
         Array.Copy(subBuffer, 0, decryptedData, pos, read);
         pos += read;
       }
-      
+
       // Assert
-     Assert.Equal(this.originalData, decryptedData);
+      Assert.Equal(_originalData, decryptedData);
     }
 
     [Fact]
@@ -64,34 +62,33 @@
     {
       // Arrange
       var subBuffer = new byte[15];
-      
+
       // Act + Assert
-      var exception = Assert.Throws<NotSupportedException>(() => decryptedStream.Read(subBuffer, 0, subBuffer.Length));
+      var exception = Assert.Throws<NotSupportedException>(() => _decryptedStream.Read(subBuffer, 0, subBuffer.Length));
       Assert.Equal("Invalid 'count' argument. Minimal read operation must be greater than 16 bytes (except for last read operation).", exception.Message);
     }
-    
+
     [Theory]
     [InlineData(120)]
     [InlineData(16)]
     public void Read_MixedBuffersSize_Succeeds(int firstBufferSize)
     {
       // Arrange
-      byte[] decryptedData = new byte[decryptedStream.Length];
-      int pos = 0;
-      int read = 0;
-      
+      var decryptedData = new byte[_decryptedStream.Length];
+      var pos = 0;
+
       // Act
       var subBuffer = new byte[firstBufferSize];
-      read = decryptedStream.Read(subBuffer, 0, subBuffer.Length);
+      var read = _decryptedStream.Read(subBuffer, 0, subBuffer.Length);
       Array.Copy(subBuffer, 0, decryptedData, pos, read);
       pos += read;
-      
+
       subBuffer = new byte[decryptedData.Length - firstBufferSize + (decryptedData.Length - read)];
-      read = decryptedStream.Read(subBuffer, 0, subBuffer.Length);
+      read = _decryptedStream.Read(subBuffer, 0, subBuffer.Length);
       Array.Copy(subBuffer, 0, decryptedData, pos, read);
 
       // Assert
-      Assert.Equal(this.originalData, decryptedData);
+      Assert.Equal(_originalData, decryptedData);
     }
   }
 }

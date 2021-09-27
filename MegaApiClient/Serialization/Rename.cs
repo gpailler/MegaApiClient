@@ -7,8 +7,8 @@
     public RenameRequest(INode node, string attributes)
       : base("a")
     {
-      this.Id = node.Id;
-      this.SerializedAttributes = attributes;
+      Id = node.Id;
+      SerializedAttributes = attributes;
     }
 
     [JsonProperty("n")]

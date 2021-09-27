@@ -1,6 +1,7 @@
 ﻿//Copyright (c) 2012 Josip Medved <jmedved@jmedved.com>
 // From https://www.medo64.com/2012/04/pbkdf2-with-sha-256-and-others/
 //2012-04-12: Initial version.
+// ReSharper disable All
 namespace Medo.Security.Cryptography
 {
   using System;

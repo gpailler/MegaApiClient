@@ -1,4 +1,5 @@
-﻿namespace CG.Web.MegaApiClient
+﻿
+namespace CG.Web.MegaApiClient
 {
   using System;
   using System.Collections.Generic;
@@ -6,9 +7,9 @@
   using System.Linq;
   using System.Runtime.Serialization;
   using System.Text.RegularExpressions;
-  using CG.Web.MegaApiClient.Serialization;
-
+  using Cryptography;
   using Newtonsoft.Json;
+  using Serialization;
 
   [DebuggerDisplay("NodeInfo - Type: {Type} - Name: {Name} - Id: {Id}")]
   internal class NodeInfo : INodeInfo
@@ -19,17 +20,14 @@
 
     internal NodeInfo(string id, DownloadUrlResponse downloadResponse, byte[] key)
     {
-      this.Id = id;
-      this.Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), key);
-      this.Size = downloadResponse.Size;
-      this.Type = NodeType.File;
+      Id = id;
+      Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), key);
+      Size = downloadResponse.Size;
+      Type = NodeType.File;
     }
 
     [JsonIgnore]
-    public string Name
-    {
-      get { return this.Attributes?.Name; }
-    }
+    public string Name => Attributes?.Name;
 
     [JsonProperty("s")]
     public long Size { get; protected set; }
@@ -41,16 +39,10 @@
     public string Id { get; private set; }
 
     [JsonIgnore]
-    public DateTime? ModificationDate
-    {
-      get { return this.Attributes?.ModificationDate; }
-    }
+    public DateTime? ModificationDate => Attributes?.ModificationDate;
 
     [JsonIgnore]
-    public string SerializedFingerprint
-    {
-      get { return this.Attributes?.SerializedFingerprint; }
-    }
+    public string SerializedFingerprint => Attributes?.SerializedFingerprint;
 
     [JsonIgnore]
     public Attributes Attributes { get; protected set; }
@@ -59,17 +51,17 @@
 
     public bool Equals(INodeInfo other)
     {
-      return other != null && this.Id == other.Id;
+      return other != null && Id == other.Id;
     }
 
     public override int GetHashCode()
     {
-      return this.Id.GetHashCode();
+      return Id.GetHashCode();
     }
 
     public override bool Equals(object obj)
     {
-      return this.Equals(obj as INodeInfo);
+      return Equals(obj as INodeInfo);
     }
 
     #endregion
@@ -78,15 +70,15 @@
   [DebuggerDisplay("Node - Type: {Type} - Name: {Name} - Id: {Id}")]
   internal class Node : NodeInfo, INode, INodeCrypto
   {
-    private static readonly Regex FileAttributeRegex = new Regex(@"(?<id>\d+):(?<type>\d+)\*(?<handle>[a-zA-Z0-9-_]+)");
+    private static readonly Regex s_fileAttributeRegex = new Regex(@"(?<id>\d+):(?<type>\d+)\*(?<handle>[a-zA-Z0-9-_]+)");
 
-    private byte[] masterKey;
-    private List<SharedKey> sharedKeys;
+    private byte[] _masterKey;
+    private readonly List<SharedKey> _sharedKeys;
 
     public Node(byte[] masterKey, ref List<SharedKey> sharedKeys)
     {
-      this.masterKey = masterKey;
-      this.sharedKeys = sharedKeys;
+      _masterKey = masterKey;
+      _sharedKeys = sharedKeys;
     }
 
     #region Public properties
@@ -147,19 +139,19 @@
     public void OnDeserialized(StreamingContext ctx)
     {
       // Add key from incoming sharing.
-      if (this.SharingKey != null && this.sharedKeys.Any(x => x.Id == this.Id) == false)
+      if (SharingKey != null && _sharedKeys.Any(x => x.Id == Id) == false)
       {
-        this.sharedKeys.Add(new SharedKey(this.Id, this.SharingKey));
+        _sharedKeys.Add(new SharedKey(Id, SharingKey));
       }
 
-      this.CreationDate = this.SerializedCreationDate.ToDateTime();
+      CreationDate = SerializedCreationDate.ToDateTime();
 
-      if (this.Type == NodeType.File || this.Type == NodeType.Directory)
+      if (Type == NodeType.File || Type == NodeType.Directory)
       {
         // Check if file is not yet decrypted
-        if (string.IsNullOrEmpty(this.SerializedKey))
+        if (string.IsNullOrEmpty(SerializedKey))
         {
-          this.EmptyKey = true;
+          EmptyKey = true;
 
           return;
         }
@@ -167,56 +159,55 @@
         // There are cases where the SerializedKey property contains multiple keys separated with /
         // This can occur when a folder is shared and the parent is shared too.
         // Both keys are working so we use the first one
-        string serializedKey = this.SerializedKey.Split('/')[0];
-        int splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
-        byte[] encryptedKey = serializedKey.Substring(splitPosition + 1).FromBase64();
+        var serializedKey = SerializedKey.Split('/')[0];
+        var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
+        var encryptedKey = serializedKey.Substring(splitPosition + 1).FromBase64();
 
         // If node is shared, we need to retrieve shared masterkey
-        if (this.sharedKeys != null)
+        if (_sharedKeys != null)
         {
-          string handle = serializedKey.Substring(0, splitPosition);
-          SharedKey sharedKey = this.sharedKeys.FirstOrDefault(x => x.Id == handle);
+          var handle = serializedKey.Substring(0, splitPosition);
+          var sharedKey = _sharedKeys.FirstOrDefault(x => x.Id == handle);
           if (sharedKey != null)
           {
-            this.masterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), this.masterKey);
-            if (this.Type == NodeType.Directory)
+            _masterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), _masterKey);
+            if (Type == NodeType.Directory)
             {
-              this.SharedKey = this.masterKey;
+              SharedKey = _masterKey;
             }
             else
             {
-              this.SharedKey = Crypto.DecryptKey(encryptedKey, this.masterKey);
+              SharedKey = Crypto.DecryptKey(encryptedKey, _masterKey);
             }
           }
         }
 
-        this.FullKey = Crypto.DecryptKey(encryptedKey, this.masterKey);
+        FullKey = Crypto.DecryptKey(encryptedKey, _masterKey);
 
-        if (this.Type == NodeType.File)
+        if (Type == NodeType.File)
         {
-          byte[] iv, metaMac, fileKey;
-          Crypto.GetPartsFromDecryptedKey(this.FullKey, out iv, out metaMac, out fileKey);
+          Crypto.GetPartsFromDecryptedKey(FullKey, out var iv, out var metaMac, out var fileKey);
 
-          this.Iv = iv;
-          this.MetaMac = metaMac;
-          this.Key = fileKey;
+          Iv = iv;
+          MetaMac = metaMac;
+          Key = fileKey;
         }
         else
         {
-          this.Key = this.FullKey;
+          Key = FullKey;
         }
 
-        this.Attributes = Crypto.DecryptAttributes(this.SerializedAttributes.FromBase64(), this.Key);
+        Attributes = Crypto.DecryptAttributes(SerializedAttributes.FromBase64(), Key);
 
-        if (this.SerializedFileAttributes != null)
+        if (SerializedFileAttributes != null)
         {
-          var attributes = this.SerializedFileAttributes.Split('/');
-          this.FileAttributes = attributes
-            .Select(_ => FileAttributeRegex.Match(_))
+          var attributes = SerializedFileAttributes.Split('/');
+          FileAttributes = attributes
+            .Select(_ => s_fileAttributeRegex.Match(_))
             .Where(_ => _.Success)
             .Select(_ => new FileAttribute(
               int.Parse(_.Groups["id"].Value),
-              (FileAttributeType) Enum.Parse(typeof(FileAttributeType), _.Groups["type"].Value),
+              (FileAttributeType)Enum.Parse(typeof(FileAttributeType), _.Groups["type"].Value),
               _.Groups["handle"].Value))
             .ToArray();
         }
@@ -229,9 +220,9 @@
     {
       get
       {
-        string serializedKey = this.SerializedKey.Split('/')[0];
-        int splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
-        return serializedKey.Substring(0, splitPosition) == this.Id;
+        var serializedKey = SerializedKey.Split('/')[0];
+        var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
+        return serializedKey.Substring(0, splitPosition) == Id;
       }
     }
   }
@@ -239,40 +230,40 @@
   [DebuggerDisplay("PublicNode - Type: {Type} - Name: {Name} - Id: {Id}")]
   internal class PublicNode : INode, INodeCrypto
   {
-    private readonly Node node;
+    private readonly Node _node;
 
     internal PublicNode(Node node, string shareId)
     {
-      this.node = node;
-      this.ShareId = shareId;
+      _node = node;
+      ShareId = shareId;
     }
 
     public string ShareId { get; }
 
     public bool Equals(INodeInfo other)
     {
-      return this.node.Equals(other) && this.ShareId == (other as PublicNode)?.ShareId;
+      return _node.Equals(other) && ShareId == (other as PublicNode)?.ShareId;
     }
 
     #region Forward
 
-    public long Size { get { return this.node.Size; } }
-    public string Name { get { return this.node.Name; } }
-    public DateTime? ModificationDate { get { return this.node.ModificationDate; } }
-    public string SerializedFingerprint { get { return this.node.Attributes.SerializedFingerprint; } }
-    public string Id { get { return this.node.Id; } }
-    public string ParentId { get { return this.node.IsShareRoot ? null : this.node.ParentId; } }
-    public string Owner { get { return this.node.Owner; } }
-    public NodeType Type { get { return this.node.IsShareRoot && this.node.Type == NodeType.Directory ? NodeType.Root : this.node.Type; } }
-    public DateTime CreationDate { get { return this.node.CreationDate; } }
+    public long Size => _node.Size;
+    public string Name => _node.Name;
+    public DateTime? ModificationDate => _node.ModificationDate;
+    public string SerializedFingerprint => _node.Attributes.SerializedFingerprint;
+    public string Id => _node.Id;
+    public string ParentId => _node.IsShareRoot ? null : _node.ParentId;
+    public string Owner => _node.Owner;
+    public NodeType Type => _node.IsShareRoot && _node.Type == NodeType.Directory ? NodeType.Root : _node.Type;
+    public DateTime CreationDate => _node.CreationDate;
 
-    public byte[] Key { get { return this.node.Key; } }
-    public byte[] SharedKey { get { return this.node.SharedKey; } }
-    public byte[] Iv { get { return this.node.Iv; } }
-    public byte[] MetaMac { get { return this.node.MetaMac; } }
-    public byte[] FullKey { get { return this.node.FullKey; } }
+    public byte[] Key => _node.Key;
+    public byte[] SharedKey => _node.SharedKey;
+    public byte[] Iv => _node.Iv;
+    public byte[] MetaMac => _node.MetaMac;
+    public byte[] FullKey => _node.FullKey;
 
-    public IFileAttribute[] FileAttributes { get { return this.node.FileAttributes; } }
+    public IFileAttribute[] FileAttributes => _node.FileAttributes;
 
     #endregion
   }
@@ -281,9 +272,9 @@
   {
     public FileAttribute(int id, FileAttributeType type, string handle)
     {
-      this.Id = id;
-      this.Type = type;
-      this.Handle = handle;
+      Id = id;
+      Type = type;
+      Handle = handle;
     }
 
     public int Id { get; }

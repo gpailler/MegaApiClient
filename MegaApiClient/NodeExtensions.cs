@@ -32,7 +32,7 @@
         }
         else if (childNode.Type == NodeType.Directory)
         {
-          long size = childNode.GetFolderSize(allNodes);
+          var size = childNode.GetFolderSize(allNodes);
           folderSize += size;
         }
       }
@@ -47,7 +47,6 @@
       var allNodes = await client.GetNodesAsync();
       return await node.GetFolderSizeAsync(allNodes);
     }
-
 
     public static async Task<long> GetFolderSizeAsync(this INodeInfo node, IEnumerable<INode> allNodes)
     {
@@ -66,7 +65,7 @@
         }
         else if (childNode.Type == NodeType.Directory)
         {
-          long size = await childNode.GetFolderSizeAsync(allNodes);
+          var size = await childNode.GetFolderSizeAsync(allNodes);
           folderSize += size;
         }
       }

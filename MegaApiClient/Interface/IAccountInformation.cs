@@ -1,4 +1,4 @@
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System.Collections.Generic;
 

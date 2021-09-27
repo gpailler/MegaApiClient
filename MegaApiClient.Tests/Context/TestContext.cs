@@ -13,29 +13,26 @@ namespace CG.Web.MegaApiClient.Tests.Context
   {
     private const int MaxRetry = 3;
 
-    private readonly Lazy<IMegaApiClient> lazyClient;
-    private readonly Lazy<IEnumerable<string>> lazyProtectedNodes;
-    private readonly Lazy<IEnumerable<string>> lazyPermanentNodes;
-    private readonly Action<string> logMessageAction;
-    private ITestOutputHelper testOutputHelper;
+    private readonly Lazy<IMegaApiClient> _lazyClient;
+    private readonly Lazy<IEnumerable<string>> _lazyProtectedNodes;
+    private readonly Lazy<IEnumerable<string>> _lazyPermanentNodes;
+    private readonly Action<string> _logMessageAction;
+    private ITestOutputHelper _testOutputHelper;
 
     protected TestContext()
     {
-      this.WebTimeout = 60000;
-      this.lazyClient = new Lazy<IMegaApiClient>(this.InitializeClient);
-      this.lazyProtectedNodes = new Lazy<IEnumerable<string>>(() => this.GetProtectedNodes().ToArray());
-      this.lazyPermanentNodes = new Lazy<IEnumerable<string>>(() => this.GetPermanentNodes().ToArray());
-      this.logMessageAction = x =>
+      WebTimeout = 60000;
+      _lazyClient = new Lazy<IMegaApiClient>(InitializeClient);
+      _lazyProtectedNodes = new Lazy<IEnumerable<string>>(() => GetProtectedNodes().ToArray());
+      _lazyPermanentNodes = new Lazy<IEnumerable<string>>(() => GetPermanentNodes().ToArray());
+      _logMessageAction = x =>
       {
         Debug.WriteLine(x);
-        testOutputHelper?.WriteLine(x);
+        _testOutputHelper?.WriteLine(x);
       };
     }
 
-    public IMegaApiClient Client
-    {
-      get { return this.lazyClient.Value; }
-    }
+    public IMegaApiClient Client => _lazyClient.Value;
 
     public IWebClient WebClient { get; private set; }
 
@@ -43,32 +40,26 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     public int WebTimeout { get; }
 
-    public IEnumerable<string> ProtectedNodes
-    {
-      get { return this.lazyProtectedNodes.Value; }
-    }
+    public IEnumerable<string> ProtectedNodes => _lazyProtectedNodes.Value;
 
-    public IEnumerable<string> PermanentRootNodes
-    {
-      get { return this.lazyPermanentNodes.Value; }
-    }
+    public IEnumerable<string> PermanentRootNodes => _lazyPermanentNodes.Value;
 
     public void SetLogger(ITestOutputHelper testOutputHelper)
     {
-      this.testOutputHelper = testOutputHelper;
+      _testOutputHelper = testOutputHelper;
     }
 
     public void ClearLogger()
     {
-      this.testOutputHelper = null;
+      _testOutputHelper = null;
     }
 
     protected virtual IMegaApiClient CreateClient()
     {
-      this.Options = new Options(applicationKey: "ewZQFBBC");
-      this.WebClient = new TestWebClient(new WebClient(this.WebTimeout, null, new TestMessageHandler(this.logMessageAction), false), MaxRetry, this.logMessageAction);
+      Options = new Options(applicationKey: "ewZQFBBC");
+      WebClient = new TestWebClient(new WebClient(WebTimeout, null, new TestMessageHandler(), false), MaxRetry, _logMessageAction);
 
-      return new MegaApiClient(this.Options, this.WebClient);
+      return new MegaApiClient(Options, WebClient);
     }
 
     protected abstract IEnumerable<string> GetProtectedNodes();
@@ -79,29 +70,22 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     private IMegaApiClient InitializeClient()
     {
-      var client = this.CreateClient();
-      client.ApiRequestFailed += this.OnApiRequestFailed;
-      this.ConnectClient(client);
+      var client = CreateClient();
+      client.ApiRequestFailed += OnApiRequestFailed;
+      ConnectClient(client);
 
-      this.logMessageAction($"Client created for context {this.GetType().Name}");
+      _logMessageAction($"Client created for context {GetType().Name}");
 
       return client;
     }
 
-    private void OnApiRequestFailed(object sender, ApiRequestFailedEventArgs e)
+    private void OnApiRequestFailed(object _, ApiRequestFailedEventArgs e)
     {
-      this.logMessageAction($"ApiRequestFailed: {e.ApiResult}, {e.ApiUrl}, {e.AttemptNum}, {e.RetryDelay}, {e.ResponseJson}, {e.Exception} {e.Exception?.Message}");
+      _logMessageAction($"ApiRequestFailed: {e.ApiResult}, {e.ApiUrl}, {e.AttemptNum}, {e.RetryDelay}, {e.ResponseJson}, {e.Exception} {e.Exception?.Message}");
     }
 
     private class TestMessageHandler : HttpClientHandler
     {
-      private readonly Action<string> logMessageAction;
-
-      public TestMessageHandler(Action<string> logMessageAction)
-      {
-        this.logMessageAction = logMessageAction;
-      }
-
       protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
       {
         return await base.SendAsync(request, cancellationToken);

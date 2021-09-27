@@ -9,27 +9,27 @@ namespace CG.Web.MegaApiClient.Tests
 {
   public abstract class TestsBase : IDisposable
   {
-    protected readonly ITestContext context;
+    protected readonly ITestContext Context;
 
     protected TestsBase(ITestContext context, ITestOutputHelper testOutputHelper)
     {
-      this.context = context;
-      this.context.SetLogger(testOutputHelper);
+      Context = context;
+      Context.SetLogger(testOutputHelper);
 
-      if (this.context.Client.IsLoggedIn)
+      if (Context.Client.IsLoggedIn)
       {
-        this.SanitizeStorage();
+        SanitizeStorage();
       }
     }
 
     public virtual void Dispose()
     {
-      this.context.ClearLogger();
+      Context.ClearLogger();
     }
 
     protected INode GetNode(NodeType nodeType)
     {
-      var node = this.context.Client.GetNodes().SingleOrDefault(x => x.Type == nodeType);
+      var node = Context.Client.GetNodes().SingleOrDefault(x => x.Type == nodeType);
       Assert.NotNull(node);
 
       return node;
@@ -37,7 +37,7 @@ namespace CG.Web.MegaApiClient.Tests
 
     protected INode GetNode(string nodeId)
     {
-      var node = this.context.Client.GetNodes().Single(x => x.Id == nodeId);
+      var node = Context.Client.GetNodes().Single(x => x.Id == nodeId);
       Assert.NotNull(node);
 
       return node;
@@ -45,19 +45,19 @@ namespace CG.Web.MegaApiClient.Tests
 
     protected INode CreateFolderNode(INode parentNode, string name = "NodeName")
     {
-      return this.context.Client.CreateFolder(name, parentNode);
+      return Context.Client.CreateFolder(name, parentNode);
     }
 
     protected void SanitizeStorage(IEnumerable<string> protectedNodes = null)
     {
-      IEnumerable<INode> nodes = this.context.Client.GetNodes().ToArray();
+      IEnumerable<INode> nodes = Context.Client.GetNodes().ToArray();
 
-      IEnumerable<INode> nodesToRemove = nodes.Where(x => this.IsProtectedNode(protectedNodes ?? this.context.ProtectedNodes, x) == false);
-      foreach (INode node in nodesToRemove)
+      var nodesToRemove = nodes.Where(x => IsProtectedNode(protectedNodes ?? Context.ProtectedNodes, x) == false);
+      foreach (var node in nodesToRemove)
       {
         try
         {
-          this.context.Client.Delete(node, false);
+          Context.Client.Delete(node, false);
         }
         catch (ApiException ex)
         {
@@ -69,10 +69,10 @@ namespace CG.Web.MegaApiClient.Tests
         }
       }
 
-      Assert.Equal((protectedNodes ?? this.context.ProtectedNodes).Count(), this.context.Client.GetNodes().Count());
+      Assert.Equal((protectedNodes ?? Context.ProtectedNodes).Count(), Context.Client.GetNodes().Count());
     }
 
-    private bool IsProtectedNode(IEnumerable<string> protectedNodes, INode node)
+    private static bool IsProtectedNode(IEnumerable<string> protectedNodes, INode node)
     {
       return node.Type == NodeType.Inbox
         || node.Type == NodeType.Root

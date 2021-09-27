@@ -37,10 +37,10 @@ namespace CG.Web.MegaApiClient.Tests
         DateTime? expectedModificationDate
         )
     {
-      var node = this.GetNode(id);
+      var node = GetNode(id);
 
       Assert.Equal(expectedNodeType, node.Type);
-      Assert.Equal(expectedParent,node.ParentId);
+      Assert.Equal(expectedParent, node.ParentId);
       Assert.Equal(expectedName, node.Name);
       Assert.Equal(expectedSize, node.Size);
       Assert.Equal(expectedCreationDate, node.CreationDate);
@@ -53,23 +53,23 @@ namespace CG.Web.MegaApiClient.Tests
     [InlineData(NodeType.Trash, 0, 0)]
     public void GetFoldersize_FromNodeType_Succeeds(NodeType nodeType, long sharedFileSize, long sharedFileUpSideDownSize)
     {
-      var node = this.GetNode(nodeType);
+      var node = GetNode(nodeType);
       var expectedSize = sharedFileSize + sharedFileUpSideDownSize;
-      Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client));
-      Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client).Result);
-      Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client.GetNodes()));
-      Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client.GetNodes()).Result);
+      Assert.Equal(expectedSize, node.GetFolderSize(Context.Client));
+      Assert.Equal(expectedSize, node.GetFolderSizeAsync(Context.Client).Result);
+      Assert.Equal(expectedSize, node.GetFolderSize(Context.Client.GetNodes()));
+      Assert.Equal(expectedSize, node.GetFolderSizeAsync(Context.Client.GetNodes()).Result);
     }
 
     [Fact]
     public void GetFoldersize_FromFile_Throws()
     {
-      var node = this.context.Client.GetNodes().First(x => x.Type == NodeType.File);
-      Assert.Throws<InvalidOperationException>(() => node.GetFolderSize(this.context.Client));
-      var aggregateException = Assert.Throws<AggregateException>(() => node.GetFolderSizeAsync(this.context.Client).Result);
+      var node = Context.Client.GetNodes().First(x => x.Type == NodeType.File);
+      Assert.Throws<InvalidOperationException>(() => node.GetFolderSize(Context.Client));
+      var aggregateException = Assert.Throws<AggregateException>(() => node.GetFolderSizeAsync(Context.Client).Result);
       Assert.IsType<InvalidOperationException>(aggregateException.GetBaseException());
-      Assert.Throws<InvalidOperationException>(() => node.GetFolderSize(this.context.Client.GetNodes()));
-      aggregateException = Assert.Throws<AggregateException>(() => node.GetFolderSizeAsync(this.context.Client.GetNodes()).Result);
+      Assert.Throws<InvalidOperationException>(() => node.GetFolderSize(Context.Client.GetNodes()));
+      aggregateException = Assert.Throws<AggregateException>(() => node.GetFolderSizeAsync(Context.Client.GetNodes()).Result);
       Assert.IsType<InvalidOperationException>(aggregateException.GetBaseException());
     }
 
@@ -78,12 +78,12 @@ namespace CG.Web.MegaApiClient.Tests
     [JsonInputsData("SharedSubFolder.Id", null, "SharedFileUpSideDown.Size")]
     public void GetFoldersize_FromDirectory_Succeeds(string nodeId, long size1, long size2)
     {
-      var node = this.GetNode(nodeId);
+      var node = GetNode(nodeId);
       var expectedSize = size1 + size2;
-      Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client));
-      Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client).Result);
-      Assert.Equal(expectedSize, node.GetFolderSize(this.context.Client.GetNodes()));
-      Assert.Equal(expectedSize, node.GetFolderSizeAsync(this.context.Client.GetNodes()).Result);
+      Assert.Equal(expectedSize, node.GetFolderSize(Context.Client));
+      Assert.Equal(expectedSize, node.GetFolderSizeAsync(Context.Client).Result);
+      Assert.Equal(expectedSize, node.GetFolderSize(Context.Client.GetNodes()));
+      Assert.Equal(expectedSize, node.GetFolderSizeAsync(Context.Client.GetNodes()).Result);
     }
 
     [Fact]

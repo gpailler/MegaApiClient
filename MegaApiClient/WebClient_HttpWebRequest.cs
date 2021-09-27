@@ -12,45 +12,45 @@ namespace CG.Web.MegaApiClient
   {
     private const int DefaultResponseTimeout = Timeout.Infinite;
 
-    private readonly int responseTimeout;
-    private readonly string userAgent;
+    private readonly int _responseTimeout;
+    private readonly string _userAgent;
 
     public WebClient(int responseTimeout = DefaultResponseTimeout, string userAgent = null)
     {
-      this.BufferSize = Options.DefaultBufferSize;
-      this.responseTimeout = responseTimeout;
-      this.userAgent = userAgent ?? this.GenerateUserAgent();
+      BufferSize = Options.DefaultBufferSize;
+      _responseTimeout = responseTimeout;
+      _userAgent = userAgent ?? GenerateUserAgent();
     }
 
     public int BufferSize { get; set; }
 
     public string PostRequestJson(Uri url, string jsonData)
     {
-      using (MemoryStream jsonStream = new MemoryStream(jsonData.ToBytes()))
+      using (var jsonStream = new MemoryStream(jsonData.ToBytes()))
       {
-        using (var responseStream = this.PostRequest(url, jsonStream, "application/json"))
+        using (var responseStream = PostRequest(url, jsonStream, "application/json"))
         {
-          return this.StreamToString(responseStream);
+          return StreamToString(responseStream);
         }
       }
     }
 
     public string PostRequestRaw(Uri url, Stream dataStream)
     {
-      using (var responseStream = this.PostRequest(url, dataStream, "application/octet-stream"))
+      using (var responseStream = PostRequest(url, dataStream, "application/octet-stream"))
       {
-        return this.StreamToString(responseStream);
+        return StreamToString(responseStream);
       }
     }
 
     public Stream PostRequestRawAsStream(Uri url, Stream dataStream)
     {
-      return this.PostRequest(url, dataStream, "application/octet-stream");
+      return PostRequest(url, dataStream, "application/octet-stream");
     }
 
     public Stream GetRequestRaw(Uri url)
     {
-      HttpWebRequest request = this.CreateRequest(url);
+      var request = CreateRequest(url);
       request.Method = "GET";
 
       return request.GetResponse().GetResponseStream();
@@ -58,39 +58,39 @@ namespace CG.Web.MegaApiClient
 
     private Stream PostRequest(Uri url, Stream dataStream, string contentType)
     {
-      HttpWebRequest request = this.CreateRequest(url);
+      var request = CreateRequest(url);
       request.ContentLength = dataStream.Length;
       request.Method = "POST";
       request.ContentType = contentType;
 
-      using (Stream requestStream = request.GetRequestStream())
+      using (var requestStream = request.GetRequestStream())
       {
         dataStream.Position = 0;
-        dataStream.CopyTo(requestStream, this.BufferSize);
+        dataStream.CopyTo(requestStream, BufferSize);
       }
 
-      HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+      var response = (HttpWebResponse)request.GetResponse();
       return response.GetResponseStream();
     }
 
     private HttpWebRequest CreateRequest(Uri url)
     {
-      HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-      request.Timeout = this.responseTimeout;
-      request.UserAgent = this.userAgent;
+      var request = (HttpWebRequest)WebRequest.Create(url);
+      request.Timeout = _responseTimeout;
+      request.UserAgent = _userAgent;
 
       return request;
     }
 
     private string GenerateUserAgent()
     {
-      AssemblyName assemblyName = Assembly.GetExecutingAssembly().GetName();
+      var assemblyName = Assembly.GetExecutingAssembly().GetName();
       return string.Format("{0} v{1}", assemblyName.Name, assemblyName.Version.ToString(2));
     }
 
     private string StreamToString(Stream stream)
     {
-      using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+      using (var streamReader = new StreamReader(stream, Encoding.UTF8))
       {
         return streamReader.ReadToEnd();
       }

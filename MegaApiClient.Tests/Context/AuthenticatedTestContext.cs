@@ -27,7 +27,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     public virtual void Dispose()
     {
-      this.Client.Logout();
+      Client.Logout();
     }
 
     protected override void ConnectClient(IMegaApiClient client)

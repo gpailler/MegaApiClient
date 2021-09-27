@@ -15,7 +15,7 @@ namespace CG.Web.MegaApiClient
   {
     private const int DefaultResponseTimeout = Timeout.Infinite;
 
-    private readonly HttpClient httpClient;
+    private readonly HttpClient _httpClient;
 
     public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null)
       : this(responseTimeout, userAgent, null, false)
@@ -24,54 +24,56 @@ namespace CG.Web.MegaApiClient
 
     internal WebClient(int responseTimeout, ProductInfoHeaderValue userAgent, HttpMessageHandler messageHandler, bool connectionClose)
     {
-      this.BufferSize = Options.DefaultBufferSize;
-      this.httpClient = messageHandler == null ? new HttpClient() : new HttpClient(messageHandler);
-      this.httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
-      this.httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent ?? this.GenerateUserAgent());
-      this.httpClient.DefaultRequestHeaders.ConnectionClose = connectionClose;
+      BufferSize = Options.DefaultBufferSize;
+      _httpClient = messageHandler == null ? new HttpClient() : new HttpClient(messageHandler);
+      _httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
+      _httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent ?? GenerateUserAgent());
+      _httpClient.DefaultRequestHeaders.ConnectionClose = connectionClose;
     }
 
     public int BufferSize { get; set; }
 
     public string PostRequestJson(Uri url, string jsonData)
     {
-      using (MemoryStream jsonStream = new MemoryStream(jsonData.ToBytes()))
+      using (var jsonStream = new MemoryStream(jsonData.ToBytes()))
       {
-        using (var responseStream = this.PostRequest(url, jsonStream, "application/json"))
+        using (var responseStream = PostRequest(url, jsonStream, "application/json"))
         {
-          return this.StreamToString(responseStream);
+          return StreamToString(responseStream);
         }
       }
     }
 
     public string PostRequestRaw(Uri url, Stream dataStream)
     {
-      using (var responseStream = this.PostRequest(url, dataStream, "application/json"))
+      using (var responseStream = PostRequest(url, dataStream, "application/json"))
       {
-        return this.StreamToString(responseStream);
+        return StreamToString(responseStream);
       }
     }
 
     public Stream PostRequestRawAsStream(Uri url, Stream dataStream)
     {
-      return this.PostRequest(url, dataStream, "application/octet-stream");
+      return PostRequest(url, dataStream, "application/octet-stream");
     }
 
     public Stream GetRequestRaw(Uri url)
     {
-      return this.httpClient.GetStreamAsync(url).Result;
+      return _httpClient.GetStreamAsync(url).Result;
     }
 
     private Stream PostRequest(Uri url, Stream dataStream, string contentType)
     {
-      using (StreamContent content = new StreamContent(dataStream, this.BufferSize))
+      using (var content = new StreamContent(dataStream, BufferSize))
       {
         content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
 
-        var requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
-        requestMessage.Content = content;
+        var requestMessage = new HttpRequestMessage(HttpMethod.Post, url)
+        {
+          Content = content
+        };
 
-        HttpResponseMessage response = this.httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead).Result;
+        var response = _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead).Result;
         if (!response.IsSuccessStatusCode
             && response.StatusCode == HttpStatusCode.InternalServerError
             && response.ReasonPhrase == "Server Too Busy")
@@ -87,7 +89,7 @@ namespace CG.Web.MegaApiClient
 
     private string StreamToString(Stream stream)
     {
-      using (StreamReader streamReader = new StreamReader(stream, Encoding.UTF8))
+      using (var streamReader = new StreamReader(stream, Encoding.UTF8))
       {
         return streamReader.ReadToEnd();
       }
@@ -95,7 +97,7 @@ namespace CG.Web.MegaApiClient
 
     private ProductInfoHeaderValue GenerateUserAgent()
     {
-      AssemblyName assemblyName = this.GetType().GetTypeInfo().Assembly.GetName();
+      var assemblyName = GetType().GetTypeInfo().Assembly.GetName();
       return new ProductInfoHeaderValue(assemblyName.Name, assemblyName.Version.ToString(2));
     }
   }

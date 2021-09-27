@@ -33,22 +33,23 @@
 #endif
       )
     {
-      this.ApplicationKey = applicationKey;
-      this.SynchronizeApiRequests = synchronizeApiRequests;
+      ApplicationKey = applicationKey;
+      SynchronizeApiRequests = synchronizeApiRequests;
 
-      this.ComputeApiRequestRetryWaitDelay = computeApiRequestRetryWaitDelay ?? this.ComputeDefaultApiRequestRetryWaitDelay;
+      ComputeApiRequestRetryWaitDelay = computeApiRequestRetryWaitDelay ?? ComputeDefaultApiRequestRetryWaitDelay;
 
-      this.BufferSize = bufferSize;
-      this.ChunksPackSize = chunksPackSize;
+      BufferSize = bufferSize;
+      ChunksPackSize = chunksPackSize;
 
 #if !NET40
-      if (reportProgressChunkSize < this.BufferSize)
+      if (reportProgressChunkSize < BufferSize)
       {
         throw new ArgumentException(
           $"ReportProgressChunkSize ({reportProgressChunkSize}) cannot have a value lower than BufferSize ({bufferSize})",
           nameof(reportProgressChunkSize));
       }
-      this.ReportProgressChunkSize = reportProgressChunkSize;
+
+      ReportProgressChunkSize = reportProgressChunkSize;
 #endif
     }
 

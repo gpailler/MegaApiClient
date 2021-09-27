@@ -13,89 +13,89 @@ namespace CG.Web.MegaApiClient
 
     public Task<LogonSessionToken> LoginAsync(string email, string password, string mfaKey = null)
     {
-      return Task.Run(() => this.Login(email, password, mfaKey));
+      return Task.Run(() => Login(email, password, mfaKey));
     }
 
     public Task<LogonSessionToken> LoginAsync(AuthInfos authInfos)
     {
-      return Task.Run(() => this.Login(authInfos));
+      return Task.Run(() => Login(authInfos));
     }
 
     public Task LoginAsync(LogonSessionToken logonSessionToken)
     {
-      return Task.Run(() => this.Login(logonSessionToken));
+      return Task.Run(() => Login(logonSessionToken));
     }
 
     public Task LoginAsync()
     {
-      return Task.Run(() => this.Login());
+      return Task.Run(() => Login());
     }
 
     public Task LoginAnonymousAsync()
     {
-      return Task.Run(() => this.LoginAnonymous());
+      return Task.Run(() => LoginAnonymous());
     }
 
     public Task LogoutAsync()
     {
-      return Task.Run(() => this.Logout());
+      return Task.Run(() => Logout());
     }
 
     public Task<string> GetRecoveryKeyAsync()
     {
-      return Task.FromResult(this.GetRecoveryKey());
+      return Task.FromResult(GetRecoveryKey());
     }
 
     public Task<IAccountInformation> GetAccountInformationAsync()
     {
-      return Task.Run(() => this.GetAccountInformation());
+      return Task.Run(() => GetAccountInformation());
     }
 
     public Task<IEnumerable<ISession>> GetSessionsHistoryAsync()
     {
-      return Task.Run(() => this.GetSessionsHistory());
+      return Task.Run(() => GetSessionsHistory());
     }
 
     public Task<IEnumerable<INode>> GetNodesAsync()
     {
-      return Task.Run(() => this.GetNodes());
+      return Task.Run(() => GetNodes());
     }
 
     public Task<IEnumerable<INode>> GetNodesAsync(INode parent)
     {
-      return Task.Run(() => this.GetNodes(parent));
+      return Task.Run(() => GetNodes(parent));
     }
 
     public Task<INode> CreateFolderAsync(string name, INode parent)
     {
-      return Task.Run(() => this.CreateFolder(name, parent));
+      return Task.Run(() => CreateFolder(name, parent));
     }
 
     public Task DeleteAsync(INode node, bool moveToTrash = true)
     {
-      return Task.Run(() => this.Delete(node, moveToTrash));
+      return Task.Run(() => Delete(node, moveToTrash));
     }
 
     public Task<INode> MoveAsync(INode sourceNode, INode destinationParentNode)
     {
-      return Task.Run(() => this.Move(sourceNode, destinationParentNode));
+      return Task.Run(() => Move(sourceNode, destinationParentNode));
     }
 
     public Task<INode> RenameAsync(INode sourceNode, string newName)
     {
-      return Task.Run(() => this.Rename(sourceNode, newName));
+      return Task.Run(() => Rename(sourceNode, newName));
     }
 
     public Task<Uri> GetDownloadLinkAsync(INode node)
     {
-      return Task.Run(() => this.GetDownloadLink(node));
+      return Task.Run(() => GetDownloadLink(node));
     }
 
     public Task<Stream> DownloadAsync(INode node, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
     {
       return Task.Run(() =>
       {
-        return (Stream)new ProgressionStream(this.Download(node, cancellationToken), progress, this.options.ReportProgressChunkSize);
+        return (Stream)new ProgressionStream(Download(node, cancellationToken), progress, _options.ReportProgressChunkSize);
       }, cancellationToken.GetValueOrDefault());
     }
 
@@ -103,7 +103,7 @@ namespace CG.Web.MegaApiClient
     {
       return Task.Run(() =>
       {
-        return (Stream)new ProgressionStream(this.Download(uri, cancellationToken), progress, this.options.ReportProgressChunkSize);
+        return (Stream)new ProgressionStream(Download(uri, cancellationToken), progress, _options.ReportProgressChunkSize);
       }, cancellationToken.GetValueOrDefault());
     }
 
@@ -111,9 +111,9 @@ namespace CG.Web.MegaApiClient
     {
       return Task.Run(() =>
       {
-        using (Stream stream = new ProgressionStream(this.Download(node, cancellationToken), progress, this.options.ReportProgressChunkSize))
+        using (Stream stream = new ProgressionStream(Download(node, cancellationToken), progress, _options.ReportProgressChunkSize))
         {
-          this.SaveStream(stream, outputFile);
+          SaveStream(stream, outputFile);
         }
       }, cancellationToken.GetValueOrDefault());
     }
@@ -127,9 +127,9 @@ namespace CG.Web.MegaApiClient
           throw new ArgumentNullException("outputFile");
         }
 
-        using (Stream stream = new ProgressionStream(this.Download(uri, cancellationToken), progress, this.options.ReportProgressChunkSize))
+        using (Stream stream = new ProgressionStream(Download(uri, cancellationToken), progress, _options.ReportProgressChunkSize))
         {
-          this.SaveStream(stream, outputFile);
+          SaveStream(stream, outputFile);
         }
       }, cancellationToken.GetValueOrDefault());
     }
@@ -143,9 +143,9 @@ namespace CG.Web.MegaApiClient
           throw new ArgumentNullException("stream");
         }
 
-        using (Stream progressionStream = new ProgressionStream(stream, progress, this.options.ReportProgressChunkSize))
+        using (Stream progressionStream = new ProgressionStream(stream, progress, _options.ReportProgressChunkSize))
         {
-          return this.Upload(progressionStream, name, parent, modificationDate, cancellationToken);
+          return Upload(progressionStream, name, parent, modificationDate, cancellationToken);
         }
       }, cancellationToken.GetValueOrDefault());
     }
@@ -154,37 +154,37 @@ namespace CG.Web.MegaApiClient
     {
       return Task.Run(() =>
       {
-        DateTime modificationDate = File.GetLastWriteTime(filename);
-        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress, this.options.ReportProgressChunkSize))
+        var modificationDate = File.GetLastWriteTime(filename);
+        using (Stream stream = new ProgressionStream(new FileStream(filename, FileMode.Open, FileAccess.Read), progress, _options.ReportProgressChunkSize))
         {
-          return this.Upload(stream, Path.GetFileName(filename), parent, modificationDate, cancellationToken);
+          return Upload(stream, Path.GetFileName(filename), parent, modificationDate, cancellationToken);
         }
       }, cancellationToken.GetValueOrDefault());
     }
 
     public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
     {
-      return Task.Run(() => this.GetNodeFromLink(uri));
+      return Task.Run(() => GetNodeFromLink(uri));
     }
 
     public Task<IEnumerable<INode>> GetNodesFromLinkAsync(Uri uri)
     {
-      return Task.Run(() => this.GetNodesFromLink(uri));
+      return Task.Run(() => GetNodesFromLink(uri));
     }
 
-    public Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password)
+    public Task<AuthInfos> GenerateAuthInfosAsync(string email, string password)
     {
-      return Task.Run(() => this.GenerateAuthInfos(email, password));
+      return Task.Run(() => GenerateAuthInfos(email, password));
     }
 
-    public Task<MegaApiClient.AuthInfos> GenerateAuthInfosAsync(string email, string password, string mfaKey)
+    public Task<AuthInfos> GenerateAuthInfosAsync(string email, string password, string mfaKey)
     {
-      return Task.Run(() => this.GenerateAuthInfos(email, password, mfaKey));
+      return Task.Run(() => GenerateAuthInfos(email, password, mfaKey));
     }
 
     public Task<Stream> DownloadFileAttributeAsync(INode node, FileAttributeType fileAttributeType, CancellationToken? cancellationToken = null)
     {
-      return Task.Run(() => this.DownloadFileAttribute(node, fileAttributeType, cancellationToken));
+      return Task.Run(() => DownloadFileAttribute(node, fileAttributeType, cancellationToken));
     }
 #endregion
   }
