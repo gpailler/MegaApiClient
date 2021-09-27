@@ -190,6 +190,12 @@
           }
         }
 
+        if (encryptedKey.Length != 16 && encryptedKey.Length != 32)
+        {
+          // Invalid key size
+          return;
+        }
+
         this.FullKey = Crypto.DecryptKey(encryptedKey, this.masterKey);
 
         if (this.Type == NodeType.File)

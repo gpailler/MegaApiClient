@@ -6,6 +6,8 @@ using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
 using Xunit;
 using Xunit.Abstractions;
+using Newtonsoft.Json;
+using CG.Web.MegaApiClient.Serialization;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -337,6 +339,45 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFileUpSideDown.Size, node.Size);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFileUpSideDown.ModificationDate, node.ModificationDate);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFileUpSideDown.CreationDate, node.CreationDate);
+    }
+
+    [Fact]
+    public void DeserializeNodes_SkipInvalidKeys_Succeeds()
+    {
+      var data = @"
+      {
+        'f': [
+          {
+            'h': 'kBEQkB6B',
+            'p': 'kUMDWapK',
+            'u': 'tQyS8DbSPXY',
+            't': 0,
+            'a': 'v03r4dTkEn24_4UMAshsntkEg2dm4HJxupEt-FkasIZfqwG9QbSS-TPpg-ftS0ps0wxa7UEKcCKxu0Dw55kcGR4bbLEcPJ9i8w3WBqxRWdnSyoDt7_pLBZMsSiY1oUjg',
+            'k': 'tQyS8DbSPXY:bIUK8KCjsB3-cIAyjWTwxl-vqj_wbxyHvpxdnKPLDCk',
+            's': 54161282,
+            'ts': 1624367975
+          },
+          {
+            'h': 'AR0VEIwJ',
+            'p': '4NUFWaiQ',
+            'u': 'tQyS8DbSPXY',
+            't': 0,
+            'a': 'xkoxdtzKjvB71ooZ7VrKyujxKxs_tDmIlqybvd-Rr-JM38OQ_1xcbD2F-qYgunW7x_1dgB8aFm-8xmfZ0GmefSvSfp-tC3XF2eDlOG6nZoA',
+            'k': 'tQyS8DbSPXY:CAAZ9In47mdjTNVgtPoheuvFkFe6sP-bWdeCRVJClvOB5iXmFFIzV-GR7jASHrAnPOTAXXoSHQepGDqr_44Nvi5plYevduF7gvB8FHSUfhpPF2NvqAdFrv8R2SdyOLvX4f41J9CT7gSHS6sYL1l_JweYR7OL7R7GVle30THuW93D3G1FhIKNTyoXlJ9uBGcRZ_gowLT5jjjkgXfc7uRjos2mgumlVZHNY761mBKZaASPnJ12iTXaLLrgZEHcIL9csgOf_BA_C_b7VS6oqTYJha789Z0OrfXLKy9U0ctHQhP6gYp8BeKeqbJ7Of8gaIM6-zC2NfaezZCj8EaWFEp3PG-H',
+            's': 23840386,
+            'ts': 1624534319
+          }
+        ]
+      }";
+
+      var nodes = JsonConvert.DeserializeObject<GetNodesResponse>(data, new GetNodesResponseConverter(new byte[16])).Nodes;
+
+      Assert.Equal(2, nodes.Length);
+      Assert.NotNull(nodes[0].Name);
+      Assert.NotNull(nodes[0].Key);
+      Assert.NotNull(nodes[0].FullKey);
+      Assert.Null(nodes[1].Name);
+      Assert.Null(nodes[1].FullKey);
     }
   }
 }
