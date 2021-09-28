@@ -1,5 +1,4 @@
-﻿
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System;
   using System.Collections.Generic;
@@ -180,6 +179,12 @@ namespace CG.Web.MegaApiClient
               SharedKey = Crypto.DecryptKey(encryptedKey, _masterKey);
             }
           }
+        }
+
+        if (encryptedKey.Length != 16 && encryptedKey.Length != 32)
+        {
+          // Invalid key size
+          return;
         }
 
         FullKey = Crypto.DecryptKey(encryptedKey, _masterKey);
