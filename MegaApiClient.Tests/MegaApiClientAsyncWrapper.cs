@@ -124,7 +124,7 @@
       return UnwrapException(() => _client.DownloadAsync(uri, progress, cancellationToken).Result);
     }
 
-    public INodeInfo GetNodeFromLink(Uri uri)
+    public INode GetNodeFromLink(Uri uri)
     {
       return UnwrapException(() => _client.GetNodeFromLinkAsync(uri).Result);
     }
@@ -286,7 +286,7 @@
       return _client.UploadAsync(stream, name, parent, progress, modificationDate, cancellationToken);
     }
 
-    public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
+    public Task<INode> GetNodeFromLinkAsync(Uri uri)
     {
       return _client.GetNodeFromLinkAsync(uri);
     }

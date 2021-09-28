@@ -656,7 +656,7 @@
     /// <exception cref="ApiException">Mega.co.nz service reports an error</exception>
     /// <exception cref="ArgumentNullException">uri is null</exception>
     /// <exception cref="ArgumentException">Uri is not valid (id and key are required)</exception>
-    public INodeInfo GetNodeFromLink(Uri uri)
+    public INode GetNodeFromLink(Uri uri)
     {
       if (uri == null)
       {
@@ -671,7 +671,7 @@
       var downloadRequest = new DownloadUrlRequestFromId(id);
       var downloadResponse = Request<DownloadUrlResponse>(downloadRequest);
 
-      return new NodeInfo(id, downloadResponse, key);
+      return new Node(id, downloadResponse, key);
     }
 
     /// <summary>

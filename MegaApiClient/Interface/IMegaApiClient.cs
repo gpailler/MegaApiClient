@@ -49,7 +49,7 @@
 
     Stream Download(Uri uri, CancellationToken? cancellationToken = null);
 
-    INodeInfo GetNodeFromLink(Uri uri);
+    INode GetNodeFromLink(Uri uri);
 
     IEnumerable<INode> GetNodesFromLink(Uri uri);
 

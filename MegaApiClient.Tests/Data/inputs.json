@@ -1,103 +1,107 @@
 ﻿{
-    "UsernameAccount": "megaapiclient3@yopmail.com",
-    "TotalQuota": 21474836480,
+  "UsernameAccount": "megaapiclient3@yopmail.com",
+  "TotalQuota": 21474836480,
 
-    "_comment_MasterKeyHash": "Hash of the master key (check GetRecoveryKeyAfterLogin_Succeeds to generate the hash from the masterkey)",
-    "MasterKeyHash": "AqZH2MufH0VgX-qcv9rQ2zoPQxxhxsMGEyRfeVrYWHk",
+  "_comment_MasterKeyHash": "Hash of the master key (check GetRecoveryKeyAfterLogin_Succeeds to generate the hash from the masterkey)",
+  "MasterKeyHash": "AqZH2MufH0VgX-qcv9rQ2zoPQxxhxsMGEyRfeVrYWHk",
 
-    "_comment_StorageLayout": [
-        "+-Root",
-        "|   +-SharedFolder                          (Outgoing Share)",
-        "|       |-SharedFile.jpg",
-        "|       +-SharedSubFolder                   (Outgoing Share)",
-        "|           |-SharedFileUpSideDown.jpg",
-        ",+-Trash",
-        ",+-Inbox",
-        ",+-Contacts",
-        ",  +-SharedRemoteFolder                     (Incoming Share)",
-        ",    |-SharedRemoteFile.jpg",
-        ",    +-SharedRemoteSubFolder                (Incoming Share / Subfolder of SharedRemoteFolder)",
-        ",      |-SharedRemoteSubFile.jpg",
-        ",      +-SharedRemoteSubSubFolder"
-    ],
+  "_comment_StorageLayout": [
+    "+-Root",
+    "|   +-SharedFolder                          (Outgoing Share)",
+    "|       |-SharedFile.jpg",
+    "|       +-SharedSubFolder                   (Outgoing Share)",
+    "|           |-SharedFileUpSideDown.jpg",
+    ",+-Trash",
+    ",+-Inbox",
+    ",+-Contacts",
+    ",  +-SharedRemoteFolder                     (Incoming Share)",
+    ",    |-SharedRemoteFile.jpg",
+    ",    +-SharedRemoteSubFolder                (Incoming Share / Subfolder of SharedRemoteFolder)",
+    ",      |-SharedRemoteSubFile.jpg",
+    ",      +-SharedRemoteSubSubFolder"
+  ],
 
-    "FileLink": "https://mega.nz/file/W0UAgJaK#XOYyTETrIy8daz3_dw3fdh6Hh8EFEdrnbyoop1r9R6g",
-    "FolderLink": "https://mega.nz/folder/e4diDZ7T#iJnegBO_m6OXBQp27lHCrg",
+  "FileLink": "https://mega.nz/file/W0UAgJaK#XOYyTETrIy8daz3_dw3fdh6Hh8EFEdrnbyoop1r9R6g",
+  "FolderLink": "https://mega.nz/folder/e4diDZ7T#iJnegBO_m6OXBQp27lHCrg",
 
-    "Root": {
-        "Id": "39FwkLpK",
-        "CreationDate": "2021-09-24T17:18:01.0000000+08:00"
+  "Root": {
+    "Id": "39FwkLpK",
+    "CreationDate": "2021-09-24T17:18:01.0000000+08:00"
+  },
+
+  "Trash": {
+    "Id": "npM2zZiJ",
+    "CreationDate": "2021-09-24T17:18:01.0000000+08:00"
+  },
+
+  "Inbox": {
+    "Id": "iwEglZbZ",
+    "CreationDate": "2021-09-24T17:18:01.0000000+08:00"
+  },
+
+  "SharedFolder": {
+    "Id": "G5NikTgR",
+    "CreationDate": "2021-09-24T17:23:48.0000000+08:00"
+  },
+
+  "SharedFile": {
+    "Id": "KlVgwR4B",
+    "Size": 523265,
+    "CreationDate": "2021-09-24T17:24:21.0000000+08:00",
+    "ModificationDate": "2021-02-28T22:11:37.0000000+08:00",
+    "Fingerprint": "GRSM8-c1HUmlmyDuTJVrDwSZpDtg",
+    "Thumbnail": {
+      "Id": "Br9xX2hAYqw",
+      "AttributeId": 882
     },
-
-    "Trash": {
-        "Id": "npM2zZiJ",
-        "CreationDate": "2021-09-24T17:18:01.0000000+08:00"
-    },
-
-    "Inbox": {
-        "Id": "iwEglZbZ",
-        "CreationDate": "2021-09-24T17:18:01.0000000+08:00"
-    },
-
-    "SharedFolder": {
-        "Id": "G5NikTgR",
-        "CreationDate": "2021-09-24T17:23:48.0000000+08:00"
-    },
-
-    "SharedFile": {
-        "Id": "KlVgwR4B",
-        "Size": 523265,
-        "CreationDate": "2021-09-24T17:24:21.0000000+08:00",
-        "ModificationDate": "2021-02-28T22:11:37.0000000+08:00",
-        "Thumbnail": {
-            "Id": "Br9xX2hAYqw",
-            "AttributeId": 882
-        },
-        "Preview": {
-            "Id": "IoZ69cbG8pk",
-            "AttributeId": 704
-        }
-    },
-
-    "SharedSubFolder": {
-        "Id": "zwNiSB7J",
-        "CreationDate": "2021-09-24T17:25:24.0000000+08:00"
-    },
-
-    "SharedFileUpSideDown": {
-        "Id": "y5cSkZrZ",
-        "Size": 112916,
-        "CreationDate": "2021-09-24T17:25:57.0000000+08:00",
-        "ModificationDate": "2021-09-24T17:22:20.0000000+08:00"
-    },
-
-    "SharedRemoteFolder": {
-        "ParentId": "zoUwhLYR",
-        "Id": "20d2XLIS",
-        "CreationDate": "2021-09-26T14:27:29.0000000+08:00"
-    },
-
-    "SharedRemoteSubFolder": {
-        "Id": "HgU2GRDB",
-        "CreationDate": "2021-09-26T14:28:36.0000000+08:00"
-    },
-
-    "SharedRemoteSubSubFolder": {
-        "Id": "bxMQkZhI",
-        "CreationDate": "2021-09-26T14:29:11.0000000+08:00"
-    },
-
-    "SharedRemoteFile": {
-        "Id": "qgFmnRDI",
-        "Size": 523265,
-        "CreationDate": "2021-09-26T14:28:31.0000000+08:00",
-        "ModificationDate": "2021-02-28T22:11:37.0000000+08:00"
-    },
-
-    "SharedRemoteSubFile": {
-        "Id": "qoNiELgb",
-        "Size": 523265,
-        "CreationDate": "2021-09-26T14:29:04.0000000+08:00",
-        "ModificationDate": "2021-02-28T22:11:37.0000000+08:00"
+    "Preview": {
+      "Id": "IoZ69cbG8pk",
+      "AttributeId": 704
     }
+  },
+
+  "SharedSubFolder": {
+    "Id": "zwNiSB7J",
+    "CreationDate": "2021-09-24T17:25:24.0000000+08:00"
+  },
+
+  "SharedFileUpSideDown": {
+    "Id": "y5cSkZrZ",
+    "Size": 112916,
+    "CreationDate": "2021-09-24T17:25:57.0000000+08:00",
+    "ModificationDate": "2021-09-24T17:22:20.0000000+08:00",
+    "Fingerprint": "hDL3WKxHmI6lMM92r43BWQTMmE1h"
+  },
+
+  "SharedRemoteFolder": {
+    "ParentId": "zoUwhLYR",
+    "Id": "20d2XLIS",
+    "CreationDate": "2021-09-26T14:27:29.0000000+08:00"
+  },
+
+  "SharedRemoteSubFolder": {
+    "Id": "HgU2GRDB",
+    "CreationDate": "2021-09-26T14:28:36.0000000+08:00"
+  },
+
+  "SharedRemoteSubSubFolder": {
+    "Id": "bxMQkZhI",
+    "CreationDate": "2021-09-26T14:29:11.0000000+08:00"
+  },
+
+  "SharedRemoteFile": {
+    "Id": "qgFmnRDI",
+    "Size": 523265,
+    "CreationDate": "2021-09-26T14:28:31.0000000+08:00",
+    "ModificationDate": "2021-02-28T22:11:37.0000000+08:00",
+    "Fingerprint": "GRSM8-c1HUmlmyDuTJVrDwSZpDtg"
+  },
+
+  "SharedRemoteSubFile": {
+    "Id": "qoNiELgb",
+    "Size": 523265,
+    "CreationDate": "2021-09-26T14:29:04.0000000+08:00",
+    "ModificationDate": "2021-02-28T22:11:37.0000000+08:00",
+    "Fingerprint": "GRSM8-c1HUmlmyDuTJVrDwSZpDtg"
+  }
 }
