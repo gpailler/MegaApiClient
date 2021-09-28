@@ -7,13 +7,13 @@
 
   internal class NodeConverter : JsonConverter
   {
-    private readonly byte[] masterKey;
-    private List<SharedKey> sharedKeys;
+    private readonly byte[] _masterKey;
+    private List<SharedKey> _sharedKeys;
 
     public NodeConverter(byte[] masterKey, ref List<SharedKey> sharedKeys)
     {
-      this.masterKey = masterKey;
-      this.sharedKeys = sharedKeys;
+      _masterKey = masterKey;
+      _sharedKeys = sharedKeys;
     }
 
     public override bool CanConvert(Type objectType)
@@ -28,11 +28,11 @@
         return null;
       }
 
-      JObject jObject = JObject.Load(reader);
+      var jObject = JObject.Load(reader);
 
-      Node target = new Node(this.masterKey, ref this.sharedKeys);
+      var target = new Node(_masterKey, ref _sharedKeys);
 
-      JsonReader jObjectReader = jObject.CreateReader();
+      var jObjectReader = jObject.CreateReader();
       jObjectReader.Culture = reader.Culture;
       jObjectReader.DateFormatString = reader.DateFormatString;
       jObjectReader.DateParseHandling = reader.DateParseHandling;

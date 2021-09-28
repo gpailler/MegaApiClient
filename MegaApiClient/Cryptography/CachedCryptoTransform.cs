@@ -5,50 +5,50 @@
 
   internal class CachedCryptoTransform : ICryptoTransform
   {
-    private readonly Func<ICryptoTransform> factory;
-    private readonly bool isKnownReusable;
-    private ICryptoTransform cachedInstance;
+    private readonly Func<ICryptoTransform> _factory;
+    private readonly bool _isKnownReusable;
+    private ICryptoTransform _cachedInstance;
 
     public CachedCryptoTransform(Func<ICryptoTransform> factory, bool isKnownReusable)
     {
-        this.factory = factory;
-        this.isKnownReusable = isKnownReusable;
+      _factory = factory;
+      _isKnownReusable = isKnownReusable;
     }
 
     public void Dispose()
     {
-      this.cachedInstance?.Dispose();
+      _cachedInstance?.Dispose();
     }
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
-      return this.Forward(x => x.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset));
+      return Forward(x => x.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset));
     }
 
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
     {
-      if (isKnownReusable && cachedInstance != null)
+      if (_isKnownReusable && _cachedInstance != null)
       {
         // Fast path.
-        return cachedInstance.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
+        return _cachedInstance.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
       }
       else
       {
-        return this.Forward(x => x.TransformFinalBlock(inputBuffer, inputOffset, inputCount));
+        return Forward(x => x.TransformFinalBlock(inputBuffer, inputOffset, inputCount));
       }
     }
 
-    public int InputBlockSize { get { return this.Forward(x => x.InputBlockSize); } }
+    public int InputBlockSize => Forward(x => x.InputBlockSize);
 
-    public int OutputBlockSize { get { return this.Forward(x => x.OutputBlockSize); } }
+    public int OutputBlockSize => Forward(x => x.OutputBlockSize);
 
-    public bool CanTransformMultipleBlocks { get { return this.Forward(x => x.CanTransformMultipleBlocks); } }
+    public bool CanTransformMultipleBlocks => Forward(x => x.CanTransformMultipleBlocks);
 
-    public bool CanReuseTransform { get { return this.Forward(x => x.CanReuseTransform); } }
+    public bool CanReuseTransform => Forward(x => x.CanReuseTransform);
 
     private T Forward<T>(Func<ICryptoTransform, T> action)
     {
-      ICryptoTransform instance = this.cachedInstance ?? this.factory();
+      var instance = _cachedInstance ?? _factory();
 
       try
       {
@@ -56,13 +56,13 @@
       }
       finally
       {
-        if (!isKnownReusable && instance.CanReuseTransform == false) // Try to avoid a virtual call to CanReuseTransform.
+        if (!_isKnownReusable && instance.CanReuseTransform == false) // Try to avoid a virtual call to CanReuseTransform.
         {
           instance.Dispose();
         }
         else
         {
-          this.cachedInstance = instance;
+          _cachedInstance = instance;
         }
       }
     }

@@ -7,8 +7,8 @@
   {
     protected RequestBase(string action)
     {
-      this.Action = action;
-      this.QueryArguments = new Dictionary<string, string>();
+      Action = action;
+      QueryArguments = new Dictionary<string, string>();
     }
 
     [JsonProperty("a")]

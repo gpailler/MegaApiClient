@@ -7,16 +7,16 @@
     public LoginRequest(string userHandle, string passwordHash)
       : base("us")
     {
-      this.UserHandle = userHandle;
-      this.PasswordHash = passwordHash;
+      UserHandle = userHandle;
+      PasswordHash = passwordHash;
     }
 
     public LoginRequest(string userHandle, string passwordHash, string mfaKey)
       : base("us")
     {
-      this.UserHandle = userHandle;
-      this.PasswordHash = passwordHash;
-      this.MFAKey = mfaKey;
+      UserHandle = userHandle;
+      PasswordHash = passwordHash;
+      MFAKey = mfaKey;
     }
 
     [JsonProperty("user")]

@@ -1,4 +1,4 @@
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System;
   using System.IO;
@@ -6,26 +6,21 @@ namespace CG.Web.MegaApiClient
 
   public class CancellableStream : Stream
   {
-    private Stream stream;
-    private readonly CancellationToken cancellationToken;
+    private Stream _stream;
+    private readonly CancellationToken _cancellationToken;
 
     public CancellableStream(Stream stream, CancellationToken cancellationToken)
     {
-      if (stream == null)
-      {
-        throw new ArgumentNullException(nameof(stream));
-      }
-
-      this.stream = stream;
-      this.cancellationToken = cancellationToken;
+      _stream = stream ?? throw new ArgumentNullException(nameof(stream));
+      _cancellationToken = cancellationToken;
     }
 
     public override bool CanRead
     {
       get
       {
-        this.cancellationToken.ThrowIfCancellationRequested();
-        return this.stream.CanRead;
+        _cancellationToken.ThrowIfCancellationRequested();
+        return _stream.CanRead;
       }
     }
 
@@ -33,8 +28,8 @@ namespace CG.Web.MegaApiClient
     {
       get
       {
-        this.cancellationToken.ThrowIfCancellationRequested();
-        return this.stream.CanSeek;
+        _cancellationToken.ThrowIfCancellationRequested();
+        return _stream.CanSeek;
       }
     }
 
@@ -42,23 +37,23 @@ namespace CG.Web.MegaApiClient
     {
       get
       {
-        this.cancellationToken.ThrowIfCancellationRequested();
-        return this.stream.CanWrite;
+        _cancellationToken.ThrowIfCancellationRequested();
+        return _stream.CanWrite;
       }
     }
 
     public override void Flush()
     {
-      this.cancellationToken.ThrowIfCancellationRequested();
-      this.stream.Flush();
+      _cancellationToken.ThrowIfCancellationRequested();
+      _stream.Flush();
     }
 
     public override long Length
     {
       get
       {
-        this.cancellationToken.ThrowIfCancellationRequested();
-        return this.stream.Length;
+        _cancellationToken.ThrowIfCancellationRequested();
+        return _stream.Length;
       }
     }
 
@@ -66,47 +61,47 @@ namespace CG.Web.MegaApiClient
     {
       get
       {
-        this.cancellationToken.ThrowIfCancellationRequested();
-        return this.stream.Position;
+        _cancellationToken.ThrowIfCancellationRequested();
+        return _stream.Position;
       }
 
       set
       {
-        this.cancellationToken.ThrowIfCancellationRequested();
-        this.stream.Position = value;
+        _cancellationToken.ThrowIfCancellationRequested();
+        _stream.Position = value;
       }
     }
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-      this.cancellationToken.ThrowIfCancellationRequested();
-      return this.stream.Read(buffer, offset, count);
+      _cancellationToken.ThrowIfCancellationRequested();
+      return _stream.Read(buffer, offset, count);
     }
 
     public override long Seek(long offset, SeekOrigin origin)
     {
-      this.cancellationToken.ThrowIfCancellationRequested();
-      return this.stream.Seek(offset, origin);
+      _cancellationToken.ThrowIfCancellationRequested();
+      return _stream.Seek(offset, origin);
     }
 
     public override void SetLength(long value)
     {
-      this.cancellationToken.ThrowIfCancellationRequested();
-      this.stream.SetLength(value);
+      _cancellationToken.ThrowIfCancellationRequested();
+      _stream.SetLength(value);
     }
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-      this.cancellationToken.ThrowIfCancellationRequested();
-      this.stream.Write(buffer, offset, count);
+      _cancellationToken.ThrowIfCancellationRequested();
+      _stream.Write(buffer, offset, count);
     }
 
     protected override void Dispose(bool disposing)
     {
       if (disposing)
       {
-        this.stream?.Dispose();
-        this.stream = null;
+        _stream?.Dispose();
+        _stream = null;
       }
     }
   }

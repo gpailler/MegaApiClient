@@ -1,17 +1,16 @@
 ﻿namespace CG.Web.MegaApiClient.Serialization
 {
   using System;
-  using System.Collections.Generic;
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
 
   internal class GetNodesResponseConverter : JsonConverter
   {
-    private readonly byte[] masterKey;
+    private readonly byte[] _masterKey;
 
     public GetNodesResponseConverter(byte[] masterKey)
     {
-      this.masterKey = masterKey;
+      _masterKey = masterKey;
     }
 
     public override bool CanConvert(Type objectType)
@@ -26,11 +25,11 @@
         return null;
       }
 
-      JObject jObject = JObject.Load(reader);
+      var jObject = JObject.Load(reader);
 
-      GetNodesResponse target = new GetNodesResponse(this.masterKey);
+      var target = new GetNodesResponse(_masterKey);
 
-      JsonReader jObjectReader = jObject.CreateReader();
+      var jObjectReader = jObject.CreateReader();
       jObjectReader.Culture = reader.Culture;
       jObjectReader.DateFormatString = reader.DateFormatString;
       jObjectReader.DateParseHandling = reader.DateParseHandling;

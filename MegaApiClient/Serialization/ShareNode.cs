@@ -2,6 +2,7 @@
 {
   using System.Collections.Generic;
   using System.Linq;
+  using CG.Web.MegaApiClient.Cryptography;
   using Newtonsoft.Json;
 
   internal class ShareNodeRequest : RequestBase
@@ -9,41 +10,41 @@
     public ShareNodeRequest(INode node, byte[] masterKey, IEnumerable<INode> nodes)
       : base("s2")
     {
-      this.Id = node.Id;
-      this.Options = new object[] { new { r = 0, u = "EXP" } };
+      Id = node.Id;
+      Options = new object[] { new { r = 0, u = "EXP" } };
 
-      INodeCrypto nodeCrypto = (INodeCrypto)node;
-      byte[] uncryptedSharedKey = nodeCrypto.SharedKey;
+      var nodeCrypto = (INodeCrypto)node;
+      var uncryptedSharedKey = nodeCrypto.SharedKey;
       if (uncryptedSharedKey == null)
       {
         uncryptedSharedKey = Crypto.CreateAesKey();
       }
 
-      this.SharedKey = Crypto.EncryptKey(uncryptedSharedKey, masterKey).ToBase64();
+      SharedKey = Crypto.EncryptKey(uncryptedSharedKey, masterKey).ToBase64();
 
       if (nodeCrypto.SharedKey == null)
       {
-        this.Share = new ShareData(node.Id);
+        Share = new ShareData(node.Id);
 
-        this.Share.AddItem(node.Id, nodeCrypto.FullKey, uncryptedSharedKey);
+        Share.AddItem(node.Id, nodeCrypto.FullKey, uncryptedSharedKey);
 
         // Add all children
-        IEnumerable<INode> allChildren = this.GetRecursiveChildren(nodes.ToArray(), node);
+        var allChildren = GetRecursiveChildren(nodes.ToArray(), node);
         foreach (var child in allChildren)
         {
-          this.Share.AddItem(child.Id, ((INodeCrypto)child).FullKey, uncryptedSharedKey);
+          Share.AddItem(child.Id, ((INodeCrypto)child).FullKey, uncryptedSharedKey);
         }
       }
 
-      byte[] handle = (node.Id + node.Id).ToBytes();
-      this.HandleAuth = Crypto.EncryptKey(handle, masterKey).ToBase64();
+      var handle = (node.Id + node.Id).ToBytes();
+      HandleAuth = Crypto.EncryptKey(handle, masterKey).ToBase64();
     }
 
     private IEnumerable<INode> GetRecursiveChildren(INode[] nodes, INode parent)
     {
       foreach (var node in nodes.Where(x => x.Type == NodeType.Directory || x.Type == NodeType.File))
       {
-        string parentId = node.Id;
+        var parentId = node.Id;
         do
         {
           parentId = nodes.FirstOrDefault(x => x.Id == parentId)?.ParentId;

@@ -6,15 +6,12 @@
   {
     internal ApiException(ApiResultCode apiResultCode)
     {
-      this.ApiResultCode = apiResultCode;
+      ApiResultCode = apiResultCode;
     }
 
     public ApiResultCode ApiResultCode { get; private set; }
 
-    public override string Message
-    {
-      get { return string.Format("API response: {0}", this.ApiResultCode); }
-    }
+    public override string Message => string.Format("API response: {0}", ApiResultCode);
   }
 
   public class DownloadException : Exception

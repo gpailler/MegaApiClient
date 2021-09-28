@@ -7,7 +7,7 @@
     public PreLoginRequest(string userHandle)
       : base("us0")
     {
-      this.UserHandle = userHandle;
+      UserHandle = userHandle;
     }
 
     [JsonProperty("user")]

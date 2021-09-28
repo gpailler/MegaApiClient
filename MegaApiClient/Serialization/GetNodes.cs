@@ -11,29 +11,32 @@
     public GetNodesRequest(string shareId = null)
       : base("f")
     {
-      this.c = 1;
+      C = 1;
 
       if (shareId != null)
       {
-        this.QueryArguments["n"] = shareId;
+        QueryArguments["n"] = shareId;
 
         // Retrieve all nodes in all subfolders
-        this.r = 1;
+        R = 1;
       }
     }
 
-    public int c { get; private set; }
-    public int r { get; private set; }
+    [JsonProperty("c")]
+    public int C { get; private set; }
+
+    [JsonProperty("r")]
+    public int R { get; private set; }
   }
 
   internal class GetNodesResponse
   {
-    private readonly byte[] masterKey;
-    private List<SharedKey> sharedKeys;
+    private readonly byte[] _masterKey;
+    private List<SharedKey> _sharedKeys;
 
     public GetNodesResponse(byte[] masterKey)
     {
-      this.masterKey = masterKey;
+      _masterKey = masterKey;
     }
 
     public Node[] Nodes { get; private set; }
@@ -46,17 +49,17 @@
     [JsonProperty("ok")]
     public List<SharedKey> SharedKeys
     {
-      get { return this.sharedKeys; }
-      private set { this.sharedKeys = value; }
+      get => _sharedKeys;
+      private set => _sharedKeys = value;
     }
 
     [OnDeserialized]
     public void OnDeserialized(StreamingContext ctx)
     {
-      var tempNodes = JsonConvert.DeserializeObject<Node[]>(this.NodesSerialized.ToString(), new NodeConverter(this.masterKey, ref this.sharedKeys));
+      var tempNodes = JsonConvert.DeserializeObject<Node[]>(NodesSerialized.ToString(), new NodeConverter(_masterKey, ref _sharedKeys));
 
-      this.UndecryptedNodes = tempNodes.Where(x => x.EmptyKey).ToArray();
-      this.Nodes = tempNodes.Where(x => !x.EmptyKey).ToArray();
+      UndecryptedNodes = tempNodes.Where(x => x.EmptyKey).ToArray();
+      Nodes = tempNodes.Where(x => !x.EmptyKey).ToArray();
     }
   }
 }

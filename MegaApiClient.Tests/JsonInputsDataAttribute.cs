@@ -10,14 +10,14 @@
 
   public class JsonInputsDataAttribute : DataAttribute
   {
-    private static readonly JObject JsonData;
+    private static readonly JObject s_jsonData;
 
     private readonly string[] _jsonPropertyNames;
     private readonly object[] _constantArguments;
 
     static JsonInputsDataAttribute()
     {
-      JsonData = JObject.Parse(AuthenticatedTestContext.InputsJson);
+      s_jsonData = JObject.Parse(AuthenticatedTestContext.InputsJson);
     }
 
     public JsonInputsDataAttribute(string jsonPropertyName)
@@ -43,9 +43,9 @@
       yield return data.ToArray();
     }
 
-    private object GetValue(string jsonPropertyName)
+    private static object GetValue(string jsonPropertyName)
     {
-      JToken token = JsonData;
+      JToken token = s_jsonData;
       var parts = jsonPropertyName.Split('.');
       foreach (var part in parts)
       {

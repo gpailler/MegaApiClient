@@ -16,7 +16,7 @@ namespace CG.Web.MegaApiClient.Serialization
     }
 
     [JsonProperty("x")]
-    public int LoadSessionIds { get { return 1; } }
+    public int LoadSessionIds => 1;
   }
 
   [JsonConverter(typeof(SessionHistoryConverter))]
@@ -36,10 +36,10 @@ namespace CG.Web.MegaApiClient.Serialization
           return null;
         }
 
-        SessionHistoryResponse response = new SessionHistoryResponse();
+        var response = new SessionHistoryResponse();
 
-        JArray jArray = JArray.Load(reader);
-        foreach (JArray sessionArray in jArray.OfType<JArray>())
+        var jArray = JArray.Load(reader);
+        foreach (var sessionArray in jArray.OfType<JArray>())
         {
           response.Add(new Session(sessionArray));
         }
@@ -58,29 +58,31 @@ namespace CG.Web.MegaApiClient.Serialization
         {
           try
           {
-            this.LoginTime = jArray.Value<long>(0).ToDateTime();
-            this.LastSeenTime = jArray.Value<long>(1).ToDateTime();
-            this.Client = jArray.Value<string>(2);
-            this.IpAddress = IPAddress.Parse(jArray.Value<string>(3));
-            this.Country = jArray.Value<string>(4);
-            this.SessionId = jArray.Value<string>(6);
-            bool isActive = jArray.Value<long>(7) == 1;
+            LoginTime = jArray.Value<long>(0).ToDateTime();
+            LastSeenTime = jArray.Value<long>(1).ToDateTime();
+            Client = jArray.Value<string>(2);
+            IpAddress = IPAddress.Parse(jArray.Value<string>(3));
+            Country = jArray.Value<string>(4);
+            SessionId = jArray.Value<string>(6);
+            var isActive = jArray.Value<long>(7) == 1;
             if (jArray.Value<long>(5) == 1)
             {
-              this.Status |= SessionStatus.Current;
+              Status |= SessionStatus.Current;
             }
+
             if (jArray.Value<long>(7) == 1)
             {
-              this.Status |= SessionStatus.Active;
+              Status |= SessionStatus.Active;
             }
-            if (this.Status == SessionStatus.Undefined)
+
+            if (Status == SessionStatus.Undefined)
             {
-              this.Status = SessionStatus.Expired;
+              Status = SessionStatus.Expired;
             }
           }
           catch (Exception ex)
           {
-            this.Client = "Deserialization error: " + ex.Message;
+            Client = "Deserialization error: " + ex.Message;
           }
         }
 

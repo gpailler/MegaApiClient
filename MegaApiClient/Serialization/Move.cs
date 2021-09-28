@@ -7,8 +7,8 @@
     public MoveRequest(INode node, INode destinationParentNode)
       : base("m")
     {
-      this.Id = node.Id;
-      this.DestinationParentId = destinationParentNode.Id;
+      Id = node.Id;
+      DestinationParentId = destinationParentNode.Id;
     }
 
     [JsonProperty("n")]
