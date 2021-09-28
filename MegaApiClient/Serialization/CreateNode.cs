@@ -8,8 +8,8 @@
     private CreateNodeRequest(INode parentNode, NodeType type, string attributes, string encryptedKey, byte[] key, string completionHandle)
       : base("p")
     {
-      this.ParentId = parentNode.Id;
-      this.Nodes = new[]
+      ParentId = parentNode.Id;
+      Nodes = new[]
       {
         new CreateNodeRequestData
         {
@@ -20,16 +20,15 @@
         }
       };
 
-      INodeCrypto parentNodeCrypto = parentNode as INodeCrypto;
-      if (parentNodeCrypto == null)
+      if (!(parentNode is INodeCrypto parentNodeCrypto))
       {
         throw new ArgumentException("parentNode node must implement INodeCrypto");
       }
 
       if (parentNodeCrypto.SharedKey != null)
       {
-        this.Share = new ShareData(parentNode.Id);
-        this.Share.AddItem(completionHandle, key, parentNodeCrypto.SharedKey);
+        Share = new ShareData(parentNode.Id);
+        Share.AddItem(completionHandle, key, parentNodeCrypto.SharedKey);
       }
     }
 

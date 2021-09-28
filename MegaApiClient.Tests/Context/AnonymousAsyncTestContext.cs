@@ -10,7 +10,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
   {
     public void Dispose()
     {
-      ((MegaApiClientAsyncWrapper)this.Client).Dispose();
+      ((MegaApiClientAsyncWrapper)Client).Dispose();
     }
 
     protected override IMegaApiClient CreateClient()

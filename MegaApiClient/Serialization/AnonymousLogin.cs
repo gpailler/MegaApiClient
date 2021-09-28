@@ -7,8 +7,8 @@
     public AnonymousLoginRequest(string masterKey, string temporarySession)
       : base("up")
     {
-      this.MasterKey = masterKey;
-      this.TemporarySession = temporarySession;
+      MasterKey = masterKey;
+      TemporarySession = temporarySession;
     }
 
     [JsonProperty("k")]

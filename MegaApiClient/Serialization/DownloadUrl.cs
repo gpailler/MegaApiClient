@@ -7,16 +7,16 @@
     public DownloadUrlRequest(INode node)
       : base("g")
     {
-      this.Id = node.Id;
+      Id = node.Id;
 
-      PublicNode publicNode = node as PublicNode;
-      if (publicNode != null)
+      if (node is PublicNode publicNode)
       {
-        this.QueryArguments["n"] = publicNode.ShareId;
+        QueryArguments["n"] = publicNode.ShareId;
       }
     }
 
-    public int g { get { return 1; } }
+    [JsonProperty("g")]
+    public int G => 1;
 
     [JsonProperty("n")]
     public string Id { get; private set; }
@@ -27,10 +27,11 @@
     public DownloadUrlRequestFromId(string id)
       : base("g")
     {
-      this.Id = id;
+      Id = id;
     }
 
-    public int g { get { return 1; } }
+    [JsonProperty("g")]
+    public int G => 1;
 
     [JsonProperty("p")]
     public string Id { get; private set; }

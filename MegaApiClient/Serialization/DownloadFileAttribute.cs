@@ -7,12 +7,14 @@
     public DownloadFileAttributeRequest(string fileAttributeHandle)
       : base("ufa")
     {
-      this.Id = fileAttributeHandle;
+      Id = fileAttributeHandle;
     }
 
-    public int ssl { get { return 2; } }
+    [JsonProperty("ssl")]
+    public int Ssl => 2;
 
-    public int r { get { return 1; } }
+    [JsonProperty("r")]
+    public int R => 1;
 
     [JsonProperty("fah")]
     public string Id { get; private set; }

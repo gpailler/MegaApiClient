@@ -7,7 +7,7 @@
     public GetDownloadLinkRequest(INode node)
       : base("l")
     {
-      this.Id = node.Id;
+      Id = node.Id;
     }
 
     [JsonProperty("n")]

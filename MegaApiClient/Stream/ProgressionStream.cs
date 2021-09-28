@@ -6,30 +6,30 @@ namespace CG.Web.MegaApiClient
 
   internal class ProgressionStream : Stream
   {
-    private readonly Stream baseStream;
-    private readonly IProgress<double> progress;
-    private readonly long reportProgressChunkSize;
+    private readonly Stream _baseStream;
+    private readonly IProgress<double> _progress;
+    private readonly long _reportProgressChunkSize;
 
-    private long chunkSize;
+    private long _chunkSize;
 
     public ProgressionStream(Stream baseStream, IProgress<double> progress, long reportProgressChunkSize)
     {
-      this.baseStream = baseStream;
-      this.progress = progress ?? new Progress<double>();
-      this.reportProgressChunkSize = reportProgressChunkSize;
+      _baseStream = baseStream;
+      _progress = progress ?? new Progress<double>();
+      _reportProgressChunkSize = reportProgressChunkSize;
     }
 
     public override int Read(byte[] array, int offset, int count)
     {
-      int bytesRead = this.baseStream.Read(array, offset, count);
-      this.ReportProgress(bytesRead);
+      var bytesRead = _baseStream.Read(array, offset, count);
+      ReportProgress(bytesRead);
 
       return bytesRead;
     }
 
     public override void Write(byte[] buffer, int offset, int count)
     {
-      this.baseStream.Write(buffer, offset, count);
+      _baseStream.Write(buffer, offset, count);
     }
 
     protected override void Dispose(bool disposing)
@@ -37,52 +37,52 @@ namespace CG.Web.MegaApiClient
       base.Dispose(disposing);
 
       // Report 100% progress only if it was not already sent
-      if (this.chunkSize != 0)
+      if (_chunkSize != 0)
       {
-        this.progress.Report(100);
+        _progress.Report(100);
       }
     }
 
-    #region Forwards
+#region Forwards
 
     public override void Flush()
     {
-      this.baseStream.Flush();
+      _baseStream.Flush();
     }
 
     public override long Seek(long offset, SeekOrigin origin)
     {
-      return this.baseStream.Seek(offset, origin);
+      return _baseStream.Seek(offset, origin);
     }
 
     public override void SetLength(long value)
     {
-      this.baseStream.SetLength(value);
+      _baseStream.SetLength(value);
     }
 
-    public override bool CanRead => this.baseStream.CanRead;
+    public override bool CanRead => _baseStream.CanRead;
 
-    public override bool CanSeek => this.baseStream.CanSeek;
+    public override bool CanSeek => _baseStream.CanSeek;
 
-    public override bool CanWrite => this.baseStream.CanWrite;
+    public override bool CanWrite => _baseStream.CanWrite;
 
-    public override long Length => this.baseStream.Length;
+    public override long Length => _baseStream.Length;
 
     public override long Position
     {
-      get { return this.baseStream.Position; }
-      set { this.baseStream.Position = value; }
+      get => _baseStream.Position;
+      set => _baseStream.Position = value;
     }
 
-    #endregion
+#endregion
 
     private void ReportProgress(int count)
     {
-      this.chunkSize += count;
-      if (this.chunkSize >= this.reportProgressChunkSize)
+      _chunkSize += count;
+      if (_chunkSize >= _reportProgressChunkSize)
       {
-        this.chunkSize = 0;
-        this.progress.Report(this.Position / (double)this.Length * 100);
+        _chunkSize = 0;
+        _progress.Report(Position / (double)Length * 100);
       }
     }
   }

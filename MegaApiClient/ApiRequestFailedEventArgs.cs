@@ -1,4 +1,4 @@
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System;
 
@@ -16,12 +16,12 @@ namespace CG.Web.MegaApiClient
 
     private ApiRequestFailedEventArgs(Uri url, int attemptNum, TimeSpan retryDelay, ApiResultCode apiResult, string responseJson, Exception exception)
     {
-      this.ApiUrl = url;
-      this.AttemptNum = attemptNum;
-      this.RetryDelay = retryDelay;
-      this.ApiResult = apiResult;
-      this.ResponseJson = responseJson;
-      this.Exception = exception;
+      ApiUrl = url;
+      AttemptNum = attemptNum;
+      RetryDelay = retryDelay;
+      ApiResult = apiResult;
+      ResponseJson = responseJson;
+      Exception = exception;
     }
 
     public Uri ApiUrl { get; }

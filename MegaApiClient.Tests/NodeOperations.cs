@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CG.Web.MegaApiClient.Serialization;
 using CG.Web.MegaApiClient.Tests.Context;
 using Moq;
+using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
-using Newtonsoft.Json;
-using CG.Web.MegaApiClient.Serialization;
 
 namespace CG.Web.MegaApiClient.Tests
 {
@@ -27,10 +27,10 @@ namespace CG.Web.MegaApiClient.Tests
     public void Validate_DefaultNodes_Succeeds(NodeType nodeType)
     {
       // Arrange + Act
-      var nodes = this.context.Client.GetNodes().ToArray();
+      var nodes = Context.Client.GetNodes().ToArray();
 
       // Assert
-      Assert.Equal(this.context.ProtectedNodes.Count(), nodes.Length);
+      Assert.Equal(Context.ProtectedNodes.Count(), nodes.Length);
       var node = Assert.Single(nodes, x => x.Type == nodeType);
       Assert.Empty(node.ParentId);
       Assert.Null(node.Name);
@@ -44,10 +44,10 @@ namespace CG.Web.MegaApiClient.Tests
     public void CreateFolder_Succeeds(NodeType parentNodeType)
     {
       // Arrange
-      var parentNode = this.GetNode(parentNodeType);
+      var parentNode = GetNode(parentNodeType);
 
       // Act
-      var createdNode = this.CreateFolderNode(parentNode);
+      var createdNode = CreateFolderNode(parentNode);
 
       // Assert
       Assert.NotNull(createdNode);
@@ -56,14 +56,14 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(0, createdNode.Size);
       Assert.NotNull(createdNode.ParentId);
       Assert.Equal(parentNode.Id, createdNode.ParentId);
-      Assert.Single(this.context.Client.GetNodes(), x => x.Name == DefaultNodeName);
+      Assert.Single(Context.Client.GetNodes(), x => x.Name == DefaultNodeName);
     }
 
     [Theory, MemberData(nameof(InvalidCreateFolderParameters))]
     public void CreateFolder_InvalidParameters_Throws(string name, NodeType? parentNodeType, Type expectedExceptionType, string expectedMessage)
     {
       var parentNode = parentNodeType == null ? null : Mock.Of<INode>(x => x.Type == parentNodeType.Value);
-      var exception = Assert.Throws(expectedExceptionType, () => this.context.Client.CreateFolder(name, parentNode));
+      var exception = Assert.Throws(expectedExceptionType, () => Context.Client.CreateFolder(name, parentNode));
       Assert.Equal(expectedMessage, exception.GetType() == typeof(ArgumentNullException) ? ((ArgumentNullException)exception).ParamName : exception.Message);
     }
 
@@ -85,11 +85,11 @@ namespace CG.Web.MegaApiClient.Tests
     public void CreateFolder_SameName_Succeeds(string nodeName1, string nodeName2)
     {
       // Arrange
-      var parentNode = this.GetNode(NodeType.Root);
+      var parentNode = GetNode(NodeType.Root);
 
       // Act
-      var node1 = this.CreateFolderNode(parentNode, nodeName1);
-      var node2 = this.CreateFolderNode(parentNode, nodeName2);
+      var node1 = CreateFolderNode(parentNode, nodeName1);
+      var node2 = CreateFolderNode(parentNode, nodeName2);
 
       // Assert
       Assert.NotEqual(node1, node2);
@@ -100,20 +100,20 @@ namespace CG.Web.MegaApiClient.Tests
     public void GetNodes_Succeeds()
     {
       // Arrange
-      var parentNode = this.GetNode(NodeType.Root);
+      var parentNode = GetNode(NodeType.Root);
 
       // Act
-      var createdNode = this.CreateFolderNode(parentNode);
+      var createdNode = CreateFolderNode(parentNode);
 
       // Assert
-      Assert.Equal(this.context.ProtectedNodes.Count() + 1, this.context.Client.GetNodes().Count());
-      Assert.Single(this.context.Client.GetNodes(parentNode), x => x.Equals(createdNode));
+      Assert.Equal(Context.ProtectedNodes.Count() + 1, Context.Client.GetNodes().Count());
+      Assert.Single(Context.Client.GetNodes(parentNode), x => x.Equals(createdNode));
     }
 
     [Fact]
     public void GetNodes_NullParentNode_Throws()
     {
-      Assert.Throws<ArgumentNullException>("parent", () => this.context.Client.GetNodes(null));
+      Assert.Throws<ArgumentNullException>("parent", () => Context.Client.GetNodes(null));
     }
 
     [Theory]
@@ -123,44 +123,44 @@ namespace CG.Web.MegaApiClient.Tests
     public void Delete_Succeeds(bool? moveToTrash)
     {
       // Arrange
-      var parentNode = this.GetNode(NodeType.Root);
-      var trashNode = this.GetNode(NodeType.Trash);
-      var createdNode = this.CreateFolderNode(parentNode);
+      var parentNode = GetNode(NodeType.Root);
+      var trashNode = GetNode(NodeType.Trash);
+      var createdNode = CreateFolderNode(parentNode);
 
       // Assert
-      var nodes = this.context.Client.GetNodes(parentNode).ToArray();
-      Assert.Equal(this.context.PermanentRootNodes.Count() + 1, nodes.Length);
+      var nodes = Context.Client.GetNodes(parentNode).ToArray();
+      Assert.Equal(Context.PermanentRootNodes.Count() + 1, nodes.Length);
       Assert.Single(nodes, x => x.Equals(createdNode));
-      Assert.Empty(this.context.Client.GetNodes(trashNode));
+      Assert.Empty(Context.Client.GetNodes(trashNode));
 
       // Act
       if (moveToTrash == null)
       {
-        this.context.Client.Delete(createdNode);
+        Context.Client.Delete(createdNode);
       }
       else
       {
 
-        this.context.Client.Delete(createdNode, moveToTrash.Value);
+        Context.Client.Delete(createdNode, moveToTrash.Value);
       }
 
       // Assert
-      Assert.Equal(this.context.PermanentRootNodes.Count(), this.context.Client.GetNodes(parentNode).Count());
+      Assert.Equal(Context.PermanentRootNodes.Count(), Context.Client.GetNodes(parentNode).Count());
 
       if (moveToTrash.GetValueOrDefault(true))
       {
-        Assert.Single(this.context.Client.GetNodes(trashNode), x => x.Equals(createdNode));
+        Assert.Single(Context.Client.GetNodes(trashNode), x => x.Equals(createdNode));
       }
       else
       {
-        Assert.Empty(this.context.Client.GetNodes(trashNode));
+        Assert.Empty(Context.Client.GetNodes(trashNode));
       }
     }
 
     [Fact]
     public void Delete_NullNode_Throws()
     {
-      Assert.Throws<ArgumentNullException>(() => this.context.Client.Delete(null));
+      Assert.Throws<ArgumentNullException>(() => Context.Client.Delete(null));
     }
 
     [Theory]
@@ -169,9 +169,9 @@ namespace CG.Web.MegaApiClient.Tests
     [InlineData(NodeType.Trash)]
     public void Delete_InvalidNode_Throws(NodeType nodeType)
     {
-      var node = this.GetNode(nodeType);
+      var node = GetNode(nodeType);
 
-      var exception = Assert.Throws<ArgumentException>(() => this.context.Client.Delete(node));
+      var exception = Assert.Throws<ArgumentException>(() => Context.Client.Delete(node));
       Assert.Equal("Invalid node type", exception.Message);
     }
 
@@ -181,8 +181,8 @@ namespace CG.Web.MegaApiClient.Tests
     [InlineData(NodeType.Inbox)]
     public void SameNode_Equality_Succeeds(NodeType nodeType)
     {
-      var node1 = this.GetNode(nodeType);
-      var node2 = this.GetNode(nodeType);
+      var node1 = GetNode(nodeType);
+      var node2 = GetNode(nodeType);
 
       Assert.Equal(node1, node2);
       Assert.Equal(node1.GetHashCode(), node2.GetHashCode());
@@ -194,7 +194,7 @@ namespace CG.Web.MegaApiClient.Tests
     {
       var node = nodeType == null ? null : Mock.Of<INode>(x => x.Type == nodeType.Value);
       var destinationParentNode = destinationParentNodeType == null ? null : Mock.Of<INode>(x => x.Type == destinationParentNodeType.Value);
-      var exception = Assert.Throws(expectedExceptionType, () => this.context.Client.Move(node, destinationParentNode));
+      var exception = Assert.Throws(expectedExceptionType, () => Context.Client.Move(node, destinationParentNode));
       Assert.Equal(expectedMessage, exception.GetType() == typeof(ArgumentNullException) ? ((ArgumentNullException)exception).ParamName : exception.Message);
     }
 
@@ -218,20 +218,20 @@ namespace CG.Web.MegaApiClient.Tests
     public void Move_Succeeds(NodeType destinationParentNodeType)
     {
       // Arrange
-      var parentNode = this.GetNode(NodeType.Root);
-      var destinationParentNode = this.GetNode(destinationParentNodeType);
-      var node = this.CreateFolderNode(parentNode);
+      var parentNode = GetNode(NodeType.Root);
+      var destinationParentNode = GetNode(destinationParentNodeType);
+      var node = CreateFolderNode(parentNode);
 
       // Assert
-      Assert.Single(this.context.Client.GetNodes(parentNode), x => x.Equals(node));
-      Assert.Empty(this.context.Client.GetNodes(destinationParentNode));
+      Assert.Single(Context.Client.GetNodes(parentNode), x => x.Equals(node));
+      Assert.Empty(Context.Client.GetNodes(destinationParentNode));
 
       // Act
-      var movedNode = this.context.Client.Move(node, destinationParentNode);
+      var movedNode = Context.Client.Move(node, destinationParentNode);
 
       // Assert
-      Assert.Empty(this.context.Client.GetNodes(parentNode).Where(x => x.Equals(node)));
-      Assert.Single(this.context.Client.GetNodes(destinationParentNode), x => x.Equals(movedNode));
+      Assert.Empty(Context.Client.GetNodes(parentNode).Where(x => x.Equals(node)));
+      Assert.Single(Context.Client.GetNodes(destinationParentNode), x => x.Equals(movedNode));
     }
 
     [Theory]
@@ -240,23 +240,24 @@ namespace CG.Web.MegaApiClient.Tests
     public void Rename_Succeeds(NodeType nodeType)
     {
       // Arrange
-      var parentNode = this.GetNode(NodeType.Root);
+      var parentNode = GetNode(NodeType.Root);
       INode createdNode;
-      DateTime modificationDate = new DateTime(2000, 01, 02, 03, 04, 05);
+      var modificationDate = new DateTime(2000, 01, 02, 03, 04, 05);
       switch (nodeType)
       {
         case NodeType.Directory:
-          createdNode = this.context.Client.CreateFolder("Data", parentNode);
+          createdNode = Context.Client.CreateFolder("Data", parentNode);
           break;
 
         case NodeType.File:
-          byte[] data = new byte[123];
+          var data = new byte[123];
           new Random().NextBytes(data);
 
-          using (MemoryStream stream = new MemoryStream(data))
+          using (var stream = new MemoryStream(data))
           {
-            createdNode = this.context.Client.Upload(stream, "Data", parentNode, modificationDate);
+            createdNode = Context.Client.Upload(stream, "Data", parentNode, modificationDate);
           }
+
           break;
 
         default:
@@ -264,8 +265,8 @@ namespace CG.Web.MegaApiClient.Tests
       }
 
       // Assert
-      var nodes = this.context.Client.GetNodes(parentNode).ToArray();
-      Assert.Equal(this.context.PermanentRootNodes.Count() + 1, nodes.Length);
+      var nodes = Context.Client.GetNodes(parentNode).ToArray();
+      Assert.Equal(Context.PermanentRootNodes.Count() + 1, nodes.Length);
       Assert.Single(nodes, x => x.Equals(createdNode));
       if (nodeType == NodeType.File)
       {
@@ -273,12 +274,12 @@ namespace CG.Web.MegaApiClient.Tests
       }
 
       // Act
-      var renamedNode = this.context.Client.Rename(createdNode, "Data2");
+      var renamedNode = Context.Client.Rename(createdNode, "Data2");
 
       // Assert
       Assert.Equal("Data2", renamedNode.Name);
-      nodes = this.context.Client.GetNodes(parentNode).ToArray();
-      Assert.Equal(this.context.PermanentRootNodes.Count() + 1, nodes.Length);
+      nodes = Context.Client.GetNodes(parentNode).ToArray();
+      Assert.Equal(Context.PermanentRootNodes.Count() + 1, nodes.Length);
       Assert.Single(nodes, x => x.Equals(createdNode));
       if (nodeType == NodeType.File)
       {
@@ -290,7 +291,7 @@ namespace CG.Web.MegaApiClient.Tests
     [JsonInputsDataAttribute("FileLink")]
     public void GetNodeFromLink_Browse_Succeeds(string fileLink)
     {
-      var node = this.context.Client.GetNodeFromLink(new Uri(fileLink));
+      var node = Context.Client.GetNodeFromLink(new Uri(fileLink));
 
       Assert.NotNull(node);
       Assert.Equal("SharedFile.jpg", node.Name);
@@ -304,7 +305,7 @@ namespace CG.Web.MegaApiClient.Tests
     [JsonInputsDataAttribute(new object[] { "/folder/SELECTED_FOLDER_NODE_ID" }, new string[] { "FolderLink" })]
     public void GetNodesFromLink_Succeeds(string suffix, string folderLink)
     {
-      var nodes = this.context.Client.GetNodesFromLink(new Uri(folderLink + suffix));
+      var nodes = Context.Client.GetNodesFromLink(new Uri(folderLink + suffix));
 
       Assert.Equal(4, nodes.Count());
       INode node;

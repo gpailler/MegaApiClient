@@ -7,7 +7,7 @@
     public DeleteRequest(INode node)
       : base("d")
     {
-      this.Node = node.Id;
+      Node = node.Id;
     }
 
     [JsonProperty("n")]

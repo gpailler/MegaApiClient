@@ -13,13 +13,13 @@
     }
 
     [JsonProperty("strg")]
-    public int Storage { get { return 1; } }
+    public int Storage => 1;
 
     [JsonProperty("xfer")]
-    public int Transfer { get { return 0; } }
+    public int Transfer => 0;
 
     [JsonProperty("pro")]
-    public int AccountType { get { return 0; } }
+    public int AccountType => 0;
   }
 
   internal class AccountInformationResponse : IAccountInformation
@@ -35,21 +35,20 @@
 
     public IEnumerable<IStorageMetrics> Metrics { get; private set; }
 
-
     [OnDeserialized]
     public void OnDeserialized(StreamingContext context)
     {
-      this.Metrics = this.MetricsSerialized.Select(x => (IStorageMetrics)new StorageMetrics(x.Key, x.Value));
+      Metrics = MetricsSerialized.Select(x => (IStorageMetrics)new StorageMetrics(x.Key, x.Value));
     }
 
     private class StorageMetrics : IStorageMetrics
     {
       public StorageMetrics(string nodeId, long[] metrics)
       {
-        this.NodeId = nodeId;
-        this.BytesUsed = metrics[0];
-        this.FilesCount = metrics[1];
-        this.FoldersCount = metrics[2];
+        NodeId = nodeId;
+        BytesUsed = metrics[0];
+        FilesCount = metrics[1];
+        FoldersCount = metrics[2];
       }
 
       public string NodeId { get; }

@@ -16,7 +16,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     protected override IEnumerable<string> GetProtectedNodes()
     {
-      return this.Client.GetNodes()
+      return Client.GetNodes()
           .Where(x => x.Type == NodeType.Inbox || x.Type == NodeType.Root || x.Type == NodeType.Trash)
           .Select(x => x.Id);
     }

@@ -7,7 +7,7 @@
     public UploadUrlRequest(long fileSize)
       : base("u")
     {
-      this.Size = fileSize;
+      Size = fileSize;
     }
 
     [JsonProperty("s")]

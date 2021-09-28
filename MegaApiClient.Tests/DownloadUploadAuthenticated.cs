@@ -22,20 +22,16 @@ namespace CG.Web.MegaApiClient.Tests
     {
       var node = this.GetNode(AuthenticatedTestContext.Inputs.SharedFile.Id);
 
-      using (Stream stream = this.context.Client.Download(node))
-      {
-        using (Stream expectedStream = new FileStream(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), FileMode.Open, FileAccess.Read))
-        {
-          this.AreStreamsEquivalent(stream, expectedStream);
-        }
-      }
+      using Stream stream = Context.Client.Download(node);
+      using Stream expectedStream = new FileStream(GetAbsoluteFilePath("Data/SampleFile.jpg"), FileMode.Open, FileAccess.Read);
+      AreStreamsEquivalent(stream, expectedStream);
     }
 
     [Theory, MemberData(nameof(GetDownloadLinkInvalidParameter))]
     public void GetDownloadLink_InvalidNode_Throws(NodeType? nodeType, Type expectedExceptionType, string expectedMessage)
     {
-      INode node = nodeType == null ? null : Mock.Of<INode>(x => x.Type == nodeType.Value);
-      var exception = Assert.Throws(expectedExceptionType, () => this.context.Client.GetDownloadLink(node));
+      var node = nodeType == null ? null : Mock.Of<INode>(x => x.Type == nodeType.Value);
+      var exception = Assert.Throws(expectedExceptionType, () => Context.Client.GetDownloadLink(node));
       if (expectedExceptionType == typeof(ArgumentException))
       {
         Assert.Equal(expectedMessage, exception.Message);
@@ -46,31 +42,29 @@ namespace CG.Web.MegaApiClient.Tests
     {
       get
       {
-        yield return new object[] {null, typeof(ArgumentNullException), null};
-        yield return new object[] {NodeType.Inbox, typeof(ArgumentException), "Invalid node"};
-        yield return new object[] {NodeType.Root, typeof(ArgumentException), "Invalid node"};
-        yield return new object[] {NodeType.Trash, typeof(ArgumentException), "Invalid node"};
-        yield return new object[] {NodeType.File, typeof(ArgumentException), "node must implement INodeCrypto"};
+        yield return new object[] { null, typeof(ArgumentNullException), null };
+        yield return new object[] { NodeType.Inbox, typeof(ArgumentException), "Invalid node" };
+        yield return new object[] { NodeType.Root, typeof(ArgumentException), "Invalid node" };
+        yield return new object[] { NodeType.Trash, typeof(ArgumentException), "Invalid node" };
+        yield return new object[] { NodeType.File, typeof(ArgumentException), "node must implement INodeCrypto" };
       }
     }
 
     [Fact]
     public void UploadStream_DownloadLink_Succeeds()
     {
-      byte[] data = new byte[123];
-      this.random.NextBytes(data);
+      var data = new byte[123];
+      Random.NextBytes(data);
 
-      var parent = this.GetNode(NodeType.Root);
+      var parent = GetNode(NodeType.Root);
 
-      using (Stream stream = new MemoryStream(data))
-      {
-        var node = this.context.Client.Upload(stream, "test", parent);
+      using Stream stream = new MemoryStream(data);
+      var node = Context.Client.Upload(stream, "test", parent);
 
-        var uri = this.context.Client.GetDownloadLink(node);
+      var uri = Context.Client.GetDownloadLink(node);
 
-        stream.Position = 0;
-        this.AreStreamsEquivalent(this.context.Client.Download(uri), stream);
-      }
+      stream.Position = 0;
+      AreStreamsEquivalent(Context.Client.Download(uri), stream);
     }
 
     [Theory]
@@ -78,9 +72,9 @@ namespace CG.Web.MegaApiClient.Tests
     [JsonInputsData("SharedFolder.Id", "FolderLink")]
     public void GetDownloadLink_ExistingLinks_Succeeds(string id, string expectedLink)
     {
-      var node = this.GetNode(id);
+      var node = GetNode(id);
 
-      var link = this.context.Client.GetDownloadLink(node);
+      var link = Context.Client.GetDownloadLink(node);
       Assert.Equal(expectedLink, link.AbsoluteUri);
     }
 
@@ -89,20 +83,20 @@ namespace CG.Web.MegaApiClient.Tests
     {
       // Create folders structure with subdirectories and file to ensure
       // SharedKey is distributed on all children
-      var rootNode = this.GetNode(NodeType.Root);
-      var folderNode = this.CreateFolderNode(rootNode, "Test");
-      var subFolderNode = this.CreateFolderNode(folderNode, "AA");
-      var subFolderNode2 = this.CreateFolderNode(folderNode, "BB");
-      var subSubFolderNode = this.CreateFolderNode(subFolderNode, "subAA");
-      var subSubFileNode = this.context.Client.UploadFile(this.GetAbsoluteFilePath("Data/SampleFile.jpg"), subSubFolderNode);
+      var rootNode = GetNode(NodeType.Root);
+      var folderNode = CreateFolderNode(rootNode, "Test");
+      var subFolderNode = CreateFolderNode(folderNode, "AA");
+      var subFolderNode2 = CreateFolderNode(folderNode, "BB");
+      var subSubFolderNode = CreateFolderNode(subFolderNode, "subAA");
+      var subSubFileNode = Context.Client.UploadFile(GetAbsoluteFilePath("Data/SampleFile.jpg"), subSubFolderNode);
 
-      this.context.Client.GetDownloadLink(folderNode);
+      Context.Client.GetDownloadLink(folderNode);
 
-      var nodes = this.context.Client.GetNodes().ToArray();
-      foreach (var node in new[] {folderNode, subFolderNode, subFolderNode2, subSubFolderNode, subSubFileNode})
+      var nodes = Context.Client.GetNodes().ToArray();
+      foreach (var node in new[] { folderNode, subFolderNode, subFolderNode2, subSubFolderNode, subSubFileNode })
       {
         var updatedNode = nodes.First(x => x.Id == node.Id);
-        Assert.NotNull(((INodeCrypto) updatedNode).SharedKey);
+        Assert.NotNull(((INodeCrypto)updatedNode).SharedKey);
       }
     }
 
@@ -113,13 +107,9 @@ namespace CG.Web.MegaApiClient.Tests
     {
       var node = this.GetNode(AuthenticatedTestContext.Inputs.SharedFile.Id);
 
-      using (Stream stream = this.context.Client.DownloadFileAttribute(node, fileAttributeType))
-      {
-        using (Stream expectedStream = new FileStream(this.GetAbsoluteFilePath(expectedFileContent), FileMode.Open, FileAccess.Read))
-        {
-          this.AreStreamsEquivalent(stream, expectedStream);
-        }
-      }
+      using Stream stream = Context.Client.DownloadFileAttribute(node, fileAttributeType);
+      using Stream expectedStream = new FileStream(GetAbsoluteFilePath(expectedFileContent), FileMode.Open, FileAccess.Read);
+      AreStreamsEquivalent(stream, expectedStream);
     }
   }
 }
