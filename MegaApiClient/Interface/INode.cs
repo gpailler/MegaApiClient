@@ -2,7 +2,7 @@
 {
   using System;
 
-  public interface INodeInfo : IEquatable<INodeInfo>
+  public interface INode : IEquatable<INode>
   {
     string Id { get; }
 
@@ -14,14 +14,11 @@
 
     DateTime? ModificationDate { get; }
 
-    string SerializedFingerprint { get; }
-  }
+    string Fingerprint { get; }
 
-  public interface INode : INodeInfo
-  {
     string ParentId { get; }
 
-    DateTime CreationDate { get; }
+    DateTime? CreationDate { get; }
 
     string Owner { get; }
 

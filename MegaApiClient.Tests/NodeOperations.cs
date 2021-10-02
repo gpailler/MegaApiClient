@@ -297,6 +297,9 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal("SharedFile.jpg", node.Name);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Size, node.Size);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.ModificationDate, node.ModificationDate);
+      Assert.Null(node.CreationDate);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Fingerprint, node.Fingerprint);
+      Assert.Equal(2, node.FileAttributes.Length);
     }
 
     [Theory]
@@ -316,6 +319,8 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Size, node.Size);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.ModificationDate, node.ModificationDate);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.CreationDate, node.CreationDate);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Fingerprint, node.Fingerprint);
+      Assert.Equal(2, node.FileAttributes.Length);
 
       node = Assert.Single(nodes, x => x.Name == "SharedFolder");
       Assert.Equal(NodeType.Root, node.Type);
@@ -324,6 +329,8 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(0, node.Size);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFolder.CreationDate, node.CreationDate);
       Assert.Null(node.ModificationDate);
+      Assert.Null(node.Fingerprint);
+      Assert.Null(node.FileAttributes);
 
       node = Assert.Single(nodes, x => x.Name == "SharedSubFolder");
       Assert.Equal(NodeType.Directory, node.Type);
@@ -332,6 +339,8 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(0, node.Size);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedSubFolder.CreationDate, node.CreationDate);
       Assert.Null(node.ModificationDate);
+      Assert.Null(node.Fingerprint);
+      Assert.Null(node.FileAttributes);
 
       node = Assert.Single(nodes, x => x.Name == "SharedFileUpSideDown.jpg");
       Assert.Equal(NodeType.File, node.Type);
@@ -340,6 +349,8 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFileUpSideDown.Size, node.Size);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFileUpSideDown.ModificationDate, node.ModificationDate);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFileUpSideDown.CreationDate, node.CreationDate);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFileUpSideDown.Fingerprint, node.Fingerprint);
+      Assert.Equal(2, node.FileAttributes.Length);
     }
 
     [Fact]

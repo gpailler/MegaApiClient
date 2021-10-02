@@ -10,64 +10,8 @@
   using Newtonsoft.Json;
   using Serialization;
 
-  [DebuggerDisplay("NodeInfo - Type: {Type} - Name: {Name} - Id: {Id}")]
-  internal class NodeInfo : INodeInfo
-  {
-    protected NodeInfo()
-    {
-    }
-
-    internal NodeInfo(string id, DownloadUrlResponse downloadResponse, byte[] key)
-    {
-      Id = id;
-      Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), key);
-      Size = downloadResponse.Size;
-      Type = NodeType.File;
-    }
-
-    [JsonIgnore]
-    public string Name => Attributes?.Name;
-
-    [JsonProperty("s")]
-    public long Size { get; protected set; }
-
-    [JsonProperty("t")]
-    public NodeType Type { get; protected set; }
-
-    [JsonProperty("h")]
-    public string Id { get; private set; }
-
-    [JsonIgnore]
-    public DateTime? ModificationDate => Attributes?.ModificationDate;
-
-    [JsonIgnore]
-    public string SerializedFingerprint => Attributes?.SerializedFingerprint;
-
-    [JsonIgnore]
-    public Attributes Attributes { get; protected set; }
-
-    #region Equality
-
-    public bool Equals(INodeInfo other)
-    {
-      return other != null && Id == other.Id;
-    }
-
-    public override int GetHashCode()
-    {
-      return Id.GetHashCode();
-    }
-
-    public override bool Equals(object obj)
-    {
-      return Equals(obj as INodeInfo);
-    }
-
-    #endregion
-  }
-
   [DebuggerDisplay("Node - Type: {Type} - Name: {Name} - Id: {Id}")]
-  internal class Node : NodeInfo, INode, INodeCrypto
+  internal class Node : INode, INodeCrypto
   {
     private static readonly Regex s_fileAttributeRegex = new Regex(@"(?<id>\d+):(?<type>\d+)\*(?<handle>[a-zA-Z0-9-_]+)");
 
@@ -80,28 +24,69 @@
       _sharedKeys = sharedKeys;
     }
 
+    internal Node(string id, DownloadUrlResponse downloadResponse, byte[] key)
+    {
+      Id = id;
+      Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), key);
+      Size = downloadResponse.Size;
+      Type = NodeType.File;
+
+      if (downloadResponse.SerializedAttributes != null)
+      {
+        FileAttributes = DeserializeFileAttributes(downloadResponse.SerializedFileAttributes);
+      }
+    }
+
     #region Public properties
+
+    [JsonIgnore]
+    public string Name => Attributes?.Name;
+
+    [JsonProperty("s")]
+    public long Size { get; private set; }
+
+    [JsonProperty("t")]
+    public NodeType Type { get; private set; }
+
+    [JsonProperty("h")]
+    public string Id { get; private set; }
+
+    [JsonIgnore]
+    public DateTime? ModificationDate => Attributes?.ModificationDate;
+
+    [JsonIgnore]
+    public string Fingerprint => Attributes?.SerializedFingerprint;
+
+    [JsonIgnore]
+    public Attributes Attributes { get; private set; }
 
     [JsonProperty("p")]
     public string ParentId { get; private set; }
 
+    [JsonIgnore]
+    public DateTime? CreationDate { get; private set; }
+
     [JsonProperty("u")]
     public string Owner { get; private set; }
 
+    [JsonIgnore]
+    public IFileAttribute[] FileAttributes { get; private set; }
+
     [JsonProperty("su")]
-    public string SharingId { get; set; }
+    internal string SharingId { get; private set; }
 
     [JsonProperty("sk")]
-    public string SharingKey { get; set; }
+    internal string SharingKey { get; private set; }
 
     [JsonIgnore]
-    public DateTime CreationDate { get; private set; }
+    internal bool EmptyKey { get; private set; }
+
+    #endregion
+
+    #region INodeCrypto
 
     [JsonIgnore]
     public byte[] Key { get; private set; }
-
-    [JsonIgnore]
-    public byte[] FullKey { get; private set; }
 
     [JsonIgnore]
     public byte[] SharedKey { get; private set; }
@@ -113,10 +98,7 @@
     public byte[] MetaMac { get; private set; }
 
     [JsonIgnore]
-    public bool EmptyKey { get; private set; }
-
-    [JsonIgnore]
-    public IFileAttribute[] FileAttributes { get; private set; }
+    public byte[] FullKey { get; private set; }
 
     #endregion
 
@@ -129,7 +111,7 @@
     private string SerializedAttributes { get; set; }
 
     [JsonProperty("k")]
-    private string SerializedKey { get; set; }
+    internal string SerializedKey { get; private set; }
 
     [JsonProperty("fa")]
     private string SerializedFileAttributes { get; set; }
@@ -206,29 +188,45 @@
 
         if (SerializedFileAttributes != null)
         {
-          var attributes = SerializedFileAttributes.Split('/');
-          FileAttributes = attributes
-            .Select(_ => s_fileAttributeRegex.Match(_))
-            .Where(_ => _.Success)
-            .Select(_ => new FileAttribute(
-              int.Parse(_.Groups["id"].Value),
-              (FileAttributeType)Enum.Parse(typeof(FileAttributeType), _.Groups["type"].Value),
-              _.Groups["handle"].Value))
-            .ToArray();
+          FileAttributes = DeserializeFileAttributes(SerializedFileAttributes);
         }
       }
     }
 
     #endregion
 
-    public bool IsShareRoot
+    #region Equality
+
+    public bool Equals(INode other)
     {
-      get
-      {
-        var serializedKey = SerializedKey.Split('/')[0];
-        var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
-        return serializedKey.Substring(0, splitPosition) == Id;
-      }
+      return other != null && Id == other.Id;
+    }
+
+    public override int GetHashCode()
+    {
+      return Id.GetHashCode();
+    }
+
+    public override bool Equals(object obj)
+    {
+      return Equals(obj as INode);
+    }
+
+    #endregion
+
+    private static IFileAttribute[] DeserializeFileAttributes(string serializedFileAttributes)
+    {
+      var attributes = serializedFileAttributes.Split('/');
+
+      return attributes
+        .Select(_ => s_fileAttributeRegex.Match(_))
+        .Where(_ => _.Success)
+        .Select(_ => new FileAttribute(
+          int.Parse(_.Groups["id"].Value),
+          (FileAttributeType)Enum.Parse(typeof(FileAttributeType), _.Groups["type"].Value),
+          _.Groups["handle"].Value))
+        .Cast<IFileAttribute>()
+        .ToArray();
     }
   }
 
@@ -245,7 +243,7 @@
 
     public string ShareId { get; }
 
-    public bool Equals(INodeInfo other)
+    public bool Equals(INode other)
     {
       return _node.Equals(other) && ShareId == (other as PublicNode)?.ShareId;
     }
@@ -255,12 +253,12 @@
     public long Size => _node.Size;
     public string Name => _node.Name;
     public DateTime? ModificationDate => _node.ModificationDate;
-    public string SerializedFingerprint => _node.Attributes.SerializedFingerprint;
+    public string Fingerprint => _node.Fingerprint;
     public string Id => _node.Id;
-    public string ParentId => _node.IsShareRoot ? null : _node.ParentId;
+    public string ParentId => IsShareRoot ? null : _node.ParentId;
     public string Owner => _node.Owner;
-    public NodeType Type => _node.IsShareRoot && _node.Type == NodeType.Directory ? NodeType.Root : _node.Type;
-    public DateTime CreationDate => _node.CreationDate;
+    public NodeType Type => IsShareRoot && _node.Type == NodeType.Directory ? NodeType.Root : _node.Type;
+    public DateTime? CreationDate => _node.CreationDate;
 
     public byte[] Key => _node.Key;
     public byte[] SharedKey => _node.SharedKey;
@@ -271,6 +269,16 @@
     public IFileAttribute[] FileAttributes => _node.FileAttributes;
 
     #endregion
+
+    private bool IsShareRoot
+    {
+      get
+      {
+        var serializedKey = _node.SerializedKey.Split('/')[0];
+        var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
+        return serializedKey.Substring(0, splitPosition) == Id;
+      }
+    }
   }
 
   internal class FileAttribute : IFileAttribute

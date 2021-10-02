@@ -47,5 +47,8 @@
 
     [JsonProperty("at")]
     public string SerializedAttributes { get; set; }
+
+    [JsonProperty("fa")]
+    public string SerializedFileAttributes { get; set; }
   }
 }

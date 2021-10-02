@@ -15,18 +15,18 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [JsonInputsData(new object[] { NodeType.Root, null }, new string[] { "Root.Id", "", null, "Root.CreationDate", null })]
-    [JsonInputsData(new object[] { NodeType.Trash, null }, new string[] { "Trash.Id", "", null, "Trash.CreationDate", null })]
-    [JsonInputsData(new object[] { NodeType.Inbox, null }, new string[] { "Inbox.Id", "", null, "Inbox.CreationDate", null })]
-    [JsonInputsData(new object[] { NodeType.Directory, "SharedFolder" }, new string[] { "SharedFolder.Id", "Root.Id", null, "SharedFolder.CreationDate", null })]
-    [JsonInputsData(new object[] { NodeType.File, "SharedFile.jpg" }, new string[] { "SharedFile.Id", "SharedFolder.Id", "SharedFile.Size", "SharedFile.CreationDate", "SharedFile.ModificationDate" })]
-    [JsonInputsData(new object[] { NodeType.Directory, "SharedSubFolder" }, new string[] { "SharedSubFolder.Id", "SharedFolder.Id", null, "SharedSubFolder.CreationDate", null })]
-    [JsonInputsData(new object[] { NodeType.File, "SharedFileUpSideDown.jpg" }, new string[] { "SharedFileUpSideDown.Id", "SharedSubFolder.Id", "SharedFileUpSideDown.Size", "SharedFileUpSideDown.CreationDate", "SharedFileUpSideDown.ModificationDate" })]
-    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteFolder" }, new string[] { "SharedRemoteFolder.Id", "SharedRemoteFolder.ParentId", null, "SharedRemoteFolder.CreationDate", null })]
-    [JsonInputsData(new object[] { NodeType.File, "SharedRemoteFile.jpg" }, new string[] { "SharedRemoteFile.Id", "SharedRemoteFolder.Id", "SharedRemoteFile.Size", "SharedRemoteFile.CreationDate", "SharedRemoteFile.ModificationDate" })]
-    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteSubFolder" }, new string[] { "SharedRemoteSubFolder.Id", "SharedRemoteFolder.Id", null, "SharedRemoteSubFolder.CreationDate", null })]
-    [JsonInputsData(new object[] { NodeType.File, "SharedRemoteSubFile.jpg" }, new string[] { "SharedRemoteSubFile.Id", "SharedRemoteSubFolder.Id", "SharedRemoteSubFile.Size", "SharedRemoteSubFile.CreationDate", "SharedRemoteSubFile.ModificationDate" })]
-    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteSubSubFolder" }, new string[] { "SharedRemoteSubSubFolder.Id", "SharedRemoteSubFolder.Id", null, "SharedRemoteSubSubFolder.CreationDate", null })]
+    [JsonInputsData(new object[] { NodeType.Root, null }, new string[] { "Root.Id", "", null, "Root.CreationDate", null, null })]
+    [JsonInputsData(new object[] { NodeType.Trash, null }, new string[] { "Trash.Id", "", null, "Trash.CreationDate", null, null })]
+    [JsonInputsData(new object[] { NodeType.Inbox, null }, new string[] { "Inbox.Id", "", null, "Inbox.CreationDate", null, null })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedFolder" }, new string[] { "SharedFolder.Id", "Root.Id", null, "SharedFolder.CreationDate", null, null })]
+    [JsonInputsData(new object[] { NodeType.File, "SharedFile.jpg" }, new string[] { "SharedFile.Id", "SharedFolder.Id", "SharedFile.Size", "SharedFile.CreationDate", "SharedFile.ModificationDate", "SharedFile.Fingerprint" })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedSubFolder" }, new string[] { "SharedSubFolder.Id", "SharedFolder.Id", null, "SharedSubFolder.CreationDate", null, null })]
+    [JsonInputsData(new object[] { NodeType.File, "SharedFileUpSideDown.jpg" }, new string[] { "SharedFileUpSideDown.Id", "SharedSubFolder.Id", "SharedFileUpSideDown.Size", "SharedFileUpSideDown.CreationDate", "SharedFileUpSideDown.ModificationDate", "SharedFileUpSideDown.Fingerprint" })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteFolder" }, new string[] { "SharedRemoteFolder.Id", "SharedRemoteFolder.ParentId", null, "SharedRemoteFolder.CreationDate", null, null })]
+    [JsonInputsData(new object[] { NodeType.File, "SharedRemoteFile.jpg" }, new string[] { "SharedRemoteFile.Id", "SharedRemoteFolder.Id", "SharedRemoteFile.Size", "SharedRemoteFile.CreationDate", "SharedRemoteFile.ModificationDate", "SharedRemoteFile.Fingerprint" })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteSubFolder" }, new string[] { "SharedRemoteSubFolder.Id", "SharedRemoteFolder.Id", null, "SharedRemoteSubFolder.CreationDate", null, null })]
+    [JsonInputsData(new object[] { NodeType.File, "SharedRemoteSubFile.jpg" }, new string[] { "SharedRemoteSubFile.Id", "SharedRemoteSubFolder.Id", "SharedRemoteSubFile.Size", "SharedRemoteSubFile.CreationDate", "SharedRemoteSubFile.ModificationDate", "SharedRemoteSubFile.Fingerprint" })]
+    [JsonInputsData(new object[] { NodeType.Directory, "SharedRemoteSubSubFolder" }, new string[] { "SharedRemoteSubSubFolder.Id", "SharedRemoteSubFolder.Id", null, "SharedRemoteSubSubFolder.CreationDate", null, null })]
     public void Validate_PermanentNodes_Succeeds(
         NodeType expectedNodeType,
         string expectedName,
@@ -34,7 +34,8 @@ namespace CG.Web.MegaApiClient.Tests
         string expectedParent,
         long expectedSize,
         DateTime expectedCreationDate,
-        DateTime? expectedModificationDate
+        DateTime? expectedModificationDate,
+        string expectedFingerprint
         )
     {
       var node = GetNode(id);
@@ -45,6 +46,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(expectedSize, node.Size);
       Assert.Equal(expectedCreationDate, node.CreationDate);
       Assert.Equal(expectedModificationDate, node.ModificationDate);
+      Assert.Equal(expectedFingerprint, node.Fingerprint);
     }
 
     [Theory]

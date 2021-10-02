@@ -41,7 +41,7 @@
 
     public Node[] Nodes { get; private set; }
 
-    public Node[] UndecryptedNodes { get; private set; }
+    public Node[] UnsupportedNodes { get; private set; }
 
     [JsonProperty("f")]
     public JRaw NodesSerialized { get; private set; }
@@ -58,7 +58,7 @@
     {
       var tempNodes = JsonConvert.DeserializeObject<Node[]>(NodesSerialized.ToString(), new NodeConverter(_masterKey, ref _sharedKeys));
 
-      UndecryptedNodes = tempNodes.Where(x => x.EmptyKey).ToArray();
+      UnsupportedNodes = tempNodes.Where(x => x.EmptyKey).ToArray();
       Nodes = tempNodes.Where(x => !x.EmptyKey).ToArray();
     }
   }

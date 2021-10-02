@@ -162,7 +162,7 @@ namespace CG.Web.MegaApiClient
       }, cancellationToken.GetValueOrDefault());
     }
 
-    public Task<INodeInfo> GetNodeFromLinkAsync(Uri uri)
+    public Task<INode> GetNodeFromLinkAsync(Uri uri)
     {
       return Task.Run(() => GetNodeFromLink(uri));
     }

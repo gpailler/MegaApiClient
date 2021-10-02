@@ -9,13 +9,13 @@
 
   public static class NodeExtensions
   {
-    public static long GetFolderSize(this INodeInfo node, IMegaApiClient client)
+    public static long GetFolderSize(this INode node, IMegaApiClient client)
     {
       var allNodes = client.GetNodes();
       return node.GetFolderSize(allNodes);
     }
 
-    public static long GetFolderSize(this INodeInfo node, IEnumerable<INode> allNodes)
+    public static long GetFolderSize(this INode node, IEnumerable<INode> allNodes)
     {
       if (node.Type == NodeType.File)
       {
@@ -42,13 +42,13 @@
 
 #if !NET40
 
-    public static async Task<long> GetFolderSizeAsync(this INodeInfo node, IMegaApiClient client)
+    public static async Task<long> GetFolderSizeAsync(this INode node, IMegaApiClient client)
     {
       var allNodes = await client.GetNodesAsync();
       return await node.GetFolderSizeAsync(allNodes);
     }
 
-    public static async Task<long> GetFolderSizeAsync(this INodeInfo node, IEnumerable<INode> allNodes)
+    public static async Task<long> GetFolderSizeAsync(this INode node, IEnumerable<INode> allNodes)
     {
       if (node.Type == NodeType.File)
       {
