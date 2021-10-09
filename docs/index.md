@@ -28,6 +28,10 @@ The library supports .NET 4.0, .NET 4.5, .NET 4.6 and [.NET Standard 1.3](https:
 | Universal Windows Platform | >= 10.0   |
 | Unity*                     | >= 2018.2 |
 
+⚠️ TLS 1.2 support should be configured explicitely when using .NET Framework <= 4.5 or  all the API calls to Mega will hang.
+- For .NET Framework 4.5, add `ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;`
+- For .NET Framework 4, add `ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;` (.NET 4.5 should be installed on the machine).
+
 ---
 
 \* Need a link.xml file if IL2CPP is used:
