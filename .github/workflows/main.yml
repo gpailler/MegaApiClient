@@ -42,7 +42,7 @@ jobs:
         run: dotnet build --configuration ${{ env.CONFIGURATION }} ./MegaApiClient/
 
       - name: Create NuGet package
-        run: dotnet pack --configuration ${{ env.CONFIGURATION }} ./MegaApiClient/ --no-restore --no-build --output ./artifacts/ -p:PackageVersion=${{ env.GITVERSION_NUGETVERSION }} --include-symbols -p:SymbolPackageFormat=snupkg
+        run: dotnet pack --configuration ${{ env.CONFIGURATION }} ./MegaApiClient/ --no-restore --no-build --output ./artifacts/ -p:PackageVersion=${{ env.GITVERSION_NUGETVERSION }}
 
       - name: Upload NuGet packages
         uses: actions/upload-artifact@v2
