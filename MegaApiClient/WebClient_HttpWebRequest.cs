@@ -17,6 +17,11 @@ namespace CG.Web.MegaApiClient
 
     public WebClient(int responseTimeout = DefaultResponseTimeout, string userAgent = null)
     {
+      if (!ServicePointManager.SecurityProtocol.HasFlag((SecurityProtocolType)3072))
+      {
+        throw new NotSupportedException("mega.nz API requires support for TLS v1.2 or higher. Check https://gpailler.github.io/MegaApiClient/#compatibility for additional information");
+      }
+
       BufferSize = Options.DefaultBufferSize;
       _responseTimeout = responseTimeout;
       _userAgent = userAgent ?? GenerateUserAgent();
