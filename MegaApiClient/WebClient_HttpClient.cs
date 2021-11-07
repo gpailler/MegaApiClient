@@ -7,8 +7,9 @@ namespace CG.Web.MegaApiClient
   using System.Reflection;
   using System.Text;
   using System.Threading;
+#if NET471 || NETSTANDARD
   using System.Security.Authentication;
-
+#endif
   using System.Net.Http;
   using System.Net.Http.Headers;
 
@@ -16,39 +17,35 @@ namespace CG.Web.MegaApiClient
   {
     private const int DefaultResponseTimeout = Timeout.Infinite;
 
+    private static readonly HttpClient s_sharedHttpClient = CreateHttpClient(DefaultResponseTimeout, GenerateUserAgent());
+
     private readonly HttpClient _httpClient;
 
     public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null)
-      : this(responseTimeout, userAgent, false)
     {
-    }
-
-    internal WebClient(int responseTimeout, ProductInfoHeaderValue userAgent, bool connectionClose)
-    {
-      BufferSize = Options.DefaultBufferSize;
-#if NET471 || NETSTANDARD
-      _httpClient = new HttpClient(new HttpClientHandler { SslProtocols = SslProtocols.Tls12 }, true);
-#elif NET47
+#if NET47
       if (!ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.Tls12) && !ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.SystemDefault))
       {
         throw new NotSupportedException("mega.nz API requires support for TLS v1.2 or higher. Check https://gpailler.github.io/MegaApiClient/#compatibility for additional information");
       }
-
-      _httpClient = new HttpClient();
-#else
+#elif NET45 || NET46
       if (!ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.Tls12))
       {
         throw new NotSupportedException("mega.nz API requires support for TLS v1.2 or higher. Check https://gpailler.github.io/MegaApiClient/#compatibility for additional information");
       }
-
-      _httpClient = new HttpClient();
 #endif
-      _httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
-      _httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent ?? GenerateUserAgent());
-      _httpClient.DefaultRequestHeaders.ConnectionClose = connectionClose;
+
+      if (responseTimeout == DefaultResponseTimeout && userAgent == null)
+      {
+        _httpClient = s_sharedHttpClient;
+      }
+      else
+      {
+        _httpClient = CreateHttpClient(responseTimeout, userAgent ?? GenerateUserAgent());
+      }
     }
 
-    public int BufferSize { get; set; }
+    public int BufferSize { get; set; } = Options.DefaultBufferSize;
 
     public string PostRequestJson(Uri url, string jsonData)
     {
@@ -112,9 +109,23 @@ namespace CG.Web.MegaApiClient
       }
     }
 
-    private ProductInfoHeaderValue GenerateUserAgent()
+    private static HttpClient CreateHttpClient(int timeout, ProductInfoHeaderValue userAgent)
     {
-      var assemblyName = GetType().GetTypeInfo().Assembly.GetName();
+#if NET471 || NETSTANDARD
+      var httpClient = new HttpClient(new HttpClientHandler { SslProtocols = SslProtocols.Tls12 }, true);
+#else
+      var httpClient = new HttpClient();
+#endif
+
+      httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
+      httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent);
+
+      return httpClient;
+    }
+
+    private static ProductInfoHeaderValue GenerateUserAgent()
+    {
+      var assemblyName = typeof(WebClient).GetTypeInfo().Assembly.GetName();
       return new ProductInfoHeaderValue(assemblyName.Name, assemblyName.Version.ToString(2));
     }
   }
