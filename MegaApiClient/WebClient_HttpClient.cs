@@ -7,6 +7,7 @@ namespace CG.Web.MegaApiClient
   using System.Reflection;
   using System.Text;
   using System.Threading;
+  using System.Security.Authentication;
 
   using System.Net.Http;
   using System.Net.Http.Headers;
@@ -18,14 +19,30 @@ namespace CG.Web.MegaApiClient
     private readonly HttpClient _httpClient;
 
     public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null)
-      : this(responseTimeout, userAgent, null, false)
+      : this(responseTimeout, userAgent, false)
     {
     }
 
-    internal WebClient(int responseTimeout, ProductInfoHeaderValue userAgent, HttpMessageHandler messageHandler, bool connectionClose)
+    internal WebClient(int responseTimeout, ProductInfoHeaderValue userAgent, bool connectionClose)
     {
       BufferSize = Options.DefaultBufferSize;
-      _httpClient = messageHandler == null ? new HttpClient() : new HttpClient(messageHandler);
+#if NET471 || NETSTANDARD
+      _httpClient = new HttpClient(new HttpClientHandler { SslProtocols = SslProtocols.Tls12 }, true);
+#elif NET47
+      if (!ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.Tls12) && !ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.SystemDefault))
+      {
+        throw new NotSupportedException("mega.nz API requires support for TLS v1.2 or higher. Check https://gpailler.github.io/MegaApiClient/#compatibility for additional information");
+      }
+
+      _httpClient = new HttpClient();
+#else
+      if (!ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.Tls12))
+      {
+        throw new NotSupportedException("mega.nz API requires support for TLS v1.2 or higher. Check https://gpailler.github.io/MegaApiClient/#compatibility for additional information");
+      }
+
+      _httpClient = new HttpClient();
+#endif
       _httpClient.Timeout = TimeSpan.FromMilliseconds(responseTimeout);
       _httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent ?? GenerateUserAgent());
       _httpClient.DefaultRequestHeaders.ConnectionClose = connectionClose;

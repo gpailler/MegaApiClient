@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests.Context
@@ -57,7 +54,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     protected virtual IMegaApiClient CreateClient()
     {
       Options = new Options(applicationKey: "ewZQFBBC");
-      WebClient = new TestWebClient(new WebClient(WebTimeout, null, new TestMessageHandler(), false), MaxRetry, _logMessageAction);
+      WebClient = new TestWebClient(new WebClient(WebTimeout, null, false), MaxRetry, _logMessageAction);
 
       return new MegaApiClient(Options, WebClient);
     }
@@ -82,14 +79,6 @@ namespace CG.Web.MegaApiClient.Tests.Context
     private void OnApiRequestFailed(object _, ApiRequestFailedEventArgs e)
     {
       _logMessageAction($"ApiRequestFailed: {e.ApiResult}, {e.ApiUrl}, {e.AttemptNum}, {e.RetryDelay}, {e.ResponseJson}, {e.Exception} {e.Exception?.Message}");
-    }
-
-    private class TestMessageHandler : HttpClientHandler
-    {
-      protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-      {
-        return await base.SendAsync(request, cancellationToken);
-      }
     }
   }
 }

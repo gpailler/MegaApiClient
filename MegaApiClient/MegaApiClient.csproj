@@ -31,33 +31,33 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;net46;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net46;net47;net471;netstandard1.3;netstandard2.0</TargetFrameworks>
     <RootNamespace>CG.Web.MegaApiClient</RootNamespace>
     <SignAssembly>False</SignAssembly>
     <DocumentationFile>bin\docs\MegaApiClient.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40' Or '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net46'">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) == 'false'">
     <Reference Include="System" />
     <Reference Include="System.Web" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net46'">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) == 'false' And $(TargetFramework) != 'net40'">
     <Reference Include="System.Net.Http" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3' Or '$(TargetFramework)' == 'netstandard2.0'">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard')) == 'true'">
     <PackageReference Include="System.Net.Http">
       <Version>4.3.4</Version>
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.3'">
+  <ItemGroup Condition="$(TargetFramework) == 'netstandard1.3'">
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="1.1.2" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net40' Or '$(TargetFramework)' == 'net45' Or '$(TargetFramework)' == 'net46'">
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard')) == 'false'">
     <SignAssembly>True</SignAssembly>
     <AssemblyOriginatorKeyFile>../key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
@@ -78,7 +78,7 @@
     <SourceRoot Include="$(MSBuildThisFileDirectory)/" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0">
       <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <IncludeAssets>runtime;build;native;contentfiles;analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
   
