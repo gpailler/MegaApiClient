@@ -213,6 +213,17 @@ namespace CG.Web.MegaApiClient.Tests
       AreStreamsEquivalent(Context.Client.Download(node), stream);
     }
 
+    [Theory]
+    [JsonInputsDataAttribute("FolderLink")]
+    public void UploadToPublicShare_Throws(string folderLink)
+    {
+      var nodes = Context.Client.GetNodesFromLink(new Uri(folderLink));
+      var node = Assert.Single(nodes, x => x.Type == NodeType.Root);
+
+      var exception = Assert.Throws<ApiException>(() => Context.Client.Upload(new MemoryStream(16), "test", node));
+      Assert.Equal(ApiResultCode.AccessDenied, exception.ApiResultCode);
+    }
+
     protected static void AreStreamsEquivalent(Stream stream1, Stream stream2)
     {
       var stream1data = new byte[stream1.Length];
