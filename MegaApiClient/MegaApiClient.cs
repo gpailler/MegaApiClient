@@ -773,6 +773,11 @@
         throw new ArgumentException("Invalid parent node");
       }
 
+      if (parent is PublicNode)
+      {
+        throw new ApiException(ApiResultCode.AccessDenied);
+      }
+
       EnsureLoggedIn();
 
       if (cancellationToken.HasValue)
