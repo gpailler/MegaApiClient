@@ -4,348 +4,15 @@
   "xrefmap": "xrefmap.yml",
   "files": [
     {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.ApiException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.ApiException.html",
-          "hash": "3jGm6gyGVPMxpDeydaRMEg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html",
-          "hash": "LpK3gRpG87QwMNFHzVCxNA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.ApiResultCode.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.ApiResultCode.html",
-          "hash": "jvHgrrl59sBYwO8ZGgCvYg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.CancellableStream.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.CancellableStream.html",
-          "hash": "h5+WEhLjsTUDGneS1+1Msw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.DownloadException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.DownloadException.html",
-          "hash": "araYEcwtDLCJAXxH0Qepkg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.FileAttributeType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.FileAttributeType.html",
-          "hash": "9wI07XKP+0hekca2HC52yw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IAccountInformation.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IAccountInformation.html",
-          "hash": "2i7ll9tK3YRCOwXYgsauHg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IFileAttribute.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IFileAttribute.html",
-          "hash": "hVnKTcUke6fxSvka7vHeew=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IMegaApiClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IMegaApiClient.html",
-          "hash": "Ap5cknaY6PunZsgynZvDwg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.INode.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.INode.html",
-          "hash": "iEIR24phLaUgXxDNfsKulQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.INodeInfo.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.INodeInfo.html",
-          "hash": "aw/l6qr2ouXCA5ECnbHWzg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.ISession.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.ISession.html",
-          "hash": "qfLMf/G4qd0xQSGf3XYGvQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IStorageMetrics.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IStorageMetrics.html",
-          "hash": "eCPl/i561HQfEF7vWSKGKg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IWebClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IWebClient.html",
-          "hash": "qQLKk1up2tZpGvqyPUUBug=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html",
-          "hash": "BHpUzBjChAaTF1Ix4G/tTA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html",
-          "hash": "eK+nANUI2zzAULhwUD7Hlg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.html",
-          "hash": "/6hLjvHzdlP+MD4c/2Ig+g=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.NodeExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.NodeExtensions.html",
-          "hash": "t4zXABTUgS6FeQa2xqoCAQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.NodeType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.NodeType.html",
-          "hash": "rVBo9ttyWaFd2bKekIreRQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate.html",
-          "hash": "IRmIpJXpQBt5uR0Zfmb9GA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.Options.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.Options.html",
-          "hash": "iywXPQyRLWjPzhp/f7D7mg=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.SessionStatus.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.SessionStatus.html",
-          "hash": "3tsfTL9braZwXZa1KT95ew=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.UploadException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.UploadException.html",
-          "hash": "HTD8hgZvit8I5tRi86a6uQ=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.WebClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.WebClient.html",
-          "hash": "qrcACtnEmkWeU9ySkvLhWA=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.html",
-          "hash": "HE3UnwuoC16ycrLWROgkKw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Medo.Security.Cryptography.Pbkdf2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Medo.Security.Cryptography.Pbkdf2.html",
-          "hash": "ODB8WV7pB5F66w6QpDTeWw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Medo.Security.Cryptography.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Medo.Security.Cryptography.html",
-          "hash": "9XYO20l742Uz3TstSL44bw=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "api/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/toc.html",
-          "hash": "ZcIT2SeRbO2S1oJASd5X8A=="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
+      "log_codes": [
+        "UidNotFound"
+      ],
       "type": "Conceptual",
       "source_relative_path": "articles/faq.md",
       "output": {
         ".html": {
           "relative_path": "articles/faq.html",
-          "hash": "T0Q9xqrC3hyhGsu7Ep5mqA=="
+          "hash": "g0g6SgqQmCOZgq2zH/wTZg=="
         }
       },
       "is_incremental": false,
@@ -357,7 +24,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/installation.html",
-          "hash": "5WWURAOnvUI+I4wSD99k9w=="
+          "hash": "AKPRAKEJBGkNE3Hs76zZwA=="
         }
       },
       "is_incremental": false,
@@ -369,7 +36,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/samples.html",
-          "hash": "paY/LT6ZCSq+vxMEmerSeA=="
+          "hash": "C/r4jtXnzuMJvUOyLiIeEg=="
         }
       },
       "is_incremental": false,
@@ -411,26 +78,30 @@
     },
     {
       "log_codes": [
-        "InvalidYamlHeader"
+        "InvalidYamlHeader",
+        "UidNotFound"
       ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "P+tp2VoggTMfglKHrQgK8g=="
+          "hash": "OOLCgL4g+E/xIv1Vl0uOEQ=="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "log_codes": [
+        "UidNotFound"
+      ],
       "type": "Toc",
       "source_relative_path": "toc.yml",
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "JSpTO7Ji8/geY2poJWQANw=="
+          "hash": "jySXcovA7RjYwGslypq+EA=="
         }
       },
       "is_incremental": false,
@@ -452,12 +123,6 @@
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 4,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 27,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
