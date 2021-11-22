@@ -289,7 +289,7 @@ namespace CG.Web.MegaApiClient.Tests
 
     [Theory]
     [JsonInputsDataAttribute("FileLink")]
-    public void GetNodeFromLink_Browse_Succeeds(string fileLink)
+    public void GetNodeFromLink_WithFileAttributes_Succeeds(string fileLink)
     {
       var node = Context.Client.GetNodeFromLink(new Uri(fileLink));
 
@@ -300,6 +300,21 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Null(node.CreationDate);
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Fingerprint, node.Fingerprint);
       Assert.Equal(2, node.FileAttributes.Length);
+    }
+
+    [Theory]
+    [JsonInputsDataAttribute("ZipFileLink")]
+    public void GetNodeFromLink_WithoutFileAttributes_Succeeds(string fileLink)
+    {
+      var node = Context.Client.GetNodeFromLink(new Uri(fileLink));
+
+      Assert.NotNull(node);
+      Assert.Equal("SampleFile.zip", node.Name);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SampleZipFile.Size, node.Size);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SampleZipFile.ModificationDate, node.ModificationDate);
+      Assert.Null(node.CreationDate);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SampleZipFile.Fingerprint, node.Fingerprint);
+      Assert.Empty(node.FileAttributes);
     }
 
     [Theory]

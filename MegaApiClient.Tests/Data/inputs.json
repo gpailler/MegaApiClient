@@ -11,17 +11,19 @@
     "|       |-SharedFile.jpg",
     "|       +-SharedSubFolder                   (Outgoing Share)",
     "|           |-SharedFileUpSideDown.jpg",
-    ",+-Trash",
-    ",+-Inbox",
-    ",+-Contacts",
-    ",  +-SharedRemoteFolder                     (Incoming Share)",
-    ",    |-SharedRemoteFile.jpg",
-    ",    +-SharedRemoteSubFolder                (Incoming Share / Subfolder of SharedRemoteFolder)",
-    ",      |-SharedRemoteSubFile.jpg",
-    ",      +-SharedRemoteSubSubFolder"
+    "+-SampleFile.zip",
+    "+-Trash",
+    "+-Inbox",
+    "+-Contacts",
+    "  +-SharedRemoteFolder                     (Incoming Share)",
+    "    |-SharedRemoteFile.jpg",
+    "    +-SharedRemoteSubFolder                (Incoming Share / Subfolder of SharedRemoteFolder)",
+    "      |-SharedRemoteSubFile.jpg",
+    "      +-SharedRemoteSubSubFolder"
   ],
 
   "FileLink": "https://mega.nz/file/W0UAgJaK#XOYyTETrIy8daz3_dw3fdh6Hh8EFEdrnbyoop1r9R6g",
+  "ZipFileLink": "https://mega.nz/file/WkNUzRzK#4aKRNvHSlkPPW3zHMYuRQANh1CNueAd6dmw5rOlwurY",
   "FolderLink": "https://mega.nz/folder/e4diDZ7T#iJnegBO_m6OXBQp27lHCrg",
 
   "Root": {
@@ -71,6 +73,14 @@
     "CreationDate": "2021-09-24T17:25:57.0000000+08:00",
     "ModificationDate": "2021-09-24T17:22:20.0000000+08:00",
     "Fingerprint": "hDL3WKxHmI6lMM92r43BWQTMmE1h"
+  },
+
+  "SampleZipFile": {
+    "Id": "e5U0XbgQ",
+    "Size": 513604,
+    "CreationDate": "2021-11-22T08:12:43.0000000+08:00",
+    "ModificationDate": "2021-11-22T08:09:59.0000000+08:00",
+    "Fingerprint": "sKBj43s_QyradRQ1YlmxhATX35ph"
   },
 
   "SharedRemoteFolder": {

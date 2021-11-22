@@ -47,6 +47,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
         Inputs.SharedSubFolder.Id,
         Inputs.SharedFile.Id,
         Inputs.SharedFileUpSideDown.Id,
+        Inputs.SampleZipFile.Id,
         Inputs.SharedRemoteFolder.Id,
         Inputs.SharedRemoteSubFolder.Id,
         Inputs.SharedRemoteSubSubFolder.Id,
