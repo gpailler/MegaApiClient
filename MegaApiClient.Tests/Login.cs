@@ -249,22 +249,6 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory, MemberData(nameof(GetCredentials), false)]
-    public void GetAccountInformation_AuthenticatedUser_Succeeds(string email, string password)
-    {
-      Context.Client.Login(email, password);
-
-      var authenticatedTestContext = new AuthenticatedTestContext();
-      var protectedNodes = authenticatedTestContext.ProtectedNodes;
-      SanitizeStorage(protectedNodes);
-
-      var accountInformation = Context.Client.GetAccountInformation();
-
-      Assert.NotNull(accountInformation);
-      Assert.Equal(AuthenticatedTestContext.Inputs.TotalQuota, accountInformation.TotalQuota);
-      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Size + AuthenticatedTestContext.Inputs.SharedFileUpSideDown.Size + AuthenticatedTestContext.Inputs.SampleZipFile.Size, accountInformation.UsedQuota);
-    }
-
-    [Theory, MemberData(nameof(GetCredentials), false)]
     public void GetSessionHistory_AuthenticatedUser_Succeeds(string email, string password)
     {
       Context.Client.Login(email, password);
@@ -277,18 +261,6 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(SessionStatus.Current | SessionStatus.Active, first.Status);
       Assert.Equal(DateTime.UtcNow, first.LoginTime.ToUniversalTime(), TimeSpan.FromSeconds(30));
       Assert.Equal(DateTime.UtcNow, first.LastSeenTime.ToUniversalTime(), TimeSpan.FromSeconds(30));
-    }
-
-    [Fact]
-    public void GetAccountInformation_AnonymousUser_Succeeds()
-    {
-      Context.Client.LoginAnonymous();
-
-      var accountInformation = Context.Client.GetAccountInformation();
-
-      Assert.NotNull(accountInformation);
-      Assert.Equal(AuthenticatedTestContext.Inputs.TotalQuota, accountInformation.TotalQuota);
-      Assert.Equal(0, accountInformation.UsedQuota);
     }
   }
 }

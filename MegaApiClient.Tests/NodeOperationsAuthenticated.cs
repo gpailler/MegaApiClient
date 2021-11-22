@@ -105,5 +105,15 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Preview.AttributeId, fileAttribute.Id);
       Assert.Equal(FileAttributeType.Preview, fileAttribute.Type);
     }
+
+    [Fact]
+    public void GetAccountInformation_AuthenticatedUser_Succeeds()
+    {
+      var accountInformation = Context.Client.GetAccountInformation();
+
+      Assert.NotNull(accountInformation);
+      Assert.Equal(AuthenticatedTestContext.Inputs.TotalQuota, accountInformation.TotalQuota);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Size + AuthenticatedTestContext.Inputs.SharedFileUpSideDown.Size + AuthenticatedTestContext.Inputs.SampleZipFile.Size, accountInformation.UsedQuota);
+    }
   }
 }
