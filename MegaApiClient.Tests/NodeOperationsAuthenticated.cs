@@ -50,13 +50,13 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [JsonInputsData(new object[] { NodeType.Root }, new string[] { "SharedFile.Size", "SharedFileUpSideDown.Size" })]
-    [InlineData(NodeType.Inbox, 0, 0)]
-    [InlineData(NodeType.Trash, 0, 0)]
-    public void GetFoldersize_FromNodeType_Succeeds(NodeType nodeType, long sharedFileSize, long sharedFileUpSideDownSize)
+    [JsonInputsData(new object[] { NodeType.Root }, new string[] { "SharedFile.Size", "SharedFileUpSideDown.Size", "SampleZipFile.Size" })]
+    [InlineData(NodeType.Inbox, 0, 0, 0)]
+    [InlineData(NodeType.Trash, 0, 0, 0)]
+    public void GetFoldersize_FromNodeType_Succeeds(NodeType nodeType, long sharedFileSize, long sharedFileUpSideDownSize, long sampleZipFile)
     {
       var node = GetNode(nodeType);
-      var expectedSize = sharedFileSize + sharedFileUpSideDownSize;
+      var expectedSize = sharedFileSize + sharedFileUpSideDownSize + sampleZipFile;
       Assert.Equal(expectedSize, node.GetFolderSize(Context.Client));
       Assert.Equal(expectedSize, node.GetFolderSizeAsync(Context.Client).Result);
       Assert.Equal(expectedSize, node.GetFolderSize(Context.Client.GetNodes()));

@@ -30,11 +30,7 @@
       Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), key);
       Size = downloadResponse.Size;
       Type = NodeType.File;
-
-      if (downloadResponse.SerializedAttributes != null)
-      {
-        FileAttributes = DeserializeFileAttributes(downloadResponse.SerializedFileAttributes);
-      }
+      FileAttributes = DeserializeFileAttributes(downloadResponse.SerializedFileAttributes);
     }
 
     #region Public properties
@@ -185,11 +181,7 @@
         }
 
         Attributes = Crypto.DecryptAttributes(SerializedAttributes.FromBase64(), Key);
-
-        if (SerializedFileAttributes != null)
-        {
-          FileAttributes = DeserializeFileAttributes(SerializedFileAttributes);
-        }
+        FileAttributes = DeserializeFileAttributes(SerializedFileAttributes);
       }
     }
 
@@ -216,6 +208,11 @@
 
     private static IFileAttribute[] DeserializeFileAttributes(string serializedFileAttributes)
     {
+      if (serializedFileAttributes == null)
+      {
+        return new IFileAttribute[0];
+      }
+
       var attributes = serializedFileAttributes.Split('/');
 
       return attributes

@@ -261,7 +261,7 @@ namespace CG.Web.MegaApiClient.Tests
 
       Assert.NotNull(accountInformation);
       Assert.Equal(AuthenticatedTestContext.Inputs.TotalQuota, accountInformation.TotalQuota);
-      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Size + AuthenticatedTestContext.Inputs.SharedFileUpSideDown.Size, accountInformation.UsedQuota);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Size + AuthenticatedTestContext.Inputs.SharedFileUpSideDown.Size + AuthenticatedTestContext.Inputs.SampleZipFile.Size, accountInformation.UsedQuota);
     }
 
     [Theory, MemberData(nameof(GetCredentials), false)]
