@@ -58,7 +58,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     protected override IEnumerable<string> GetPermanentNodes()
     {
-      return new string[] { Inputs.SharedFolder.Id };
+      return new string[] { Inputs.SharedFolder.Id, Inputs.SampleZipFile.Id };
     }
   }
 }

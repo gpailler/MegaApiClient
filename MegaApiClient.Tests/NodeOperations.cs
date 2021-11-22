@@ -345,7 +345,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedFolder.CreationDate, node.CreationDate);
       Assert.Null(node.ModificationDate);
       Assert.Null(node.Fingerprint);
-      Assert.Null(node.FileAttributes);
+      Assert.Empty(node.FileAttributes);
 
       node = Assert.Single(nodes, x => x.Name == "SharedSubFolder");
       Assert.Equal(NodeType.Directory, node.Type);
@@ -355,7 +355,7 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(AuthenticatedTestContext.Inputs.SharedSubFolder.CreationDate, node.CreationDate);
       Assert.Null(node.ModificationDate);
       Assert.Null(node.Fingerprint);
-      Assert.Null(node.FileAttributes);
+      Assert.Empty(node.FileAttributes);
 
       node = Assert.Single(nodes, x => x.Name == "SharedFileUpSideDown.jpg");
       Assert.Equal(NodeType.File, node.Type);
