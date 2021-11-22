@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Xunit;
 
 namespace CG.Web.MegaApiClient.Tests.Context
 {
-  [CollectionDefinition(nameof(AnonymousTestContext))]
-  public class AnonymousLoginTestsCollection : ICollectionFixture<AnonymousTestContext> { }
-
   public class AnonymousTestContext : TestContext
   {
     protected override void ConnectClient(IMegaApiClient client)

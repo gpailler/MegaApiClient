@@ -4,7 +4,10 @@ using Xunit.Abstractions;
 
 namespace CG.Web.MegaApiClient.Tests
 {
-  [Collection(nameof(AnonymousTestContext))]
+  [CollectionDefinition(nameof(DownloadUploadAnonymous))]
+  public class DownloadUploadAnonymousTestsCollection : ICollectionFixture<AnonymousTestContext> { }
+
+  [Collection(nameof(DownloadUploadAnonymous))]
   public class DownloadUploadAnonymous : DownloadUpload
   {
     public DownloadUploadAnonymous(AnonymousTestContext context, ITestOutputHelper testOutputHelper)
