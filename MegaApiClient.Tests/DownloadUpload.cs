@@ -191,15 +191,28 @@ namespace CG.Web.MegaApiClient.Tests
       }
     }
 
-    [Fact]
-    public void DownloadLink_ToFile_Succeeds()
+    [Theory]
+    [JsonInputsDataAttribute(new object[] { "Data/SampleZipFile.zip" }, new[] { "ZipFileLink" })]
+    [JsonInputsDataAttribute(new object[] { "Data/SampleFile.jpg" }, new[] { "FileLink" })]
+    public void DownloadLink_ToFile_Succeeds(string resultFile, string uri)
     {
-      const string ExpectedResultFile = "Data/SampleFile.jpg";
+      var outFile = GetTempFileName();
+      Context.Client.DownloadFile(new Uri(uri), outFile);
+
+      Assert.Equal(File.ReadAllBytes(GetAbsoluteFilePath(resultFile)), File.ReadAllBytes(outFile));
+    }
+
+    [Theory]
+    [JsonInputsDataAttribute(new object[] { "Data/SampleZipFile.zip" }, new[] { "ZipFileLink" })]
+    [JsonInputsDataAttribute(new object[] { "Data/SampleFile.jpg" }, new[] { "FileLink" })]
+    public void GetNodeFromLink_And_Download_ToFile_Succeeds(string resultFile, string uri)
+    {
+      var node = Context.Client.GetNodeFromLink(new Uri(uri));
 
       var outFile = GetTempFileName();
-      Context.Client.DownloadFile(new Uri(AuthenticatedTestContext.Inputs.FileLink), outFile);
+      Context.Client.DownloadFile(node, outFile);
 
-      Assert.Equal(File.ReadAllBytes(GetAbsoluteFilePath(ExpectedResultFile)), File.ReadAllBytes(outFile));
+      Assert.Equal(File.ReadAllBytes(GetAbsoluteFilePath(resultFile)), File.ReadAllBytes(outFile));
     }
 
     [Fact]
