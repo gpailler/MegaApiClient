@@ -596,7 +596,7 @@
       EnsureLoggedIn();
 
       // Retrieve download URL
-      var downloadRequest = new DownloadUrlRequest(node);
+      var downloadRequest = node is PublicNode ? (RequestBase)new DownloadUrlRequestFromId(node.Id) : new DownloadUrlRequest(node);
       var downloadResponse = Request<DownloadUrlResponse>(downloadRequest);
 
       Stream dataStream = new BufferedStream(_webClient.GetRequestRaw(new Uri(downloadResponse.Url)));
@@ -665,13 +665,13 @@
 
       EnsureLoggedIn();
 
-      GetPartsFromUri(uri, out var id, out _, out _, out var key);
+      GetPartsFromUri(uri, out var id, out var iv, out var metaMac, out var key);
 
       // Retrieve attributes
       var downloadRequest = new DownloadUrlRequestFromId(id);
       var downloadResponse = Request<DownloadUrlResponse>(downloadRequest);
 
-      return new Node(id, downloadResponse, key);
+      return new PublicNode(new Node(id, downloadResponse, key, iv, metaMac), null);
     }
 
     /// <summary>

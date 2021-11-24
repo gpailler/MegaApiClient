@@ -24,13 +24,16 @@
       _sharedKeys = sharedKeys;
     }
 
-    internal Node(string id, DownloadUrlResponse downloadResponse, byte[] key)
+    internal Node(string id, DownloadUrlResponse downloadResponse, byte[] key, byte[] iv, byte[] metaMac)
     {
       Id = id;
       Attributes = Crypto.DecryptAttributes(downloadResponse.SerializedAttributes.FromBase64(), key);
       Size = downloadResponse.Size;
       Type = NodeType.File;
       FileAttributes = DeserializeFileAttributes(downloadResponse.SerializedFileAttributes);
+      Key = key;
+      Iv = iv;
+      MetaMac = metaMac;
     }
 
     #region Public properties
@@ -271,9 +274,16 @@
     {
       get
       {
-        var serializedKey = _node.SerializedKey.Split('/')[0];
-        var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
-        return serializedKey.Substring(0, splitPosition) == Id;
+        if (_node.SerializedKey == null)
+        {
+          return false;
+        }
+        else
+        {
+          var serializedKey = _node.SerializedKey.Split('/')[0];
+          var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
+          return serializedKey.Substring(0, splitPosition) == Id;
+        }
       }
     }
   }
