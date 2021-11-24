@@ -596,7 +596,7 @@
       EnsureLoggedIn();
 
       // Retrieve download URL
-      var downloadRequest = node is PublicNode ? (RequestBase)new DownloadUrlRequestFromId(node.Id) : new DownloadUrlRequest(node);
+      var downloadRequest = node is PublicNode publicNode && publicNode.ParentId == null ? (RequestBase)new DownloadUrlRequestFromId(node.Id) : new DownloadUrlRequest(node);
       var downloadResponse = Request<DownloadUrlResponse>(downloadRequest);
 
       Stream dataStream = new BufferedStream(_webClient.GetRequestRaw(new Uri(downloadResponse.Url)));

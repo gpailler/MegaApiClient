@@ -276,7 +276,7 @@
       {
         if (_node.SerializedKey == null)
         {
-          return false;
+          return true;
         }
         else
         {
