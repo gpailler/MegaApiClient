@@ -82,12 +82,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install DocFX
-        run: nuget install docfx.console -Version 2.56.7
+        run: nuget install docfx.console -Version 2.58.9
 
       - name: Build documentation
         run: |
-          ./docfx.console.2.56.7/tools/docfx.exe metadata ./docs/docfx.json
-          ./docfx.console.2.56.7/tools/docfx.exe build ./docs/docfx.json --globalMetadata "{'_appFooter': 'Copyright © 2013-2021 - Gregoire Pailler - MegaApiClient ${{ needs.build.outputs.semVer }}'}"
+          ./docfx.console.2.58.9/tools/docfx.exe metadata ./docs/docfx.json
+          ./docfx.console.2.58.9/tools/docfx.exe build ./docs/docfx.json --globalMetadata "{'_appFooter': 'Copyright © 2013-2021 - Gregoire Pailler - MegaApiClient ${{ needs.build.outputs.semVer }}'}"
           
       - name: Upload Documentation
         uses: actions/upload-artifact@v2
