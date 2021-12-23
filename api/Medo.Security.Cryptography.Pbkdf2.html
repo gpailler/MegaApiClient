@@ -1,0 +1,583 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Pbkdf2
+   | MegaApiClient's documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Pbkdf2
+   | MegaApiClient's documentation ">
+    <meta name="generator" content="docfx 2.58.9.0">
+    
+    <link rel="shortcut icon" href="../images/mega_favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=UA-3481980-6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+  
+      gtag('config', 'UA-3481980-6');
+    </script>
+  
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/mega_logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Medo.Security.Cryptography.Pbkdf2">
+  
+  
+  <h1 id="Medo_Security_Cryptography_Pbkdf2" data-uid="Medo.Security.Cryptography.Pbkdf2" class="text-break">Class Pbkdf2
+  </h1>
+  <div class="markdown level0 summary"><p>Generic PBKDF2 implementation.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">Pbkdf2</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="Medo.Security.Cryptography.html">Medo.Security.Cryptography</a></h6>
+  <h6><strong>Assembly</strong>: MegaApiClient.dll</h6>
+  <h5 id="Medo_Security_Cryptography_Pbkdf2_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Pbkdf2</code></pre>
+  </div>
+  <h5 id="Medo_Security_Cryptography_Pbkdf2_examples"><strong>Examples</strong></h5>
+  <p>This sample shows how to initialize class with SHA-256 HMAC.</p>
+<pre><code>using (var hmac = new HMACSHA256()) {
+    var df = new Pbkdf2(hmac, &quot;password&quot;, &quot;salt&quot;);
+    var bytes = df.GetBytes();
+}</code></pre>
+
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_Byte___System_Byte___.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2.%23ctor(System.Security.Cryptography.HMAC%2CSystem.Byte%5B%5D%2CSystem.Byte%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L54">View Source</a>
+  </span>
+  <a id="Medo_Security_Cryptography_Pbkdf2__ctor_" data-uid="Medo.Security.Cryptography.Pbkdf2.#ctor*"></a>
+  <h4 id="Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_Byte___System_Byte___" data-uid="Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.Byte[],System.Byte[])">Pbkdf2(HMAC, Byte[], Byte[])</h4>
+  <div class="markdown level1 summary"><p>Creates new instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Pbkdf2(HMAC algorithm, byte[] password, byte[] salt)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Security.Cryptography.HMAC</span></td>
+        <td><span class="parametername">algorithm</span></td>
+        <td><p>HMAC algorithm to use.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">password</span></td>
+        <td><p>The password used to derive the key.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">salt</span></td>
+        <td><p>The key salt used to derive the key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Algorithm cannot be null - Password cannot be null. -or- Salt cannot be null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_Byte___System_Byte___System_Int32_.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2.%23ctor(System.Security.Cryptography.HMAC%2CSystem.Byte%5B%5D%2CSystem.Byte%5B%5D%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L34">View Source</a>
+  </span>
+  <a id="Medo_Security_Cryptography_Pbkdf2__ctor_" data-uid="Medo.Security.Cryptography.Pbkdf2.#ctor*"></a>
+  <h4 id="Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_Byte___System_Byte___System_Int32_" data-uid="Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.Byte[],System.Byte[],System.Int32)">Pbkdf2(HMAC, Byte[], Byte[], Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates new instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Pbkdf2(HMAC algorithm, byte[] password, byte[] salt, int iterations)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Security.Cryptography.HMAC</span></td>
+        <td><span class="parametername">algorithm</span></td>
+        <td><p>HMAC algorithm to use.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">password</span></td>
+        <td><p>The password used to derive the key.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">salt</span></td>
+        <td><p>The key salt used to derive the key.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">iterations</span></td>
+        <td><p>The number of iterations for the operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Algorithm cannot be null - Password cannot be null. -or- Salt cannot be null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_String_System_String_.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2.%23ctor(System.Security.Cryptography.HMAC%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L79">View Source</a>
+  </span>
+  <a id="Medo_Security_Cryptography_Pbkdf2__ctor_" data-uid="Medo.Security.Cryptography.Pbkdf2.#ctor*"></a>
+  <h4 id="Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_String_System_String_" data-uid="Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.String,System.String)">Pbkdf2(HMAC, String, String)</h4>
+  <div class="markdown level1 summary"><p>Creates new instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Pbkdf2(HMAC algorithm, string password, string salt)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Security.Cryptography.HMAC</span></td>
+        <td><span class="parametername">algorithm</span></td>
+        <td><p>HMAC algorithm to use.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">password</span></td>
+        <td><p>The password used to derive the key.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">salt</span></td>
+        <td><p>The key salt used to derive the key.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Algorithm cannot be null - Password cannot be null. -or- Salt cannot be null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_String_System_String_System_Int32_.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2.%23ctor(System.Security.Cryptography.HMAC%2CSystem.String%2CSystem.String%2CSystem.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L67">View Source</a>
+  </span>
+  <a id="Medo_Security_Cryptography_Pbkdf2__ctor_" data-uid="Medo.Security.Cryptography.Pbkdf2.#ctor*"></a>
+  <h4 id="Medo_Security_Cryptography_Pbkdf2__ctor_System_Security_Cryptography_HMAC_System_String_System_String_System_Int32_" data-uid="Medo.Security.Cryptography.Pbkdf2.#ctor(System.Security.Cryptography.HMAC,System.String,System.String,System.Int32)">Pbkdf2(HMAC, String, String, Int32)</h4>
+  <div class="markdown level1 summary"><p>Creates new instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Pbkdf2(HMAC algorithm, string password, string salt, int iterations)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Security.Cryptography.HMAC</span></td>
+        <td><span class="parametername">algorithm</span></td>
+        <td><p>HMAC algorithm to use.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">password</span></td>
+        <td><p>The password used to derive the key.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">salt</span></td>
+        <td><p>The key salt used to derive the key.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">iterations</span></td>
+        <td><p>The number of iterations for the operation.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Algorithm cannot be null - Password cannot be null. -or- Salt cannot be null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2_Algorithm.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2.Algorithm%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L94">View Source</a>
+  </span>
+  <a id="Medo_Security_Cryptography_Pbkdf2_Algorithm_" data-uid="Medo.Security.Cryptography.Pbkdf2.Algorithm*"></a>
+  <h4 id="Medo_Security_Cryptography_Pbkdf2_Algorithm" data-uid="Medo.Security.Cryptography.Pbkdf2.Algorithm">Algorithm</h4>
+  <div class="markdown level1 summary"><p>Gets algorithm used for generating key.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HMAC Algorithm { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Security.Cryptography.HMAC</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2_IterationCount.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2.IterationCount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L105">View Source</a>
+  </span>
+  <a id="Medo_Security_Cryptography_Pbkdf2_IterationCount_" data-uid="Medo.Security.Cryptography.Pbkdf2.IterationCount*"></a>
+  <h4 id="Medo_Security_Cryptography_Pbkdf2_IterationCount" data-uid="Medo.Security.Cryptography.Pbkdf2.IterationCount">IterationCount</h4>
+  <div class="markdown level1 summary"><p>Gets iteration count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int IterationCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2_Salt.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2.Salt%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L99">View Source</a>
+  </span>
+  <a id="Medo_Security_Cryptography_Pbkdf2_Salt_" data-uid="Medo.Security.Cryptography.Pbkdf2.Salt*"></a>
+  <h4 id="Medo_Security_Cryptography_Pbkdf2_Salt" data-uid="Medo.Security.Cryptography.Pbkdf2.Salt">Salt</h4>
+  <div class="markdown level1 summary"><p>Gets salt bytes.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] Salt { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2_GetBytes_System_Int32_.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2.GetBytes(System.Int32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L112">View Source</a>
+  </span>
+  <a id="Medo_Security_Cryptography_Pbkdf2_GetBytes_" data-uid="Medo.Security.Cryptography.Pbkdf2.GetBytes*"></a>
+  <h4 id="Medo_Security_Cryptography_Pbkdf2_GetBytes_System_Int32_" data-uid="Medo.Security.Cryptography.Pbkdf2.GetBytes(System.Int32)">GetBytes(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns a pseudo-random key from a password, salt and iteration count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] GetBytes(int count)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">count</span></td>
+        <td><p>Number of bytes to return.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>Byte array.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/gpailler/MegaApiClient/new/master/apiSpec/new?filename=Medo_Security_Cryptography_Pbkdf2.md&amp;value=---%0Auid%3A%20Medo.Security.Cryptography.Pbkdf2%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/gpailler/MegaApiClient/blob/master/MegaApiClient/Cryptography/PBKDF2.cs/#L22" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2013-2021 - Gregoire Pailler - MegaApiClient 1.10.2
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
