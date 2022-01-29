@@ -87,7 +87,7 @@ jobs:
       - name: Build documentation
         run: |
           ./docfx.console.2.58.9/tools/docfx.exe metadata ./docs/docfx.json
-          ./docfx.console.2.58.9/tools/docfx.exe build ./docs/docfx.json --globalMetadata "{'_appFooter': 'Copyright © 2013-2021 - Gregoire Pailler - MegaApiClient ${{ needs.build.outputs.semVer }}'}"
+          ./docfx.console.2.58.9/tools/docfx.exe build ./docs/docfx.json --globalMetadata "{'_appFooter': 'Copyright © 2013-2022 - Gregoire Pailler - MegaApiClient ${{ needs.build.outputs.semVer }}'}"
           
       - name: Upload Documentation
         uses: actions/upload-artifact@v2
