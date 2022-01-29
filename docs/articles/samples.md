@@ -4,9 +4,11 @@ uid: samples
 
 ### List all files / folders on your Mega account
 ```csharp
+using CG.Web.MegaApiClient;
+
 void Main()
 {
-  var client = new MegaApiClient();
+  MegaApiClient client = new MegaApiClient();
   client.Login("username@domain.com", "passw0rd");
 
   // GetNodes retrieves all files/folders metadata from Mega
@@ -37,13 +39,15 @@ void DisplayNodesRecursive(IEnumerable<INode> nodes, INode parent, int level = 0
 
 ### Download file from a Mega link
 ```csharp
+using CG.Web.MegaApiClient;
+
 void Main()
 {
-  var client = new MegaApiClient();
+  MegaApiClient client = new MegaApiClient();
   client.LoginAnonymous();
 
-  Uri fileLink = new Uri("https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk");
-  INodeInfo node = client.GetNodeFromLink(fileLink);
+  Uri fileLink = new Uri("https://mega.nz/file/W0UAgJaK#XOYyTETrIy8daz3_dw3fdh6Hh8EFEdrnbyoop1r9R6g");
+  INode node = client.GetNodeFromLink(fileLink);
 
   Console.WriteLine($"Downloading {node.Name}");
   client.DownloadFile(fileLink, node.Name);
@@ -55,29 +59,48 @@ void Main()
 
 ### Download folder content from a Mega link
 ```csharp
+using CG.Web.MegaApiClient;
+
 void Main()
 {
-  var client = new MegaApiClient();
+  MegaApiClient client = new MegaApiClient();
   client.LoginAnonymous();
 
-  Uri folderLink = new Uri("https://mega.nz/#F!e1ogxQ7T!ee4Q_ocD1bSLmNeg9B6kBw");
+  Uri folderLink = new Uri("https://mega.nz/folder/e4diDZ7T#iJnegBO_m6OXBQp27lHCrg");
   IEnumerable<INode> nodes = client.GetNodesFromLink(folderLink);
   foreach (INode node in nodes.Where(x => x.Type == NodeType.File))
   {
-    Console.WriteLine($"Downloading {node.Name}");
-    client.DownloadFile(node, node.Name);
+    string parents = GetParents(node, nodes);
+    Directory.CreateDirectory(parents);
+    Console.WriteLine($"Downloading {parents}\\{node.Name}");
+    client.DownloadFile(node, Path.Combine(parents, node.Name));
   }
 
   client.Logout();
+}
+
+string GetParents(INode node, IEnumerable<INode> nodes)
+{
+    List<string> parents = new List<string>();
+    while (node.ParentId != null)
+    {
+        INode parentNode = nodes.Single(x => x.Id == node.ParentId);
+        parents.Insert(0, parentNode.Name);
+        node = parentNode;
+    }
+
+    return string.Join('\\', parents);
 }
 ```
 
 
 ### Upload a file to your Mega account and retrieve public download link
 ```csharp
+using CG.Web.MegaApiClient;
+
 void Main()
 {
-  var client = new MegaApiClient();
+  MegaApiClient client = new MegaApiClient();
   client.Login("username@domain.com", "passw0rd");
 
   IEnumerable<INode> nodes = client.GetNodes();

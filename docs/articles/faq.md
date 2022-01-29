@@ -27,7 +27,7 @@ async void Main()
   client.LoginAnonymous();
 
   Uri fileLink = new Uri("https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk");
-  INodeInfo node = client.GetNodeFromLink(fileLink);
+  INode node = client.GetNodeFromLink(fileLink);
 
   IProgress<double> progressHandler = new Progress<double>(x => Console.WriteLine("{0}%", x));
   await client.DownloadFileAsync(fileLink, node.Name, progressHandler);
