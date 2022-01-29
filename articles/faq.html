@@ -100,7 +100,7 @@ using (var stream = client.Download(node))
   client.LoginAnonymous();
 
   Uri fileLink = new Uri(&quot;https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk&quot;);
-  INodeInfo node = client.GetNodeFromLink(fileLink);
+  INode node = client.GetNodeFromLink(fileLink);
 
   IProgress&lt;double&gt; progressHandler = new Progress&lt;double&gt;(x =&gt; Console.WriteLine(&quot;{0}%&quot;, x));
   await client.DownloadFileAsync(fileLink, node.Name, progressHandler);
@@ -232,7 +232,7 @@ Take a look on <a href="https://github.com/gpailler/MegaApiClient/issues/69#issu
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2013-2021 - Gregoire Pailler - MegaApiClient 1.10.2
+            Copyright © 2013-2022 - Gregoire Pailler - MegaApiClient 1.10.2
             
           </div>
         </div>

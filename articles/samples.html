@@ -80,9 +80,11 @@
             <article class="content wrap" id="_content" data-uid="samples">
 <h3 id="list-all-files--folders-on-your-mega-account">List all files / folders on your Mega account</h3>
 
-<pre><code class="lang-csharp">void Main()
+<pre><code class="lang-csharp">using CG.Web.MegaApiClient;
+
+void Main()
 {
-  var client = new MegaApiClient();
+  MegaApiClient client = new MegaApiClient();
   client.Login(&quot;username@domain.com&quot;, &quot;passw0rd&quot;);
 
   // GetNodes retrieves all files/folders metadata from Mega
@@ -109,13 +111,15 @@ void DisplayNodesRecursive(IEnumerable&lt;INode&gt; nodes, INode parent, int lev
   }
 }
 </code></pre><h3 id="download-file-from-a-mega-link">Download file from a Mega link</h3>
-<pre><code class="lang-csharp">void Main()
+<pre><code class="lang-csharp">using CG.Web.MegaApiClient;
+
+void Main()
 {
-  var client = new MegaApiClient();
+  MegaApiClient client = new MegaApiClient();
   client.LoginAnonymous();
 
-  Uri fileLink = new Uri(&quot;https://mega.nz/#!bkwkHC7D!AWJuto8_fhleAI2WG0RvACtKkL_s9tAtvBXXDUp2bQk&quot;);
-  INodeInfo node = client.GetNodeFromLink(fileLink);
+  Uri fileLink = new Uri(&quot;https://mega.nz/file/W0UAgJaK#XOYyTETrIy8daz3_dw3fdh6Hh8EFEdrnbyoop1r9R6g&quot;);
+  INode node = client.GetNodeFromLink(fileLink);
 
   Console.WriteLine($&quot;Downloading {node.Name}&quot;);
   client.DownloadFile(fileLink, node.Name);
@@ -123,25 +127,44 @@ void DisplayNodesRecursive(IEnumerable&lt;INode&gt; nodes, INode parent, int lev
   client.Logout();
 }
 </code></pre><h3 id="download-folder-content-from-a-mega-link">Download folder content from a Mega link</h3>
-<pre><code class="lang-csharp">void Main()
+<pre><code class="lang-csharp">using CG.Web.MegaApiClient;
+
+void Main()
 {
-  var client = new MegaApiClient();
+  MegaApiClient client = new MegaApiClient();
   client.LoginAnonymous();
 
-  Uri folderLink = new Uri(&quot;https://mega.nz/#F!e1ogxQ7T!ee4Q_ocD1bSLmNeg9B6kBw&quot;);
+  Uri folderLink = new Uri(&quot;https://mega.nz/folder/e4diDZ7T#iJnegBO_m6OXBQp27lHCrg&quot;);
   IEnumerable&lt;INode&gt; nodes = client.GetNodesFromLink(folderLink);
   foreach (INode node in nodes.Where(x =&gt; x.Type == NodeType.File))
   {
-    Console.WriteLine($&quot;Downloading {node.Name}&quot;);
-    client.DownloadFile(node, node.Name);
+    string parents = GetParents(node, nodes);
+    Directory.CreateDirectory(parents);
+    Console.WriteLine($&quot;Downloading {parents}\\{node.Name}&quot;);
+    client.DownloadFile(node, Path.Combine(parents, node.Name));
   }
 
   client.Logout();
 }
-</code></pre><h3 id="upload-a-file-to-your-mega-account-and-retrieve-public-download-link">Upload a file to your Mega account and retrieve public download link</h3>
-<pre><code class="lang-csharp">void Main()
+
+string GetParents(INode node, IEnumerable&lt;INode&gt; nodes)
 {
-  var client = new MegaApiClient();
+    List&lt;string&gt; parents = new List&lt;string&gt;();
+    while (node.ParentId != null)
+    {
+        INode parentNode = nodes.Single(x =&gt; x.Id == node.ParentId);
+        parents.Insert(0, parentNode.Name);
+        node = parentNode;
+    }
+
+    return string.Join(&#39;\\&#39;, parents);
+}
+</code></pre><h3 id="upload-a-file-to-your-mega-account-and-retrieve-public-download-link">Upload a file to your Mega account and retrieve public download link</h3>
+<pre><code class="lang-csharp">using CG.Web.MegaApiClient;
+
+void Main()
+{
+  MegaApiClient client = new MegaApiClient();
   client.Login(&quot;username@domain.com&quot;, &quot;passw0rd&quot;);
 
   IEnumerable&lt;INode&gt; nodes = client.GetNodes();
@@ -183,7 +206,7 @@ void DisplayNodesRecursive(IEnumerable&lt;INode&gt; nodes, INode parent, int lev
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2013-2021 - Gregoire Pailler - MegaApiClient 1.10.2
+            Copyright © 2013-2022 - Gregoire Pailler - MegaApiClient 1.10.2
             
           </div>
         </div>
