@@ -112,9 +112,9 @@ namespace CG.Web.MegaApiClient
     private static HttpClient CreateHttpClient(int timeout, ProductInfoHeaderValue userAgent)
     {
 #if NET471 || NETSTANDARD
-      var httpClient = new HttpClient(new HttpClientHandler { SslProtocols = SslProtocols.Tls12 }, true);
+      var httpClient = new HttpClient(new HttpClientHandler { SslProtocols = SslProtocols.Tls12, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }, true);
 #else
-      var httpClient = new HttpClient();
+      var httpClient = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
 #endif
 
       httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
