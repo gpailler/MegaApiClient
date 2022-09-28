@@ -256,11 +256,7 @@ namespace CG.Web.MegaApiClient.Tests
       var sessionsHistory = Context.Client.GetSessionsHistory();
 
       Assert.NotNull(sessionsHistory);
-      var first = sessionsHistory.First();
-      Assert.NotNull(first);
-      Assert.Equal(SessionStatus.Current | SessionStatus.Active, first.Status);
-      Assert.Equal(DateTime.UtcNow, first.LoginTime.ToUniversalTime(), TimeSpan.FromSeconds(30));
-      Assert.Equal(DateTime.UtcNow, first.LastSeenTime.ToUniversalTime(), TimeSpan.FromSeconds(30));
+      Assert.NotNull(sessionsHistory.FirstOrDefault(x => x.Status == (SessionStatus.Active | SessionStatus.Current)));
     }
   }
 }
