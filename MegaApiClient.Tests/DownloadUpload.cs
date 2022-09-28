@@ -63,7 +63,6 @@ namespace CG.Web.MegaApiClient.Tests
 
     [Theory]
     [InlineData(NodeType.Root)]
-    [InlineData(NodeType.Inbox)]
     [InlineData(NodeType.Trash)]
     public void UploadStream_DifferentParent_Succeeds(NodeType parentType)
     {

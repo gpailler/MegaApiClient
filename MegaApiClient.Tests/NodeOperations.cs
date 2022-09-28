@@ -39,7 +39,6 @@ namespace CG.Web.MegaApiClient.Tests
 
     [Theory]
     [InlineData(NodeType.Root)]
-    [InlineData(NodeType.Inbox)]
     [InlineData(NodeType.Trash)]
     public void CreateFolder_Succeeds(NodeType parentNodeType)
     {
@@ -213,7 +212,6 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData(NodeType.Inbox)]
     [InlineData(NodeType.Trash)]
     public void Move_Succeeds(NodeType destinationParentNodeType)
     {
