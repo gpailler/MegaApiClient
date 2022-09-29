@@ -11,8 +11,6 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     Options Options { get; }
 
-    int WebTimeout { get; }
-
     IEnumerable<string> ProtectedNodes { get; }
 
     IEnumerable<string> PermanentRootNodes { get; }

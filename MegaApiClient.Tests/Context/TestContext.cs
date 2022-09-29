@@ -8,7 +8,11 @@ namespace CG.Web.MegaApiClient.Tests.Context
 {
   public abstract class TestContext : ITestContext
   {
+    public const int WebTimeout = 60000;
+
     private const int MaxRetry = 3;
+
+    private static readonly IWebClient s_webClient = new WebClient(WebTimeout, null);
 
     private readonly Lazy<IMegaApiClient> _lazyClient;
     private readonly Lazy<IEnumerable<string>> _lazyProtectedNodes;
@@ -18,7 +22,6 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     protected TestContext()
     {
-      WebTimeout = 60000;
       _lazyClient = new Lazy<IMegaApiClient>(InitializeClient);
       _lazyProtectedNodes = new Lazy<IEnumerable<string>>(() => GetProtectedNodes().ToArray());
       _lazyPermanentNodes = new Lazy<IEnumerable<string>>(() => GetPermanentNodes().ToArray());
@@ -34,8 +37,6 @@ namespace CG.Web.MegaApiClient.Tests.Context
     public IWebClient WebClient { get; private set; }
 
     public Options Options { get; private set; }
-
-    public int WebTimeout { get; }
 
     public IEnumerable<string> ProtectedNodes => _lazyProtectedNodes.Value;
 
@@ -54,7 +55,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     protected virtual IMegaApiClient CreateClient()
     {
       Options = new Options(applicationKey: "ewZQFBBC");
-      WebClient = new TestWebClient(new WebClient(WebTimeout, null), MaxRetry, _logMessageAction);
+      WebClient = new TestWebClient(s_webClient, MaxRetry, _logMessageAction);
 
       return new MegaApiClient(Options, WebClient);
     }

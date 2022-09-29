@@ -122,7 +122,7 @@
         }
       }
 
-      _logMessageAction($"Request failed: {ts.TotalSeconds}, {ex}, {ex.Message}");
+      _logMessageAction($"Request failed: {ts.TotalSeconds}s, {ex}, {ex.Message}");
     }
   }
 }

@@ -149,6 +149,6 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.True(result6);
     }
 
-    private int Timeout => (int)(Context.WebTimeout * 0.9);
+    private static int Timeout => (int)(TestContext.WebTimeout * 0.9);
   }
 }
