@@ -28,9 +28,9 @@ namespace CG.Web.MegaApiClient.Tests
 
     [Theory]
     [InlineData(null, 8)]
-    [InlineData(1024 * 64, 8)]
-    [InlineData(100000, 4)]
-    [InlineData(200000, 2)]
+    [InlineData(1024L * 64L, 8)]
+    [InlineData(100000L, 4)]
+    [InlineData(200000L, 2)]
     public void DownloadFileAsync_FromNode_Succeeds(long? reportProgressChunkSize, long expectedResult)
     {
       // Arrange
