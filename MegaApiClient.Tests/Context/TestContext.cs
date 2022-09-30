@@ -12,8 +12,6 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
     private const int MaxRetry = 3;
 
-    private static readonly IWebClient s_webClient = new WebClient(WebTimeout, null);
-
     private readonly Lazy<IMegaApiClient> _lazyClient;
     private readonly Lazy<IEnumerable<string>> _lazyProtectedNodes;
     private readonly Lazy<IEnumerable<string>> _lazyPermanentNodes;
@@ -55,7 +53,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
     protected virtual IMegaApiClient CreateClient()
     {
       Options = new Options(applicationKey: "ewZQFBBC");
-      WebClient = new TestWebClient(s_webClient, MaxRetry, _logMessageAction);
+      WebClient = new TestWebClient(MaxRetry, _logMessageAction);
 
       return new MegaApiClient(Options, WebClient);
     }
