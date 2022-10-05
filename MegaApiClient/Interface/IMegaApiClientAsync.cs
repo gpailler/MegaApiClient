@@ -1,5 +1,4 @@
-﻿#if !NET40
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System;
   using System.Collections.Generic;
@@ -64,4 +63,3 @@ namespace CG.Web.MegaApiClient
     Task<Stream> DownloadFileAttributeAsync(INode node, FileAttributeType fileAttributeType, CancellationToken? cancellationToken = null);
   }
 }
-#endif

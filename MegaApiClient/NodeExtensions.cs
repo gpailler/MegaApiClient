@@ -3,9 +3,7 @@
   using System;
   using System.Collections.Generic;
   using System.Linq;
-#if !NET40
   using System.Threading.Tasks;
-#endif
 
   public static class NodeExtensions
   {
@@ -40,8 +38,6 @@
       return folderSize;
     }
 
-#if !NET40
-
     public static async Task<long> GetFolderSizeAsync(this INode node, IMegaApiClient client)
     {
       var allNodes = await client.GetNodesAsync();
@@ -72,7 +68,5 @@
 
       return folderSize;
     }
-
-#endif
   }
 }

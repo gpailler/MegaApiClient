@@ -8,9 +8,7 @@
   using System.Security.Cryptography;
   using System.Text.RegularExpressions;
   using System.Threading;
-#if !NET40
   using System.Threading.Tasks;
-#endif
   using CG.Web.MegaApiClient.Cryptography;
   using Medo.Security.Cryptography;
   using Newtonsoft.Json;
@@ -1146,13 +1144,9 @@
 
     private void Wait(TimeSpan retryDelay)
     {
-#if NET40
-      Thread.Sleep(retryDelay);
-#else
       Task
         .Delay(retryDelay)
         .Wait();
-#endif
     }
 
     private Uri GenerateUrl(Dictionary<string, string> queryArguments)
@@ -1168,9 +1162,6 @@
         query["sid"] = _sessionId;
       }
 
-#if NETSTANDARD1_3
-      return new Uri(Microsoft.AspNetCore.WebUtilities.QueryHelpers.AddQueryString(s_baseApiUri.AbsoluteUri, query));
-#else
       var builder = new UriBuilder(s_baseApiUri);
       var arguments = "";
       foreach (var item in query)
@@ -1182,7 +1173,6 @@
 
       builder.Query = arguments;
       return builder.Uri;
-#endif
     }
 
     private void SaveStream(Stream stream, string outputFile)

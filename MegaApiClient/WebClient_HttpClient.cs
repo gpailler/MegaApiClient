@@ -1,5 +1,4 @@
-﻿#if !NET40
-namespace CG.Web.MegaApiClient
+﻿namespace CG.Web.MegaApiClient
 {
   using System;
   using System.IO;
@@ -7,9 +6,7 @@ namespace CG.Web.MegaApiClient
   using System.Reflection;
   using System.Text;
   using System.Threading;
-#if NET471 || NETSTANDARD
   using System.Security.Authentication;
-#endif
   using System.Net.Http;
   using System.Net.Http.Headers;
 
@@ -23,18 +20,6 @@ namespace CG.Web.MegaApiClient
 
     public WebClient(int responseTimeout = DefaultResponseTimeout, ProductInfoHeaderValue userAgent = null)
     {
-#if NET47
-      if (!ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.Tls12) && !ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.SystemDefault))
-      {
-        throw new NotSupportedException("mega.nz API requires support for TLS v1.2 or higher. Check https://gpailler.github.io/MegaApiClient/#compatibility for additional information");
-      }
-#elif NET45 || NET46
-      if (!ServicePointManager.SecurityProtocol.HasFlag(SecurityProtocolType.Tls12))
-      {
-        throw new NotSupportedException("mega.nz API requires support for TLS v1.2 or higher. Check https://gpailler.github.io/MegaApiClient/#compatibility for additional information");
-      }
-#endif
-
       if (responseTimeout == DefaultResponseTimeout && userAgent == null)
       {
         _httpClient = s_sharedHttpClient;
@@ -111,11 +96,7 @@ namespace CG.Web.MegaApiClient
 
     private static HttpClient CreateHttpClient(int timeout, ProductInfoHeaderValue userAgent)
     {
-#if NET471 || NETSTANDARD
       var httpClient = new HttpClient(new HttpClientHandler { SslProtocols = SslProtocols.Tls12, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }, true);
-#else
-      var httpClient = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate });
-#endif
 
       httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
       httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent);
@@ -130,4 +111,3 @@ namespace CG.Web.MegaApiClient
     }
   }
 }
-#endif

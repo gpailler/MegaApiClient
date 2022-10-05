@@ -15,9 +15,7 @@
     public const int DefaultBufferSize = 1024 * 64;
     public const int DefaultChunksPackSize = 1024 * 1024;
 
-#if !NET40
     public const long DefaultReportProgressChunkSize = DefaultBufferSize;
-#endif
 
     public delegate bool ComputeApiRequestRetryWaitDelayDelegate(int attempt, out TimeSpan delay);
 
@@ -26,11 +24,8 @@
       bool synchronizeApiRequests = DefaultSynchronizeApiRequests,
       ComputeApiRequestRetryWaitDelayDelegate computeApiRequestRetryWaitDelay = null,
       int bufferSize = DefaultBufferSize,
-      int chunksPackSize = DefaultChunksPackSize
-#if !NET40
-      ,
+      int chunksPackSize = DefaultChunksPackSize,
       long reportProgressChunkSize = DefaultReportProgressChunkSize
-#endif
       )
     {
       ApplicationKey = applicationKey;
@@ -41,7 +36,6 @@
       BufferSize = bufferSize;
       ChunksPackSize = chunksPackSize;
 
-#if !NET40
       if (reportProgressChunkSize < BufferSize)
       {
         throw new ArgumentException(
@@ -50,7 +44,6 @@
       }
 
       ReportProgressChunkSize = reportProgressChunkSize;
-#endif
     }
 
     public string ApplicationKey { get; }
@@ -76,9 +69,7 @@
     /// </summary>
     public int ChunksPackSize { get; internal set; }
 
-#if !NET40
     public long ReportProgressChunkSize { get; internal set;}
-#endif
 
     private bool ComputeDefaultApiRequestRetryWaitDelay(int attempt, out TimeSpan delay)
     {
