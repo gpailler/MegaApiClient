@@ -13,7 +13,7 @@ namespace CG.Web.MegaApiClient.Tests.Context
 
   public class AuthenticatedTestContext : TestContext, IDisposable
   {
-    internal static readonly string InputsJson = File.ReadAllText("Data\\inputs.json");
+    internal static readonly string InputsJson = File.ReadAllText(Path.Combine("Data", "inputs.json"));
 
     static AuthenticatedTestContext()
     {
