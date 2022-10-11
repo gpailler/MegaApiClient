@@ -52,7 +52,7 @@ jobs:
   test:
     name: Test 🧪
     timeout-minutes: 60
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Concurrent test execution check
         uses: softprops/turnstyle@v1
