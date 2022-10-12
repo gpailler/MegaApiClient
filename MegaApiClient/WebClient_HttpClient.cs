@@ -96,7 +96,7 @@
 
     private static HttpClient CreateHttpClient(int timeout, ProductInfoHeaderValue userAgent)
     {
-      var httpClient = new HttpClient(new HttpClientHandler { SslProtocols = SslProtocols.Tls12, AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }, true);
+      var httpClient = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }, true);
 
       httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
       httpClient.DefaultRequestHeaders.UserAgent.Add(userAgent);
