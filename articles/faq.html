@@ -80,7 +80,7 @@
             <article class="content wrap" id="_content" data-uid="faq">
 <h3 id="how-can-i-download-a-file-into-a-specific-location">How can I download a file into a specific location?</h3>
 
-<p>You can use a stream with the <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_">Download</a> method to control the destination of your download</p>
+<p>You can use a stream with the &lt;xref:CG.Web.MegaApiClient.MegaApiClient.Download*&gt; method to control the destination of your download</p>
 <pre><code class="lang-csharp">var destination = @&quot;SubFolder\MyFile.jpg&quot;;
 using (var stream = client.Download(node))
 {
@@ -92,7 +92,7 @@ using (var stream = client.Download(node))
 </code></pre><h3 id="how-can-i-retrieve-progression-during-downloadupload">How can I retrieve progression during download/upload?</h3>
 <p>You have several options:</p>
 <ul>
-<li>Use async methods like <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_DownloadAsync_">DownloadAsync</a> / <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_UploadAsync_">UploadAsync</a></li>
+<li>Use async methods like &lt;xref:CG.Web.MegaApiClient.MegaApiClient.DownloadAsync*&gt; / &lt;xref:CG.Web.MegaApiClient.MegaApiClient.UploadAsync*&gt;</li>
 </ul>
 <pre><code class="lang-csharp">async void Main()
 {
@@ -108,7 +108,7 @@ using (var stream = client.Download(node))
   client.Logout();
 }
 </code></pre><ul>
-<li>Use the methods <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_">Download</a> / <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Upload_">Upload</a> with a custom stream implementation to retrieve progression</li>
+<li>Use the methods &lt;xref:CG.Web.MegaApiClient.MegaApiClient.Download*&gt; / &lt;xref:CG.Web.MegaApiClient.MegaApiClient.Upload*&gt; with a custom stream implementation to retrieve progression</li>
 </ul>
 <pre><code class="lang-csharp">// Upload
 using (var fileStream = new FileStream(filepath, FileMode.Open))
@@ -192,10 +192,10 @@ public class ProgressionStream : Stream
   }
 }
 </code></pre><h3 id="how-can-i-control-downloadupload-speed">How can I control download/upload speed?</h3>
-<p>You can use a custom Stream implementation with <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Download_">Download</a> / <a class="xref" href="../api/CG.Web.MegaApiClient.MegaApiClient.html#CG_Web_MegaApiClient_MegaApiClient_Upload_">Upload</a> methods.
+<p>You can use a custom Stream implementation with &lt;xref:CG.Web.MegaApiClient.MegaApiClient.Download*&gt; / &lt;xref:CG.Web.MegaApiClient.MegaApiClient.Upload*&gt; methods.
 Take a look on <a href="https://github.com/duplicati/duplicati/blob/master/Duplicati/Library/Utility/ThrottledStream.cs">ThrottledStream</a> implementation from Duplicati project.</p>
 <h3 id="how-can-i-customize-megaapiclient-options-application-key-buffers">How can I customize MegaApiClient options (application key, buffers)?</h3>
-<p>When creating the MegaApiClient, you can pass a custom configuration class called <a class="xref" href="../api/CG.Web.MegaApiClient.Options.html">Options</a>.</p>
+<p>When creating the MegaApiClient, you can pass a custom configuration class called &lt;xref:CG.Web.MegaApiClient.Options&gt;.</p>
 <h3 id="how-can-i-fix-uwp-error-during-login-">How can I fix UWP error during login ?</h3>
 <p>UWP compiler has some restriction and you can face some unexpected exceptions during login.
 Take a look on <a href="https://github.com/gpailler/MegaApiClient/issues/69#issuecomment-326811805">GitHub issue #69</a> for details.</p>
@@ -212,7 +212,7 @@ Take a look on <a href="https://github.com/gpailler/MegaApiClient/issues/69#issu
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/gpailler/MegaApiClient/blob/master/docs/articles/faq.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/gpailler/MegaApiClient/blob/f97b1cf13430ca4dd3a66b62f2aa43ba07e3af07/docs/articles/faq.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -232,7 +232,7 @@ Take a look on <a href="https://github.com/gpailler/MegaApiClient/issues/69#issu
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2013-2022 - Gregoire Pailler - MegaApiClient 1.10.2
+            Copyright © 2013-2022 - Gregoire Pailler - MegaApiClient 1.10.3
             
           </div>
         </div>

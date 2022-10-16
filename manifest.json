@@ -1,339 +1,18 @@
 {
   "homepages": [],
-  "source_base_path": "C:/Users/gpailler/Documents/Repos/GitHub/MegaApiClient/docs",
+  "source_base_path": "D:/a/MegaApiClient/MegaApiClient/docs",
   "xrefmap": "xrefmap.yml",
   "files": [
     {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.ApiException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.ApiException.html",
-          "hash": "Mqahl4o81h7gAYbaFgbVts/DwKnbtnMnFgmxFQhJYXE="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.ApiRequestFailedEventArgs.html",
-          "hash": "x8Ypz6tyrBSaZJ85pmIhrbZKQGtq9uUJSIgDhji8x5s="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.ApiResultCode.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.ApiResultCode.html",
-          "hash": "h+si+82HAO+Hwz5v4plLI5ZwHzsO3bIj6m2NKP1C4oU="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.CancellableStream.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.CancellableStream.html",
-          "hash": "EZQmJvN6e8tQNob7dhFfXCi07BcEHXqgZ+GLqNDCyAg="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.DownloadException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.DownloadException.html",
-          "hash": "EvwmhTo+x9Ekthrjd4llkgoJx0CjIMhIHy6Umxe1pbk="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.FileAttributeType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.FileAttributeType.html",
-          "hash": "OmLB4WvOu5XzVfAiZe4CPEUO0uIrccmVvNv1uVczEXs="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IAccountInformation.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IAccountInformation.html",
-          "hash": "1pkEIP1C1e+/gFeb/6Q7kwlazWTFqO/XtBW4zT+omkI="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IFileAttribute.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IFileAttribute.html",
-          "hash": "EJgUbJnzsTbQXx+Ep9T/nerancMxfaNI9nnqxd/uwZ4="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IMegaApiClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IMegaApiClient.html",
-          "hash": "stowSYfrOaVPG6kD9bDSto1A/haWR3HSuyiBh0IZTns="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.INode.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.INode.html",
-          "hash": "qAx5k8pTRfKuk2hgHLnF3SpCb/u5gTAlHwVRpMYhosA="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.ISession.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.ISession.html",
-          "hash": "Tt7rOC2O3xrZ/mzT3g/LqmiLMktNBc7qBAkY2+t9ztI="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IStorageMetrics.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IStorageMetrics.html",
-          "hash": "An61WY4QyYSivu5hbMRD5zZLZ9qbninCWdBkXJb4/Cs="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.IWebClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.IWebClient.html",
-          "hash": "4h01fonGUUSO5Q/fv/h98sQtihxdbLXXgvRUnY2HuOo="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.AuthInfos.html",
-          "hash": "SrBR31JYsYlVWbOum7+6FvXkPckPeyUptK7kEz1Xq34="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.LogonSessionToken.html",
-          "hash": "eL2m2GjNSl6CyUwTax2Pgpcar2sg7FqzaE3dmadVkoo="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.MegaApiClient.html",
-          "hash": "hC5wGv30ZLSaaY4q8BZkiARHNOirQrkH31XvTMEsfIo="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.NodeExtensions.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.NodeExtensions.html",
-          "hash": "q/jxOr8glGozkNy8ZFkYciJmNYtXq03RNL3k+d9cTzU="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.NodeType.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.NodeType.html",
-          "hash": "MNh1q3DaEHRuPeduZRrtI2+NFVdveS6rmK46mfORaXA="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.Options.ComputeApiRequestRetryWaitDelayDelegate.html",
-          "hash": "hxs7aEcfhweGNVlnSq/2F6qss1UqQpMaxsQrfc+/GnY="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.Options.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.Options.html",
-          "hash": "pnjujmFGCfB26MplZgxoS2nhE/Vihbwmi2GaE8/f8NU="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.SessionStatus.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.SessionStatus.html",
-          "hash": "Pmo9gyRYbo7nD8LLdXu6Oe5nVn4/rXPFCVQcb939NJQ="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.UploadException.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.UploadException.html",
-          "hash": "1JIVj3XzBo36CJoUigdUfTvyqkaoslk9f4RLt36KRak="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.WebClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.WebClient.html",
-          "hash": "tS9pfPT2o5vy5tmRnkMSuoa8n/3Q0dHYTmk3PWO3oto="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/CG.Web.MegaApiClient.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/CG.Web.MegaApiClient.html",
-          "hash": "yADz4tBjaoCzqynl2JO09jaSpqWBT6W7WZoXYLnwm8Q="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Medo.Security.Cryptography.Pbkdf2.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Medo.Security.Cryptography.Pbkdf2.html",
-          "hash": "FVz+umuY5rttX2hMVNL+afGFwhQ/IMAN7xZyAlGDPEE="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "ManagedReference",
-      "source_relative_path": "api/Medo.Security.Cryptography.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/Medo.Security.Cryptography.html",
-          "hash": "4THGZvUVn+ebLUtHeK/cO5VhmYfkjWmlMXdqWM+gRY4="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
-      "type": "Toc",
-      "source_relative_path": "api/toc.yml",
-      "output": {
-        ".html": {
-          "relative_path": "api/toc.html",
-          "hash": "fee4RZ8hhNcWRhbehQERS7XSa1/E5PJUPPOGNHRPqeE="
-        }
-      },
-      "is_incremental": false,
-      "version": ""
-    },
-    {
+      "log_codes": [
+        "UidNotFound"
+      ],
       "type": "Conceptual",
       "source_relative_path": "articles/faq.md",
       "output": {
         ".html": {
           "relative_path": "articles/faq.html",
-          "hash": "UvH10Umt/qNGTCfCL37AR0FTxWjPXYJu/pNBchgTu9w="
+          "hash": "+OhGdbyfXyxwPJp+vPWR21W32btpqajfJ4lDn8cqwu0="
         }
       },
       "is_incremental": false,
@@ -345,7 +24,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/installation.html",
-          "hash": "LLlHBD7HIc2Gro6JDzc+/EouDYT4p7VMnFjhLv+3Mc4="
+          "hash": "DqpWmDOM4/BTaLoiH9aJ8UyuT4Ly0vaBttjoyx2CrdM="
         }
       },
       "is_incremental": false,
@@ -357,7 +36,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/samples.html",
-          "hash": "PisywvCsHYmz+Hr3aQNRTPzqWLt9pPlAD6dn+7nXEWU="
+          "hash": "hMsykm3vInQQrAtDeLq696y9gcvHjShigOiJ+gGsNJg="
         }
       },
       "is_incremental": false,
@@ -399,26 +78,30 @@
     },
     {
       "log_codes": [
-        "InvalidYamlHeader"
+        "InvalidYamlHeader",
+        "UidNotFound"
       ],
       "type": "Conceptual",
       "source_relative_path": "index.md",
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "y9JQCscSWI2JrWhZDPg6pFJr2VxAXEWcvR460I0z7Uc="
+          "hash": "qJYF7nwa8PGfmOyoZqwEywTcu9LQ/aqHXKCGILVgESs="
         }
       },
       "is_incremental": false,
       "version": ""
     },
     {
+      "log_codes": [
+        "UidNotFound"
+      ],
       "type": "Toc",
       "source_relative_path": "toc.yml",
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "X3oiK3GD8bQKgmSaUJKNyDJKXjYT8oPe2k0iFnt4Cvs="
+          "hash": "dyc3vsmcG1Oq3WYc+TJnDr0w+cnKNwIlglUys3JDZso="
         }
       },
       "is_incremental": false,
@@ -440,12 +123,6 @@
           "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 4,
-          "skipped_file_count": 0
-        },
-        "ManagedReferenceDocumentProcessor": {
-          "can_incremental": false,
-          "incrementalPhase": "build",
-          "total_file_count": 26,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
