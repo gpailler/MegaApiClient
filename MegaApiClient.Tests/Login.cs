@@ -199,8 +199,8 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
-    [InlineData("username@example.com", "password", null, "{'Email':'username@example.com','Hash':'ObELy57HULI','PasswordAesKey':'ZAM5cl5uvROiXwBSEp98sQ==','MFAKey':null}")]
-    [InlineData("username@example.com", "password", "mfa", "{'Email':'username@example.com','Hash':'ObELy57HULI','PasswordAesKey':'ZAM5cl5uvROiXwBSEp98sQ==','MFAKey':'mfa'}")]
+    [InlineData("username@example.com", "password", null, "{'Email':'username@example.com','Hash':'gafGcRqHrzI9lwIJyLoNLA','PasswordAesKey':'o7HMO8ZSIiMEMBIDgzpj6Q==','MFAKey':null}")]
+    [InlineData("username@example.com", "password", "mfa", "{'Email':'username@example.com','Hash':'gafGcRqHrzI9lwIJyLoNLA','PasswordAesKey':'o7HMO8ZSIiMEMBIDgzpj6Q==','MFAKey':'mfa'}")]
     public void GenerateAuthInfos_ValidCredentials_Succeeds(string email, string password, string mfa, string expectedResult)
     {
       var authInfos = Context.Client.GenerateAuthInfos(email, password, mfa);

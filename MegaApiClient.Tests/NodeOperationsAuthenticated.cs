@@ -96,13 +96,13 @@ namespace CG.Web.MegaApiClient.Tests
       Assert.Equal(2, node.FileAttributes.Length);
 
       var fileAttribute = node.FileAttributes[0];
-      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Thumbnail.Id, fileAttribute.Handle);
-      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Thumbnail.AttributeId, fileAttribute.Id);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Metadata[0].Id, fileAttribute.Handle);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Metadata[0].AttributeId, fileAttribute.Id);
       Assert.Equal(FileAttributeType.Thumbnail, fileAttribute.Type);
 
       fileAttribute = node.FileAttributes[1];
-      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Preview.Id, fileAttribute.Handle);
-      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Preview.AttributeId, fileAttribute.Id);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Metadata[1].Id, fileAttribute.Handle);
+      Assert.Equal(AuthenticatedTestContext.Inputs.SharedFile.Metadata[1].AttributeId, fileAttribute.Id);
       Assert.Equal(FileAttributeType.Preview, fileAttribute.Type);
     }
 

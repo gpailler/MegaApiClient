@@ -235,3 +235,4 @@ tools/*
 
 # Ignore Rider
 .idea/*
+.DS_Store

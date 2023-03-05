@@ -307,7 +307,7 @@ namespace CG.Web.MegaApiClient.Tests
       var node = Context.Client.GetNodeFromLink(new Uri(fileLink));
 
       Assert.NotNull(node);
-      Assert.Equal("SampleFile.zip", node.Name);
+      Assert.Equal("SampleZipFile.zip", node.Name);
       Assert.Equal(AuthenticatedTestContext.Inputs.SampleZipFile.Size, node.Size);
       Assert.Equal(AuthenticatedTestContext.Inputs.SampleZipFile.ModificationDate, node.ModificationDate);
       Assert.Null(node.CreationDate);
