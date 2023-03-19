@@ -660,7 +660,12 @@
     {
       if (uri == null)
       {
-        throw new ArgumentNullException("uri");
+        throw new ArgumentNullException(nameof(uri));
+      }
+
+      if (uri.AbsolutePath.StartsWith("/file/") == false)
+      {
+        throw new ArgumentException("Uri must be a valid file share starting with /file/. Use GetNodesFromLink() for folder share", nameof(uri));
       }
 
       EnsureLoggedIn();
@@ -686,7 +691,12 @@
     {
       if (uri == null)
       {
-        throw new ArgumentNullException("uri");
+        throw new ArgumentNullException(nameof(uri));
+      }
+
+      if (uri.AbsolutePath.StartsWith("/folder/") == false)
+      {
+        throw new ArgumentException("Uri must be a valid folder share starting with /folder/. Use GetNodeFromLink() for file share", nameof(uri));
       }
 
       EnsureLoggedIn();

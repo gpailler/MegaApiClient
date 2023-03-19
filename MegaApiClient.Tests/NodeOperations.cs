@@ -301,6 +301,22 @@ namespace CG.Web.MegaApiClient.Tests
     }
 
     [Theory]
+    [JsonInputsDataAttribute("FolderLink")]
+    public void GetNodeFromLink_WithFolderLink_Throws(string folderLink)
+    {
+      var exception = Assert.Throws<ArgumentException>(() => Context.Client.GetNodeFromLink(new Uri(folderLink)));
+      Assert.Equal("Uri must be a valid file share starting with /file/. Use GetNodesFromLink() for folder share (Parameter 'uri')", exception.Message);
+    }
+
+    [Theory]
+    [JsonInputsDataAttribute("FileLink")]
+    public void GetNodesFromLink_WithFileLink_Throws(string fileLink)
+    {
+      var exception = Assert.Throws<ArgumentException>(() => Context.Client.GetNodesFromLink(new Uri(fileLink)));
+      Assert.Equal("Uri must be a valid folder share starting with /folder/. Use GetNodeFromLink() for file share (Parameter 'uri')", exception.Message);
+    }
+
+    [Theory]
     [JsonInputsDataAttribute("ZipFileLink")]
     public void GetNodeFromLink_WithoutFileAttributes_Succeeds(string fileLink)
     {
