@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <TargetFrameworks>net40;net45;net46;net47;net471;netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net40;net45;net46;net461;net47;net471;net481;netstandard1.3;netstandard2.0;net60;net70</TargetFrameworks>
     <RootNamespace>CG.Web.MegaApiClient</RootNamespace>
     <SignAssembly>False</SignAssembly>
     <DocumentationFile>bin\docs\MegaApiClient.xml</DocumentationFile>
@@ -63,8 +63,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <Compile Include="..\GlobalAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework) != 'netstandard1.3' And $(TargetFramework) != 'net45' And $(TargetFramework) != 'net46' And $(TargetFramework) != 'net40'">
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.12" />
   </ItemGroup>
 
   <!-- Source Link -->
