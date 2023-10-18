@@ -5,17 +5,21 @@
   using System.Globalization;
   using System.IO;
   using System.Linq;
-  using System.Security.Cryptography;
   using System.Text.RegularExpressions;
   using System.Threading;
 #if !NET40
   using System.Threading.Tasks;
 #endif
   using CG.Web.MegaApiClient.Cryptography;
-  using Medo.Security.Cryptography;
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
   using Serialization;
+#if !NET40 && !NET45 && !NET46 && !NETSTANDARD1_3
+  using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+#else
+  using System.Security.Cryptography;
+  using Medo.Security.Cryptography;
+#endif
 
   public partial class MegaApiClient : IMegaApiClient
   {
@@ -105,11 +109,22 @@
         const int Iterations = 100000;
 
         var derivedKeyBytes = new byte[32];
-        using (var hmac = new HMACSHA512())
-        {
-          var pbkdf2 = new Pbkdf2(hmac, passwordBytes, saltBytes, Iterations);
-          derivedKeyBytes = pbkdf2.GetBytes(derivedKeyBytes.Length);
-        }
+
+        #if NET40 || NET45 || NET46 || NETSTANDARD1_3
+          using (var hmac = new HMACSHA512())
+            {
+              var pbkdf2 = new Pbkdf2(hmac, passwordBytes, saltBytes, Iterations);
+              derivedKeyBytes = pbkdf2.GetBytes(derivedKeyBytes.Length);
+            }
+        #else
+          derivedKeyBytes = KeyDerivation.Pbkdf2(
+            password: password,
+            salt : saltBytes,
+            prf: KeyDerivationPrf.HMACSHA512,
+            iterationCount: Iterations,
+            numBytesRequested: derivedKeyBytes.Length
+          );
+        #endif
 
         // Derived key contains master key (0-16) and password hash (16-32)
         if (!string.IsNullOrEmpty(mfaKey))
