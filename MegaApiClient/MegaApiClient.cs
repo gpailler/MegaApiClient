@@ -1115,6 +1115,7 @@
       var uri = GenerateUrl(request.QueryArguments);
       object jsonData = null;
       var attempt = 0;
+      var apiCode = ApiResultCode.Ok;
       while (_options.ComputeApiRequestRetryWaitDelay(++attempt, out var retryDelay))
       {
         var dataResult = _webClient.PostRequestJson(uri, dataRequest);
@@ -1124,7 +1125,7 @@
           || jsonData is long
           || jsonData is JArray array && array[0].Type == JTokenType.Integer)
         {
-          var apiCode = jsonData == null
+          apiCode = jsonData == null
             ? ApiResultCode.RequestFailedRetry
             : jsonData is long
               ? (ApiResultCode)Enum.ToObject(typeof(ApiResultCode), jsonData)
@@ -1148,6 +1149,11 @@
         }
 
         break;
+      }
+
+      if (apiCode != ApiResultCode.Ok)
+      {
+        throw new ApiException(apiCode);
       }
 
       var data = ((JArray)jsonData)[0].ToString();
