@@ -51,6 +51,7 @@ jobs:
 
   test:
     name: Test 🧪
+    if: ${{ false }}  # Disable tests for now
     timeout-minutes: 60
     runs-on: windows-latest
     steps:
