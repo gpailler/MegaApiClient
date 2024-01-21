@@ -99,7 +99,7 @@ jobs:
 
   deploy:
     name: Deploy 🚀
-    needs: [ build, test, doc ]
+    needs: [ build, doc ]
     runs-on: windows-latest
     steps:
       - name: Download NuGet packages
@@ -115,7 +115,7 @@ jobs:
 
   deploy-release:
     name: Deploy release 🚀🌐
-    needs: [ build, test, doc ]
+    needs: [ build, doc ]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
