@@ -44,9 +44,14 @@
 
     public string PostRequestJson(Uri url, string jsonData)
     {
+      return PostRequestJson(url, jsonData, null);
+    }
+
+    public string PostRequestJson(Uri url, string jsonData, string hashcash)
+    {
       return _policy.Execute(() =>
       {
-        var result = s_webClient.PostRequestJson(url, jsonData);
+        var result = s_webClient.PostRequestJson(url, jsonData, hashcash);
         OnCalled?.Invoke(CallType.PostRequestJson, url);
 
         return result;
