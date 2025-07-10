@@ -209,20 +209,7 @@
         request = new LoginRequest(authInfos.Email, authInfos.Hash);
       }
 
-      LoginResponse response;
-      try
-      {
-        response = Request<LoginResponse>(request);
-      }
-      catch (HttpRequestException httpEx)
-      {
-        // Handle HTTP request exceptions
-        if (httpEx.Message.Contains("402"))
-        {
-          throw new Exception();
-        }
-        throw;
-      }
+      var response = Request<LoginResponse>(request);
 
       // Decrypt master key using our password key
       var cryptedMasterKey = response.MasterKey.FromBase64();
