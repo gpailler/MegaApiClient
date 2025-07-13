@@ -20,7 +20,7 @@ jobs:
       semVer: ${{ steps.gitversion.outputs.semVer }}
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Full history is required by GitVersion
 
@@ -43,7 +43,7 @@ jobs:
         run: dotnet pack --configuration ${{ env.CONFIGURATION }} ./MegaApiClient/ --no-restore --no-build --output ./artifacts/ -p:PackageVersion=${{ env.GITVERSION_NUGETVERSION }}
 
       - name: Upload NuGet packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: NuGet packages
           path: ./artifacts/*.*nupkg
@@ -64,7 +64,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Tests
         run: dotnet test --configuration ${{ env.CONFIGURATION }} ./MegaApiClient.Tests/ --framework net60 --logger "console;verbosity=detailed" --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Exclude="[MegaApiClient]BigInteger"
@@ -80,7 +80,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install DocFX
         run: nuget install docfx.console -Version 2.58.9
@@ -91,7 +91,7 @@ jobs:
           ./docfx.console.2.58.9/tools/docfx.exe build ./docs/docfx.json --globalMetadata "{'_appFooter': 'Copyright © 2013-2024 - Gregoire Pailler - MegaApiClient ${{ needs.build.outputs.semVer }}'}"
           
       - name: Upload Documentation
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Documentation
           path: ./docs/_site/
@@ -103,7 +103,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Download NuGet packages
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: NuGet packages
           path: ./artifacts/
@@ -120,16 +120,16 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download NuGet packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: NuGet packages
           path: ./artifacts/
 
       - name: Download Documentation
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: Documentation
           path: ./docs/_site/
