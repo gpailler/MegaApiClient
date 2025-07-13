@@ -8,6 +8,7 @@
     int BufferSize { get; set; }
 
     string PostRequestJson(Uri url, string jsonData);
+    string PostRequestJson(Uri url, string jsonData, string hashcash);
 
     string PostRequestRaw(Uri url, Stream dataStream);
 

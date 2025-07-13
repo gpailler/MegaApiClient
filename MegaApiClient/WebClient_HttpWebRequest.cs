@@ -31,9 +31,14 @@ namespace CG.Web.MegaApiClient
 
     public string PostRequestJson(Uri url, string jsonData)
     {
+      return PostRequestJson(url, jsonData, null);
+    }
+
+    public string PostRequestJson(Uri url, string jsonData, string hashcash)
+    {
       using (var jsonStream = new MemoryStream(jsonData.ToBytes()))
       {
-        using (var responseStream = PostRequest(url, jsonStream, "application/json"))
+        using (var responseStream = PostRequest(url, jsonStream, "application/json", hashcash))
         {
           return StreamToString(responseStream);
         }
@@ -63,10 +68,19 @@ namespace CG.Web.MegaApiClient
 
     private Stream PostRequest(Uri url, Stream dataStream, string contentType)
     {
+      return PostRequest(url, dataStream, contentType, null);
+    }
+
+    private Stream PostRequest(Uri url, Stream dataStream, string contentType, string hashcash)
+    {
       var request = CreateRequest(url);
       request.ContentLength = dataStream.Length;
       request.Method = "POST";
       request.ContentType = contentType;
+      if(hashcash != null)
+      {
+        request.Headers.Add("X-Hashcash", hashcash);
+      }
 
       using (var requestStream = request.GetRequestStream())
       {
