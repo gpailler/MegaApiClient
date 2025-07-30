@@ -1343,7 +1343,7 @@
       var shifts = (easiness >> 6) * 7 + 3;
       var threshold = baseVal << shifts;
 
-      var token = D64(tokenStr);
+      var token = tokenStr.FromBase64();
 
       var iterations = 262144;
       var chunkSize = 48;
@@ -1374,7 +1374,7 @@
 
           if (hashPrefix <= threshold)
           {
-            var prefix = E64(SubArray(buffer, 0, 4));
+            var prefix = SubArray(buffer, 0, 4).ToBase64();
             return $"1:{tokenStr}:{prefix}";
           }
 
@@ -1391,27 +1391,6 @@
       }
     }
 
-    private static string E64(byte[] buffer)
-    {
-      return Convert.ToBase64String(buffer)
-          .Replace('+', '-')
-          .Replace('/', '_')
-          .TrimEnd('=');
-    }
-
-    private static byte[] D64(string s)
-    {
-      var padded = s
-          .Replace('-', '+')
-          .Replace('_', '/');
-      switch (padded.Length % 4)
-      {
-        case 2: padded += "=="; break;
-        case 3: padded += "="; break;
-      }
-      return Convert.FromBase64String(padded);
-    }
-
     private static byte[] SubArray(byte[] data, int index, int length)
     {
       var result = new byte[length];
@@ -1419,6 +1398,7 @@
       {
         result[i] = data[index + i];
       }
+
       return result;
     }
 
