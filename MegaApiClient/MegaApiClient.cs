@@ -1369,7 +1369,8 @@
 
           if (BitConverter.IsLittleEndian)
           {
-            hashPrefix = ReverseBytes(hashPrefix);
+            Array.Reverse(hash);
+            hashPrefix = BitConverter.ToUInt32(hash, 0);
           }
 
           if (hashPrefix <= threshold)
@@ -1401,15 +1402,6 @@
 
       return result;
     }
-
-    private static uint ReverseBytes(uint value)
-    {
-      return (value >> 24) |
-             ((value & 0x00FF0000) >> 8) |
-             ((value & 0x0000FF00) << 8) |
-             (value << 24);
-    }
-
 
     #endregion
 
