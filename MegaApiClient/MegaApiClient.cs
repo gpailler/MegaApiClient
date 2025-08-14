@@ -1116,9 +1116,10 @@
       object jsonData = null;
       var attempt = 0;
       var apiCode = ApiResultCode.Ok;
+      string hashcash = null;
       while (_options.ComputeApiRequestRetryWaitDelay(++attempt, out var retryDelay))
       {
-        var dataResult = _webClient.PostRequestJson(uri, dataRequest);
+        var dataResult = _webClient.PostRequestJson(uri, dataRequest, hashcash);
 
         if (string.IsNullOrEmpty(dataResult)
           || (jsonData = JsonConvert.DeserializeObject(dataResult)) == null
@@ -1134,6 +1135,16 @@
           if (apiCode != ApiResultCode.Ok)
           {
             ApiRequestFailed?.Invoke(this, new ApiRequestFailedEventArgs(uri, attempt, retryDelay, apiCode, dataResult));
+          }
+
+          if(apiCode == ApiResultCode.HashcashRequired)
+          {
+            var challenge = ((JArray)jsonData)[1].Value<string>();
+            hashcash = GenerateHashcashToken(challenge);
+            jsonData = null;
+            attempt = 0;
+            apiCode = ApiResultCode.Ok;
+            continue;
           }
 
           if (apiCode == ApiResultCode.RequestFailedRetry)
@@ -1309,6 +1320,87 @@
 
         yield return (int)(nextChunkPosition - currentChunkPosition);
       }
+    }
+
+    private static string GenerateHashcashToken(string challenge)
+    {
+      var parts = challenge.Split(':');
+      if (parts.Length < 4)
+      {
+        throw new ArgumentException("Invalid challenge format");
+      }
+
+      var version = int.Parse(parts[0]);
+      if (version != 1)
+      {
+        throw new ArgumentException("Hashcash challenge is not version 1");
+      }
+
+      var easiness = int.Parse(parts[1]);
+      var tokenStr = parts[3];
+
+      var baseVal = ((easiness & 63) << 1) + 1;
+      var shifts = (easiness >> 6) * 7 + 3;
+      var threshold = baseVal << shifts;
+
+      var token = tokenStr.FromBase64();
+
+      var iterations = 262144;
+      var chunkSize = 48;
+      var prefixSize = 4;
+      var totalSize = prefixSize + iterations * chunkSize;
+
+      var buffer = new byte[totalSize];
+
+      for (var i = 0; i < iterations; i++)
+      {
+        for (var j = 0; j < chunkSize; j++)
+        {
+          buffer[prefixSize + i * chunkSize + j] = token[j];
+        }
+      }
+
+      using (var sha256 = SHA256.Create())
+      {
+        while (true)
+        {
+          var hash = sha256.ComputeHash(buffer);
+          var hashPrefix = BitConverter.ToUInt32(hash, 0);
+
+          if (BitConverter.IsLittleEndian)
+          {
+            Array.Reverse(hash);
+            hashPrefix = BitConverter.ToUInt32(hash, 0);
+          }
+
+          if (hashPrefix <= threshold)
+          {
+            var prefix = SubArray(buffer, 0, 4).ToBase64();
+            return $"1:{tokenStr}:{prefix}";
+          }
+
+          var j = 0;
+          while (true)
+          {
+            buffer[j]++;
+            if (buffer[j++] != 0)
+            {
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    private static byte[] SubArray(byte[] data, int index, int length)
+    {
+      var result = new byte[length];
+      for (var i = 0; i < length; i++)
+      {
+        result[i] = data[index + i];
+      }
+
+      return result;
     }
 
     #endregion

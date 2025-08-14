@@ -51,7 +51,18 @@ namespace CG.Web.MegaApiClient
     {
       using (var jsonStream = new MemoryStream(jsonData.ToBytes()))
       {
-        using (var responseStream = PostRequest(url, jsonStream, "application/json"))
+        using (var responseStream = PostRequest(url, jsonStream, "application/json", null))
+        {
+          return StreamToString(responseStream);
+        }
+      }
+    }
+
+    public string PostRequestJson(Uri url, string jsonData, string hashcash)
+    {
+      using (var jsonStream = new MemoryStream(jsonData.ToBytes()))
+      {
+        using (var responseStream = PostRequest(url, jsonStream, "application/json", hashcash))
         {
           return StreamToString(responseStream);
         }
@@ -76,7 +87,11 @@ namespace CG.Web.MegaApiClient
       return _httpClient.GetStreamAsync(url).Result;
     }
 
-    private Stream PostRequest(Uri url, Stream dataStream, string contentType)
+    private Stream PostRequest(Uri url, Stream dataStream, string contentType) {
+      return PostRequest(url, dataStream, contentType, null);
+    }
+
+    private Stream PostRequest(Uri url, Stream dataStream, string contentType, string hashcash)
     {
       using (var content = new StreamContent(dataStream, BufferSize))
       {
@@ -87,6 +102,11 @@ namespace CG.Web.MegaApiClient
           Content = content
         };
 
+        if(hashcash != null)
+        {
+          requestMessage.Headers.Add("X-Hashcash", hashcash);
+        }
+
         var response = _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseHeadersRead).Result;
         if (!response.IsSuccessStatusCode
             && response.StatusCode == HttpStatusCode.InternalServerError
@@ -94,6 +114,20 @@ namespace CG.Web.MegaApiClient
         {
           return new MemoryStream(Encoding.UTF8.GetBytes(((long)ApiResultCode.RequestFailedRetry).ToString()));
         }
+
+        if(!response.IsSuccessStatusCode
+           && response.StatusCode == HttpStatusCode.PaymentRequired
+           && response.Headers.TryGetValues("X-Hashcash", out var hashcashValues))
+         {
+           foreach(var value in hashcashValues)
+           {
+             hashcash = value;
+             break;
+           }
+
+          var json = $"[{(long)ApiResultCode.HashcashRequired}, '{hashcash}']"; 
+          return new MemoryStream(Encoding.UTF8.GetBytes(json));
+         }
 
         response.EnsureSuccessStatusCode();
 

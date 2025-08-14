@@ -150,6 +150,11 @@
     /// <summary>
     /// Login requires Two-Factor Authentication
     /// </summary>
-    TwoFactorAuthenticationError = -26
+    TwoFactorAuthenticationError = -26,
+
+    /// <summary>
+    /// Hashcash calculation required
+    /// </summary>
+    HashcashRequired = -27,
   }
 }
