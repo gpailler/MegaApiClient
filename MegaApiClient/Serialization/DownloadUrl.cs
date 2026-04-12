@@ -12,6 +12,7 @@
       if (node is PublicNode publicNode)
       {
         QueryArguments["n"] = publicNode.ShareId;
+        UseSession = false;
       }
     }
 

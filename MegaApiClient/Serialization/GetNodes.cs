@@ -12,6 +12,8 @@
       : base("f")
     {
       C = 1;
+      Ca = 1;
+      UseSession = false;
 
       if (shareId != null)
       {
@@ -27,6 +29,9 @@
 
     [JsonProperty("r")]
     public int R { get; private set; }
+
+    [JsonProperty("ca")]
+    public int Ca { get; private set; }
   }
 
   internal class GetNodesResponse
