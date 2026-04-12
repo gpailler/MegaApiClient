@@ -9,6 +9,7 @@
     {
       Action = action;
       QueryArguments = new Dictionary<string, string>();
+      UseSession = true;
     }
 
     [JsonProperty("a")]
@@ -16,5 +17,8 @@
 
     [JsonIgnore]
     public Dictionary<string, string> QueryArguments { get; }
+
+    [JsonIgnore]
+    public bool UseSession { get; protected set; }
   }
 }

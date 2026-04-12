@@ -1112,7 +1112,7 @@
         where TResponse : class
     {
       var dataRequest = JsonConvert.SerializeObject(new object[] { request });
-      var uri = GenerateUrl(request.QueryArguments);
+      var uri = GenerateUrl(request.QueryArguments, request.UseSession);
       object jsonData = null;
       var attempt = 0;
       var apiCode = ApiResultCode.Ok;
@@ -1182,7 +1182,7 @@
 #endif
     }
 
-    private Uri GenerateUrl(Dictionary<string, string> queryArguments)
+    private Uri GenerateUrl(Dictionary<string, string> queryArguments, bool useSession = true)
     {
       var query = new Dictionary<string, string>(queryArguments)
       {
@@ -1190,7 +1190,7 @@
         ["ak"] = _options.ApplicationKey
       };
 
-      if (!string.IsNullOrEmpty(_sessionId))
+      if (useSession && !string.IsNullOrEmpty(_sessionId))
       {
         query["sid"] = _sessionId;
       }

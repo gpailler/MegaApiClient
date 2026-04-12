@@ -136,54 +136,72 @@
           return;
         }
 
-        // There are cases where the SerializedKey property contains multiple keys separated with /
-        // This can occur when a folder is shared and the parent is shared too.
-        // Both keys are working so we use the first one
-        var serializedKey = SerializedKey.Split('/')[0];
-        var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
-        var encryptedKey = serializedKey.Substring(splitPosition + 1).FromBase64();
+        // The SerializedKey property can contain multiple keys separated with /
+        // This occurs when a folder is shared and the parent is shared too, or for
+        // shared folder links where the owner's key and share key are both present.
+        // Try each key and use the first one that produces valid attributes.
+        var serializedKeys = SerializedKey.Split('/');
 
-        // If node is shared, we need to retrieve shared masterkey
-        if (_sharedKeys != null)
+        foreach (var serializedKey in serializedKeys)
         {
-          var handle = serializedKey.Substring(0, splitPosition);
-          var sharedKey = _sharedKeys.FirstOrDefault(x => x.Id == handle);
-          if (sharedKey != null)
+          var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
+          if (splitPosition < 0)
           {
-            _masterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), _masterKey);
-            if (Type == NodeType.Directory)
+            continue;
+          }
+
+          var handle = serializedKey.Substring(0, splitPosition);
+          var encryptedKey = serializedKey.Substring(splitPosition + 1).FromBase64();
+
+          // If node is shared, we need to retrieve shared masterkey
+          var usedMasterKey = _masterKey;
+          byte[] sharedKeyValue = null;
+          if (_sharedKeys != null)
+          {
+            var sharedKey = _sharedKeys.FirstOrDefault(x => x.Id == handle);
+            if (sharedKey != null)
             {
-              SharedKey = _masterKey;
+              usedMasterKey = Crypto.DecryptKey(sharedKey.Key.FromBase64(), _masterKey);
+              sharedKeyValue = Type == NodeType.Directory
+                ? usedMasterKey
+                : Crypto.DecryptKey(encryptedKey, usedMasterKey);
             }
-            else
-            {
-              SharedKey = Crypto.DecryptKey(encryptedKey, _masterKey);
-            }
+          }
+
+          if (encryptedKey.Length != 16 && encryptedKey.Length != 32)
+          {
+            continue;
+          }
+
+          var fullKey = Crypto.DecryptKey(encryptedKey, usedMasterKey);
+          byte[] nodeKey;
+          byte[] iv = null;
+          byte[] metaMac = null;
+
+          if (Type == NodeType.File)
+          {
+            Crypto.GetPartsFromDecryptedKey(fullKey, out iv, out metaMac, out nodeKey);
+          }
+          else
+          {
+            nodeKey = fullKey;
+          }
+
+          var attrs = Crypto.DecryptAttributes(SerializedAttributes.FromBase64(), nodeKey);
+
+          FullKey = fullKey;
+          Key = nodeKey;
+          Iv = iv;
+          MetaMac = metaMac;
+          SharedKey = sharedKeyValue;
+          Attributes = attrs;
+
+          if (attrs?.Name != null && !attrs.Name.StartsWith("Attribute deserialization failed"))
+          {
+            break;
           }
         }
 
-        if (encryptedKey.Length != 16 && encryptedKey.Length != 32)
-        {
-          // Invalid key size
-          return;
-        }
-
-        FullKey = Crypto.DecryptKey(encryptedKey, _masterKey);
-
-        if (Type == NodeType.File)
-        {
-          Crypto.GetPartsFromDecryptedKey(FullKey, out var iv, out var metaMac, out var fileKey);
-
-          Iv = iv;
-          MetaMac = metaMac;
-          Key = fileKey;
-        }
-        else
-        {
-          Key = FullKey;
-        }
-
-        Attributes = Crypto.DecryptAttributes(SerializedAttributes.FromBase64(), Key);
         FileAttributes = DeserializeFileAttributes(SerializedFileAttributes);
       }
     }
@@ -278,12 +296,12 @@
         {
           return true;
         }
-        else
+
+        return _node.SerializedKey.Split('/').Any(key =>
         {
-          var serializedKey = _node.SerializedKey.Split('/')[0];
-          var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
-          return serializedKey.Substring(0, splitPosition) == Id;
-        }
+          var splitPosition = key.IndexOf(":", StringComparison.Ordinal);
+          return splitPosition >= 0 && key.Substring(0, splitPosition) == Id;
+        });
       }
     }
   }
