@@ -138,7 +138,47 @@
 
         // There are cases where the SerializedKey property contains multiple keys separated with /
         // This can occur when a folder is shared and the parent is shared too.
-        // Both keys are working so we use the first one
+        // The first part is not always decryptable (e.g. nodes moved into a shared
+        // folder), so trial-decrypt with every part and keep the first valid one.
+        var keyParts = SerializedKey.Split('/');
+        byte[] acceptedFullKey = null;
+        byte[] acceptedIv = null;
+        byte[] acceptedMetaMac = null;
+        byte[] acceptedKey = null;
+        byte[] acceptedSharedKey = null;
+        byte[] acceptedMasterKey = null;
+        Attributes acceptedAttributes = null;
+        foreach (var keyPart in keyParts)
+        {
+          if (TryDecryptAttributesWithKeyPart(keyPart, _masterKey,
+                  out var fullKey, out var iv, out var metaMac, out var key,
+                  out var sharedKey, out var resultingMasterKey, out var attributes)
+              && HasValidAttributes(attributes))
+          {
+            acceptedFullKey = fullKey;
+            acceptedIv = iv;
+            acceptedMetaMac = metaMac;
+            acceptedKey = key;
+            acceptedSharedKey = sharedKey;
+            acceptedMasterKey = resultingMasterKey;
+            acceptedAttributes = attributes;
+            break;
+          }
+        }
+
+        if (acceptedAttributes != null)
+        {
+          FullKey = acceptedFullKey;
+          Iv = acceptedIv;
+          MetaMac = acceptedMetaMac;
+          Key = acceptedKey;
+          SharedKey = acceptedSharedKey;
+          _masterKey = acceptedMasterKey;
+          Attributes = acceptedAttributes;
+          FileAttributes = DeserializeFileAttributes(SerializedFileAttributes);
+          return;
+        }
+
         var serializedKey = SerializedKey.Split('/')[0];
         var splitPosition = serializedKey.IndexOf(":", StringComparison.Ordinal);
         var encryptedKey = serializedKey.Substring(splitPosition + 1).FromBase64();
@@ -185,6 +225,82 @@
 
         Attributes = Crypto.DecryptAttributes(SerializedAttributes.FromBase64(), Key);
         FileAttributes = DeserializeFileAttributes(SerializedFileAttributes);
+      }
+    }
+
+    private static bool HasValidAttributes(Attributes attributes)
+    {
+      return attributes?.Name != null
+          && attributes.Name.StartsWith("Attribute deserialization failed", StringComparison.OrdinalIgnoreCase) == false;
+    }
+
+    private bool TryDecryptAttributesWithKeyPart(string serializedKeyPart, byte[] masterKey,
+      out byte[] fullKey, out byte[] iv, out byte[] metaMac, out byte[] key,
+      out byte[] sharedKey, out byte[] resultingMasterKey, out Attributes attributes)
+    {
+      fullKey = null;
+      iv = null;
+      metaMac = null;
+      key = null;
+      sharedKey = null;
+      resultingMasterKey = masterKey;
+      attributes = null;
+
+      try
+      {
+        var splitPosition = serializedKeyPart.IndexOf(":", StringComparison.Ordinal);
+        if (splitPosition < 0)
+        {
+          return false;
+        }
+
+        var encryptedKey = serializedKeyPart.Substring(splitPosition + 1).FromBase64();
+        if (encryptedKey.Length != 16 && encryptedKey.Length != 32)
+        {
+          // Invalid key size
+          return false;
+        }
+
+        // If node is shared, we need to retrieve shared masterkey
+        if (_sharedKeys != null)
+        {
+          var handle = serializedKeyPart.Substring(0, splitPosition);
+          var foundSharedKey = _sharedKeys.FirstOrDefault(x => x.Id == handle);
+          if (foundSharedKey != null)
+          {
+            resultingMasterKey = Crypto.DecryptKey(foundSharedKey.Key.FromBase64(), masterKey);
+            if (Type == NodeType.Directory)
+            {
+              sharedKey = resultingMasterKey;
+            }
+            else
+            {
+              sharedKey = Crypto.DecryptKey(encryptedKey, resultingMasterKey);
+            }
+          }
+        }
+
+        fullKey = Crypto.DecryptKey(encryptedKey, resultingMasterKey);
+
+        if (Type == NodeType.File)
+        {
+          Crypto.GetPartsFromDecryptedKey(fullKey, out var derivedIv, out var derivedMetaMac, out var fileKey);
+
+          iv = derivedIv;
+          metaMac = derivedMetaMac;
+          key = fileKey;
+        }
+        else
+        {
+          key = fullKey;
+        }
+
+        attributes = Crypto.DecryptAttributes(SerializedAttributes.FromBase64(), key);
+        return true;
+      }
+      catch
+      {
+        return false;
       }
     }
 
