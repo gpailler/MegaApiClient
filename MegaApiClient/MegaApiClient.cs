@@ -1365,13 +1365,9 @@
         while (true)
         {
           var hash = sha256.ComputeHash(buffer);
-          var hashPrefix = BitConverter.ToUInt32(hash, 0);
 
-          if (BitConverter.IsLittleEndian)
-          {
-            Array.Reverse(hash);
-            hashPrefix = BitConverter.ToUInt32(hash, 0);
-          }
+          // First 4 bytes of the hash as a big-endian unsigned integer (independent of host endianness)
+          var hashPrefix = ((uint)hash[0] << 24) | ((uint)hash[1] << 16) | ((uint)hash[2] << 8) | hash[3];
 
           if (hashPrefix <= threshold)
           {
